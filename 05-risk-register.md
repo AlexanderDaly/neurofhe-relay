@@ -1,0 +1,123 @@
+# NeuroFHE Relay - Risk Register
+
+## Technical Risks
+
+### R1 - FHE Latency Remains Too High
+
+Risk: even sparse event workloads may be too slow for practical use.
+
+Mitigation:
+
+- Benchmark tiny kernels first.
+- Compare against dense encrypted baseline.
+- Treat real-time as a future goal, not a Phase 1 claim.
+
+### R2 - SNN Accuracy Loss
+
+Risk: quantization, spike encoding, and HE-friendly activation approximations reduce accuracy.
+
+Mitigation:
+
+- Start with simple classification tasks.
+- Keep plaintext SNN and encrypted SNN metrics side by side.
+- Optimize representation before optimizing cryptography.
+
+### R3 - Octra Tooling Maturity
+
+Risk: Octra's public tooling may not yet support the exact operations or developer flow needed.
+
+Mitigation:
+
+- Keep Octra as an integration lane.
+- Use mature HE libraries for the first local demo.
+- Add Octra only after a compact operation family is proven.
+
+### R4 - Misleading Security Claims
+
+Risk: overstating privacy guarantees before cryptographic review.
+
+Mitigation:
+
+- Use research-grade language.
+- State key ownership and threat model explicitly.
+- Avoid production or compliance claims until audited.
+
+### R5 - Neuromorphic Hardware Access
+
+Risk: Loihi/SpiNNaker-style hardware access may be limited or slow to secure.
+
+Mitigation:
+
+- Begin with software SNN simulation.
+- Keep hardware acceleration optional.
+- Use neuromorphic representation as the first proof, not chip access.
+
+## Market Risks
+
+### M1 - Too Technical for Buyers
+
+Risk: buyers may not care about SNN/FHE details.
+
+Mitigation:
+
+- Lead with privacy-preserving event intelligence.
+- Use concrete domains: wearables, industrial telemetry, robotics safety.
+- Keep technical appendix separate.
+
+### M2 - Competing Privacy Approaches
+
+Risk: trusted execution environments, differential privacy, on-device-only models, or secure MPC may be cheaper.
+
+Mitigation:
+
+- Position FHE for cases where data must be computed externally without trust.
+- Include comparison table in later materials.
+- Avoid claiming FHE is always the right answer.
+
+### M3 - Crypto Market Noise
+
+Risk: Octra/Web3 association may distract from the technical value.
+
+Mitigation:
+
+- Present the core demo without token dependence.
+- Frame Octra as optional encrypted-compute infrastructure.
+- Emphasize workload compiler, benchmarks, and privacy boundary.
+
+## Execution Risks
+
+### E1 - Scope Creep
+
+Risk: project expands into FHE accelerator, blockchain app, neuromorphic hardware, AI model zoo, and investor deck all at once.
+
+Mitigation:
+
+- First milestone: one tiny encrypted SNN inference benchmark.
+- Second milestone: one visual demo.
+- Third milestone: Octra feasibility note.
+
+### E2 - No Clear Demo
+
+Risk: project remains an interesting memo without visible proof.
+
+Mitigation:
+
+- Build a minimal interactive demo early.
+- Show what each actor sees: edge, compute provider, client.
+- Include benchmark outputs in the UI.
+
+## Go / No-Go Criteria
+
+Go if:
+
+- Sparse event workload reduces encrypted operation count.
+- Accuracy remains plausible.
+- Privacy boundary is easy to explain.
+- Prototype produces real metrics.
+
+No-go or pivot if:
+
+- FHE cost is not materially improved by the SNN/event path.
+- Octra integration becomes the story before local evidence exists.
+- The demo cannot explain itself in under two minutes.
+

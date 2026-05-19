@@ -1,0 +1,59 @@
+{
+  "project": "NeuroFHE Relay",
+  "tagline": "Private event intelligence for neuromorphic AI.",
+  "createdAt": "2026-05-19",
+  "license": "CC0-1.0",
+  "thesis": "Use neuromorphic/event-driven sparsity to make homomorphic encrypted inference smaller and more practical, with Octra as a potential encrypted-compute integration layer.",
+  "recommendedClaim": "Neuromorphic systems make data sparse; FHE keeps selected computation private.",
+  "avoidClaim": "Current neuromorphic chips directly run full FHE workloads as drop-in accelerators.",
+  "firstDemo": {
+    "dataset": "synthetic event stream, then N-MNIST or DVS-style event data",
+    "model": "tiny spiking neural network classifier",
+    "privacyFlow": [
+      "local event encoding",
+      "client-side encryption",
+      "encrypted inference",
+      "client-side final decryption"
+    ],
+    "metrics": [
+      "accuracy",
+      "latencyMs",
+      "ciphertextBytes",
+      "operationCounts",
+      "privacyBoundary"
+    ]
+  },
+  "architecture": {
+    "edge": "neuromorphic sensor or SNN encoder",
+    "encoder": "binary spikes, spike counts, or low-bit event windows",
+    "crypto": "CKKS, BFV/BGV, TFHE, or experimental HFHE path",
+    "compute": "encrypted inference kernel",
+    "octraLane": "program/proof/settlement or future encrypted execution adapter",
+    "client": "owns secret key and decrypts final result"
+  },
+  "wedgeMarkets": [
+    "wearable biosignals",
+    "event-camera anomaly detection",
+    "industrial equipment telemetry",
+    "robotics safety telemetry",
+    "smart-building occupancy intelligence"
+  ],
+  "ninetyDayMilestones": [
+    "plaintext event/SNN baseline",
+    "encrypted inference kernel",
+    "benchmark report",
+    "visual demo",
+    "Octra feasibility note",
+    "pilot-ready deck"
+  ],
+  "sourceHighlights": [
+    "https://docs.octra.org/",
+    "https://docs.octra.org/tech-docs/hfhe",
+    "https://arxiv.org/abs/2308.05636",
+    "https://arxiv.org/abs/2510.03995",
+    "https://proceedings.mlr.press/v202/ran23b.html",
+    "https://www.intel.com/content/www/us/en/research/neuromorphic-computing.html",
+    "https://openfhe.org/",
+    "https://github.com/microsoft/SEAL"
+  ]
+}
