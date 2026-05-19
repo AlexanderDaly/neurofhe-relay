@@ -77,13 +77,23 @@ The advantage is a compiler and benchmark layer:
 - Octra deployment adapter.
 - Evidence-first privacy and latency reporting.
 
-## Slide 11 - Roadmap and Ask
+## Slide 11 - Commons and Quantum-Resistant Direction
+
+If this project becomes part of the interface layer between biology, machine perception, and shared realities, the baseline should be free to inspect and improve.
+
+NeuroFHE Relay is released under CC0 and should be quantum-resistant by design:
+
+- FHE for encrypted computation.
+- ML-KEM for key establishment.
+- ML-DSA or SLH-DSA for signatures.
+- Crypto inventory for every benchmark.
+
+## Slide 12 - Roadmap and Ask
 
 90 days to a credible prototype:
 
 - Month 1: plaintext SNN and event encoder.
-- Month 2: encrypted inference kernel and benchmarks.
+- Month 2: encrypted inference kernel, benchmarks, and crypto inventory.
 - Month 3: Octra feasibility adapter, demo deck, and pilot targets.
 
 Ask: approve focused prototype work and use the first benchmark to decide whether this becomes a serious research startup, grant proposal, or Octra ecosystem project.
-

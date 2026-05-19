@@ -68,6 +68,25 @@ Useful takeaways:
 - Microsoft SEAL is mature for BFV and CKKS experimentation.
 - TenSEAL offers tensor-oriented HE operations on top of SEAL, useful for quick Python prototyping.
 
+## Post-Quantum Cryptography Baseline
+
+Sources:
+
+- NIST PQC project: https://csrc.nist.gov/Projects/post-quantum-cryptography
+- NIST approval of FIPS 203, 204, and 205: https://csrc.nist.gov/News/2024/postquantum-cryptography-fips-approved
+- NIST NCCoE Migration to Post-Quantum Cryptography: https://www.nccoe.nist.gov/applied-cryptography/migration-to-pqc
+- NIST PQC migration FAQ: https://pages.nist.gov/nccoe-migration-post-quantum-cryptography/FAQ/
+- NIST IR 8547 transition plan: https://csrc.nist.gov/pubs/ir/8547/ipd
+
+Useful takeaways:
+
+- NIST released the first three finalized PQC standards in August 2024.
+- FIPS 203 specifies ML-KEM for key establishment.
+- FIPS 204 specifies ML-DSA for digital signatures.
+- FIPS 205 specifies SLH-DSA for stateless hash-based digital signatures.
+- NIST migration guidance emphasizes cryptographic inventory, interoperability testing, and transition roadmaps.
+- NeuroFHE Relay should avoid "quantum-proof" language until concrete algorithms, parameters, libraries, side-channel posture, and review status are documented.
+
 ## Positioning Judgment
 
 The strongest claim:
@@ -82,3 +101,6 @@ The recommended project stance:
 
 > Build a small evidence-backed bridge first. Let the benchmark decide whether Octra becomes execution layer, proof layer, or future integration.
 
+## Commons Positioning
+
+The project is CC0 because biology-machine interface primitives should be inspectable, teachable, and reusable. That moral claim should not soften the technical standard: public-domain release makes review easier, but security claims still require evidence.

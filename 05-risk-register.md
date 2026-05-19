@@ -52,6 +52,17 @@ Mitigation:
 - Keep hardware acceleration optional.
 - Use neuromorphic representation as the first proof, not chip access.
 
+### R6 - Overclaiming Quantum Safety
+
+Risk: the project implies "quantum-proof" security before using real PQC libraries, parameter sets, and implementation review.
+
+Mitigation:
+
+- Use "post-quantum design target" language.
+- Add crypto inventory to every benchmark.
+- Treat ML-KEM, ML-DSA, and SLH-DSA as the baseline standards for surrounding transport/signature layers.
+- Require audit-ready threat models before production claims.
+
 ## Market Risks
 
 ### M1 - Too Technical for Buyers
@@ -119,5 +130,5 @@ No-go or pivot if:
 
 - FHE cost is not materially improved by the SNN/event path.
 - Octra integration becomes the story before local evidence exists.
+- "Quantum-proof" language appears before concrete cryptographic parameters and review.
 - The demo cannot explain itself in under two minutes.
-

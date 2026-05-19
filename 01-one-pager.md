@@ -63,6 +63,18 @@ The first marketable claim is "privacy-preserving event intelligence," not gener
 - Event-driven sensors and edge AI are expanding.
 - Regulation and enterprise risk make raw-data AI pipelines harder to justify.
 - Octra and similar encrypted-compute networks are trying to make FHE accessible to application developers.
+- NIST post-quantum standards now give the surrounding transport and signature layers a concrete migration target.
+
+## Commons and Cryptography Position
+
+If this becomes foundational for biology-machine communication or shared computational realities, the baseline should be free. NeuroFHE Relay is released under CC0 so the architecture can be inspected, taught, copied, and improved without permission.
+
+The cryptographic target is not "quantum-proof" marketing. It is quantum-resistant design with crypto agility:
+
+- FHE for encrypted computation.
+- ML-KEM for post-quantum key establishment.
+- ML-DSA or SLH-DSA for post-quantum signatures.
+- Crypto inventory in every benchmark artifact.
 
 ## Moat Hypothesis
 
@@ -80,10 +92,10 @@ Produce a credible demo and technical memo:
 - Tiny SNN baseline.
 - HE inference prototype.
 - Benchmark table.
+- Post-quantum crypto inventory.
 - Octra feasibility note.
 - Investor/research deck with a live local demo.
 
 ## Ask
 
 Permission to pursue a focused 90-day prototype and evidence package, with the first milestone being a local benchmark that proves whether sparse spiking inference materially reduces encrypted inference cost.
-

@@ -3,9 +3,17 @@
   "tagline": "Private event intelligence for neuromorphic AI.",
   "createdAt": "2026-05-19",
   "license": "CC0-1.0",
+  "commonsPrinciple": "If the architecture becomes useful for interfaces between biology, machines, and shared computational realities, it should remain free to inspect, copy, improve, and teach.",
   "thesis": "Use neuromorphic/event-driven sparsity to make homomorphic encrypted inference smaller and more practical, with Octra as a potential encrypted-compute integration layer.",
   "recommendedClaim": "Neuromorphic systems make data sparse; FHE keeps selected computation private.",
   "avoidClaim": "Current neuromorphic chips directly run full FHE workloads as drop-in accelerators.",
+  "postQuantumTarget": {
+    "principle": "Quantum-resistant by design, cryptographically agile by default.",
+    "keyEstablishment": ["ML-KEM / FIPS 203"],
+    "signatures": ["ML-DSA / FIPS 204", "SLH-DSA / FIPS 205"],
+    "implementationRule": "Do not claim production quantum safety until concrete algorithms, parameter sets, libraries, side-channel posture, and review status are documented.",
+    "nearTermArtifact": "Add cryptoInventory to every benchmark output."
+  },
   "firstDemo": {
     "dataset": "synthetic event stream, then N-MNIST or DVS-style event data",
     "model": "tiny spiking neural network classifier",
@@ -43,6 +51,7 @@
     "encrypted inference kernel",
     "benchmark report",
     "visual demo",
+    "post-quantum crypto inventory",
     "Octra feasibility note",
     "pilot-ready deck"
   ],
@@ -53,6 +62,8 @@
     "https://arxiv.org/abs/2510.03995",
     "https://proceedings.mlr.press/v202/ran23b.html",
     "https://www.intel.com/content/www/us/en/research/neuromorphic-computing.html",
+    "https://csrc.nist.gov/Projects/post-quantum-cryptography",
+    "https://csrc.nist.gov/News/2024/postquantum-cryptography-fips-approved",
     "https://openfhe.org/",
     "https://github.com/microsoft/SEAL"
   ]

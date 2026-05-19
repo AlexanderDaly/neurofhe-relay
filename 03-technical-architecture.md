@@ -59,6 +59,18 @@ Different HE schemes fit different workloads:
 
 The router should make scheme choice explicit rather than hiding it behind one abstraction.
 
+### 3.5 Post-Quantum Envelope
+
+Encrypted computation is only one part of the security story. The surrounding system also needs post-quantum transport, identity, and artifact integrity.
+
+Design target:
+
+- ML-KEM for quantum-resistant key establishment.
+- ML-DSA for primary artifact signatures.
+- SLH-DSA as a conservative hash-based signature option.
+- Hybrid classical + PQC mode during migration.
+- Explicit crypto inventory in every benchmark output.
+
 ### 4. Encrypted Inference Kernel
 
 The first kernel should avoid the hardest operations:
@@ -107,6 +119,13 @@ Every run should emit:
     "rotations": 0,
     "bootstraps": 0
   },
+  "cryptoInventory": {
+    "keyEstablishment": ["ML-KEM-768"],
+    "signatures": ["ML-DSA-65"],
+    "encryptedComputation": ["bfv-or-ckks-prototype"],
+    "hybridMode": true,
+    "productionClaim": false
+  },
   "privacyBoundary": {
     "edgeSees": ["raw sensor", "plaintext spikes"],
     "computeSees": ["ciphertext", "public model metadata"],
@@ -136,6 +155,7 @@ The first prototype should claim only:
 - Compute layer receives ciphertext, public parameters, and public model metadata.
 - Secret key remains client-side.
 - Prototype is research-grade, not audited production cryptography.
+- Post-quantum claims are design targets until concrete libraries, parameters, and reviews exist.
 
 ## Success Metrics
 
@@ -144,5 +164,5 @@ The project becomes interesting if the tiny SNN path can show:
 - Lower encrypted operation count than an equivalent dense baseline.
 - Acceptable accuracy loss from quantization/activation approximation.
 - Clear privacy boundary.
+- Crypto inventory covering transport, signatures, encrypted compute, and hashes.
 - A credible Octra integration path for at least one compact operation family.
-

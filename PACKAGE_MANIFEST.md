@@ -15,6 +15,7 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `04-demo-roadmap.md` - staged prototype and pilot plan.
 - `05-risk-register.md` - technical, market, and execution risks.
 - `06-evidence-and-sources.md` - research notes and sources.
+- `07-post-quantum-cryptography-track.md` - quantum-resistant design target, crypto agility plan, and standards baseline.
 - `project-brief.json` - agent-readable structured project summary.
 - `index.html` - self-contained browser briefing deck.
 - `prototype/` - dependency-free educational encrypted spike-count demo.

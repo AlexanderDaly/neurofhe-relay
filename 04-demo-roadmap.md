@@ -47,6 +47,7 @@ Tasks:
 - Approximate activation with polynomial or lookup path.
 - Decrypt only final score during local test.
 - Record operation counts, latency, ciphertext size, and accuracy change.
+- Add `cryptoInventory` to benchmark output so every cryptographic dependency is visible.
 
 Decision gate:
 
@@ -70,6 +71,21 @@ Presentation outcome:
 
 - A non-technical audience understands the privacy story.
 - A technical audience sees real numbers and limitations.
+
+## Phase 3.5 - Post-Quantum Envelope
+
+Goal: make the surrounding security story quantum-resistant and auditable.
+
+Tasks:
+
+- Add ML-KEM-based key-establishment simulation for encrypted event submission.
+- Add ML-DSA or SLH-DSA signing for benchmark artifacts.
+- Keep hybrid classical + PQC mode while the ecosystem matures.
+- Emit a machine-readable crypto inventory with algorithms, parameter sets, libraries, and caveats.
+
+Decision gate:
+
+- Do not call the system quantum-safe until the implementation uses real libraries and concrete parameter sets.
 
 ## Phase 4 - Octra Feasibility Lane
 
