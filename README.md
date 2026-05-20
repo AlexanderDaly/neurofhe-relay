@@ -1,5 +1,7 @@
 # NeuroFHE Relay
 
+[![CI](https://github.com/AlexanderDaly/neurofhe-relay/actions/workflows/ci.yml/badge.svg)](https://github.com/AlexanderDaly/neurofhe-relay/actions/workflows/ci.yml)
+
 Presentation package for a privacy-preserving neuromorphic + homomorphic-encryption project.
 
 ## Core Thesis
