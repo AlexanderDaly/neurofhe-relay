@@ -34,7 +34,8 @@ The cryptographic design target is:
 - `07-post-quantum-cryptography-track.md` - PQC design target and roadmap.
 - `project-brief.json` - structured project metadata for agents.
 - `index.html` - self-contained briefing deck for browser presentation.
-- `prototype/` - dependency-free educational encrypted spike-count demo.
+- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, benchmark runner, tests, and research assumptions.
+- `package.json` - local command scripts. The package is marked private to prevent accidental npm publication; it does not change the repository's CC0 license.
 
 ## Recommended Framing
 
@@ -53,10 +54,20 @@ That is not defensible today. The defensible near-term claim is a hybrid archite
 Run the included educational prototype:
 
 ```sh
-node prototype/toy-neurohe-demo.mjs
+npm run demo
 ```
 
-It demonstrates encrypted sparse spike-count scoring with toy additive homomorphic encryption. It is deliberately marked as non-production and should be replaced with OpenFHE, SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment in the next milestone.
+Emit the benchmark schema:
+
+```sh
+npm run benchmark
+```
+
+The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production and should be replaced with OpenFHE, SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment in the next milestone.
+
+## Prototype Boundary
+
+This repository is CC0. If the project later needs proprietary implementation, keep partner-specific adapters, datasets, trained weights, deployment code, and non-public library integrations in a separate private repository with explicit dependency and license review. Do not import proprietary reverse-engineered code into this public reference package.
 
 ## Post-Quantum Direction
 

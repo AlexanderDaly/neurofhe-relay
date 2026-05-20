@@ -17,6 +17,8 @@ Included desk demo:
 
 - `prototype/toy-neurohe-demo.mjs` runs a dependency-free encrypted spike-count classifier.
 - It uses educational additive homomorphic arithmetic to make the privacy boundary visible.
+- `prototype/benchmark.mjs` emits `neurofhe.benchmark.v1` with sparse operation counts, dense baseline comparison, privacy boundary, and crypto inventory.
+- `prototype/research-assumptions.json` captures falsifiable assumptions and clean-room/proprietary-track guardrails.
 - It is not production cryptography and not full FHE.
 
 ## Phase 1 - Plaintext Neuromorphic Baseline
@@ -30,6 +32,14 @@ Tasks:
 - Freeze window size, channel count, time steps, and output classes.
 - Emit machine-readable model and event-window metadata.
 - Record plaintext accuracy and latency.
+
+Current prototype foothold:
+
+- Synthetic 8 by 8 event window.
+- Public active event positions with encrypted active spike counts.
+- Plaintext and encrypted linear classifier agreement.
+- Dense encrypted tensor baseline comparison.
+- `prototype/LINEAR_ALGEBRA_NEXT.md` records the next matrix/vector cleanup pass.
 
 Decision gate:
 

@@ -19,6 +19,7 @@
     "model": "tiny spiking neural network classifier",
     "privacyFlow": [
       "local event encoding",
+      "public active event positions",
       "client-side encryption",
       "encrypted inference",
       "client-side final decryption"
@@ -30,6 +31,21 @@
       "operationCounts",
       "privacyBoundary"
     ]
+  },
+  "currentPrototype": {
+    "commands": {
+      "demo": "npm run demo",
+      "benchmark": "npm run benchmark",
+      "test": "npm test"
+    },
+    "schema": "neurofhe.benchmark.v1",
+    "eventRepresentation": "public active positions with encrypted active spike counts",
+    "toyScheme": "toy-paillier-additive-research-only",
+    "operationCounts": {
+      "sparseScalarMultiplies": 36,
+      "denseScalarMultiplies": 128
+    },
+    "caveat": "The current prototype is educational and not production cryptography."
   },
   "architecture": {
     "edge": "neuromorphic sensor or SNN encoder",

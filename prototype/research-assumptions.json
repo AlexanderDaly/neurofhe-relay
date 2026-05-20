@@ -1,0 +1,65 @@
+{
+  "schema": "neurofhe.researchAssumptions.v1",
+  "project": "NeuroFHE Relay",
+  "naming": {
+    "publicName": "Relay-2 Diagnostic Demo",
+    "shortName": "Relay-2",
+    "note": "The public artifact avoids third-party character marks. Private jokes stay private."
+  },
+  "ipGuardrails": {
+    "cleanRoomOnly": true,
+    "noProprietaryReverseEngineering": true,
+    "currentPackageLicense": "CC0-1.0",
+    "proprietaryTrackRule": "Keep future proprietary adapters, datasets, trained weights, partner integrations, and deployment code in a separate private repository with an explicit dependency and license audit.",
+    "aiVendorBoundary": "Using an AI coding assistant does not itself create an acquisition or assignment of the project. Final ownership and licensing decisions still need ordinary legal review."
+  },
+  "communicationModel": {
+    "style": "event-driven sparse communication",
+    "algorithmicFunction": "Turn a high-frequency raw signal into a compact sequence of meaningful events, then expose only the minimum event representation needed for encrypted scoring.",
+    "privacyTradeoff": "Publishing active positions reduces encrypted work but may reveal timing and sparsity patterns. Encrypting every feature hides that pattern but increases cost."
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "assumption": "Sparse active-event representation lowers encrypted linear scoring operations versus encrypting every zero and non-zero tensor feature.",
+      "measurement": "Compare scalar multiplications, homomorphic additions, ciphertext bytes, and latency for active-event scoring against full dense tensor scoring.",
+      "falsifier": "Dense encrypted scoring is within 10 percent of sparse scoring on the chosen event windows or is faster after packing."
+    },
+    {
+      "id": "H2",
+      "assumption": "A tiny spike-count classifier can preserve enough signal for a visible demo before moving to a full SNN or event-camera dataset.",
+      "measurement": "Track plaintext score agreement, synthetic classification stability, and later N-MNIST or DVS accuracy after quantization.",
+      "falsifier": "The plaintext sparse classifier is unstable or materially worse than a simple dense baseline on representative data."
+    },
+    {
+      "id": "H3",
+      "assumption": "Client-side decrypt-and-argmax is the correct first boundary because encrypted argmax adds complexity before the demo needs it.",
+      "measurement": "Record whether final score decryption is acceptable for the target workflow and quantify the extra operations needed for encrypted argmax alternatives.",
+      "falsifier": "A target pilot requires compute-side ranking or policy enforcement without revealing final scores to the client."
+    },
+    {
+      "id": "H4",
+      "assumption": "Public active event positions are acceptable for a first telemetry demo, but biological or medical-adjacent data may require padding, batching, or encrypted dense windows.",
+      "measurement": "Document what timing, channel, and sparsity metadata the compute side can infer from benchmark artifacts.",
+      "falsifier": "The metadata itself is sensitive enough to reconstruct behaviour, health state, identity, or protected context."
+    },
+    {
+      "id": "H5",
+      "assumption": "BFV or BGV is the first real-library candidate for integer spike counts, while CKKS and TFHE remain comparison lanes.",
+      "measurement": "Implement the same benchmark schema across at least one integer HE library and compare latency, ciphertext bytes, and operation counts.",
+      "falsifier": "CKKS packing or TFHE-style binary logic produces a simpler or faster implementation for the chosen event representation."
+    },
+    {
+      "id": "H6",
+      "assumption": "Octra or HFHE should be treated as an adapter lane after local operation-family feasibility is proven.",
+      "measurement": "Map the active-event score contract to current Octra program constraints and record what executes, stores, or proves cleanly.",
+      "falsifier": "The adapter cannot express the selected operation family or requires the Octra integration to become the core demo before local evidence exists."
+    },
+    {
+      "id": "H7",
+      "assumption": "The prototype should emit crypto inventory before it emits security claims.",
+      "measurement": "Require every benchmark JSON to name encrypted computation, key establishment, signatures, hashes, hybrid mode, and production-claim status.",
+      "falsifier": "A demo output or deck makes quantum-safe, production, compliance, or audit claims without concrete algorithms, parameter sets, libraries, and review status."
+    }
+  ]
+}

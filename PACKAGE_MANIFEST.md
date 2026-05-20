@@ -18,7 +18,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `07-post-quantum-cryptography-track.md` - quantum-resistant design target, crypto agility plan, and standards baseline.
 - `project-brief.json` - agent-readable structured project summary.
 - `index.html` - self-contained browser briefing deck.
-- `prototype/` - dependency-free educational encrypted spike-count demo.
+- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, benchmark runner, tests, linear-algebra handoff, and research assumptions.
+- `package.json` - local demo, benchmark, test, and validation commands. `private: true` prevents accidental npm publication; it is not a proprietary-license declaration.
 - `VALIDATION.md` - local validation commands and results.
 
 ## Validation
@@ -26,14 +27,32 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 Run the desk demo:
 
 ```sh
-node prototype/toy-neurohe-demo.mjs
+npm run demo
 ```
 
 Expected result: JSON output showing an educational encrypted spike-count classifier with decrypted scores and final classification.
 
+Run the benchmark:
+
+```sh
+npm run benchmark
+```
+
+Expected result: JSON output with schema `neurofhe.benchmark.v1`, sparse operation counts, dense baseline comparison, privacy boundary, and crypto inventory.
+
+Run tests:
+
+```sh
+npm test
+```
+
 ## Caveat
 
-The included prototype demonstrates the privacy boundary with toy additive homomorphic encryption. It is not production cryptography and not full FHE. The next milestone is to port the same event-window and score contract to a mature HE library or an Octra/HFHE experiment.
+The included prototype demonstrates the privacy boundary with toy additive homomorphic encryption. It is not production cryptography and not full FHE. It uses public active event positions plus encrypted active spike values, so sparse metadata is visible to the compute layer. The next milestone is to port the same event-list and score contract to a mature HE library or an Octra/HFHE experiment.
+
+## Proprietary Track Note
+
+This package is CC0. If a later implementation needs proprietary treatment, keep proprietary adapters, partner data, trained weights, and deployment code outside this public reference package. Do not import proprietary reverse-engineered implementations into this repository.
 
 ## License
 

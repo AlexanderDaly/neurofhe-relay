@@ -31,6 +31,17 @@ Output contract:
 }
 ```
 
+Prototype event-list contract:
+
+```json
+{
+  "schema": "neurofhe.events.active-list.v1",
+  "publicActivePositions": [{"time": 0, "channel": 1}],
+  "encryptedActiveValues": ["ciphertext"],
+  "metadataCaveat": "Active positions reduce encrypted work but may reveal sparsity and timing patterns."
+}
+```
+
 ### 2. Spike Encoder
 
 The encoder converts raw or intermediate signals into a compact event window:
@@ -80,6 +91,8 @@ The first kernel should avoid the hardest operations:
 - Accumulation over time.
 - Polynomial threshold approximation.
 - Optional encrypted argmax approximation or client-side decrypt-and-argmax.
+
+The current prototype uses a sparse active-event linear score. For an 8 by 8 window with 18 active spikes and two output classes, the toy encrypted path performs 36 public scalar multiplications and 36 homomorphic additions. A dense encrypted tensor path over all 64 features would perform 128 of each operation.
 
 Non-goals for the first prototype:
 

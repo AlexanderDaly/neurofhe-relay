@@ -1,0 +1,13 @@
+{
+  "name": "neurofhe-relay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "CC0-1.0",
+  "scripts": {
+    "demo": "node prototype/toy-neurohe-demo.mjs",
+    "benchmark": "node prototype/benchmark.mjs",
+    "test": "node --test prototype/test/*.test.mjs",
+    "validate": "npm test && node -e \"JSON.parse(require('fs').readFileSync('project-brief.json','utf8')); JSON.parse(require('fs').readFileSync('prototype/research-assumptions.json','utf8')); console.log('json ok')\" && node prototype/scripts/placeholder-scan.mjs"
+  }
+}
