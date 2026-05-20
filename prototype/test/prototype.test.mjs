@@ -18,6 +18,12 @@ import {
   createToyKeypair,
   decrypt,
 } from "../lib/toy-paillier.mjs";
+import {
+  buildDemoLinearModel,
+  denseMatVec,
+  sparseMatVec,
+  validateLinearModel,
+} from "../lib/linear-algebra.mjs";
 
 test("toy additive cipher preserves addition and public scalar multiplication", () => {
   const { publicKey, privateKey } = createToyKeypair();
@@ -74,6 +80,52 @@ test("encrypted classifier matches plaintext classifier on the demo contract", (
   assert.equal(encrypted.operationCounts.decryptions, 2);
 });
 
+test("linear model metadata fixes matrix orientation and supports public bias", () => {
+  const model = buildDemoLinearModel({ featureCount: 64, channels: 8 });
+
+  assert.equal(model.schema, "neurofhe.linearModel.v1");
+  assert.deepEqual(model.featureShape, [8, 8]);
+  assert.equal(model.flatteningOrder, "time-major-channel-minor");
+  assert.deepEqual(model.matrixShape, [2, 64]);
+  assert.equal(model.scoreEquation, "scores = W x + bias");
+  assert.deepEqual(model.classes, ["normal", "anomaly"]);
+  assert.deepEqual(model.bias, { normal: 0, anomaly: 0 });
+  assert.deepEqual(validateLinearModel(model, 64), []);
+});
+
+test("dense and sparse matrix-vector scoring agree including public bias", () => {
+  const eventWindow = buildSparseEventWindow();
+  const vector = flattenEventWindow(eventWindow);
+  const events = eventWindow.values.flatMap((row, time) =>
+    row.flatMap((value, channel) =>
+      value > 0 ? [{ index: time * eventWindow.channels + channel, value }] : [],
+    ),
+  );
+  const model = {
+    ...buildDemoLinearModel({ featureCount: 64, channels: 8 }),
+    bias: { normal: 4, anomaly: 7 },
+  };
+
+  assert.deepEqual(denseMatVec(model, vector), { normal: 13, anomaly: 58 });
+  assert.deepEqual(sparseMatVec(model, events), { normal: 13, anomaly: 58 });
+});
+
+test("linear model validation rejects mismatched feature and bias dimensions", () => {
+  const model = {
+    ...buildDemoLinearModel({ featureCount: 64, channels: 8 }),
+    weights: {
+      normal: [1, 2],
+      anomaly: Array(64).fill(1),
+    },
+    bias: { normal: 0 },
+  };
+
+  assert.deepEqual(validateLinearModel(model, 64), [
+    "weights.normal length 2 does not match feature count 64",
+    "bias missing value for class anomaly",
+  ]);
+});
+
 test("prototype benchmark emits privacy boundary, crypto inventory, and dense baseline comparison", () => {
   const benchmark = runPrototypeBenchmark({ seed: 91 });
 
@@ -84,6 +136,10 @@ test("prototype benchmark emits privacy boundary, crypto inventory, and dense ba
   assert.equal(benchmark.productionClaim, false);
   assert.equal(benchmark.results.classification, "anomaly");
   assert.deepEqual(benchmark.results.decryptedScores, { normal: 9, anomaly: 51 });
+  assert.equal(benchmark.boundaryDomain, "bio-digital-event-intelligence");
+  assert.deepEqual(benchmark.linearModel.matrixShape, [2, 64]);
+  assert.equal(benchmark.linearModel.scoreEquation, "scores = W x + bias");
+  assert.equal(benchmark.linearModel.activeEventCount, 18);
   assert.equal(benchmark.sparseMetrics.spikeCount, 18);
   assert.equal(benchmark.operationCounts.scalarMultiplies, 36);
   assert.ok(benchmark.denseBaseline.operationCounts.scalarMultiplies > benchmark.operationCounts.scalarMultiplies);

@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 6
-pass 6
+tests 9
+pass 9
 fail 0
 ```
 
@@ -27,6 +27,7 @@ Covered behaviours:
 - Toy additive HE addition and scalar multiplication.
 - Event-window validation and sparse metrics.
 - Plaintext and encrypted classifier agreement.
+- Linear model metadata, dense/sparse matrix-vector agreement, public bias, and model validation.
 - Benchmark privacy boundary, crypto inventory, and dense baseline comparison.
 - Research assumptions with clean-room and naming guardrails.
 
@@ -44,6 +45,7 @@ Result summary:
 {
   "demo": "toy encrypted sparse spike-count classifier",
   "prototypeCodename": "Relay-2 Diagnostic Demo",
+  "boundaryDomain": "bio-digital-event-intelligence",
   "eventWindow": {
     "schema": "neurofhe.events.v1.demo",
     "shape": [8, 8],
@@ -81,7 +83,14 @@ Result summary:
   "dataset": "synthetic-events-v0",
   "model": "tiny-linear-spike-count-v0",
   "scheme": "toy-paillier-additive-research-only",
+  "boundaryDomain": "bio-digital-event-intelligence",
   "productionClaim": false,
+  "linearModel": {
+    "schema": "neurofhe.linearModel.v1",
+    "scoreEquation": "scores = W x + bias",
+    "matrixShape": [2, 64],
+    "activeEventCount": 18
+  },
   "sparseMetrics": {
     "featureCount": 64,
     "spikeCount": 18,

@@ -1,6 +1,6 @@
 # NeuroFHE Relay Prototype
 
-This is a dependency-free prototype for the first privacy boundary.
+This is a dependency-free prototype for the first bio-digital privacy boundary.
 
 It uses an educational additive homomorphic encryption toy based on Paillier-style arithmetic to classify a synthetic sparse event window. It is not production cryptography and it is not full FHE. Its purpose is to make the product claim testable:
 
@@ -34,6 +34,7 @@ Current modules:
 - `lib/math.mjs` - BigInt modular arithmetic helpers.
 - `lib/toy-paillier.mjs` - educational additive HE adapter.
 - `lib/events.mjs` - event-window construction, validation, flattening, and sparse metrics.
+- `lib/linear-algebra.mjs` - model metadata, dense matrix-vector scoring, sparse event scoring, and model validation.
 - `lib/classifier.mjs` - plaintext and encrypted linear spike-count classifiers.
 - `lib/benchmark.mjs` - benchmark schema, crypto inventory, dense baseline comparison, and privacy boundary.
 - `LINEAR_ALGEBRA_NEXT.md` - handoff for the next matrix/vector cleanup pass.

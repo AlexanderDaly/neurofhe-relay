@@ -1,11 +1,11 @@
 {
   "project": "NeuroFHE Relay",
-  "tagline": "Private event intelligence for neuromorphic AI.",
+  "tagline": "Private bio-digital event intelligence for neuromorphic AI.",
   "createdAt": "2026-05-19",
   "license": "CC0-1.0",
   "commonsPrinciple": "If the architecture becomes useful for interfaces between biology, machines, and shared computational realities, it should remain free to inspect, copy, improve, and teach.",
   "thesis": "Use neuromorphic/event-driven sparsity to make homomorphic encrypted inference smaller and more practical, with Octra as a potential encrypted-compute integration layer.",
-  "recommendedClaim": "Neuromorphic systems make data sparse; FHE keeps selected computation private.",
+  "recommendedClaim": "Bio-digital signals stay local; neuromorphic systems make selected data sparse; FHE keeps selected computation private.",
   "avoidClaim": "Current neuromorphic chips directly run full FHE workloads as drop-in accelerators.",
   "postQuantumTarget": {
     "principle": "Quantum-resistant by design, cryptographically agile by default.",
@@ -39,7 +39,15 @@
       "test": "npm test"
     },
     "schema": "neurofhe.benchmark.v1",
+    "boundaryDomain": "bio-digital-event-intelligence",
     "eventRepresentation": "public active positions with encrypted active spike counts",
+    "linearModel": {
+      "schema": "neurofhe.linearModel.v1",
+      "scoreEquation": "scores = W x + bias",
+      "matrixOrientation": "rows are classes, columns are flattened event features",
+      "matrixShape": [2, 64],
+      "activeEventCount": 18
+    },
     "toyScheme": "toy-paillier-additive-research-only",
     "operationCounts": {
       "sparseScalarMultiplies": 36,

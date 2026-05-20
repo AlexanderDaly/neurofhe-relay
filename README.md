@@ -43,6 +43,12 @@ Use the phrase:
 
 > A privacy layer for event-driven AI: neuromorphic systems make data sparse, FHE keeps the sensitive computation private.
 
+For the biology and digital interface framing, use:
+
+> Bio-digital event intelligence: sensitive signals stay local, compact event features cross the boundary under explicit privacy and cryptographic controls.
+
+Avoid medical-device language until a real regulated use case, dataset, clinical validation path, and legal review exist. The current prototype is about privacy-preserving event representation and encrypted scoring, not diagnosis or treatment.
+
 Avoid saying:
 
 > We run Octra directly on neuromorphic chips.
@@ -63,7 +69,7 @@ Emit the benchmark schema:
 npm run benchmark
 ```
 
-The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production and should be replaced with OpenFHE, SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment in the next milestone.
+The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production and should be replaced with OpenFHE, SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment in the next milestone.
 
 ## Prototype Boundary
 

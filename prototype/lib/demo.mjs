@@ -11,12 +11,14 @@ export function runDemo(options = {}) {
     caveat:
       "Educational additive HE demo only; replace with audited HE/FHE library for real prototype.",
     privacyBoundary: benchmark.privacyBoundary,
+    boundaryDomain: benchmark.boundaryDomain,
     eventWindow: {
       ...benchmark.eventWindow,
       spikeCount: benchmark.sparseMetrics.spikeCount,
       density: Number(benchmark.sparseMetrics.density.toFixed(4)),
     },
     encryptedPreview: benchmark.encryptedPreview,
+    linearModel: benchmark.linearModel,
     publicModel: benchmark.publicModel,
     operationCounts: benchmark.operationCounts,
     denseBaseline: benchmark.denseBaseline,

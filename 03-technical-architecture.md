@@ -4,7 +4,7 @@
 
 Keep neuromorphic and FHE responsibilities separate.
 
-Neuromorphic systems are best at event-driven sparse computation. FHE systems are best at preserving privacy across selected arithmetic or logic circuits. The bridge is a representation contract: spike/event tensors designed to be both biologically inspired and encryption-friendly.
+Neuromorphic systems are best at event-driven sparse computation. FHE systems are best at preserving privacy across selected arithmetic or logic circuits. The bridge is a bio-digital representation contract: sensitive biological, behavioral, or sensor signals stay local while compact spike/event tensors are designed to be both biologically inspired and encryption-friendly.
 
 ## System Components
 
@@ -93,6 +93,8 @@ The first kernel should avoid the hardest operations:
 - Optional encrypted argmax approximation or client-side decrypt-and-argmax.
 
 The current prototype uses a sparse active-event linear score. For an 8 by 8 window with 18 active spikes and two output classes, the toy encrypted path performs 36 public scalar multiplications and 36 homomorphic additions. A dense encrypted tensor path over all 64 features would perform 128 of each operation.
+
+The score equation is fixed as `scores = W x + bias`, with matrix rows as classes and columns as flattened event features. The current benchmark emits this matrix shape so future BFV/BGV, CKKS, TFHE, or HFHE experiments can compare the same contract rather than changing the task midstream.
 
 Non-goals for the first prototype:
 

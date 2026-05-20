@@ -63,6 +63,17 @@ Mitigation:
 - Treat ML-KEM, ML-DSA, and SLH-DSA as the baseline standards for surrounding transport/signature layers.
 - Require audit-ready threat models before production claims.
 
+### R7 - Overclaiming Bio-Digital or Medical Scope
+
+Risk: bio-digital framing is mistaken for medical diagnosis, treatment, regulated device performance, or clinical validation.
+
+Mitigation:
+
+- Use privacy-preserving event intelligence language.
+- Keep synthetic and research-grade caveats visible.
+- Do not make diagnostic or treatment claims.
+- Require real datasets, clinical validation, regulatory strategy, and legal review before any medical-adjacent deployment language.
+
 ## Market Risks
 
 ### M1 - Too Technical for Buyers

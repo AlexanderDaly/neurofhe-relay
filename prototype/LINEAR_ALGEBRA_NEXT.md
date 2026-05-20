@@ -1,7 +1,8 @@
 # Linear Algebra Next Pass
 
-This is the waking handoff for turning the current sparse demo into a cleaner
-linear-algebra prototype.
+This is the linear-algebra handoff for the current sparse demo. The first pass
+is now implemented in `lib/linear-algebra.mjs`; this note preserves the contract
+and the next research steps.
 
 ## Current Contract
 
@@ -61,40 +62,41 @@ The tradeoff is explicit: the compute side sees active event positions. If that
 metadata is sensitive, a future mode needs padding, batching, or dense encrypted
 windows.
 
-## Next Decisions
+## Implemented Decisions
 
 1. Freeze the matrix orientation.
 
-   Recommended: keep rows as classes and columns as flattened event features:
+   Rows are classes and columns are flattened event features:
    `W[class][feature]`.
 
 2. Add a model metadata object.
 
-   Include classes, feature shape, flattening order, weight matrix, optional
-   bias vector, and score domain.
+   The model includes classes, feature shape, flattening order, matrix shape,
+   matrix orientation, weight matrix, public bias vector, score equation, and
+   score domain.
 
 3. Add bias handling.
 
-   Start plaintext and encrypted score paths with `bias[class]` instead of zero.
-   Keep bias public for the first prototype.
+   Plaintext and encrypted score paths start with `bias[class]`. Bias is public
+   for the first prototype.
 
 4. Add matrix-vector helper functions.
 
-   Suggested names:
+   Implemented:
 
-   - `denseMatVec(weights, vector)`
-   - `sparseMatVec(weights, activeEvents)`
+   - `denseMatVec(model, vector)`
+   - `sparseMatVec(model, activeEvents)`
    - `validateLinearModel(model, featureCount)`
 
 5. Decide the first real-library packing target.
 
-   For integer spike counts, BFV/BGV is the first serious lane. CKKS remains a
-   useful comparison for approximate packed vectors. TFHE is worth holding for
-   binary threshold logic.
+   Still pending. For integer spike counts, BFV/BGV is the first serious lane.
+   CKKS remains a useful comparison for approximate packed vectors. TFHE is
+   worth holding for binary threshold logic.
 
-## Test Targets
+## Test Coverage
 
-Add tests before implementation:
+Current tests cover:
 
 - Dense and sparse matrix-vector scoring produce identical scores.
 - Bias is included in both plaintext and encrypted paths.
@@ -103,7 +105,17 @@ Add tests before implementation:
 - Operation counts remain lower for sparse active-event scoring than dense
   encrypted tensor scoring on the current synthetic window.
 
-## Non-Goals
+## Next Work
+
+1. Add a real-library adapter around this exact contract.
+2. Emit optional benchmark artifacts to disk for comparison runs.
+3. Add packed-vector planning notes for BFV/BGV and CKKS.
+4. Add a privacy mode decision: public active positions, padded sparse batches,
+   or dense encrypted windows.
+5. Keep bio-digital language framed as privacy-preserving event intelligence,
+   not medical diagnosis or treatment.
+
+## Non-Goals For This Pass
 
 - Do not add a real HE dependency until the matrix contract is stable.
 - Do not implement encrypted argmax yet.

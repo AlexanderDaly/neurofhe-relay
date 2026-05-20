@@ -206,7 +206,7 @@
     <main>
       <header class="titlebar">
         <div>
-          <div class="eyebrow">Confidential Edge AI</div>
+          <div class="eyebrow">Bio-Digital Privacy</div>
           <h1>NeuroFHE Relay</h1>
         </div>
         <p class="subtitle">A privacy layer for event-driven AI: neuromorphic systems make data sparse, FHE keeps the sensitive computation private.</p>
@@ -217,7 +217,7 @@
           <div>
             <div class="eyebrow">01 / Problem</div>
             <h2>Edge AI is entering places where raw data should not travel.</h2>
-            <p class="big">Wearables, event cameras, robotics, smart buildings, and industrial monitoring all create sensitive continuous signals. Ordinary encryption protects transport and storage, then decrypts at compute time.</p>
+            <p class="big">Wearables, event cameras, robotics, smart buildings, and industrial monitoring all create sensitive continuous signals. The bio-digital boundary should keep raw signals local while allowing useful event intelligence to cross under explicit privacy controls.</p>
           </div>
           <div class="diagram">
             <div class="node"><strong>Raw signal</strong><br>Identity, health, location, operations.</div>
@@ -276,11 +276,12 @@
           <div>
             <div class="eyebrow">05 / First Demo</div>
             <h2>A tiny encrypted event benchmark now runs locally.</h2>
-            <p class="big">The current prototype classifies a synthetic 8 by 8 event window through a toy additive HE path, with plaintext and encrypted scores matching. It is research-grade, deliberately small, and honest about what the compute side can still see.</p>
+            <p class="big">The current prototype classifies a synthetic 8 by 8 event window through a fixed linear model and toy additive HE path, with plaintext and encrypted scores matching. It is research-grade, deliberately small, and honest about what the compute side can still see.</p>
           </div>
           <ul>
             <li>Run: `npm run demo`, `npm run benchmark`, and `npm test`.</li>
             <li>Scores: normal 9, anomaly 51, classification anomaly.</li>
+            <li>Linear contract: scores = W x + bias, matrix shape 2 by 64.</li>
             <li>Sparse path: 36 scalar multiplies/adds versus 128 for dense encrypted tensor scoring.</li>
             <li>Benchmark emits privacy boundary, crypto inventory, ciphertext bytes, and dense baseline comparison.</li>
             <li>Caveat: public active positions may reveal sparsity and timing metadata.</li>
