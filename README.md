@@ -34,6 +34,7 @@ The cryptographic design target is:
 - `07-post-quantum-cryptography-track.md` - PQC design target and roadmap.
 - `08-encrypted-thoughts-whitepaper.md` - whitepaper on encrypted-thoughts architecture for BCI and neural-data privacy.
 - `09-relay-gateway-pattern.md` - local-first gateway pattern for raw-signal intake, privacy filtering, model-facing events, recommendations, audit, replay, and failure handling.
+- `10-native-performance-track.md` - native-first implementation boundary for low-latency and energy-aware execution.
 - `project-brief.json` - structured project metadata for agents.
 - `index.html` - self-contained briefing deck for browser presentation.
 - `prototype/` - dependency-free educational sparse encrypted spike-count prototype, relay gateway scaffold, benchmark runner, tests, and research assumptions.
@@ -67,11 +68,12 @@ That is not defensible today. The defensible near-term claim is a hybrid archite
 
 ## Relay Gateway Pattern
 
-The relay gateway is the local trust boundary for the project. It accepts raw or semi-structured local signals, normalizes them into structured events, applies privacy and safety policy, and exports only approved minimal event representations to downstream encrypted compute, model services, or agents.
+The relay gateway is the local trust boundary for the project. It accepts raw or semi-structured local signals, routes raw neural-like intake through a spatial-aware spike sorter, normalizes the sorter output into structured events, applies privacy and safety policy, and exports only approved minimal event representations to downstream encrypted compute, model services, or agents.
 
 The runnable scaffold demonstrates:
 
 - Sensitive raw intake treated as local-only by default.
+- A canonical `rawNeuralFrame -> spatialSpikeSorter -> eventWindow` encoder stage designed around FPGA- or edge-friendly integer operations.
 - Normalized event records with provenance, confidence, schema version, and validation status.
 - Model-facing events with explicit plaintext, encrypted, aggregated, and withheld fields.
 - Recommendation validation that accepts safe local reversible actions and rejects raw device commands.
@@ -87,7 +89,7 @@ Run the included educational prototype:
 npm run demo
 ```
 
-Emit the benchmark schema:
+Emit the benchmark schema, including dense/raw, unsorted-spike, and spatial-sorted representation comparison:
 
 ```sh
 npm run benchmark
@@ -111,9 +113,11 @@ Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 ```
 
-The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is now included under `prototype/openfhe/`, while SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment remain candidate follow-on lanes.
+The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The benchmark now compares dense/raw windows, unsorted spikes, and spatial-sorted events on that same task so representation cost and metadata leakage stay visible. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is now included under `prototype/openfhe/`, while SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment remain candidate follow-on lanes.
 
 ## Prototype Boundary
+
+The JavaScript prototype is a portable contract harness, not the target runtime for low-level execution. Performance-critical paths should move to native HE libraries, systems code, or hardware-aware edge implementations, with Node kept for demos, artifact generation, schema checks, and orchestration. See `10-native-performance-track.md`.
 
 This repository is CC0. If the project later needs proprietary implementation, keep partner-specific adapters, datasets, trained weights, deployment code, and non-public library integrations in a separate private repository with explicit dependency and license review. Do not import proprietary reverse-engineered code into this public reference package.
 

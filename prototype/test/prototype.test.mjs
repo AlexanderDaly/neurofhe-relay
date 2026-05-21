@@ -7,6 +7,7 @@ import test from "node:test";
 import {
   buildBenchmarkArtifact,
   buildPrivacyModeComparison,
+  buildRepresentationComparison,
   runPrototypeBenchmark,
 } from "../lib/benchmark.mjs";
 import { publishBenchmarkArtifact } from "../lib/artifacts.mjs";
@@ -45,6 +46,10 @@ import {
   runPlaintextEventBaseline,
   trainCentroidLinearClassifier,
 } from "../lib/nmnist.mjs";
+import {
+  buildSimulatedRawNeuralFrame,
+  sortSpatialSpikes,
+} from "../lib/spike-sorter.mjs";
 import {
   applyPrivacySafetyPolicy,
   buildDefaultGatewayPolicy,
@@ -188,6 +193,61 @@ test("prototype benchmark emits privacy boundary, crypto inventory, and dense ba
   assert.ok(benchmark.privacyBoundary.computeSees.includes("public active event positions"));
 });
 
+test("representation benchmark compares dense raw, unsorted spikes, and spatial-sorted events", () => {
+  const comparison = buildRepresentationComparison();
+  const [denseRaw, unsortedSpikes, spatialSorted] = comparison.representations;
+
+  assert.equal(comparison.schema, "neurofhe.representationComparison.v1");
+  assert.equal(comparison.comparisonBasis, "same synthetic raw neural frame, same linear score contract");
+  assert.deepEqual(comparison.expectedScores, { normal: 9, anomaly: 51 });
+  assert.equal(comparison.expectedClassification, "anomaly");
+  assert.deepEqual(comparison.representations.map((item) => item.id), [
+    "dense-raw-window",
+    "unsorted-spikes",
+    "spatial-sorted-events",
+  ]);
+
+  assert.equal(denseRaw.inputShape, "8x8 dense window");
+  assert.equal(denseRaw.encryptedFeatureSlots, 64);
+  assert.equal(denseRaw.operationCounts.scalarMultiplies, 128);
+  assert.deepEqual(denseRaw.scores, comparison.expectedScores);
+
+  assert.equal(unsortedSpikes.inputShape, "18 raw spike samples");
+  assert.equal(unsortedSpikes.encryptedFeatureSlots, 18);
+  assert.equal(unsortedSpikes.operationCounts.scalarMultiplies, 36);
+  assert.ok(unsortedSpikes.metadataLeakage.includes("raw sample timestamp order"));
+  assert.deepEqual(unsortedSpikes.scores, comparison.expectedScores);
+
+  assert.equal(spatialSorted.inputShape, "8x8 spatial-sorted event window");
+  assert.equal(spatialSorted.encoder.id, "canonical-spatial-aware-spike-sorter-v1");
+  assert.equal(spatialSorted.encryptedFeatureSlots, 18);
+  assert.equal(spatialSorted.operationCounts.scalarMultiplies, 36);
+  assert.ok(spatialSorted.preserves.includes("spatial bin provenance"));
+  assert.deepEqual(spatialSorted.scores, comparison.expectedScores);
+});
+
+test("spatial spike sorter converts raw neural intake into a stable event window", () => {
+  const rawFrame = buildSimulatedRawNeuralFrame();
+  const sorted = sortSpatialSpikes(rawFrame);
+
+  assert.equal(sorted.schema, "neurofhe.encoder.spatialSpikeSorter.v1");
+  assert.equal(sorted.encoder.id, "canonical-spatial-aware-spike-sorter-v1");
+  assert.equal(sorted.encoder.implementationTarget, "fpga-or-edge-fsm");
+  assert.equal(sorted.eventWindow.schema, "neurofhe.events.v1.spatial-sorter");
+  assert.equal(sorted.eventWindow.encoding, "spatial-binned-spike-count");
+  assert.deepEqual(sorted.eventWindow.spatialBins, [4, 2]);
+  assert.deepEqual(validateEventWindow(sorted.eventWindow), []);
+  assert.deepEqual(spikeMetrics(sorted.eventWindow), {
+    featureCount: 64,
+    spikeCount: 18,
+    density: 0.28125,
+    activeChannels: 6,
+    activeTimesteps: 8,
+  });
+  assert.equal(sorted.sortedSpikes.length, 18);
+  assert.equal(sorted.droppedSamples.length, 0);
+});
+
 test("gateway demo exports a minimal model event without raw signal leakage", () => {
   const demo = runGatewayDemo({
     observedAt: "2026-05-21T12:34:56.000Z",
@@ -201,6 +261,8 @@ test("gateway demo exports a minimal model event without raw signal leakage", ()
   assert.equal(modelEvent.schema, "neurofhe.gateway.modelEvent.v1");
   assert.equal(modelEvent.boundary, "local-trust-boundary-approved-export");
   assert.equal(modelEvent.productionClaim, false);
+  assert.equal(demo.normalizedEvent.encoder.id, "canonical-spatial-aware-spike-sorter-v1");
+  assert.equal(modelEvent.plaintext.encoder.id, "canonical-spatial-aware-spike-sorter-v1");
   assert.equal(modelEvent.plaintext.observedAtBucket, "2026-05-21T12:34:00.000Z");
   assert.equal(modelEvent.plaintext.sparseMetrics.activeEventCount, 18);
   assert.equal(modelEvent.plaintext.sparseMetrics.densityBucket, "0.25-0.5");
@@ -212,6 +274,7 @@ test("gateway demo exports a minimal model event without raw signal leakage", ()
   assert.equal(serialized.includes("simulated-subject-local-only"), false);
   assert.equal(serialized.includes("/local-only/simulated/raw-signal.json"), false);
   assert.equal(serialized.includes("local-simulation-lab"), false);
+  assert.equal(serialized.includes("rawNeuralSamples"), false);
 });
 
 test("gateway accepts safe local recommendations and rejects raw device commands", () => {
@@ -257,6 +320,12 @@ test("prototype benchmark emits the scientific artifact fields every run needs",
   assert.equal(benchmark.privacyBoundary.computeSees.length > 0, true);
   assert.deepEqual(benchmark.cryptoInventory.encryptedComputation, [
     "toy-paillier-additive-research-only",
+  ]);
+  assert.equal(benchmark.representationComparison.schema, "neurofhe.representationComparison.v1");
+  assert.deepEqual(benchmark.representationComparison.representations.map((item) => item.id), [
+    "dense-raw-window",
+    "unsorted-spikes",
+    "spatial-sorted-events",
   ]);
 });
 

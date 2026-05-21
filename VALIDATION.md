@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 21
-pass 21
+tests 23
+pass 23
 fail 0
 ```
 
@@ -29,7 +29,9 @@ Covered behaviours:
 - Plaintext and encrypted classifier agreement.
 - Linear model metadata, dense/sparse matrix-vector agreement, public bias, and model validation.
 - Benchmark accuracy, latency, ciphertext bytes, operation counts, security parameters, privacy boundary, crypto inventory, dense baseline comparison, and three privacy modes.
-- Relay gateway raw-intake summarization, normalization, minimal model-facing event export, raw-leakage checks, accepted safe local recommendations, rejected unsafe command recommendations, and strict policy blocking.
+- Representation benchmark comparing dense/raw windows, unsorted spikes, and spatial-sorted events on the same `scores = W x + bias` task.
+- Spatial spike sorting from simulated raw neural-like intake into stable event windows.
+- Relay gateway raw-intake summarization, canonical sorter insertion, normalization, minimal model-facing event export, raw-leakage checks, accepted safe local recommendations, rejected unsafe command recommendations, and strict policy blocking.
 - Benchmark artifact publishing to timestamped run JSON and `latest.json`.
 - OpenFHE contract validation, native build-plan detection, and C++ API source markers.
 - N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
@@ -96,6 +98,10 @@ Result summary:
       "boundary": "local-trust-boundary-approved-export",
       "productionClaim": false,
       "plaintext": {
+        "encoder": {
+          "id": "canonical-spatial-aware-spike-sorter-v1",
+          "implementationTarget": "fpga-or-edge-fsm"
+        },
         "sparseMetrics": {
           "activeEventCount": 18,
           "densityBucket": "0.25-0.5"
@@ -182,6 +188,26 @@ Result summary:
       "adds": 128,
       "decryptions": 2
     }
+  },
+  "representationComparison": {
+    "schema": "neurofhe.representationComparison.v1",
+    "representations": [
+      {
+        "id": "dense-raw-window",
+        "encryptedFeatureSlots": 64,
+        "scalarMultiplies": 128
+      },
+      {
+        "id": "unsorted-spikes",
+        "encryptedFeatureSlots": 18,
+        "scalarMultiplies": 36
+      },
+      {
+        "id": "spatial-sorted-events",
+        "encryptedFeatureSlots": 18,
+        "scalarMultiplies": 36
+      }
+    ]
   },
   "privacyModes": {
     "schema": "neurofhe.privacyModes.v1",

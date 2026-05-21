@@ -6,6 +6,23 @@ Keep neuromorphic and FHE responsibilities separate.
 
 Neuromorphic systems are best at event-driven sparse computation. FHE systems are best at preserving privacy across selected arithmetic or logic circuits. The bridge is a bio-digital representation contract: sensitive biological, behavioral, or sensor signals stay local while compact spike/event tensors are designed to be both biologically inspired and encryption-friendly.
 
+## Implementation Boundary
+
+The JavaScript in this repository is a portable simulation and validation layer.
+It is useful for making schemas, demos, benchmarks, and public artifacts easy to
+run, but it is not the intended low-level runtime. The hot path should be native
+and energy-aware: fixed-width integer encoder code, native HE libraries, explicit
+memory ownership, deterministic timing where feasible, and benchmark output that
+records latency, memory, ciphertext size, and energy per event window.
+
+Native implementation targets:
+
+- Spatial spike sorter: C, C++, Rust, Zig, DSP code, or FPGA/edge logic.
+- Encrypted inference kernel: OpenFHE, SEAL, TFHE-rs, Concrete, or another
+  reviewed native HE runtime.
+- JavaScript/Node: contract tests, JSON artifact generation, local demos,
+  dashboards, and orchestration only.
+
 ## Relay Gateway Boundary
 
 Before any encrypted compute or model service sees an event, raw or semi-structured local signals pass through the NeuroFHE Relay Gateway. The gateway is the only trusted component allowed to inspect raw payloads.
@@ -13,6 +30,7 @@ Before any encrypted compute or model service sees an event, raw or semi-structu
 Gateway responsibilities:
 
 - Intake local files, sensors, apps, logs, or simulated event streams and mark them sensitive by default.
+- Route raw neural-like intake through the canonical spatial-aware spike sorter before normalization.
 - Normalize raw signals into stable structured events with timestamps, source IDs, event type, confidence, provenance, schema version, and validation status.
 - Apply privacy and safety policy before export: withhold raw payloads, hash source IDs, bucket timestamps, aggregate sparse metrics, and mark active values as encrypted or withheld.
 - Expose only bounded model-facing event representations with explicit plaintext, encrypted, aggregated, and withheld fields.
@@ -57,7 +75,42 @@ Prototype event-list contract:
 }
 ```
 
-### 2. Spike Encoder
+### 2. Canonical Spatial-Aware Spike Sorter
+
+Raw neural-like intake should pass through the spatial-aware spike sorter before the gateway creates a normalized event. This sorter is the canonical encoder between raw neural intake and `neurofhe.gateway.normalizedEvent.v1`.
+
+Prototype contract:
+
+```json
+{
+  "schema": "neurofhe.encoder.spatialSpikeSorter.v1",
+  "encoder": {
+    "id": "canonical-spatial-aware-spike-sorter-v1",
+    "implementationTarget": "fpga-or-edge-fsm",
+    "algorithm": "integer threshold, electrode-to-spatial-bin lookup, per-unit refractory gate, count accumulation",
+    "productionClaim": false
+  },
+  "eventWindow": {
+    "schema": "neurofhe.events.v1.spatial-sorter",
+    "spatialBins": [4, 2],
+    "timesteps": 8,
+    "channels": 8,
+    "encoding": "spatial-binned-spike-count"
+  }
+}
+```
+
+Edge implementation target:
+
+- Fixed electrode-to-spatial-bin lookup table.
+- Integer amplitude threshold compare.
+- Per-unit refractory timestamp register.
+- Bounded saturating counter per time/spatial bin.
+- No model call and no external service before the gateway policy boundary.
+
+The current implementation is `prototype/lib/spike-sorter.mjs`. It is deterministic and simulated; real neural sorting requires lawful data rights, calibration, validation, and hardware review.
+
+### 3. Spike/Event Encoder
 
 The encoder converts raw or intermediate signals into a compact event window:
 
@@ -74,7 +127,7 @@ Design target:
 - Predictable scale.
 - HE-friendly activation substitute.
 
-### 3. Scheme Router
+### 4. Scheme Router
 
 Different HE schemes fit different workloads:
 
@@ -85,7 +138,7 @@ Different HE schemes fit different workloads:
 
 The router should make scheme choice explicit rather than hiding it behind one abstraction.
 
-### 3.5 Post-Quantum Envelope
+### 4.5 Post-Quantum Envelope
 
 Encrypted computation is only one part of the security story. The surrounding system also needs post-quantum transport, identity, and artifact integrity.
 
@@ -97,7 +150,7 @@ Design target:
 - Hybrid classical + PQC mode during migration.
 - Explicit crypto inventory in every benchmark output.
 
-### 4. Encrypted Inference Kernel
+### 5. Encrypted Inference Kernel
 
 The first kernel should avoid the hardest operations:
 
@@ -118,7 +171,7 @@ Non-goals for the first prototype:
 - Direct bootstrapping on neuromorphic silicon.
 - Production cryptographic claims.
 
-### 5. Octra Adapter
+### 6. Octra Adapter
 
 Octra should enter after local feasibility is proven.
 
@@ -131,7 +184,7 @@ Possible adapter responsibilities:
 
 This is an integration lane, not a promise that Octra is ready for every SNN operation today.
 
-### 6. Benchmark Harness
+### 7. Benchmark Harness
 
 Every run should emit:
 
@@ -160,6 +213,14 @@ Every run should emit:
     "edgeSees": ["raw sensor", "plaintext spikes"],
     "computeSees": ["ciphertext", "public model metadata"],
     "clientSees": ["decrypted result"]
+  },
+  "representationComparison": {
+    "schema": "neurofhe.representationComparison.v1",
+    "representations": [
+      "dense-raw-window",
+      "unsorted-spikes",
+      "spatial-sorted-events"
+    ]
   }
 }
 ```
@@ -168,6 +229,7 @@ Every run should emit:
 
 ```text
 Raw signal
+  -> spatial-aware spike sorter
   -> local event encoder
   -> spike/event window
   -> encryption adapter

@@ -7,6 +7,22 @@
   "thesis": "Use neuromorphic/event-driven sparsity to make homomorphic encrypted inference smaller and more practical, with Octra as a potential encrypted-compute integration layer.",
   "recommendedClaim": "Bio-digital signals stay local; neuromorphic systems make selected data sparse; FHE keeps selected computation private.",
   "avoidClaim": "Current neuromorphic chips directly run full FHE workloads as drop-in accelerators.",
+  "implementationBoundary": {
+    "principle": "JavaScript is a portable reference harness, not the low-level runtime target.",
+    "allowedJavaScriptRoles": [
+      "desk demos",
+      "schema and contract tests",
+      "JSON artifact generation",
+      "presentation surfaces",
+      "non-critical orchestration"
+    ],
+    "nativeHotPathTargets": [
+      "native OpenFHE, SEAL, TFHE-rs, Concrete, or reviewed HE runtime",
+      "C, C++, Rust, Zig, DSP, FPGA, or edge implementation for signal encoding",
+      "native benchmark emission for latency, memory, ciphertext size, and energy per event window"
+    ],
+    "rule": "Do not use JavaScript toy timings for speed, energy, security, or production-runtime claims."
+  },
   "postQuantumTarget": {
     "principle": "Quantum-resistant by design, cryptographically agile by default.",
     "keyEstablishment": ["ML-KEM / FIPS 203"],
@@ -42,6 +58,15 @@
     },
     "schema": "neurofhe.benchmark.v1",
     "boundaryDomain": "bio-digital-event-intelligence",
+    "canonicalEncoder": {
+      "schema": "neurofhe.encoder.spatialSpikeSorter.v1",
+      "id": "canonical-spatial-aware-spike-sorter-v1",
+      "implementationTarget": "fpga-or-edge-fsm",
+      "input": "neurofhe.rawNeuralFrame.v1",
+      "output": "neurofhe.events.v1.spatial-sorter",
+      "algorithm": "integer threshold, electrode-to-spatial-bin lookup, per-unit refractory gate, bounded count accumulation",
+      "caveat": "Deterministic simulated sorter only; real neural sorting requires lawful data rights, calibration, validation, and hardware review."
+    },
     "eventRepresentation": "public active positions with encrypted active spike counts",
     "linearModel": {
       "schema": "neurofhe.linearModel.v1",
@@ -67,11 +92,21 @@
       "sparseScalarMultiplies": 36,
       "denseScalarMultiplies": 128
     },
+    "representationComparison": {
+      "schema": "neurofhe.representationComparison.v1",
+      "comparisonBasis": "same synthetic raw neural frame, same linear score contract",
+      "representations": [
+        "dense-raw-window",
+        "unsorted-spikes",
+        "spatial-sorted-events"
+      ]
+    },
     "caveat": "The current prototype is educational and not production cryptography."
   },
   "gatewayPattern": {
     "file": "09-relay-gateway-pattern.md",
     "scaffold": "prototype/lib/gateway.mjs",
+    "canonicalEncoder": "prototype/lib/spike-sorter.mjs",
     "demoCommand": "npm run gateway:demo",
     "principle": "Sensitive signals stay local. Models receive only validated, transformed, permissioned event representations.",
     "boundary": "The local gateway is the only trusted component allowed to inspect raw signals.",
@@ -84,6 +119,7 @@
       "neurofhe.gateway.auditRecord.v1",
       "neurofhe.gateway.sanitizedReplay.v1"
     ],
+    "encoderBoundary": "raw neural-like intake is sorted locally into spatial-binned event windows before normalized gateway events are created",
     "policyDefaults": [
       "raw payload export denied",
       "source IDs hashed before export",

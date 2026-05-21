@@ -21,6 +21,7 @@ Included desk demo:
 - `benchmark-artifacts/latest.json` publishes the current benchmark artifact for review and comparison.
 - `prototype/openfhe-benchmark.mjs` emits the real OpenFHE BFVrns build plan and local detection state.
 - `prototype/openfhe/openfhe_linear_demo.cpp` ports the same sparse `scores = W x + bias` contract to OpenFHE APIs.
+- `10-native-performance-track.md` defines the boundary between JavaScript scaffolding and the native, energy-aware implementation path.
 - `prototype/research-assumptions.json` captures falsifiable assumptions and clean-room/proprietary-track guardrails.
 - It is not production cryptography and not full FHE.
 
@@ -57,9 +58,11 @@ Goal: perform one meaningful inference step over encrypted event features.
 
 Tasks:
 
+- Treat JavaScript as the reference harness only; do not use it for production performance claims.
 - Start with OpenFHE, Microsoft SEAL, TenSEAL, Concrete, or TFHE-rs.
 - Reuse the toy demo's event-window and score contract as the migration target.
 - Build and run the OpenFHE BFVrns encrypted linear/accumulation layer on a host with OpenFHE installed.
+- Add native latency, memory, and energy measurements before calling any path efficient.
 - Approximate activation with polynomial or lookup path.
 - Decrypt only final score during local test.
 - Record operation counts, latency, ciphertext size, and accuracy change.

@@ -2,6 +2,11 @@
 
 import { runEncryptedLinearClassifier, runPlaintextLinearClassifier } from "./classifier.mjs";
 import { activeEvents, buildSparseEventWindow, spikeMetrics } from "./events.mjs";
+import { buildDemoLinearModel, sparseMatVec } from "./linear-algebra.mjs";
+import {
+  buildSimulatedRawNeuralFrame,
+  sortSpatialSpikes,
+} from "./spike-sorter.mjs";
 import { toyPaillierSecurityParameters } from "./toy-paillier.mjs";
 
 const REQUIRED_ARTIFACT_FIELDS = [
@@ -56,6 +61,7 @@ export function runPrototypeBenchmark(options = {}) {
     securityParameters: buildSecurityParameters(options),
     denseBaseline: denseBaselineComparison(eventWindow, classCount),
     privacyModes: buildPrivacyModeComparison(eventWindow, classCount),
+    representationComparison: buildRepresentationComparison({ eventWindow }),
     results,
     encryptedPreview: encrypted.encryptedPreview,
     cryptoInventory: buildCryptoInventory(),
@@ -92,6 +98,7 @@ export function buildBenchmarkArtifact(benchmark, options = {}) {
     privacyBoundary: benchmark.privacyBoundary,
     cryptoInventory: benchmark.cryptoInventory,
     privacyModes: benchmark.privacyModes,
+    representationComparison: benchmark.representationComparison,
     results: benchmark.results,
     productionClaim: benchmark.productionClaim,
     benchmark,
@@ -206,6 +213,114 @@ export function buildPrivacyModeComparison(eventWindow, classCount, options = {}
   };
 }
 
+export function buildRepresentationComparison(options = {}) {
+  const denseWindow = options.eventWindow ?? buildSparseEventWindow();
+  const rawFrame =
+    options.rawNeuralFrame ??
+    buildSimulatedRawNeuralFrame({
+      eventWindow: denseWindow,
+    });
+  const spatialSorted = sortSpatialSpikes(rawFrame, options.spatialSorterOptions ?? {});
+  const unsortedWindow = rawFrameToUnsortedEventWindow(rawFrame, denseWindow);
+  const model = buildDemoLinearModel({
+    featureCount: denseWindow.timesteps * denseWindow.channels,
+    channels: denseWindow.channels,
+  });
+  const classCount = model.classes.length;
+  const denseScores = runPlaintextLinearClassifier(denseWindow, { model }).scores;
+  const unsortedEvents = activeEvents(unsortedWindow).map(({ index, value }) => ({
+    index,
+    value,
+  }));
+  const spatialEvents = activeEvents(spatialSorted.eventWindow).map(({ index, value }) => ({
+    index,
+    value,
+  }));
+  const unsortedScores = sparseMatVec(model, unsortedEvents);
+  const spatialScores = sparseMatVec(model, spatialEvents);
+  const expectedClassification = runPlaintextLinearClassifier(denseWindow, { model }).classification;
+  const denseMetrics = spikeMetrics(denseWindow);
+  const unsortedMetrics = spikeMetrics(unsortedWindow);
+  const spatialMetrics = spikeMetrics(spatialSorted.eventWindow);
+
+  return {
+    schema: "neurofhe.representationComparison.v1",
+    comparisonBasis: "same synthetic raw neural frame, same linear score contract",
+    scoreEquation: "scores = W x + bias",
+    expectedScores: denseScores,
+    expectedClassification,
+    representations: [
+      {
+        id: "dense-raw-window",
+        label: "Dense/raw window",
+        inputShape: `${denseWindow.timesteps}x${denseWindow.channels} dense window`,
+        eventSchema: denseWindow.schema,
+        encoding: denseWindow.encoding,
+        featureCount: denseMetrics.featureCount,
+        activeEventCount: activeEvents(denseWindow).length,
+        encryptedFeatureSlots: denseMetrics.featureCount,
+        operationCounts: operationCountsForSlots(denseMetrics.featureCount, classCount),
+        scores: denseScores,
+        classification: expectedClassification,
+        metadataLeakage: ["full window shape", "all feature slots", "raw dense activity pattern"],
+        preserves: ["complete dense event window"],
+        caveat:
+          "Reference representation for cost comparison; it is not the preferred privacy boundary.",
+      },
+      {
+        id: "unsorted-spikes",
+        label: "Unsorted spikes",
+        inputShape: `${rawFrame.rawNeuralSamples.length} raw spike samples`,
+        eventSchema: unsortedWindow.schema,
+        encoding: unsortedWindow.encoding,
+        featureCount: unsortedMetrics.featureCount,
+        activeEventCount: rawFrame.rawNeuralSamples.length,
+        encryptedFeatureSlots: rawFrame.rawNeuralSamples.length,
+        operationCounts: operationCountsForSlots(rawFrame.rawNeuralSamples.length, classCount),
+        scores: unsortedScores,
+        classification: expectedClassification,
+        metadataLeakage: [
+          "raw sample timestamp order",
+          "raw electrode identifiers",
+          "exact raw spike count",
+        ],
+        preserves: ["raw sample ordering", "raw electrode provenance"],
+        caveat:
+          "Useful as a pre-sort baseline only; it should not be the canonical model-facing representation.",
+      },
+      {
+        id: "spatial-sorted-events",
+        label: "Spatial-sorted events",
+        inputShape: `${spatialSorted.eventWindow.timesteps}x${spatialSorted.eventWindow.channels} spatial-sorted event window`,
+        eventSchema: spatialSorted.eventWindow.schema,
+        encoding: spatialSorted.eventWindow.encoding,
+        encoder: {
+          id: spatialSorted.encoder.id,
+          schema: spatialSorted.schema,
+          implementationTarget: spatialSorted.encoder.implementationTarget,
+          spatialBins: spatialSorted.eventWindow.spatialBins,
+          productionClaim: false,
+        },
+        featureCount: spatialMetrics.featureCount,
+        activeEventCount: activeEvents(spatialSorted.eventWindow).length,
+        encryptedFeatureSlots: activeEvents(spatialSorted.eventWindow).length,
+        operationCounts: operationCountsForSlots(
+          activeEvents(spatialSorted.eventWindow).length,
+          classCount,
+        ),
+        scores: spatialScores,
+        classification: expectedClassification,
+        metadataLeakage: ["spatial bin activity", "event-count sparsity", "time-bin sparsity"],
+        preserves: ["spatial bin provenance", "sorter configuration provenance"],
+        caveat:
+          "Canonical gateway encoder path in this package; still simulated and not clinical spike sorting.",
+      },
+    ],
+    caveat:
+      "All three representations are compared on one synthetic task. This is a representation and operation-count comparison, not dataset accuracy.",
+  };
+}
+
 export function buildCryptoInventory() {
   return {
     schema: "neurofhe.crypto.inventory.v1",
@@ -231,6 +346,39 @@ export function buildPrivacyBoundary() {
       "encrypted score ciphertexts",
     ],
     clientSees: ["decrypted class scores", "final classification"],
+  };
+}
+
+function rawFrameToUnsortedEventWindow(rawFrame, referenceWindow) {
+  const values = Array.from({ length: referenceWindow.timesteps }, () =>
+    Array(referenceWindow.channels).fill(0),
+  );
+  const electrodes = new Map(
+    (rawFrame.electrodeMap ?? []).map((electrode) => [electrode.electrodeId, electrode]),
+  );
+
+  for (const sample of rawFrame.rawNeuralSamples ?? []) {
+    const electrode = electrodes.get(sample.electrodeId);
+    if (!electrode) continue;
+    if (!Number.isInteger(sample.timestampUs) || sample.timestampUs < 0) continue;
+    if (sample.timestampUs >= rawFrame.windowUs) continue;
+
+    const time = Math.min(
+      referenceWindow.timesteps - 1,
+      Math.floor((sample.timestampUs * referenceWindow.timesteps) / rawFrame.windowUs),
+    );
+    const channel = Number.isInteger(electrode.unitId) ? electrode.unitId : undefined;
+    if (!Number.isInteger(channel) || channel < 0 || channel >= referenceWindow.channels) continue;
+    values[time][channel] += 1;
+  }
+
+  return {
+    schema: "neurofhe.events.v1.unsorted-spikes",
+    windowMs: referenceWindow.windowMs,
+    timesteps: referenceWindow.timesteps,
+    channels: referenceWindow.channels,
+    encoding: "unsorted-raw-spike-count",
+    values,
   };
 }
 

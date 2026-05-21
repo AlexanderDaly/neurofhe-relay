@@ -16,17 +16,18 @@ The Relay Gateway is the only trusted boundary between raw signal sources and do
 
 The downstream side is treated as untrusted by default. It can receive approved summaries, sparse feature descriptions, encrypted feature references, classifications, scores, recommendations, or replay-safe event streams. It cannot inspect raw payloads, source files, local subject references, exact source metadata, or direct device interfaces.
 
-The pattern has nine layers:
+The pattern has ten layers:
 
 1. Raw Signal Intake receives local files, sensors, apps, logs, and simulated streams. Every input is sensitive by default.
 2. Local Trust Boundary limits raw inspection to the gateway process and requires explicit export rules.
-3. Normalization Layer converts raw signals into structured event records with provenance and validation.
-4. Privacy And Safety Filter removes, hashes, buckets, aggregates, quantizes, encrypts, or withholds fields.
-5. Model-Facing Event Interface exposes bounded, minimal event objects with confidence and uncertainty.
-6. Encrypted / Privacy-Preserving Compute Path carries approved event features toward FHE-style scoring later.
-7. Command Recommendation Path accepts recommendations only. It never accepts direct raw-device commands.
-8. Audit And Replay records decisions without exporting raw payloads.
-9. Threat And Failure Model assumes model services can be mistaken, compromised, overconfident, or prompt-injected.
+3. Spatial-Aware Spike Sorter converts raw neural-like intake into stable spatial event windows.
+4. Normalization Layer converts sorter outputs into structured event records with provenance and validation.
+5. Privacy And Safety Filter removes, hashes, buckets, aggregates, quantizes, encrypts, or withholds fields.
+6. Model-Facing Event Interface exposes bounded, minimal event objects with confidence and uncertainty.
+7. Encrypted / Privacy-Preserving Compute Path carries approved event features toward FHE-style scoring later.
+8. Command Recommendation Path accepts recommendations only. It never accepts direct raw-device commands.
+9. Audit And Replay records decisions without exporting raw payloads.
+10. Threat And Failure Model assumes model services can be mistaken, compromised, overconfident, or prompt-injected.
 
 ## Component Diagram
 
@@ -35,7 +36,8 @@ flowchart LR
   S["Local files, sensors, apps, logs, simulated streams"] --> I["Raw Signal Intake"]
 
   subgraph G["Local Trust Boundary: raw inspection allowed only here"]
-    I --> N["Normalization Layer"]
+    I --> SRT["Spatial-Aware Spike Sorter"]
+    SRT --> N["Normalization Layer"]
     N --> P["Privacy And Safety Filter"]
     P --> E["Model-Facing Event Interface"]
     P --> A["Audit Log: local raw hashes and decisions"]
@@ -74,13 +76,12 @@ The raw signal envelope is local-only. It is allowed to contain sensitive payloa
     "authorization": "synthetic-demo-only"
   },
   "payload": {
-    "eventWindow": {
-      "schema": "neurofhe.events.v1.demo",
-      "windowMs": 50,
-      "timesteps": 8,
-      "channels": 8,
-      "encoding": "binary-spike-count",
-      "values": "local-only matrix"
+    "rawNeuralFrame": {
+      "schema": "neurofhe.rawNeuralFrame.v1",
+      "windowUs": 50000,
+      "sampleEncoding": "thresholded-integer-amplitude-demo",
+      "electrodeMap": "local-only electrode-to-spatial-bin map",
+      "rawSamplePayloads": "local-only neural-like samples"
     }
   },
   "highRiskMetadata": {
@@ -114,6 +115,7 @@ The normalized event still lives inside the gateway. It may include local source
     "rawPayloadHash": "sha256...",
     "sourceIdHash": "sha256-prefix",
     "transformIds": [
+      "canonical-spatial-aware-spike-sorter-v1",
       "validate-event-window",
       "active-event-extraction",
       "spike-metric-summary"
@@ -125,7 +127,14 @@ The normalized event still lives inside the gateway. It may include local source
     "representation": "sparse-active-event-list",
     "featureShape": [8, 8],
     "windowMs": 50,
-    "encoding": "binary-spike-count",
+    "encoding": "spatial-binned-spike-count",
+    "encoder": {
+      "id": "canonical-spatial-aware-spike-sorter-v1",
+      "schema": "neurofhe.encoder.spatialSpikeSorter.v1",
+      "implementationTarget": "fpga-or-edge-fsm",
+      "spatialBins": [4, 2],
+      "productionClaim": false
+    },
     "sparseEvents": [
       {
         "index": 1,
@@ -180,7 +189,13 @@ The model-facing event is the only event object that downstream services may rec
     "observedAtBucket": "2026-05-21T00:00:00.000Z",
     "featureShape": [8, 8],
     "windowMs": 50,
-    "encoding": "binary-spike-count",
+    "encoding": "spatial-binned-spike-count",
+    "encoder": {
+      "id": "canonical-spatial-aware-spike-sorter-v1",
+      "implementationTarget": "fpga-or-edge-fsm",
+      "spatialBins": [4, 2],
+      "productionClaim": false
+    },
     "sparseMetrics": {
       "featureCount": 64,
       "activeEventCount": 18,
@@ -342,15 +357,16 @@ Additional policy profiles:
 ## Example Event Flow
 
 1. A simulated local stream emits an 8 by 8 binary spike-count event window.
-2. Raw Signal Intake wraps the stream in `neurofhe.gateway.rawSignal.v1` and marks it `sensitive-by-default`.
-3. The Normalization Layer validates the event window, extracts 18 active sparse events, records source provenance, and creates `neurofhe.gateway.normalizedEvent.v1`.
-4. The Privacy And Safety Filter hashes the source ID, buckets the timestamp, buckets density, withholds raw payload and high-risk metadata, and marks active spike values as encrypted references.
-5. The Model-Facing Event Interface emits `neurofhe.gateway.modelEvent.v1`.
-6. A model or encrypted compute service can score only the approved representation. It receives no raw event matrix, device serial, local subject reference, precise source path, or direct command surface.
-7. The model returns a recommendation.
-8. The gateway validates the recommendation and either executes a safe local reversible action or rejects it.
-9. The audit log records the intake hash, transform IDs, policy decision, model event export fields, recommendation, and command decision.
-10. Replay uses the sanitized model event, not the raw payload.
+2. Raw Signal Intake wraps raw neural-like samples in `neurofhe.gateway.rawSignal.v1` and marks them `sensitive-by-default`.
+3. The spatial-aware spike sorter applies an integer threshold, electrode-to-spatial-bin lookup, refractory gate, and bounded count accumulation to produce `neurofhe.events.v1.spatial-sorter`.
+4. The Normalization Layer validates the event window, extracts 18 active sparse events, records sorter provenance, and creates `neurofhe.gateway.normalizedEvent.v1`.
+5. The Privacy And Safety Filter hashes the source ID, buckets the timestamp, buckets density, withholds raw payload and high-risk metadata, and marks active spike values as encrypted references.
+6. The Model-Facing Event Interface emits `neurofhe.gateway.modelEvent.v1`.
+7. A model or encrypted compute service can score only the approved representation. It receives no raw sample payloads, device serial, local subject reference, precise source path, or direct command surface.
+8. The model returns a recommendation.
+9. The gateway validates the recommendation and either executes a safe local reversible action or rejects it.
+10. The audit log records the intake hash, transform IDs, policy decision, model event export fields, recommendation, and command decision.
+11. Replay uses the sanitized model event, not the raw payload.
 
 Run the scaffold:
 
@@ -511,7 +527,8 @@ Threats and controls:
 
 Implemented scaffold:
 
-- `prototype/lib/gateway.mjs` defines raw signal intake, normalization, policy filtering, model-facing events, recommendation validation, audit records, and sanitized replay.
+- `prototype/lib/spike-sorter.mjs` defines the canonical spatial-aware spike sorter between raw neural-like intake and normalized events.
+- `prototype/lib/gateway.mjs` defines raw signal intake, sorter insertion, normalization, policy filtering, model-facing events, recommendation validation, audit records, and sanitized replay.
 - `prototype/gateway-demo.mjs` prints a complete simulated gateway flow without dumping raw payloads.
 - `prototype/test/prototype.test.mjs` covers minimal model export, raw-leakage checks, accepted local recommendations, rejected raw-device commands, and strict policy blocking.
 - `package.json` exposes `npm run gateway:demo`.

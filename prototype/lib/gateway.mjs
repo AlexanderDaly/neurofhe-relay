@@ -4,10 +4,13 @@ import { createHash } from "node:crypto";
 
 import {
   activeEvents,
-  buildSparseEventWindow,
   spikeMetrics,
   validateEventWindow,
 } from "./events.mjs";
+import {
+  buildSimulatedRawNeuralFrame,
+  sortSpatialSpikes,
+} from "./spike-sorter.mjs";
 
 const DEFAULT_TIMESTAMP = "2026-05-21T00:00:00.000Z";
 
@@ -29,10 +32,15 @@ export function buildSimulatedRawSignal(options = {}) {
       authorization: "synthetic-demo-only",
     },
     payload: {
-      eventWindow: options.eventWindow ?? buildSparseEventWindow(),
+      rawNeuralFrame:
+        options.rawNeuralFrame ??
+        buildSimulatedRawNeuralFrame({
+          eventWindow: options.eventWindow,
+          observedAt,
+        }),
       simulatedSubjectRef: "simulated-subject-local-only",
       deviceSerial: "SIM-DEVICE-LOCAL-ONLY",
-      note: "Synthetic event window for gateway architecture testing; not clinical data.",
+      note: "Synthetic raw neural-like intake for gateway architecture testing; not clinical data.",
     },
     highRiskMetadata: {
       preciseSourcePath: "/local-only/simulated/raw-signal.json",
@@ -43,7 +51,8 @@ export function buildSimulatedRawSignal(options = {}) {
 }
 
 export function normalizeRawSignal(rawSignal, options = {}) {
-  const eventWindow = rawSignal?.payload?.eventWindow;
+  const encoded = encodeRawSignal(rawSignal, options);
+  const eventWindow = encoded.eventWindow;
   const validationErrors = validateEventWindow(eventWindow);
   const isValid = validationErrors.length === 0;
   const sparseEvents = isValid ? activeEvents(eventWindow) : [];
@@ -75,6 +84,7 @@ export function normalizeRawSignal(rawSignal, options = {}) {
       rawPayloadHash: hashStable(rawSignal?.payload ?? null),
       sourceIdHash: hashText(rawSignal?.source?.sourceId ?? "unknown").slice(0, 16),
       transformIds: [
+        encoded.encoder?.id ?? "legacy-event-window-passthrough",
         "validate-event-window",
         "active-event-extraction",
         "spike-metric-summary",
@@ -88,6 +98,7 @@ export function normalizeRawSignal(rawSignal, options = {}) {
           featureShape: [eventWindow.timesteps, eventWindow.channels],
           windowMs: eventWindow.windowMs,
           encoding: eventWindow.encoding,
+          encoder: encoded.encoder,
           sparseEvents,
           metrics,
         }
@@ -113,6 +124,11 @@ export function buildDefaultGatewayPolicy(options = {}) {
         field: "payload",
         action: "withhold",
         reason: "raw or reconstructable source payload stays inside the local boundary",
+      },
+      {
+        field: "payload.rawNeuralFrame.rawNeuralSamples",
+        action: "withhold",
+        reason: "raw neural-like samples stay inside the local boundary",
       },
       {
         field: "payload.deviceSerial",
@@ -149,6 +165,7 @@ export function buildDefaultGatewayPolicy(options = {}) {
         "observedAtBucket",
         "featureShape",
         "windowMs",
+        "encoder",
         "sparseMetrics",
         "activePositions",
       ],
@@ -162,6 +179,7 @@ export function buildDefaultGatewayPolicy(options = {}) {
         "preciseLocation",
         "exactRawTimestamps",
         "rawSignalValues",
+        "rawSamplePayloads",
       ],
     },
     recommendationRules: {
@@ -268,6 +286,7 @@ export function buildModelFacingEvent(normalizedEvent, policy = buildDefaultGate
         activeChannels: metrics.activeChannels,
         activeTimesteps: metrics.activeTimesteps,
       },
+      encoder: normalizedEvent.features.encoder,
       activePositions: sparseEvents.map((event) => ({
         index: event.index,
         timestepBucket: bucketTimestep(event.time, policy.timestepBucketSize),
@@ -590,15 +609,62 @@ function summarizeNormalizedEvent(normalizedEvent) {
           representation: normalizedEvent.features.representation,
           featureShape: normalizedEvent.features.featureShape,
           windowMs: normalizedEvent.features.windowMs,
+          encoder: normalizedEvent.features.encoder,
           metrics: normalizedEvent.features.metrics,
         }
       : null,
+    encoder: normalizedEvent.features?.encoder ?? null,
     provenance: {
       intakeId: normalizedEvent.provenance.intakeId,
       rawPayloadHash: normalizedEvent.provenance.rawPayloadHash,
       sourceIdHash: normalizedEvent.provenance.sourceIdHash,
       simulated: normalizedEvent.provenance.simulated,
     },
+  };
+}
+
+function encodeRawSignal(rawSignal, options) {
+  if (rawSignal?.payload?.rawNeuralFrame) {
+    const sorted = sortSpatialSpikes(
+      rawSignal.payload.rawNeuralFrame,
+      options.spatialSorterOptions ?? {},
+    );
+    return {
+      eventWindow: sorted.eventWindow,
+      encoder: summarizeSpikeSorter(sorted),
+    };
+  }
+
+  return {
+    eventWindow: rawSignal?.payload?.eventWindow,
+    encoder: rawSignal?.payload?.eventWindow
+      ? {
+          id: "legacy-event-window-passthrough",
+          implementationTarget: "local-simulation-only",
+          outputSchema: rawSignal.payload.eventWindow.schema,
+          productionClaim: false,
+        }
+      : null,
+  };
+}
+
+function summarizeSpikeSorter(sorted) {
+  return {
+    id: sorted.encoder.id,
+    schema: sorted.schema,
+    implementationTarget: sorted.encoder.implementationTarget,
+    algorithm: sorted.encoder.algorithm,
+    outputSchema: sorted.eventWindow.schema,
+    spatialBins: sorted.eventWindow.spatialBins,
+    timeBins: sorted.eventWindow.timesteps,
+    windowMs: sorted.eventWindow.windowMs,
+    thresholdPolicy: {
+      amplitudeThreshold: sorted.config.amplitudeThreshold,
+      refractoryUs: sorted.config.refractoryUs,
+      maxCountPerBin: sorted.config.maxCountPerBin,
+    },
+    metrics: sorted.metrics,
+    productionClaim: false,
   };
 }
 

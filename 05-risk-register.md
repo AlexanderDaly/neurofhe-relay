@@ -96,6 +96,17 @@ Mitigation:
 - Execute only local, reversible, allowlisted actions.
 - Require explicit human approval for higher-risk actions and reject external-control actions by default.
 
+### R10 - Spatial Sorter Calibration Drift
+
+Risk: an edge or FPGA-style sorter maps raw neural-like samples into unstable spatial bins because thresholds, refractory windows, electrode maps, or device calibration drift.
+
+Mitigation:
+
+- Treat the current sorter as deterministic simulated infrastructure, not clinical spike sorting.
+- Record sorter ID, configuration, schema version, and output metrics in gateway provenance.
+- Keep raw samples local and replay sanitized event windows for policy/model debugging.
+- Require hardware calibration, dataset validation, and lawful data-rights review before any real neural-data claim.
+
 ## Market Risks
 
 ### M1 - Too Technical for Buyers
