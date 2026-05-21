@@ -1,0 +1,7 @@
+flowchart LR
+    Z[Encrypted latent vector] --> L1[Encrypted model layer]
+    L1 --> L2[Encrypted accumulation or activation]
+    L2 --> L3[Encrypted score layer]
+    L3 --> R[Encrypted classification result]
+    R --> D[Authorized decryption endpoint]
+    D --> O[Cognitive-state output]

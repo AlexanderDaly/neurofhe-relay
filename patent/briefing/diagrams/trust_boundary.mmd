@@ -1,0 +1,13 @@
+flowchart LR
+    subgraph L[Local trust boundary]
+        A[Sensor]
+        B[Preprocessor]
+        C[Latent encoder]
+        D[Key custody]
+    end
+    subgraph R[External compute]
+        E[Encrypted inference]
+        F[Audit and policy logs]
+    end
+    C -->|encrypted embedding| E
+    E -->|encrypted result| D

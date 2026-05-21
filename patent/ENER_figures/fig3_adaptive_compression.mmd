@@ -1,0 +1,13 @@
+flowchart LR
+    SQ[Signal quality] --> C[Adaptive compression controller]
+    BW[Bandwidth state] --> C
+    EB[Encryption budget] --> C
+    TT[Inference target] --> C
+    EN[Entropy estimate] --> C
+    PB[Privacy budget] --> C
+    C --> P[Compression policy]
+    P --> LD[Latent dimensionality]
+    P --> Q[Quantization]
+    P --> SP[Sparsity and padding]
+    P --> PK[Ciphertext packing]
+    P --> R[Local or remote routing]

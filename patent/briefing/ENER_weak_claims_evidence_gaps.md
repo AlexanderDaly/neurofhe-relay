@@ -1,0 +1,16 @@
+# ENER Weak Claims and Evidence Gaps
+
+This file identifies claims or statements that need evidence before publication, investor diligence, grant submission, or nonprovisional patent conversion.
+
+| Area | Current Weakness | Evidence Needed |
+|---|---|---|
+| Latent compression performance | The specification describes bandwidth and compute reductions broadly. | Benchmarks comparing raw, dense feature, sparse feature, and compressed latent encrypted inference. |
+| Real neural modality validation | Current repo validation is a research-grade prototype and does not establish real EEG, ECoG, fNIRS, MEG, or implanted-array performance. | Experiments on public or collected datasets with documented preprocessing and model accuracy. |
+| Reconstruction resistance | The draft describes adversarial reconstruction defenses but does not prove them. | Reconstruction attack tests, identity leakage tests, mutual-information estimates, and acceptance criteria. |
+| Homomorphic feasibility | The prototype uses a toy additive path and OpenFHE integration plan, not a complete production FHE deployment. | Native OpenFHE, SEAL, Concrete, TFHE-rs, or equivalent benchmark with parameter reports. |
+| Adaptive compression controller | The controller is architected but not implemented as a verified module. | Control policy implementation, ablation studies, and tradeoff curves. |
+| Metadata leakage mitigation | Padding, batching, and encrypted indices are described but not quantified. | Threat model, leakage metrics, and tests across privacy modes. |
+| Clinical or neurodiagnostic examples | Medical use cases are described as possible applications. | Clinical validation, intended-use analysis, FDA pathway assessment, and human factors review. |
+| Federated encrypted neurolearning | Federated learning is a plausible extension. | Protocol specification, secure aggregation tests, update-leakage analysis, and dataset governance plan. |
+| Standards positioning | Standards opportunities are plausible but not yet anchored to a working group. | Mapping to NIST, IEEE, ISO/IEC, HL7, FIDO, or neurotechnology standards forums. |
+| Commercial defensibility | FTO extraction suggests the blockchain lane is crowded, but ENER-specific FTO remains incomplete. | Targeted prior-art review on encrypted latent neural inference and adaptive FHE-oriented compression. |

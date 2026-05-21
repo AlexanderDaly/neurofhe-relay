@@ -1,0 +1,7 @@
+flowchart LR
+    R[Raw neural signal] --> E[Encoder]
+    E --> Z[Latent embedding]
+    Z --> T[Task classifier]
+    T --> O[Task output]
+    Z --> A[Adversarial decoder]
+    A -. blocked or penalized .-> X[Attempted raw-signal reconstruction]

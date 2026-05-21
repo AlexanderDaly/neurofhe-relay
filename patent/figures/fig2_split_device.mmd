@@ -1,0 +1,6 @@
+flowchart LR
+    H[BCI headset or neural acquisition device] --> P[Phone or edge hub]
+    P -->|local preprocessing and latent encoding| E[Encryption module]
+    E -->|encrypted embedding| S[Encrypted compute server]
+    S -->|encrypted result| C[Client application]
+    C -->|authorized decryption or display| U[User or authorized recipient]

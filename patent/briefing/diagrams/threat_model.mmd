@@ -1,0 +1,13 @@
+flowchart TD
+    A[Raw telemetry] --> B[Edge encoder]
+    B --> C[Latent embedding]
+    C --> D[Encryption]
+    D --> E[Remote inference]
+    F[Edge compromise] --> A
+    G[Cloud compromise] --> E
+    H[Reconstruction attack] --> C
+    I[Metadata analysis] --> D
+    B -. mitigation .-> J[Local minimization]
+    C -. mitigation .-> K[Reconstruction testing]
+    D -. mitigation .-> L[Padding and batching]
+    E -. mitigation .-> M[Encrypted computation]
