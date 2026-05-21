@@ -56,6 +56,9 @@
       "benchmarkArtifact": "npm run benchmark:artifact",
       "openFhePlan": "npm run benchmark:openfhe",
       "openFheComparisonArtifact": "npm run benchmark:openfhe -- --artifact",
+      "openFheCkksPlan": "npm run benchmark:openfhe-ckks",
+      "openFheCkksRun": "npm run benchmark:openfhe-ckks -- --run",
+      "openFheCkksComparisonArtifact": "npm run benchmark:openfhe-ckks -- --run --artifact",
       "tfheRsPlan": "npm run benchmark:tfhe",
       "tfheRsRun": "npm run benchmark:tfhe -- --run",
       "tfheRsComparisonArtifact": "npm run benchmark:tfhe -- --run --artifact",
@@ -119,6 +122,14 @@
       "contract": "neurofhe.openfhe.contract.v1",
       "nativeTarget": "openfhe_linear_demo",
       "artifactCommand": "npm run benchmark:openfhe -- --artifact"
+    },
+    "openFheCkksAdapter": {
+      "schema": "neurofhe.realLibraryAdapter.v1",
+      "adapterId": "openfhe-ckks-sparse-approx-linear-v1",
+      "contract": "neurofhe.openfheCkks.contract.v1",
+      "nativeTarget": "openfhe_ckks_linear_demo",
+      "artifactCommand": "npm run benchmark:openfhe-ckks -- --run --artifact",
+      "useWhen": "Prefer for approximate neural or ML feature scoring with real-valued inputs after score-drift and classification-margin review."
     },
     "tfheRsAdapter": {
       "schema": "neurofhe.realLibraryAdapter.v1",

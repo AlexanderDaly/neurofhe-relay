@@ -23,6 +23,10 @@ Included desk demo:
 - `prototype/openfhe/openfhe_linear_demo.cpp` ports the same sparse `scores = W x + bias` contract to OpenFHE APIs.
 - `prototype/lib/openfhe-adapter.mjs` emits a digest-bound `neurofhe.realLibraryAdapter.v1` manifest around that exact contract.
 - `npm run benchmark:openfhe -- --artifact` writes optional OpenFHE comparison artifacts for adapter plans or native runs.
+- `prototype/openfhe-ckks-benchmark.mjs` emits the OpenFHE CKKS approximate-real build plan and local detection state.
+- `prototype/openfhe-ckks/openfhe_ckks_linear_demo.cpp` ports the same sparse score contract to CKKS approximate real-number APIs.
+- `prototype/lib/openfhe-ckks-adapter.mjs` emits a digest-bound `neurofhe.realLibraryAdapter.v1` manifest with CKKS parameters, privacy boundary, and score-drift tolerance.
+- `npm run benchmark:openfhe-ckks -- --artifact` writes optional OpenFHE CKKS comparison artifacts for adapter plans or native runs.
 - `10-native-performance-track.md` defines the boundary between JavaScript scaffolding and the native, energy-aware implementation path.
 - `prototype/research-assumptions.json` captures falsifiable assumptions and clean-room/proprietary-track guardrails.
 - It is not production cryptography and not full FHE.
@@ -45,12 +49,13 @@ Current prototype foothold:
 - Public active event positions with encrypted active spike counts.
 - Three privacy modes: public active positions, padded sparse batches, and dense encrypted windows.
 - Explicit privacy-mode decision: padded sparse batches are the default comparison lane unless exact active-position metadata is acceptable or dense-window privacy is required.
-- Packed-vector planning notes: BFV/BGV first for non-negative integer spike counts; CKKS only as an approximate comparison lane.
+- Packed-vector planning notes: BFV/BGV first for non-negative integer spike counts; CKKS as the approximate neural/ML feature comparison lane after score-drift review.
 - Plaintext and encrypted linear classifier agreement.
 - Dense encrypted tensor baseline comparison.
 - `prototype/LINEAR_ALGEBRA_NEXT.md` records the next matrix/vector cleanup pass.
 - `prototype/PLAINTEXT_BASELINE.md` and `npm run baseline:plaintext` define the first real-data N-MNIST-compatible plaintext baseline.
-- `prototype/OPENFHE_INTEGRATION.md` defines the native OpenFHE BFVrns build/run path for the fixed score contract.
+- `prototype/OPENFHE_INTEGRATION.md` defines the native OpenFHE BFVrns build/run path for the fixed exact score contract.
+- `prototype/OPENFHE_CKKS_INTEGRATION.md` defines the native OpenFHE CKKS build/run path for approximate real-valued sparse scoring.
 
 Decision gate:
 
@@ -66,6 +71,7 @@ Tasks:
 - Start with OpenFHE, Microsoft SEAL, TenSEAL, Concrete, or TFHE-rs.
 - Reuse the toy demo's event-window and score contract as the migration target.
 - Build and run the OpenFHE BFVrns encrypted linear/accumulation layer on a host with OpenFHE installed.
+- Build and run the OpenFHE CKKS approximate-real comparison lane on the same synthetic event window.
 - Add native latency, memory, and energy measurements before calling any path efficient.
 - Approximate activation with polynomial or lookup path.
 - Decrypt only final score during local test.

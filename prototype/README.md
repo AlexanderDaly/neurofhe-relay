@@ -30,6 +30,10 @@ Emit the benchmark JSON:
 npm run benchmark
 ```
 
+The benchmark includes `nativeComparisonLanes` for the BFVrns integer lane, the
+CKKS approximate-real lane, and the TFHE-rs threshold lane on the same synthetic
+8x8 event window.
+
 Publish a benchmark artifact under `benchmark-artifacts/`:
 
 ```sh
@@ -75,6 +79,24 @@ Write an optional OpenFHE comparison artifact:
 npm run benchmark:openfhe -- --artifact
 ```
 
+Print the OpenFHE CKKS approximate real-number integration plan:
+
+```sh
+npm run benchmark:openfhe-ckks
+```
+
+Run the native OpenFHE CKKS approximate sparse scoring demo:
+
+```sh
+npm run benchmark:openfhe-ckks -- --run
+```
+
+Write an optional OpenFHE CKKS comparison artifact:
+
+```sh
+npm run benchmark:openfhe-ckks -- --run --artifact
+```
+
 Print the TFHE-rs integration plan:
 
 ```sh
@@ -114,22 +136,28 @@ Current modules:
 - `lib/linear-algebra.mjs` - model metadata, dense matrix-vector scoring, sparse event scoring, and model validation.
 - `lib/nmnist.mjs` - N-MNIST event parsing, feature extraction, and plaintext baseline evaluation.
 - `lib/openfhe-adapter.mjs` - OpenFHE contract builder, validation, contract-bound real-library adapter manifest, local detection, and build-plan output.
+- `lib/openfhe-ckks-adapter.mjs` - OpenFHE CKKS approximate-real contract builder, validation, privacy boundary, crypto inventory, BFV/TFHE comparison guidance, and build-plan output.
 - `lib/tfhe-rs-adapter.mjs` - TFHE-rs contract builder, validation, crypto inventory, privacy boundary, OpenFHE comparison table, local Cargo detection, and build-plan output.
 - `lib/classifier.mjs` - plaintext and encrypted linear spike-count classifiers.
 - `lib/benchmark.mjs` - benchmark schema, accuracy summary, security parameters, crypto inventory, dense baseline comparison, packed-vector planning, explicit privacy-mode decision, four-mode privacy comparison, spatial-cluster readiness, and privacy boundary.
 - `lib/artifacts.mjs` - benchmark and comparison artifact publisher.
 - `openfhe/` - real OpenFHE BFVrns C++ demo and CMake target for the sparse score contract.
 - `openfhe-benchmark.mjs` - OpenFHE plan/run CLI.
+- `openfhe-ckks/` - real OpenFHE CKKS C++ demo and CMake target for approximate real-valued sparse scoring.
+- `openfhe-ckks-benchmark.mjs` - OpenFHE CKKS plan/run CLI and comparison-artifact publisher.
 - `tfhe-rs/` - real TFHE-rs Rust crate using `FheUint16` sparse scoring and an encrypted `FheBool` threshold/comparison gate.
 - `tfhe-rs-benchmark.mjs` - TFHE-rs plan/run CLI and comparison-artifact publisher.
 - `LINEAR_ALGEBRA_NEXT.md` - handoff for the next matrix/vector cleanup pass.
 - `PLAINTEXT_BASELINE.md` - real-event-data baseline notes and CLI usage.
 - `OPENFHE_INTEGRATION.md` - native OpenFHE build/run notes.
+- `OPENFHE_CKKS_INTEGRATION.md` - native OpenFHE CKKS build/run notes, parameter choices, and privacy-boundary examples.
 - `TFHE_RS_INTEGRATION.md` - native TFHE-rs build/run notes and OpenFHE comparison guidance.
 - `research-assumptions.json` - falsifiable assumptions and clean-room/IP guardrails.
 
-The toy scheme remains the dependency-free demo. The OpenFHE lane is now the
-first packed-arithmetic HE integration target and runs once OpenFHE is
-installed locally. The TFHE-rs lane is the first Rust Boolean/threshold-friendly
-target and runs with Cargo. Use native results, not JavaScript toy timings, for
-any future speed, ciphertext-size, or energy-efficiency claim.
+The toy scheme remains the dependency-free demo. The OpenFHE BFVrns lane is the
+default packed-integer HE integration target and runs once OpenFHE is installed
+locally. The OpenFHE CKKS lane is the approximate neural/ML feature scoring
+comparison target: use it when feature values are real-valued and score drift is
+acceptable. The TFHE-rs lane is the first Rust Boolean/threshold-friendly target
+and runs with Cargo. Use native results, not JavaScript toy timings, for any
+future speed, ciphertext-size, or energy-efficiency claim.

@@ -63,6 +63,7 @@ export function runPrototypeBenchmark(options = {}) {
     privacyModes: buildPrivacyModeComparison(eventWindow, classCount),
     privacyModeDecision: buildPrivacyModeDecision(eventWindow, classCount),
     packedVectorPlanning: buildPackedVectorPlanningNotes(eventWindow, classCount),
+    nativeComparisonLanes: buildNativeComparisonLanes(eventWindow, classCount),
     representationComparison: buildRepresentationComparison({ eventWindow }),
     spatialClusterReadiness: evaluateSpatialClusterReadiness({ eventWindow }),
     results,
@@ -104,6 +105,7 @@ export function buildBenchmarkArtifact(benchmark, options = {}) {
     privacyModes: benchmark.privacyModes,
     privacyModeDecision: benchmark.privacyModeDecision,
     packedVectorPlanning: benchmark.packedVectorPlanning,
+    nativeComparisonLanes: benchmark.nativeComparisonLanes,
     representationComparison: benchmark.representationComparison,
     spatialClusterReadiness: benchmark.spatialClusterReadiness,
     framingGuardrail: benchmark.framingGuardrail,
@@ -265,6 +267,83 @@ export function buildPackedVectorPlanningNotes(
       "medical diagnosis",
       "treatment",
       "production cryptographic assurance",
+    ],
+    productionClaim: false,
+  };
+}
+
+export function buildNativeComparisonLanes(
+  source = buildSparseEventWindow(),
+  classCount = 2,
+) {
+  const metrics = planningMetricsFromSource(source);
+  const sparseOps = operationCountsForSlots(metrics.activeEventCount, classCount);
+  const denseOps = operationCountsForSlots(metrics.featureCount, classCount);
+
+  return {
+    schema: "neurofhe.nativeLaneComparison.v1",
+    comparisonBasis:
+      "same synthetic 8x8 event window, same public W x + bias contract, native-library measurements when available",
+    defaultLane: "openfhe-bfvrns-integer",
+    featureCount: metrics.featureCount,
+    activeEventCount: metrics.activeEventCount,
+    classCount,
+    lanes: [
+      {
+        id: "openfhe-bfvrns-integer",
+        scheme: "OpenFHE BFVrns",
+        valueDomain: "exact non-negative integer spike counts",
+        preferredWorkloads: ["integer sparse linear scoring", "packed finite-field-style arithmetic"],
+        benchmarkScript: "npm run benchmark:openfhe -- --run --artifact",
+        sparseOperationCounts: sparseOps,
+        denseOperationCounts: denseOps,
+        accuracyMetric: "exact plaintext score agreement",
+      },
+      {
+        id: "openfhe-ckks-approximate",
+        scheme: "OpenFHE CKKS",
+        valueDomain: "approximate real-valued neural or ML features",
+        preferredWorkloads: [
+          "floating-point-style feature scoring",
+          "normalized amplitudes or centroids",
+          "shallow arithmetic where small score drift is acceptable",
+        ],
+        benchmarkScript: "npm run benchmark:openfhe-ckks -- --run --artifact",
+        sparseOperationCounts: {
+          ...sparseOps,
+          plaintextMultiplies: sparseOps.scalarMultiplies,
+          rescaleOrModReduceOps: sparseOps.scalarMultiplies,
+        },
+        denseOperationCounts: {
+          ...denseOps,
+          plaintextMultiplies: denseOps.scalarMultiplies,
+          rescaleOrModReduceOps: denseOps.scalarMultiplies,
+        },
+        accuracyMetric: "max absolute score error plus classification agreement",
+      },
+      {
+        id: "tfhe-rs-threshold",
+        scheme: "TFHE-rs integer + Boolean",
+        valueDomain: "integer scores and encrypted Boolean threshold decisions",
+        preferredWorkloads: ["threshold gates", "decision-tree-like logic", "LUT-style sparse classifiers"],
+        benchmarkScript: "npm run benchmark:tfhe -- --run --artifact",
+        sparseOperationCounts: {
+          ...sparseOps,
+          encryptedComparisons: 1,
+          decryptions: classCount + 1,
+        },
+        denseOperationCounts: {
+          ...denseOps,
+          encryptedComparisons: 1,
+          decryptions: classCount + 1,
+        },
+        accuracyMetric: "exact plaintext score and encrypted decision-bit agreement",
+      },
+    ],
+    caveats: [
+      "JavaScript toy timings are not native-library performance claims",
+      "CKKS is approximate and must report score drift",
+      "public active positions leak sparsity and timing metadata unless padded or densified",
     ],
     productionClaim: false,
   };
