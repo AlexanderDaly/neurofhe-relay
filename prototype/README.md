@@ -23,6 +23,13 @@ Emit the benchmark JSON:
 npm run benchmark
 ```
 
+The benchmark now compares three privacy modes for the same `scores = W x + bias`
+contract:
+
+- Public active positions: 18 encrypted feature slots, fastest, leaks exact timing/sparsity metadata.
+- Padded sparse batches: 32 encrypted feature slots, middle ground, hides exact active count inside a bucket.
+- Dense encrypted windows: 64 encrypted feature slots, slowest, hides sparsity better by encrypting zero and non-zero positions alike.
+
 Print the real OpenFHE BFVrns integration plan:
 
 ```sh
@@ -50,7 +57,7 @@ Current modules:
 - `lib/nmnist.mjs` - N-MNIST event parsing, feature extraction, and plaintext baseline evaluation.
 - `lib/openfhe-adapter.mjs` - OpenFHE contract builder, validation, local detection, and build-plan output.
 - `lib/classifier.mjs` - plaintext and encrypted linear spike-count classifiers.
-- `lib/benchmark.mjs` - benchmark schema, crypto inventory, dense baseline comparison, and privacy boundary.
+- `lib/benchmark.mjs` - benchmark schema, crypto inventory, dense baseline comparison, three-mode privacy comparison, and privacy boundary.
 - `openfhe/` - real OpenFHE BFVrns C++ demo and CMake target for the sparse score contract.
 - `openfhe-benchmark.mjs` - OpenFHE plan/run CLI.
 - `LINEAR_ALGEBRA_NEXT.md` - handoff for the next matrix/vector cleanup pass.

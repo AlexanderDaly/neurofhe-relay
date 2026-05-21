@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 16
-pass 16
+tests 17
+pass 17
 fail 0
 ```
 
@@ -28,7 +28,7 @@ Covered behaviours:
 - Event-window validation and sparse metrics.
 - Plaintext and encrypted classifier agreement.
 - Linear model metadata, dense/sparse matrix-vector agreement, public bias, and model validation.
-- Benchmark privacy boundary, crypto inventory, and dense baseline comparison.
+- Benchmark privacy boundary, crypto inventory, dense baseline comparison, and three privacy modes.
 - OpenFHE contract validation, native build-plan detection, and C++ API source markers.
 - N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
 - Research assumptions with clean-room and naming guardrails.
@@ -111,6 +111,29 @@ Result summary:
       "adds": 128,
       "decryptions": 2
     }
+  },
+  "privacyModes": {
+    "schema": "neurofhe.privacyModes.v1",
+    "modes": [
+      {
+        "id": "public-active-positions",
+        "encryptedFeatureSlots": 18,
+        "scalarMultiplies": 36,
+        "relativeScalarMultiplies": 1
+      },
+      {
+        "id": "padded-sparse-batches",
+        "encryptedFeatureSlots": 32,
+        "scalarMultiplies": 64,
+        "relativeScalarMultiplies": 1.78
+      },
+      {
+        "id": "dense-encrypted-windows",
+        "encryptedFeatureSlots": 64,
+        "scalarMultiplies": 128,
+        "relativeScalarMultiplies": 3.56
+      }
+    ]
   },
   "results": {
     "plaintextMatchesEncrypted": true,

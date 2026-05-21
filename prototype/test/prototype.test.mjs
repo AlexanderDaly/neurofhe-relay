@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { runPrototypeBenchmark } from "../lib/benchmark.mjs";
+import {
+  buildPrivacyModeComparison,
+  runPrototypeBenchmark,
+} from "../lib/benchmark.mjs";
 import {
   runEncryptedLinearClassifier,
   runPlaintextLinearClassifier,
@@ -157,6 +160,11 @@ test("prototype benchmark emits privacy boundary, crypto inventory, and dense ba
   assert.equal(benchmark.sparseMetrics.spikeCount, 18);
   assert.equal(benchmark.operationCounts.scalarMultiplies, 36);
   assert.ok(benchmark.denseBaseline.operationCounts.scalarMultiplies > benchmark.operationCounts.scalarMultiplies);
+  assert.deepEqual(benchmark.privacyModes.modes.map((mode) => mode.id), [
+    "public-active-positions",
+    "padded-sparse-batches",
+    "dense-encrypted-windows",
+  ]);
   assert.ok(benchmark.ciphertextBytes > 0);
   assert.deepEqual(benchmark.cryptoInventory.keyEstablishment, [
     "ML-KEM-768-design-target",
@@ -164,6 +172,34 @@ test("prototype benchmark emits privacy boundary, crypto inventory, and dense ba
   assert.equal(benchmark.cryptoInventory.productionClaim, false);
   assert.ok(benchmark.privacyBoundary.computeSees.includes("ciphertext active spike values"));
   assert.ok(benchmark.privacyBoundary.computeSees.includes("public active event positions"));
+});
+
+test("privacy mode benchmark compares speed against sparsity metadata protection", () => {
+  const comparison = buildPrivacyModeComparison(buildSparseEventWindow(), 2);
+  const [publicSparse, paddedSparse, dense] = comparison.modes;
+
+  assert.equal(comparison.schema, "neurofhe.privacyModes.v1");
+  assert.equal(comparison.activeEventCount, 18);
+  assert.equal(comparison.featureCount, 64);
+  assert.equal(publicSparse.speedTier, "fastest");
+  assert.equal(publicSparse.sparsityProtection, "low");
+  assert.equal(publicSparse.encryptedFeatureSlots, 18);
+  assert.equal(publicSparse.operationCounts.scalarMultiplies, 36);
+  assert.ok(publicSparse.metadataLeakage.includes("exact active event positions"));
+
+  assert.equal(paddedSparse.speedTier, "middle");
+  assert.equal(paddedSparse.sparsityProtection, "partial");
+  assert.equal(paddedSparse.encryptedFeatureSlots, 32);
+  assert.equal(paddedSparse.operationCounts.scalarMultiplies, 64);
+  assert.equal(paddedSparse.relativeScalarMultiplies, 1.78);
+  assert.ok(paddedSparse.metadataLeakage.includes("padding bucket size"));
+
+  assert.equal(dense.speedTier, "slowest");
+  assert.equal(dense.sparsityProtection, "highest of these three modes");
+  assert.equal(dense.encryptedFeatureSlots, 64);
+  assert.equal(dense.operationCounts.scalarMultiplies, 128);
+  assert.equal(dense.relativeScalarMultiplies, 3.56);
+  assert.ok(dense.hides.includes("active positions"));
 });
 
 test("OpenFHE demo contract preserves the sparse linear score boundary", () => {

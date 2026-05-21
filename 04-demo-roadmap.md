@@ -17,7 +17,7 @@ Included desk demo:
 
 - `prototype/toy-neurohe-demo.mjs` runs a dependency-free encrypted spike-count classifier.
 - It uses educational additive homomorphic arithmetic to make the privacy boundary visible.
-- `prototype/benchmark.mjs` emits `neurofhe.benchmark.v1` with sparse operation counts, dense baseline comparison, privacy boundary, and crypto inventory.
+- `prototype/benchmark.mjs` emits `neurofhe.benchmark.v1` with sparse operation counts, dense baseline comparison, three privacy modes, privacy boundary, and crypto inventory.
 - `prototype/openfhe-benchmark.mjs` emits the real OpenFHE BFVrns build plan and local detection state.
 - `prototype/openfhe/openfhe_linear_demo.cpp` ports the same sparse `scores = W x + bias` contract to OpenFHE APIs.
 - `prototype/research-assumptions.json` captures falsifiable assumptions and clean-room/proprietary-track guardrails.
@@ -39,6 +39,7 @@ Current prototype foothold:
 
 - Synthetic 8 by 8 event window.
 - Public active event positions with encrypted active spike counts.
+- Three privacy modes: public active positions, padded sparse batches, and dense encrypted windows.
 - Plaintext and encrypted linear classifier agreement.
 - Dense encrypted tensor baseline comparison.
 - `prototype/LINEAR_ALGEBRA_NEXT.md` records the next matrix/vector cleanup pass.
@@ -62,6 +63,7 @@ Tasks:
 - Decrypt only final score during local test.
 - Record operation counts, latency, ciphertext size, and accuracy change.
 - Add `cryptoInventory` to benchmark output so every cryptographic dependency is visible.
+- Compare public sparse, padded sparse, and dense encrypted privacy modes under the same native HE library.
 
 Decision gate:
 
