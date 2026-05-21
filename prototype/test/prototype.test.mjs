@@ -24,6 +24,14 @@ import {
   sparseMatVec,
   validateLinearModel,
 } from "../lib/linear-algebra.mjs";
+import {
+  encodeNmnistEvent,
+  eventsToFeatureVector,
+  evaluateLinearClassifier,
+  parseNmnistEvents,
+  runPlaintextEventBaseline,
+  trainCentroidLinearClassifier,
+} from "../lib/nmnist.mjs";
 
 test("toy additive cipher preserves addition and public scalar multiplication", () => {
   const { publicKey, privateKey } = createToyKeypair();
@@ -170,4 +178,65 @@ test("research assumptions are falsifiable and preserve clean-room guardrails", 
     assert.ok(hypothesis.measurement);
     assert.ok(hypothesis.falsifier);
   }
+});
+
+test("N-MNIST parser decodes 40-bit address-event records", () => {
+  const buffer = new Uint8Array([
+    ...encodeNmnistEvent({ x: 3, y: 4, polarity: 1, timestampUs: 12345 }),
+    ...encodeNmnistEvent({ x: 31, y: 2, polarity: 0, timestampUs: 65536 }),
+  ]);
+
+  assert.deepEqual(parseNmnistEvents(buffer), [
+    { x: 3, y: 4, polarity: 1, timestampUs: 12345 },
+    { x: 31, y: 2, polarity: 0, timestampUs: 65536 },
+  ]);
+});
+
+test("N-MNIST feature extraction freezes a tiny event window", () => {
+  const events = [
+    { x: 0, y: 0, polarity: 1, timestampUs: 0 },
+    { x: 33, y: 33, polarity: 0, timestampUs: 104999 },
+    { x: 10, y: 10, polarity: 1, timestampUs: 120000 },
+  ];
+  const features = eventsToFeatureVector(events, {
+    gridSize: 4,
+    timeBins: 2,
+    windowUs: 105000,
+  });
+
+  assert.deepEqual(features.featureShape, [2, 4, 4, 2]);
+  assert.equal(features.vector.length, 64);
+  assert.equal(features.activeEventCount, 2);
+  assert.equal(features.sparsity.nonZeroFeatures, 2);
+  assert.equal(features.sparsity.eventCount, 2);
+  assert.equal(features.vector[1], 1);
+  assert.equal(features.vector[62], 1);
+});
+
+test("plaintext event baseline trains and evaluates a small linear classifier", () => {
+  const trainRecords = [
+    { label: "0", events: [{ x: 1, y: 1, polarity: 1, timestampUs: 1000 }] },
+    { label: "0", events: [{ x: 2, y: 1, polarity: 1, timestampUs: 2000 }] },
+    { label: "1", events: [{ x: 30, y: 30, polarity: 0, timestampUs: 1000 }] },
+    { label: "1", events: [{ x: 29, y: 30, polarity: 0, timestampUs: 2000 }] },
+  ];
+  const testRecords = [
+    { label: "0", events: [{ x: 1, y: 2, polarity: 1, timestampUs: 3000 }] },
+    { label: "1", events: [{ x: 31, y: 31, polarity: 0, timestampUs: 3000 }] },
+  ];
+  const options = { gridSize: 4, timeBins: 2, windowUs: 105000 };
+
+  const model = trainCentroidLinearClassifier(trainRecords, options);
+  const evaluation = evaluateLinearClassifier(model, testRecords, options);
+  const report = runPlaintextEventBaseline({ trainRecords, testRecords, options });
+
+  assert.equal(model.classifier, "nearest-centroid-linear");
+  assert.deepEqual(model.matrixShape, [2, 64]);
+  assert.equal(evaluation.accuracy, 1);
+  assert.equal(evaluation.correct, 2);
+  assert.equal(report.schema, "neurofhe.plaintextBaseline.v1");
+  assert.equal(report.dataset, "N-MNIST-compatible-event-records");
+  assert.deepEqual(report.featureShape, [2, 4, 4, 2]);
+  assert.equal(report.metrics.accuracy, 1);
+  assert.equal(report.metrics.averageActiveEvents, 1);
 });

@@ -29,15 +29,23 @@ Run tests:
 npm test
 ```
 
+Run the plaintext real-data baseline against a local N-MNIST directory:
+
+```sh
+npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
+```
+
 Current modules:
 
 - `lib/math.mjs` - BigInt modular arithmetic helpers.
 - `lib/toy-paillier.mjs` - educational additive HE adapter.
 - `lib/events.mjs` - event-window construction, validation, flattening, and sparse metrics.
 - `lib/linear-algebra.mjs` - model metadata, dense matrix-vector scoring, sparse event scoring, and model validation.
+- `lib/nmnist.mjs` - N-MNIST event parsing, feature extraction, and plaintext baseline evaluation.
 - `lib/classifier.mjs` - plaintext and encrypted linear spike-count classifiers.
 - `lib/benchmark.mjs` - benchmark schema, crypto inventory, dense baseline comparison, and privacy boundary.
 - `LINEAR_ALGEBRA_NEXT.md` - handoff for the next matrix/vector cleanup pass.
+- `PLAINTEXT_BASELINE.md` - real-event-data baseline notes and CLI usage.
 - `research-assumptions.json` - falsifiable assumptions and clean-room/IP guardrails.
 
 The next real prototype should replace this toy scheme with OpenFHE, SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment once the operation family is fixed.

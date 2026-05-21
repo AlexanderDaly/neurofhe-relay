@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 9
-pass 9
+tests 12
+pass 12
 fail 0
 ```
 
@@ -29,6 +29,7 @@ Covered behaviours:
 - Plaintext and encrypted classifier agreement.
 - Linear model metadata, dense/sparse matrix-vector agreement, public bias, and model validation.
 - Benchmark privacy boundary, crypto inventory, and dense baseline comparison.
+- N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
 - Research assumptions with clean-room and naming guardrails.
 
 ### Desk Demo
@@ -130,6 +131,22 @@ Result:
 ```text
 json ok
 ```
+
+### Plaintext Baseline CLI
+
+Command:
+
+```sh
+npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
+```
+
+Expected result:
+
+```text
+Requires a local extracted N-MNIST directory. The dataset is not bundled in this repository.
+```
+
+The parser and baseline engine are covered by the Node test suite using small in-memory N-MNIST-compatible event records.
 
 ### Placeholder Scan
 

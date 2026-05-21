@@ -40,10 +40,11 @@ Current prototype foothold:
 - Plaintext and encrypted linear classifier agreement.
 - Dense encrypted tensor baseline comparison.
 - `prototype/LINEAR_ALGEBRA_NEXT.md` records the next matrix/vector cleanup pass.
+- `prototype/PLAINTEXT_BASELINE.md` and `npm run baseline:plaintext` define the first real-data N-MNIST-compatible plaintext baseline.
 
 Decision gate:
 
-- If the baseline is not compact and stable, do not encrypt it yet.
+- If the real-data plaintext baseline is not compact, stable, and rights-clean, do not encrypt it yet.
 
 ## Phase 2 - HE Prototype
 
