@@ -13,6 +13,7 @@ import {
 } from "./spike-sorter.mjs";
 
 const DEFAULT_TIMESTAMP = "2026-05-21T00:00:00.000Z";
+const SORTED_EVENT_ENCODER_ID = "canonical-spatial-aware-spike-sorter-v1";
 
 export function buildSimulatedRawSignal(options = {}) {
   const observedAt = options.observedAt ?? DEFAULT_TIMESTAMP;
@@ -53,7 +54,10 @@ export function buildSimulatedRawSignal(options = {}) {
 export function normalizeRawSignal(rawSignal, options = {}) {
   const encoded = encodeRawSignal(rawSignal, options);
   const eventWindow = encoded.eventWindow;
-  const validationErrors = validateEventWindow(eventWindow);
+  const validationErrors = uniqueErrors([
+    ...(encoded.validationErrors ?? []),
+    ...validateEventWindow(eventWindow),
+  ]);
   const isValid = validationErrors.length === 0;
   const sparseEvents = isValid ? activeEvents(eventWindow) : [];
   const metrics = isValid ? spikeMetrics(eventWindow) : null;
@@ -84,7 +88,7 @@ export function normalizeRawSignal(rawSignal, options = {}) {
       rawPayloadHash: hashStable(rawSignal?.payload ?? null),
       sourceIdHash: hashText(rawSignal?.source?.sourceId ?? "unknown").slice(0, 16),
       transformIds: [
-        encoded.encoder?.id ?? "legacy-event-window-passthrough",
+        ...(encoded.transformIds ?? [encoded.encoder?.id ?? "legacy-event-window-passthrough"]),
         "validate-event-window",
         "active-event-extraction",
         "spike-metric-summary",
@@ -129,6 +133,16 @@ export function buildDefaultGatewayPolicy(options = {}) {
         field: "payload.rawNeuralFrame.rawNeuralSamples",
         action: "withhold",
         reason: "raw neural-like samples stay inside the local boundary",
+      },
+      {
+        field: "payload.sortedNeuralEvent",
+        action: "validate-and-sanitize",
+        reason: "pre-sorted neural events are accepted only through the same gateway policy path",
+      },
+      {
+        field: "payload.sortedNeuralEvent.sourcePayload",
+        action: "withhold",
+        reason: "any source payload attached to a sorted event stays inside the local boundary",
       },
       {
         field: "payload.deviceSerial",
@@ -180,6 +194,8 @@ export function buildDefaultGatewayPolicy(options = {}) {
         "exactRawTimestamps",
         "rawSignalValues",
         "rawSamplePayloads",
+        "sortedNeuralEventSourcePayload",
+        "rawSorterImportMetadata",
       ],
     },
     recommendationRules: {
@@ -624,6 +640,10 @@ function summarizeNormalizedEvent(normalizedEvent) {
 }
 
 function encodeRawSignal(rawSignal, options) {
+  if (rawSignal?.payload?.sortedNeuralEvent) {
+    return encodeSortedNeuralEvent(rawSignal.payload.sortedNeuralEvent);
+  }
+
   if (rawSignal?.payload?.rawNeuralFrame) {
     const sorted = sortSpatialSpikes(
       rawSignal.payload.rawNeuralFrame,
@@ -632,19 +652,148 @@ function encodeRawSignal(rawSignal, options) {
     return {
       eventWindow: sorted.eventWindow,
       encoder: summarizeSpikeSorter(sorted),
+      transformIds: [sorted.encoder.id],
+    };
+  }
+
+  if (!rawSignal?.payload?.eventWindow) {
+    return {
+      eventWindow: null,
+      encoder: null,
+      validationErrors: [
+        "payload must include rawNeuralFrame, sortedNeuralEvent, or eventWindow",
+      ],
+      transformIds: ["reject-unsupported-signal-input"],
     };
   }
 
   return {
-    eventWindow: rawSignal?.payload?.eventWindow,
-    encoder: rawSignal?.payload?.eventWindow
-      ? {
-          id: "legacy-event-window-passthrough",
-          implementationTarget: "local-simulation-only",
-          outputSchema: rawSignal.payload.eventWindow.schema,
-          productionClaim: false,
-        }
-      : null,
+    eventWindow: rawSignal.payload.eventWindow,
+    encoder: {
+      id: "legacy-event-window-passthrough",
+      implementationTarget: "local-simulation-only",
+      outputSchema: rawSignal.payload.eventWindow.schema,
+      productionClaim: false,
+    },
+    transformIds: ["legacy-event-window-passthrough"],
+  };
+}
+
+function encodeSortedNeuralEvent(sortedNeuralEvent) {
+  const eventWindow = sanitizeSortedEventWindow(sortedNeuralEvent?.eventWindow);
+  const validationErrors = validateSortedNeuralEvent(sortedNeuralEvent, eventWindow);
+  const encoder = summarizeSortedNeuralEvent(sortedNeuralEvent, eventWindow, validationErrors);
+
+  return {
+    eventWindow,
+    encoder,
+    validationErrors,
+    transformIds: [
+      "validate-sorted-neural-event",
+      "sanitize-sorted-neural-event",
+      encoder.id,
+    ],
+  };
+}
+
+function sanitizeSortedEventWindow(eventWindow) {
+  if (!eventWindow || typeof eventWindow !== "object") return eventWindow;
+
+  return {
+    schema: typeof eventWindow.schema === "string" ? eventWindow.schema : undefined,
+    windowMs: eventWindow.windowMs,
+    timesteps: eventWindow.timesteps,
+    channels: eventWindow.channels,
+    spatialBins: Array.isArray(eventWindow.spatialBins) ? [...eventWindow.spatialBins] : undefined,
+    encoding: typeof eventWindow.encoding === "string" ? eventWindow.encoding : undefined,
+    values: Array.isArray(eventWindow.values)
+      ? eventWindow.values.map((row) => (Array.isArray(row) ? [...row] : row))
+      : eventWindow.values,
+  };
+}
+
+function validateSortedNeuralEvent(sortedNeuralEvent, eventWindow) {
+  const errors = [];
+
+  if (!sortedNeuralEvent || typeof sortedNeuralEvent !== "object") {
+    return ["sorted neural event must be an object"];
+  }
+
+  const allowedSchemas = [
+    "neurofhe.gateway.sortedNeuralEvent.v1",
+    "neurofhe.encoder.spatialSpikeSorter.v1",
+  ];
+  if (
+    typeof sortedNeuralEvent.schema !== "string" ||
+    !allowedSchemas.includes(sortedNeuralEvent.schema)
+  ) {
+    errors.push(
+      `sorted neural event schema ${sortedNeuralEvent.schema ?? "unknown"} is not allowed`,
+    );
+  }
+  if (!sortedNeuralEvent.encoder || typeof sortedNeuralEvent.encoder !== "object") {
+    errors.push("sorted neural event must include encoder metadata");
+  } else if (sortedNeuralEvent.encoder.id !== SORTED_EVENT_ENCODER_ID) {
+    errors.push(`sorted neural event encoder must be ${SORTED_EVENT_ENCODER_ID}`);
+  }
+
+  if (!eventWindow || typeof eventWindow !== "object") {
+    errors.push("sorted neural event must include an eventWindow object");
+    return errors;
+  }
+  if (eventWindow.schema !== "neurofhe.events.v1.spatial-sorter") {
+    errors.push("sorted neural event window schema must be neurofhe.events.v1.spatial-sorter");
+  }
+  if (eventWindow.encoding !== "spatial-binned-spike-count") {
+    errors.push("sorted neural event encoding must be spatial-binned-spike-count");
+  }
+  if (!Array.isArray(eventWindow.spatialBins) || eventWindow.spatialBins.length !== 2) {
+    errors.push("sorted neural event must include two spatialBins");
+  } else if (!eventWindow.spatialBins.every((value) => Number.isInteger(value) && value > 0)) {
+    errors.push("sorted neural event spatialBins must be positive integers");
+  } else if (
+    Number.isInteger(eventWindow.channels) &&
+    eventWindow.channels !== eventWindow.spatialBins[0] * eventWindow.spatialBins[1]
+  ) {
+    errors.push("sorted neural event channels must match spatialBins product");
+  }
+
+  return errors;
+}
+
+function summarizeSortedNeuralEvent(sortedNeuralEvent, eventWindow, validationErrors) {
+  const encoder = sortedNeuralEvent?.encoder ?? {};
+  const sorterConfig = sortedNeuralEvent?.sorterConfig ?? sortedNeuralEvent?.config ?? {};
+
+  return {
+    id: encoder.id === SORTED_EVENT_ENCODER_ID ? SORTED_EVENT_ENCODER_ID : "rejected-sorted-event-import",
+    schema: "neurofhe.gateway.sortedNeuralEvent.encoderSummary.v1",
+    inputKind: "sorted-neural-event",
+    implementationTarget:
+      encoder.implementationTarget === "fpga-or-edge-fsm"
+        ? "fpga-or-edge-fsm"
+        : "edge-or-local-sorted-event-import",
+    algorithm: "validated spatial-binned event window import",
+    outputSchema: eventWindow?.schema,
+    spatialBins: Array.isArray(eventWindow?.spatialBins) ? [...eventWindow.spatialBins] : null,
+    timeBins: eventWindow?.timesteps,
+    windowMs: eventWindow?.windowMs,
+    thresholdPolicy: sanitizeSorterThresholdPolicy(sorterConfig),
+    validation: {
+      status: validationErrors.length ? "rejected" : "valid",
+      errors: validationErrors,
+    },
+    redactionApplied: true,
+    rawPayloadExport: "denied",
+    productionClaim: false,
+  };
+}
+
+function sanitizeSorterThresholdPolicy(sorterConfig) {
+  return {
+    amplitudeThreshold: integerOrNull(sorterConfig?.amplitudeThreshold),
+    refractoryUs: integerOrNull(sorterConfig?.refractoryUs),
+    maxCountPerBin: integerOrNull(sorterConfig?.maxCountPerBin),
   };
 }
 
@@ -666,6 +815,14 @@ function summarizeSpikeSorter(sorted) {
     metrics: sorted.metrics,
     productionClaim: false,
   };
+}
+
+function integerOrNull(value) {
+  return Number.isInteger(value) ? value : null;
+}
+
+function uniqueErrors(errors) {
+  return [...new Set(errors)];
 }
 
 function auditRecord(kind, at, details) {

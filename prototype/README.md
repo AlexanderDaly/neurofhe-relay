@@ -50,7 +50,7 @@ It also compares three input representations on the same task:
 
 - Dense/raw window: 64 encrypted feature slots, complete dense reference path.
 - Unsorted spikes: 18 encrypted feature slots, keeps raw sample order and electrode metadata visible.
-- Spatial-sorted events: 18 encrypted feature slots, canonical sorter path with spatial-bin provenance.
+- Spatial-sorted events: 18 encrypted feature slots, canonical sorter path with spatial-bin provenance, crypto inventory, and explicit sorted-event privacy boundary.
 
 Print the real OpenFHE BFVrns integration plan:
 

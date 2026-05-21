@@ -308,6 +308,8 @@ export function buildRepresentationComparison(options = {}) {
           activeEvents(spatialSorted.eventWindow).length,
           classCount,
         ),
+        cryptoInventory: buildCryptoInventory(),
+        privacyBoundary: buildSortedEventPrivacyBoundary(),
         scores: spatialScores,
         classification: expectedClassification,
         metadataLeakage: ["spatial bin activity", "event-count sparsity", "time-bin sparsity"],
@@ -346,6 +348,39 @@ export function buildPrivacyBoundary() {
       "encrypted score ciphertexts",
     ],
     clientSees: ["decrypted class scores", "final classification"],
+  };
+}
+
+export function buildSortedEventPrivacyBoundary() {
+  return {
+    schema: "neurofhe.sortedEventPrivacyBoundary.v1",
+    gatewaySees: [
+      "sorted event window",
+      "sorter configuration summary",
+      "active event positions",
+      "active event counts",
+    ],
+    computeSees: [
+      "approved active event positions",
+      "ciphertext active spike values",
+      "public model weights",
+      "encrypted score ciphertexts",
+    ],
+    clientSees: ["decrypted class scores", "final classification"],
+    withheld: [
+      "raw neural samples",
+      "raw electrode identifiers",
+      "raw sample timestamp order",
+      "device identifiers",
+      "local subject or session references",
+      "operator notes",
+    ],
+    residualRisks: [
+      "spatial bin activity can leak coarse source geometry",
+      "event-count sparsity can leak workload size",
+      "time-bin sparsity can leak coarse temporal patterns",
+    ],
+    productionClaim: false,
   };
 }
 

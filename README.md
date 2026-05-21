@@ -2,6 +2,43 @@
 
 Presentation package for a privacy-preserving neuromorphic + homomorphic-encryption project.
 
+```text
+                 NEUROFHE RELAY
+
+  raw local signals
+  files | sensors | apps | logs | simulated streams
+          |
+          v
+  +--------------------------+
+  | spatial spike sorter     |
+  | FPGA / edge target       |
+  +------------+-------------+
+               |
+               v
+  +--------------------------+       raw payloads stay local
+  | local relay gateway      |<--------------------------------+
+  | normalize + policy       |                                 |
+  +------------+-------------+                                 |
+               |                                               |
+               v                                               |
+    approved minimal event representation                      |
+               |                                               |
+               v                                               |
+  +--------------------------+                                 |
+  | encrypted compute        |                                 |
+  | model / agent service    |                                 |
+  +------------+-------------+                                 |
+               |                                               |
+               v                                               |
+        recommendation only                                    |
+               |                                               |
+               v                                               |
+  +--------------------------+                                 |
+  | gateway validation       |---------------------------------+
+  | safe local action only   |
+  +--------------------------+
+```
+
 ## Core Thesis
 
 Neuromorphic systems are attractive because they turn sensory streams into sparse events and spiking neural network activity. Homomorphic encryption is attractive because it allows useful computation without decrypting the underlying data. The project opportunity is to combine them at the workload boundary:
@@ -74,6 +111,7 @@ The runnable scaffold demonstrates:
 
 - Sensitive raw intake treated as local-only by default.
 - A canonical `rawNeuralFrame -> spatialSpikeSorter -> eventWindow` encoder stage designed around FPGA- or edge-friendly integer operations.
+- Pre-sorted `sortedNeuralEvent` imports still pass through gateway validation, sanitization, and export policy before normalization.
 - Normalized event records with provenance, confidence, schema version, and validation status.
 - Model-facing events with explicit plaintext, encrypted, aggregated, and withheld fields.
 - Recommendation validation that accepts safe local reversible actions and rejects raw device commands.
@@ -113,7 +151,7 @@ Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 ```
 
-The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The benchmark now compares dense/raw windows, unsorted spikes, and spatial-sorted events on that same task so representation cost and metadata leakage stay visible. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is now included under `prototype/openfhe/`, while SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment remain candidate follow-on lanes.
+The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The benchmark now compares dense/raw windows, unsorted spikes, and spatial-sorted events on that same task so representation cost and metadata leakage stay visible. Each spatial-sorted benchmark entry carries its own crypto inventory and sorted-event privacy boundary. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is now included under `prototype/openfhe/`, while SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment remain candidate follow-on lanes.
 
 ## Prototype Boundary
 

@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 23
-pass 23
+tests 25
+pass 25
 fail 0
 ```
 
@@ -29,9 +29,9 @@ Covered behaviours:
 - Plaintext and encrypted classifier agreement.
 - Linear model metadata, dense/sparse matrix-vector agreement, public bias, and model validation.
 - Benchmark accuracy, latency, ciphertext bytes, operation counts, security parameters, privacy boundary, crypto inventory, dense baseline comparison, and three privacy modes.
-- Representation benchmark comparing dense/raw windows, unsorted spikes, and spatial-sorted events on the same `scores = W x + bias` task.
+- Representation benchmark comparing dense/raw windows, unsorted spikes, and spatial-sorted events on the same `scores = W x + bias` task, including sorted-event crypto inventory and privacy boundary metadata.
 - Spatial spike sorting from simulated raw neural-like intake into stable event windows.
-- Relay gateway raw-intake summarization, canonical sorter insertion, normalization, minimal model-facing event export, raw-leakage checks, accepted safe local recommendations, rejected unsafe command recommendations, and strict policy blocking.
+- Relay gateway raw-intake summarization, canonical sorter insertion, sorted-event input validation and sanitization, normalization, minimal model-facing event export, raw-leakage checks, accepted safe local recommendations, rejected unsafe command recommendations, and strict policy blocking.
 - Benchmark artifact publishing to timestamped run JSON and `latest.json`.
 - OpenFHE contract validation, native build-plan detection, and C++ API source markers.
 - N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.

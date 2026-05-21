@@ -316,6 +316,14 @@ Default posture:
       "action": "withhold"
     },
     {
+      "field": "payload.sortedNeuralEvent",
+      "action": "validate-and-sanitize"
+    },
+    {
+      "field": "payload.sortedNeuralEvent.sourcePayload",
+      "action": "withhold"
+    },
+    {
       "field": "source.sourceId",
       "action": "hash"
     },
@@ -359,14 +367,15 @@ Additional policy profiles:
 1. A simulated local stream emits an 8 by 8 binary spike-count event window.
 2. Raw Signal Intake wraps raw neural-like samples in `neurofhe.gateway.rawSignal.v1` and marks them `sensitive-by-default`.
 3. The spatial-aware spike sorter applies an integer threshold, electrode-to-spatial-bin lookup, refractory gate, and bounded count accumulation to produce `neurofhe.events.v1.spatial-sorter`.
-4. The Normalization Layer validates the event window, extracts 18 active sparse events, records sorter provenance, and creates `neurofhe.gateway.normalizedEvent.v1`.
-5. The Privacy And Safety Filter hashes the source ID, buckets the timestamp, buckets density, withholds raw payload and high-risk metadata, and marks active spike values as encrypted references.
-6. The Model-Facing Event Interface emits `neurofhe.gateway.modelEvent.v1`.
-7. A model or encrypted compute service can score only the approved representation. It receives no raw sample payloads, device serial, local subject reference, precise source path, or direct command surface.
-8. The model returns a recommendation.
-9. The gateway validates the recommendation and either executes a safe local reversible action or rejects it.
-10. The audit log records the intake hash, transform IDs, policy decision, model event export fields, recommendation, and command decision.
-11. Replay uses the sanitized model event, not the raw payload.
+4. If an FPGA, edge process, or file adapter provides a pre-sorted `sortedNeuralEvent`, the gateway still validates schema, encoding, spatial bins, and event-window shape, then strips source payloads and import metadata before normalization.
+5. The Normalization Layer validates the event window, extracts 18 active sparse events, records sorter provenance, and creates `neurofhe.gateway.normalizedEvent.v1`.
+6. The Privacy And Safety Filter hashes the source ID, buckets the timestamp, buckets density, withholds raw payload and high-risk metadata, and marks active spike values as encrypted references.
+7. The Model-Facing Event Interface emits `neurofhe.gateway.modelEvent.v1`.
+8. A model or encrypted compute service can score only the approved representation. It receives no raw sample payloads, device serial, local subject reference, precise source path, or direct command surface.
+9. The model returns a recommendation.
+10. The gateway validates the recommendation and either executes a safe local reversible action or rejects it.
+11. The audit log records the intake hash, transform IDs, policy decision, model event export fields, recommendation, and command decision.
+12. Replay uses the sanitized model event, not the raw payload.
 
 Run the scaffold:
 
@@ -528,9 +537,9 @@ Threats and controls:
 Implemented scaffold:
 
 - `prototype/lib/spike-sorter.mjs` defines the canonical spatial-aware spike sorter between raw neural-like intake and normalized events.
-- `prototype/lib/gateway.mjs` defines raw signal intake, sorter insertion, normalization, policy filtering, model-facing events, recommendation validation, audit records, and sanitized replay.
+- `prototype/lib/gateway.mjs` defines raw signal intake, sorter insertion, sorted-event validation and sanitization, normalization, policy filtering, model-facing events, recommendation validation, audit records, and sanitized replay.
 - `prototype/gateway-demo.mjs` prints a complete simulated gateway flow without dumping raw payloads.
-- `prototype/test/prototype.test.mjs` covers minimal model export, raw-leakage checks, accepted local recommendations, rejected raw-device commands, and strict policy blocking.
+- `prototype/test/prototype.test.mjs` covers minimal model export, sorted-event import sanitization, raw-leakage checks, accepted local recommendations, rejected raw-device commands, and strict policy blocking.
 - `package.json` exposes `npm run gateway:demo`.
 
 Recommended next steps:

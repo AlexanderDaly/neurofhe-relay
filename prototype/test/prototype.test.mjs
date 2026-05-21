@@ -222,6 +222,17 @@ test("representation benchmark compares dense raw, unsorted spikes, and spatial-
   assert.equal(spatialSorted.encoder.id, "canonical-spatial-aware-spike-sorter-v1");
   assert.equal(spatialSorted.encryptedFeatureSlots, 18);
   assert.equal(spatialSorted.operationCounts.scalarMultiplies, 36);
+  assert.equal(spatialSorted.cryptoInventory.schema, "neurofhe.crypto.inventory.v1");
+  assert.equal(spatialSorted.cryptoInventory.productionClaim, false);
+  assert.equal(
+    spatialSorted.privacyBoundary.schema,
+    "neurofhe.sortedEventPrivacyBoundary.v1",
+  );
+  assert.ok(spatialSorted.privacyBoundary.gatewaySees.includes("sorted event window"));
+  assert.ok(
+    spatialSorted.privacyBoundary.computeSees.includes("approved active event positions"),
+  );
+  assert.ok(spatialSorted.privacyBoundary.withheld.includes("raw neural samples"));
   assert.ok(spatialSorted.preserves.includes("spatial bin provenance"));
   assert.deepEqual(spatialSorted.scores, comparison.expectedScores);
 });
@@ -275,6 +286,85 @@ test("gateway demo exports a minimal model event without raw signal leakage", ()
   assert.equal(serialized.includes("/local-only/simulated/raw-signal.json"), false);
   assert.equal(serialized.includes("local-simulation-lab"), false);
   assert.equal(serialized.includes("rawNeuralSamples"), false);
+});
+
+test("gateway validates and sanitizes sorted neural event input", () => {
+  const sorted = sortSpatialSpikes(buildSimulatedRawNeuralFrame());
+  const rawSignal = {
+    schema: "neurofhe.gateway.rawSignal.v1",
+    intakeId: "raw-sorted-event-001",
+    observedAt: "2026-05-21T12:34:56.000Z",
+    receivedAt: "2026-05-21T12:35:02.000Z",
+    localOnly: true,
+    sensitivity: "sensitive-by-default",
+    source: {
+      sourceId: "sorted-source-local",
+      kind: "simulated-bio-digital-event-stream",
+      adapter: "local-sorted-event-import",
+      authorization: "synthetic-demo-only",
+    },
+    payload: {
+      sortedNeuralEvent: {
+        schema: "neurofhe.gateway.sortedNeuralEvent.v1",
+        eventWindow: sorted.eventWindow,
+        encoder: sorted.encoder,
+        sorterConfig: sorted.config,
+        rawSamplePayloads: [{ sampleId: "sample-local-only", amplitude: 90 }],
+        localOperatorNote: "do-not-export",
+      },
+    },
+  };
+
+  const normalized = normalizeRawSignal(rawSignal);
+  const policyDecision = applyPrivacySafetyPolicy(normalized, buildDefaultGatewayPolicy());
+  const modelEvent = policyDecision.modelFacingEvent;
+  const serializedModelEvent = JSON.stringify(modelEvent);
+
+  assert.equal(normalized.validation.status, "valid");
+  assert.equal(normalized.features.encoder.id, "canonical-spatial-aware-spike-sorter-v1");
+  assert.equal(normalized.features.encoder.inputKind, "sorted-neural-event");
+  assert.ok(normalized.provenance.transformIds.includes("validate-sorted-neural-event"));
+  assert.equal(policyDecision.decision, "approved");
+  assert.equal(modelEvent.plaintext.encoder.id, "canonical-spatial-aware-spike-sorter-v1");
+  assert.equal(serializedModelEvent.includes("sample-local-only"), false);
+  assert.equal(serializedModelEvent.includes("do-not-export"), false);
+  assert.equal(serializedModelEvent.includes("localOperatorNote"), false);
+});
+
+test("gateway blocks malformed sorted neural event input", () => {
+  const sorted = sortSpatialSpikes(buildSimulatedRawNeuralFrame());
+  const rawSignal = {
+    schema: "neurofhe.gateway.rawSignal.v1",
+    intakeId: "raw-sorted-event-malformed-001",
+    observedAt: "2026-05-21T12:34:56.000Z",
+    receivedAt: "2026-05-21T12:35:02.000Z",
+    localOnly: true,
+    sensitivity: "sensitive-by-default",
+    source: {
+      sourceId: "sorted-source-local",
+      kind: "simulated-bio-digital-event-stream",
+      adapter: "local-sorted-event-import",
+      authorization: "synthetic-demo-only",
+    },
+    payload: {
+      sortedNeuralEvent: {
+        schema: "neurofhe.gateway.sortedNeuralEvent.v1",
+        eventWindow: {
+          ...sorted.eventWindow,
+          values: [sorted.eventWindow.values[0]],
+        },
+      },
+    },
+  };
+
+  const normalized = normalizeRawSignal(rawSignal);
+  const policyDecision = applyPrivacySafetyPolicy(normalized, buildDefaultGatewayPolicy());
+
+  assert.equal(normalized.validation.status, "rejected");
+  assert.ok(normalized.validation.errors.includes("values length 1 does not match timesteps 8"));
+  assert.equal(policyDecision.decision, "blocked");
+  assert.equal(policyDecision.modelFacingEvent, null);
+  assert.ok(policyDecision.reasons.includes("normalization validation did not pass"));
 });
 
 test("gateway accepts safe local recommendations and rejects raw device commands", () => {
