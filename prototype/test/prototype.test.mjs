@@ -46,6 +46,12 @@ import {
   validateOpenFheContract,
 } from "../lib/openfhe-adapter.mjs";
 import {
+  buildTfheRsDemoContract,
+  buildTfheRsRealLibraryAdapter,
+  tfheRsIntegrationPlan,
+  validateTfheRsContract,
+} from "../lib/tfhe-rs-adapter.mjs";
+import {
   encodeNmnistEvent,
   eventsToFeatureVector,
   evaluateLinearClassifier,
@@ -922,6 +928,74 @@ test("OpenFHE integration plan reports build commands and local detection state"
   assert.equal(detection.reason, "OpenFHEConfig.cmake not found");
 });
 
+test("TFHE-rs demo contract preserves sparse integer scoring and encrypted threshold boundary", () => {
+  const contract = buildTfheRsDemoContract();
+
+  assert.equal(contract.schema, "neurofhe.tfheRs.contract.v1");
+  assert.equal(contract.scheme, "tfhe-rs-integer-threshold");
+  assert.equal(contract.scoreEquation, "scores = W x + bias");
+  assert.equal(contract.boundaryDomain, "bio-digital-event-intelligence");
+  assert.equal(contract.eventRepresentation, "spatial-sorted-events");
+  assert.equal(contract.encoder.id, "canonical-spatial-aware-spike-sorter-v1");
+  assert.equal(contract.privacyMode.id, "public-active-neuron-positions-encrypted-features");
+  assert.deepEqual(contract.matrixShape, [2, 64]);
+  assert.equal(contract.activeEventCount, 18);
+  assert.equal(contract.publicActiveNeuronPositions.length, 18);
+  assert.equal("value" in contract.publicActiveNeuronPositions[0], false);
+  assert.deepEqual(contract.expectedPlaintextScores, { normal: 9, anomaly: 51 });
+  assert.equal(contract.expectedClassification, "anomaly");
+  assert.deepEqual(contract.booleanDecision, {
+    schema: "neurofhe.tfheRs.booleanDecision.v1",
+    gate: "anomaly_score_gt_normal_score",
+    encryptedResultType: "FheBool",
+    expectedPlaintext: true,
+  });
+  assert.equal(contract.operationCounts.encryptions, 20);
+  assert.equal(contract.operationCounts.scalarMultiplies, 36);
+  assert.equal(contract.operationCounts.adds, 36);
+  assert.equal(contract.operationCounts.encryptedComparisons, 1);
+  assert.equal(contract.cryptoInventory.encryptedComputation.includes("tfhe-rs-1.6.1-integer-boolean-research-only"), true);
+  assert.ok(contract.privacyBoundary.computeSees.includes("encrypted TFHE-rs active spike values"));
+  assert.ok(contract.privacyBoundary.computeSees.includes("encrypted TFHE-rs threshold decision bit"));
+  assert.deepEqual(validateTfheRsContract(contract), []);
+});
+
+test("TFHE-rs real-library adapter is bound to the generated score contract", () => {
+  const adapter = buildTfheRsRealLibraryAdapter();
+
+  assert.equal(adapter.schema, "neurofhe.realLibraryAdapter.v1");
+  assert.equal(adapter.adapterId, "tfhe-rs-sparse-integer-threshold-v1");
+  assert.equal(adapter.library.name, "TFHE-rs");
+  assert.equal(adapter.library.scheme, "TFHE integer + Boolean threshold");
+  assert.equal(adapter.contract.schema, "neurofhe.tfheRs.contract.v1");
+  assert.equal(adapter.contract.scoreEquation, "scores = W x + bias");
+  assert.equal(adapter.contract.scoreDomain, "non-negative-integers");
+  assert.equal(adapter.contractDigest.algorithm, "sha256");
+  assert.match(adapter.contractDigest.value, /^[0-9a-f]{64}$/);
+  assert.deepEqual(adapter.contractValidation.errors, []);
+  assert.equal(adapter.nativeTarget, "neurofhe-tfhe-demo");
+  assert.equal(adapter.privacyModeDecision.recommendedMode, "padded-sparse-batches");
+  assert.equal(adapter.tfheVsOpenFheComparison.sameTask, true);
+  assert.equal(adapter.tfheVsOpenFheComparison.tfheBestFor.includes("threshold gates"), true);
+});
+
+test("TFHE-rs integration plan reports cargo commands and native source paths", () => {
+  const plan = tfheRsIntegrationPlan();
+
+  assert.equal(plan.schema, "neurofhe.tfheRs.integrationPlan.v1");
+  assert.equal(plan.nativeTarget, "neurofhe-tfhe-demo");
+  assert.equal(plan.adapter.schema, "neurofhe.realLibraryAdapter.v1");
+  assert.ok(plan.manifestPath.endsWith("prototype/tfhe-rs/Cargo.toml"));
+  assert.ok(plan.sourcePath.endsWith("prototype/tfhe-rs/src/lib.rs"));
+  assert.equal(plan.contract.eventRepresentation, "spatial-sorted-events");
+  assert.equal(plan.contract.privacyMode.id, "public-active-neuron-positions-encrypted-features");
+  assert.deepEqual(plan.commands, [
+    "cargo test --manifest-path prototype/tfhe-rs/Cargo.toml",
+    "cargo run --release --manifest-path prototype/tfhe-rs/Cargo.toml --bin neurofhe-tfhe-demo",
+    "node prototype/tfhe-rs-benchmark.mjs --artifact",
+  ]);
+});
+
 test("comparison artifacts can persist adapter plans for later library runs", async () => {
   const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-comparison-"));
   const published = await publishComparisonArtifact({
@@ -938,6 +1012,26 @@ test("comparison artifacts can persist adapter plans for later library runs", as
   assert.equal(runArtifact.artifactId, "adapter-plan");
   assert.equal(runArtifact.subject.schema, "neurofhe.realLibraryAdapter.v1");
   assert.equal(runArtifact.subject.adapterId, "openfhe-bfvrns-sparse-linear-v1");
+  assert.equal(runArtifact.framingGuardrail.preferredFrame, "privacy-preserving event intelligence");
+  assert.deepEqual(latestArtifact, runArtifact);
+});
+
+test("comparison artifacts can persist TFHE-rs adapter plans for later library runs", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-tfhe-comparison-"));
+  const published = await publishComparisonArtifact({
+    outputDir,
+    subject: buildTfheRsRealLibraryAdapter(),
+    artifactId: "tfhe-adapter-plan",
+    generatedAt: "2026-05-21T00:00:00.000Z",
+  });
+  const runArtifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+  const latestArtifact = JSON.parse(await readFile(published.paths.latest, "utf8"));
+
+  assert.equal(published.schema, "neurofhe.comparisonArtifact.publish.v1");
+  assert.equal(runArtifact.schema, "neurofhe.comparisonArtifact.v1");
+  assert.equal(runArtifact.artifactId, "tfhe-adapter-plan");
+  assert.equal(runArtifact.subject.schema, "neurofhe.realLibraryAdapter.v1");
+  assert.equal(runArtifact.subject.adapterId, "tfhe-rs-sparse-integer-threshold-v1");
   assert.equal(runArtifact.framingGuardrail.preferredFrame, "privacy-preserving event intelligence");
   assert.deepEqual(latestArtifact, runArtifact);
 });
@@ -959,6 +1053,25 @@ test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {
   assert.match(source, /EvalMult/);
   assert.match(source, /EvalAdd/);
   assert.match(source, /Decrypt/);
+});
+
+test("native TFHE-rs source uses real TFHE-rs integer and Boolean APIs", async () => {
+  const source = await readFile(
+    new URL("../tfhe-rs/src/lib.rs", import.meta.url),
+    "utf8",
+  );
+  const manifest = await readFile(
+    new URL("../tfhe-rs/Cargo.toml", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(manifest, /tfhe = \{ version = "1\.6\.1"/);
+  assert.match(source, /use tfhe::\{generate_keys, set_server_key, ConfigBuilder, FheBool, FheUint16\}/);
+  assert.match(source, /safe_serialized_size/);
+  assert.match(source, /FheUint16::encrypt/);
+  assert.match(source, /\.gt\(&encrypted_scores\.normal\)/);
+  assert.match(source, /FheBool/);
+  assert.match(source, /productionClaim/);
 });
 
 test("research assumptions are falsifiable and preserve clean-room guardrails", async () => {

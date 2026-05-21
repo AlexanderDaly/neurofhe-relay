@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 35
-pass 35
+tests 40
+pass 40
 fail 0
 ```
 
@@ -36,6 +36,7 @@ Covered behaviours:
 - Benchmark artifact publishing to timestamped run JSON and `latest.json`.
 - Comparison artifact publishing for adapter plans and future native library runs.
 - OpenFHE sorted-event contract validation, digest-bound real-library adapter manifest, native build-plan detection, and C++ API source markers.
+- TFHE-rs sorted-event contract validation, digest-bound real-library adapter manifest, Cargo build-plan detection, Rust source markers, encrypted threshold-gate metadata, TFHE-vs-OpenFHE comparison notes, and comparison artifact publishing.
 - N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
 - Research assumptions with clean-room and naming guardrails.
 
@@ -378,6 +379,119 @@ Result summary:
 This validates optional on-disk comparison artifacts without adding generated
 OpenFHE comparison JSON to the repository.
 
+### TFHE-rs Integration Plan
+
+Command:
+
+```sh
+npm run benchmark:tfhe -- --adapter
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.realLibraryAdapter.v1",
+  "adapterId": "tfhe-rs-sparse-integer-threshold-v1",
+  "library": {
+    "name": "TFHE-rs",
+    "crate": "tfhe",
+    "version": "1.6.1",
+    "scheme": "TFHE integer + Boolean threshold"
+  },
+  "contract": {
+    "schema": "neurofhe.tfheRs.contract.v1",
+    "scheme": "tfhe-rs-integer-threshold",
+    "scoreEquation": "scores = W x + bias",
+    "matrixShape": [2, 64],
+    "activeEventCount": 18,
+    "expectedPlaintextScores": {
+      "normal": 9,
+      "anomaly": 51
+    },
+    "booleanDecision": {
+      "gate": "anomaly_score_gt_normal_score",
+      "encryptedResultType": "FheBool",
+      "expectedPlaintext": true
+    }
+  },
+  "contractValidation": {
+    "status": "valid",
+    "errors": []
+  }
+}
+```
+
+### TFHE-rs Rust Tests
+
+Command:
+
+```sh
+cargo test --manifest-path prototype/tfhe-rs/Cargo.toml
+```
+
+Result summary:
+
+```text
+2 passed; 0 failed
+```
+
+The Rust unit tests validate the stable 8x8 sorted-event window, 18 active
+events, public active-neuron-position projection, plaintext scores
+`normal: 9` / `anomaly: 51`, and final classification `anomaly`.
+
+### TFHE-rs Native Run And Artifact
+
+Command:
+
+```sh
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-synthetic-8x8-2026-05-21 --generated-at 2026-05-21T12:00:00.000Z
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.tfheRs.result.v1",
+  "scheme": "tfhe-rs-integer-threshold",
+  "scores": {
+    "normal": 9,
+    "anomaly": 51
+  },
+  "classification": "anomaly",
+  "booleanDecision": {
+    "gate": "anomaly_score_gt_normal_score",
+    "decrypted": true,
+    "matchesExpected": true
+  },
+  "operationCounts": {
+    "encryptions": 20,
+    "scalarMultiplies": 36,
+    "adds": 36,
+    "encryptedComparisons": 1,
+    "decryptions": 3
+  },
+  "ciphertextBytes": {
+    "activeValueCiphertexts": 2377818,
+    "classScoreCiphertexts": 264202,
+    "thresholdDecisionBit": 16593,
+    "total": 2658613
+  },
+  "latencyMs": 7233.972,
+  "productionClaim": false
+}
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/comparisons/tfhe-rs/latest.json
+benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-synthetic-8x8-2026-05-21.json
+```
+
+The TFHE-rs result is a single local synthetic 8x8 run. The latency is not a
+stable performance claim; use it only as a research-grade comparison record.
+
 ### JSON Validation
 
 Command:
@@ -422,6 +536,9 @@ Result:
 placeholder scan ok
 ```
 
+The scanner skips generated directories such as `target/`, `build/`, `dist/`,
+and `outputs/` so Cargo build products are not read as source text.
+
 ### ASCII Scan
 
 Command:
@@ -458,4 +575,4 @@ ascii scan complete
 
 ## Scope Note
 
-The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes a digest-bound real-library adapter manifest plus a real OpenFHE BFVrns native integration target for the same sparse sorted-event score contract, gated on a local OpenFHE installation. Bio-digital language remains scoped to privacy-preserving event intelligence, not medical diagnosis or treatment.
+The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes digest-bound real-library adapter manifests plus a real OpenFHE BFVrns native integration target and a real TFHE-rs Rust integration target for the same sparse sorted-event score contract. OpenFHE remains gated on a local OpenFHE installation; TFHE-rs runs through Cargo with the `tfhe` crate. Bio-digital language remains scoped to privacy-preserving event intelligence, not medical diagnosis or treatment.

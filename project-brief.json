@@ -56,6 +56,9 @@
       "benchmarkArtifact": "npm run benchmark:artifact",
       "openFhePlan": "npm run benchmark:openfhe",
       "openFheComparisonArtifact": "npm run benchmark:openfhe -- --artifact",
+      "tfheRsPlan": "npm run benchmark:tfhe",
+      "tfheRsRun": "npm run benchmark:tfhe -- --run",
+      "tfheRsComparisonArtifact": "npm run benchmark:tfhe -- --run --artifact",
       "plaintextBaseline": "npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10",
       "test": "npm test"
     },
@@ -116,6 +119,14 @@
       "contract": "neurofhe.openfhe.contract.v1",
       "nativeTarget": "openfhe_linear_demo",
       "artifactCommand": "npm run benchmark:openfhe -- --artifact"
+    },
+    "tfheRsAdapter": {
+      "schema": "neurofhe.realLibraryAdapter.v1",
+      "adapterId": "tfhe-rs-sparse-integer-threshold-v1",
+      "contract": "neurofhe.tfheRs.contract.v1",
+      "nativeTarget": "neurofhe-tfhe-demo",
+      "artifactCommand": "npm run benchmark:tfhe -- --run --artifact",
+      "useWhen": "Prefer for encrypted comparisons, threshold gates, small Boolean circuits, decision-tree or LUT-style sparse rules."
     },
     "representationComparison": {
       "schema": "neurofhe.representationComparison.v1",
@@ -198,6 +209,8 @@
     "https://csrc.nist.gov/Projects/post-quantum-cryptography",
     "https://csrc.nist.gov/News/2024/postquantum-cryptography-fips-approved",
     "https://openfhe.org/",
+    "https://docs.zama.org/tfhe-rs",
+    "https://crates.io/crates/tfhe",
     "https://github.com/microsoft/SEAL",
     "https://www.unesco.org/en/legal-affairs/recommendation-ethics-neurotechnology",
     "https://leg.colorado.gov/bills/hb24-1058",

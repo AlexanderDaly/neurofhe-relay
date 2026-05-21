@@ -10,6 +10,7 @@
     "benchmark": "node prototype/benchmark.mjs",
     "benchmark:artifact": "node prototype/benchmark.mjs --artifact",
     "benchmark:openfhe": "node prototype/openfhe-benchmark.mjs",
+    "benchmark:tfhe": "node prototype/tfhe-rs-benchmark.mjs",
     "baseline:plaintext": "node prototype/plaintext-baseline.mjs",
     "test": "node --test prototype/test/*.test.mjs",
     "validate": "npm test && node -e \"JSON.parse(require('fs').readFileSync('project-brief.json','utf8')); JSON.parse(require('fs').readFileSync('prototype/research-assumptions.json','utf8')); console.log('json ok')\" && node prototype/scripts/placeholder-scan.mjs"

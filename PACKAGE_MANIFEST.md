@@ -21,7 +21,7 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `10-native-performance-track.md` - native-first boundary for low-level performance, energy measurement, and hot-path implementation choices.
 - `project-brief.json` - agent-readable structured project summary.
 - `index.html` - self-contained browser briefing deck.
-- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, spatial spike sorter, local relay gateway scaffold, benchmark runner, plaintext baseline, tests, handoffs, and research assumptions.
+- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, spatial spike sorter, local relay gateway scaffold, benchmark runner, plaintext baseline, OpenFHE BFVrns lane, TFHE-rs integer/Boolean lane, tests, handoffs, and research assumptions.
 - `package.json` - local demo, benchmark, test, and validation commands. `private: true` prevents accidental npm publication; it is not a proprietary-license declaration.
 - `VALIDATION.md` - local validation commands and results.
 
@@ -57,6 +57,12 @@ Run tests:
 npm test
 ```
 
+Run the TFHE-rs comparison lane:
+
+```sh
+npm run benchmark:tfhe -- --run
+```
+
 Run the plaintext real-data baseline against a local N-MNIST directory:
 
 ```sh
@@ -65,7 +71,7 @@ npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 
 ## Caveat
 
-The included JavaScript prototype demonstrates the privacy boundary with toy additive homomorphic encryption. It is not production cryptography, not full FHE, and not the low-level runtime target. It uses public active neuron positions plus encrypted active feature values for the sorted-event path, so sparse metadata is visible to the compute layer. The native OpenFHE path now carries the same sparse sorted-event score contract and should become the source of truth for performance once OpenFHE is installed and reviewed.
+The included JavaScript prototype demonstrates the privacy boundary with toy additive homomorphic encryption. It is not production cryptography, not full FHE, and not the low-level runtime target. It uses public active neuron positions plus encrypted active feature values for the sorted-event path, so sparse metadata is visible to the compute layer. The native OpenFHE path carries the same sparse sorted-event score contract for packed arithmetic comparison once OpenFHE is installed and reviewed. The native TFHE-rs path carries the same sparse score contract plus an encrypted Boolean threshold bit for threshold/LUT-style comparison. Neither native lane is production cryptography.
 
 ## Proprietary Track Note
 

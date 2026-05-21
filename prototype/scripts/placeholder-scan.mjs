@@ -5,8 +5,9 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const tokens = ["T" + "BD", "TO" + "DO", "PLACE" + "HOLDER", "FIX" + "ME"];
-const ignored = new Set([".git", "node_modules"]);
+const ignored = new Set([".git", "node_modules", "target", "build", "dist", "outputs"]);
 const ignoredFiles = new Set(["VALIDATION.md"]);
+const ignoredExtensions = /\.(a|dylib|gif|jpg|jpeg|o|pdf|png|pptx|rlib|rmeta|so)$/i;
 
 let found = false;
 
@@ -30,6 +31,7 @@ function walk(dir) {
     const path = join(dir, entry.name);
     if (entry.isDirectory()) return walk(path);
     if (ignoredFiles.has(entry.name)) return [];
+    if (ignoredExtensions.test(entry.name)) return [];
     return [path];
   });
 }

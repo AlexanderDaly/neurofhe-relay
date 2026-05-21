@@ -75,6 +75,24 @@ Write an optional OpenFHE comparison artifact:
 npm run benchmark:openfhe -- --artifact
 ```
 
+Print the TFHE-rs integration plan:
+
+```sh
+npm run benchmark:tfhe
+```
+
+Run the native TFHE-rs integer/Boolean threshold demo:
+
+```sh
+npm run benchmark:tfhe -- --run
+```
+
+Write an optional TFHE-rs comparison artifact:
+
+```sh
+npm run benchmark:tfhe -- --run --artifact
+```
+
 Run tests:
 
 ```sh
@@ -96,17 +114,22 @@ Current modules:
 - `lib/linear-algebra.mjs` - model metadata, dense matrix-vector scoring, sparse event scoring, and model validation.
 - `lib/nmnist.mjs` - N-MNIST event parsing, feature extraction, and plaintext baseline evaluation.
 - `lib/openfhe-adapter.mjs` - OpenFHE contract builder, validation, contract-bound real-library adapter manifest, local detection, and build-plan output.
+- `lib/tfhe-rs-adapter.mjs` - TFHE-rs contract builder, validation, crypto inventory, privacy boundary, OpenFHE comparison table, local Cargo detection, and build-plan output.
 - `lib/classifier.mjs` - plaintext and encrypted linear spike-count classifiers.
 - `lib/benchmark.mjs` - benchmark schema, accuracy summary, security parameters, crypto inventory, dense baseline comparison, packed-vector planning, explicit privacy-mode decision, four-mode privacy comparison, spatial-cluster readiness, and privacy boundary.
 - `lib/artifacts.mjs` - benchmark and comparison artifact publisher.
 - `openfhe/` - real OpenFHE BFVrns C++ demo and CMake target for the sparse score contract.
 - `openfhe-benchmark.mjs` - OpenFHE plan/run CLI.
+- `tfhe-rs/` - real TFHE-rs Rust crate using `FheUint16` sparse scoring and an encrypted `FheBool` threshold/comparison gate.
+- `tfhe-rs-benchmark.mjs` - TFHE-rs plan/run CLI and comparison-artifact publisher.
 - `LINEAR_ALGEBRA_NEXT.md` - handoff for the next matrix/vector cleanup pass.
 - `PLAINTEXT_BASELINE.md` - real-event-data baseline notes and CLI usage.
 - `OPENFHE_INTEGRATION.md` - native OpenFHE build/run notes.
+- `TFHE_RS_INTEGRATION.md` - native TFHE-rs build/run notes and OpenFHE comparison guidance.
 - `research-assumptions.json` - falsifiable assumptions and clean-room/IP guardrails.
 
 The toy scheme remains the dependency-free demo. The OpenFHE lane is now the
-first real HE integration target and runs once OpenFHE is installed locally.
-Use native results, not JavaScript toy timings, for any future speed or energy
-efficiency claim.
+first packed-arithmetic HE integration target and runs once OpenFHE is
+installed locally. The TFHE-rs lane is the first Rust Boolean/threshold-friendly
+target and runs with Cargo. Use native results, not JavaScript toy timings, for
+any future speed, ciphertext-size, or energy-efficiency claim.

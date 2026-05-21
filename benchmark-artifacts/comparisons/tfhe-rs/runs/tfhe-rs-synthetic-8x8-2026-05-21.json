@@ -1,0 +1,1091 @@
+{
+  "schema": "neurofhe.comparisonArtifact.v1",
+  "artifactId": "tfhe-rs-synthetic-8x8-2026-05-21",
+  "generatedAt": "2026-05-21T12:00:00.000Z",
+  "subjectSchema": "neurofhe.tfheRs.runComparison.v1",
+  "subject": {
+    "schema": "neurofhe.tfheRs.runComparison.v1",
+    "adapter": {
+      "schema": "neurofhe.realLibraryAdapter.v1",
+      "adapterId": "tfhe-rs-sparse-integer-threshold-v1",
+      "library": {
+        "name": "TFHE-rs",
+        "crate": "tfhe",
+        "version": "1.6.1",
+        "scheme": "TFHE integer + Boolean threshold",
+        "role": "real-library encrypted sparse integer scoring and encrypted threshold gate",
+        "requiredForNativeRun": true,
+        "license": "BSD-3-Clause-Clear for development, research, prototyping, and experimentation; review Zama patent/commercial terms before non-research use"
+      },
+      "nativeTarget": "neurofhe-tfhe-demo",
+      "contractDigest": {
+        "algorithm": "sha256",
+        "value": "76c3d63d88ae99646c65f213bcd970d6c2bdb57dc59164eb4440d30174355ad3"
+      },
+      "contractValidation": {
+        "status": "valid",
+        "errors": []
+      },
+      "contract": {
+        "schema": "neurofhe.tfheRs.contract.v1",
+        "scheme": "tfhe-rs-integer-threshold",
+        "scoreEquation": "scores = W x + bias",
+        "scoreDomain": "non-negative-integers",
+        "boundaryDomain": "bio-digital-event-intelligence",
+        "eventRepresentation": "spatial-sorted-events",
+        "encoder": {
+          "id": "canonical-spatial-aware-spike-sorter-v1",
+          "schema": "neurofhe.encoder.spatialSpikeSorter.v1",
+          "implementationTarget": "fpga-or-edge-fsm",
+          "outputSchema": "neurofhe.events.v1.spatial-sorter",
+          "productionClaim": false
+        },
+        "eventSchema": "neurofhe.events.v1.spatial-sorter",
+        "encoding": "spatial-binned-spike-count",
+        "spatialBins": [
+          4,
+          2
+        ],
+        "windowMs": 50,
+        "privacyMode": {
+          "id": "public-active-neuron-positions-encrypted-features",
+          "label": "Public active neuron positions + encrypted features",
+          "representation": "spatial-sorted-events",
+          "speedTier": "fastest",
+          "sparsityProtection": "low",
+          "encryptedFeatureSlots": 18,
+          "positionPolicy": "sorted active neuron positions are public; sorted event feature values are encrypted",
+          "paddingPolicy": "none",
+          "publicFields": [
+            "activeNeuronPositions",
+            "featureShape",
+            "publicModelWeights",
+            "publicBias"
+          ],
+          "encryptedFields": [
+            "activeFeatureValues",
+            "classScoreCiphertexts",
+            "thresholdDecisionBit"
+          ],
+          "operationCounts": {
+            "encryptions": 20,
+            "scalarMultiplies": 36,
+            "adds": 36,
+            "encryptedComparisons": 1,
+            "decryptions": 3
+          },
+          "metadataLeakage": [
+            "active neuron identity and time-bin pattern",
+            "exact sorted active event count",
+            "coarse spatial activity",
+            "timing/sparsity metadata"
+          ],
+          "hides": [
+            "raw sorted-event feature values",
+            "raw neural samples",
+            "raw electrode identifiers",
+            "final class scores until client decrypts"
+          ],
+          "reconstructionResistance": "prevents raw sample replay or value inspection by the compute provider, but does not hide public position metadata",
+          "notes": "TFHE-rs target mode for sparse sorted-event scoring plus encrypted threshold decision; use only where public active neuron metadata is acceptable."
+        },
+        "featureShape": [
+          8,
+          8
+        ],
+        "featureCount": 64,
+        "classes": [
+          "normal",
+          "anomaly"
+        ],
+        "matrixShape": [
+          2,
+          64
+        ],
+        "activeEventCount": 18,
+        "publicActiveNeuronPositions": [
+          {
+            "index": 1,
+            "timeBin": 0,
+            "neuronId": 1,
+            "unitX": 1,
+            "unitY": 0
+          },
+          {
+            "index": 4,
+            "timeBin": 0,
+            "neuronId": 4,
+            "unitX": 0,
+            "unitY": 1
+          },
+          {
+            "index": 9,
+            "timeBin": 1,
+            "neuronId": 1,
+            "unitX": 1,
+            "unitY": 0
+          },
+          {
+            "index": 11,
+            "timeBin": 1,
+            "neuronId": 3,
+            "unitX": 3,
+            "unitY": 0
+          },
+          {
+            "index": 12,
+            "timeBin": 1,
+            "neuronId": 4,
+            "unitX": 0,
+            "unitY": 1
+          },
+          {
+            "index": 19,
+            "timeBin": 2,
+            "neuronId": 3,
+            "unitX": 3,
+            "unitY": 0
+          },
+          {
+            "index": 20,
+            "timeBin": 2,
+            "neuronId": 4,
+            "unitX": 0,
+            "unitY": 1
+          },
+          {
+            "index": 26,
+            "timeBin": 3,
+            "neuronId": 2,
+            "unitX": 2,
+            "unitY": 0
+          },
+          {
+            "index": 27,
+            "timeBin": 3,
+            "neuronId": 3,
+            "unitX": 3,
+            "unitY": 0
+          },
+          {
+            "index": 28,
+            "timeBin": 3,
+            "neuronId": 4,
+            "unitX": 0,
+            "unitY": 1
+          },
+          {
+            "index": 34,
+            "timeBin": 4,
+            "neuronId": 2,
+            "unitX": 2,
+            "unitY": 0
+          },
+          {
+            "index": 36,
+            "timeBin": 4,
+            "neuronId": 4,
+            "unitX": 0,
+            "unitY": 1
+          },
+          {
+            "index": 37,
+            "timeBin": 4,
+            "neuronId": 5,
+            "unitX": 1,
+            "unitY": 1
+          },
+          {
+            "index": 44,
+            "timeBin": 5,
+            "neuronId": 4,
+            "unitX": 0,
+            "unitY": 1
+          },
+          {
+            "index": 45,
+            "timeBin": 5,
+            "neuronId": 5,
+            "unitX": 1,
+            "unitY": 1
+          },
+          {
+            "index": 52,
+            "timeBin": 6,
+            "neuronId": 4,
+            "unitX": 0,
+            "unitY": 1
+          },
+          {
+            "index": 54,
+            "timeBin": 6,
+            "neuronId": 6,
+            "unitX": 2,
+            "unitY": 1
+          },
+          {
+            "index": 62,
+            "timeBin": 7,
+            "neuronId": 6,
+            "unitX": 2,
+            "unitY": 1
+          }
+        ],
+        "activeEvents": [
+          {
+            "index": 1,
+            "value": 1
+          },
+          {
+            "index": 4,
+            "value": 1
+          },
+          {
+            "index": 9,
+            "value": 1
+          },
+          {
+            "index": 11,
+            "value": 1
+          },
+          {
+            "index": 12,
+            "value": 1
+          },
+          {
+            "index": 19,
+            "value": 1
+          },
+          {
+            "index": 20,
+            "value": 1
+          },
+          {
+            "index": 26,
+            "value": 1
+          },
+          {
+            "index": 27,
+            "value": 1
+          },
+          {
+            "index": 28,
+            "value": 1
+          },
+          {
+            "index": 34,
+            "value": 1
+          },
+          {
+            "index": 36,
+            "value": 1
+          },
+          {
+            "index": 37,
+            "value": 1
+          },
+          {
+            "index": 44,
+            "value": 1
+          },
+          {
+            "index": 45,
+            "value": 1
+          },
+          {
+            "index": 52,
+            "value": 1
+          },
+          {
+            "index": 54,
+            "value": 1
+          },
+          {
+            "index": 62,
+            "value": 1
+          }
+        ],
+        "weights": {
+          "normal": [
+            1,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "anomaly": [
+            0,
+            0,
+            2,
+            2,
+            3,
+            3,
+            2,
+            0,
+            0,
+            0,
+            2,
+            2,
+            3,
+            3,
+            2,
+            0,
+            0,
+            0,
+            2,
+            2,
+            3,
+            3,
+            2,
+            0,
+            1,
+            1,
+            3,
+            3,
+            4,
+            4,
+            3,
+            1,
+            1,
+            1,
+            3,
+            3,
+            4,
+            4,
+            3,
+            1,
+            1,
+            1,
+            3,
+            3,
+            4,
+            4,
+            3,
+            1,
+            1,
+            1,
+            3,
+            3,
+            4,
+            4,
+            3,
+            1,
+            0,
+            0,
+            2,
+            2,
+            3,
+            3,
+            2,
+            0
+          ]
+        },
+        "bias": {
+          "normal": 0,
+          "anomaly": 0
+        },
+        "expectedPlaintextScores": {
+          "normal": 9,
+          "anomaly": 51
+        },
+        "expectedClassification": "anomaly",
+        "booleanDecision": {
+          "schema": "neurofhe.tfheRs.booleanDecision.v1",
+          "gate": "anomaly_score_gt_normal_score",
+          "encryptedResultType": "FheBool",
+          "expectedPlaintext": true
+        },
+        "operationCounts": {
+          "encryptions": 20,
+          "scalarMultiplies": 36,
+          "adds": 36,
+          "encryptedComparisons": 1,
+          "decryptions": 3
+        },
+        "ciphertextBytes": {
+          "measurement": "reported by native TFHE-rs run via safe_serialized_size",
+          "expectedFields": [
+            "activeValueCiphertexts",
+            "classScoreCiphertexts",
+            "thresholdDecisionBit"
+          ]
+        },
+        "securityParameters": {
+          "schema": "neurofhe.securityParameters.v1",
+          "scheme": "tfhe-rs-integer-threshold",
+          "library": "TFHE-rs",
+          "crate": "tfhe",
+          "crateVersion": "1.6.1",
+          "configuration": "ConfigBuilder::default() high-level API",
+          "encryptedTypes": [
+            "FheUint16",
+            "FheBool"
+          ],
+          "securityModel": "Uses TFHE-rs default high-level parameter selection for the local build; no independent security review or side-channel hardening.",
+          "reproducibility": "Synthetic event/model data are deterministic. Cryptographic key generation uses runtime randomness and is intentionally not fixed by the demo seed.",
+          "productionClaim": false
+        },
+        "cryptoInventory": {
+          "schema": "neurofhe.crypto.inventory.v1",
+          "keyEstablishment": [
+            "ML-KEM-768-design-target"
+          ],
+          "signatures": [
+            "ML-DSA-65-design-target",
+            "SLH-DSA-design-target"
+          ],
+          "encryptedComputation": [
+            "tfhe-rs-1.6.1-integer-boolean-research-only",
+            "openfhe-bfvrns-comparison-lane"
+          ],
+          "hashes": [
+            "SHA3-256-design-target",
+            "BLAKE3-design-target"
+          ],
+          "classicalFallbacks": [
+            "X25519-design-target",
+            "Ed25519-design-target"
+          ],
+          "tfheRs": {
+            "crate": "tfhe",
+            "version": "1.6.1",
+            "features": [
+              "boolean",
+              "integer"
+            ],
+            "defaultFeatures": false,
+            "role": "encrypted sparse integer scoring plus encrypted Boolean threshold/comparison gate",
+            "ciphertextSizing": "native run reports safe_serialized_size for active values, class scores, and decision bit"
+          },
+          "hybridMode": true,
+          "productionClaim": false,
+          "notes": "Inventory names research roles and comparison lanes. This TFHE-rs path is not production cryptography and has not had implementation review."
+        },
+        "privacyBoundary": {
+          "schema": "neurofhe.tfheRs.privacyBoundary.v1",
+          "gatewaySees": [
+            "raw neural-like samples before export",
+            "sorted event window",
+            "active event values before encryption",
+            "active event positions",
+            "sorter configuration summary"
+          ],
+          "computeSees": [
+            "approved active event positions",
+            "public model weights",
+            "public model bias",
+            "encrypted TFHE-rs active spike values",
+            "encrypted TFHE-rs class scores",
+            "encrypted TFHE-rs threshold decision bit"
+          ],
+          "clientSees": [
+            "decrypted class scores",
+            "decrypted threshold decision bit",
+            "final classification"
+          ],
+          "withheld": [
+            "raw neural samples",
+            "raw electrode identifiers",
+            "raw sample timestamp order",
+            "device identifiers",
+            "local subject or session references",
+            "operator notes"
+          ],
+          "residualRisks": [
+            "public active positions leak spatial and timing metadata",
+            "event-count sparsity leaks workload size unless padded",
+            "model weights and bias are public in this prototype",
+            "side-channel and deployment hardening are out of scope"
+          ],
+          "productionClaim": false
+        },
+        "productionClaim": false
+      },
+      "exactContractAssertions": {
+        "scoreEquation": "scores = W x + bias",
+        "scoreDomain": "non-negative-integers",
+        "featureShape": [
+          8,
+          8
+        ],
+        "matrixShape": [
+          2,
+          64
+        ],
+        "classes": [
+          "normal",
+          "anomaly"
+        ],
+        "expectedPlaintextScores": {
+          "normal": 9,
+          "anomaly": 51
+        },
+        "expectedClassification": "anomaly",
+        "booleanDecision": {
+          "schema": "neurofhe.tfheRs.booleanDecision.v1",
+          "gate": "anomaly_score_gt_normal_score",
+          "encryptedResultType": "FheBool",
+          "expectedPlaintext": true
+        }
+      },
+      "tfheVsOpenFheComparison": {
+        "schema": "neurofhe.cryptoLaneComparison.v1",
+        "sameTask": true,
+        "scoreEquation": "scores = W x + bias",
+        "eventRepresentation": "spatial-sorted-events",
+        "featureShape": [
+          8,
+          8
+        ],
+        "activeEventCount": 18,
+        "expectedScores": {
+          "normal": 9,
+          "anomaly": 51
+        },
+        "expectedClassification": "anomaly",
+        "tfheRs": {
+          "scheme": "TFHE-rs integer + Boolean threshold",
+          "operationCounts": {
+            "encryptions": 20,
+            "scalarMultiplies": 36,
+            "adds": 36,
+            "encryptedComparisons": 1,
+            "decryptions": 3
+          },
+          "ciphertextSizeSource": "native safe_serialized_size result",
+          "bestFor": [
+            "threshold gates",
+            "small Boolean circuits",
+            "decision-tree or LUT-style sparse rules",
+            "encrypted comparisons after sparse integer scoring"
+          ]
+        },
+        "tfheBestFor": [
+          "threshold gates",
+          "small Boolean circuits",
+          "decision-tree or LUT-style sparse rules",
+          "encrypted comparisons after sparse integer scoring"
+        ],
+        "openFheBfv": {
+          "scheme": "OpenFHE BFVrns",
+          "operationCounts": {
+            "encryptions": 20,
+            "scalarMultiplies": 36,
+            "adds": 36,
+            "decryptions": 2
+          },
+          "ciphertextSizeSource": "native OpenFHE result when OpenFHE is installed",
+          "bestFor": [
+            "packed integer linear algebra",
+            "batched dot products",
+            "larger arithmetic workloads with public weights"
+          ]
+        },
+        "preferTfheRsWhen": "The sparse event model becomes threshold-heavy, decision-tree-like, LUT-style, or comparison/Boolean dominated.",
+        "preferOpenFheWhen": "The workload is mostly packed linear algebra over integer or approximate features and benefits from batching.",
+        "productionClaim": false
+      },
+      "privacyModeDecision": {
+        "schema": "neurofhe.privacyModeDecision.v1",
+        "scoreContract": "scores = W x + bias",
+        "allowedModes": [
+          "public-active-positions",
+          "padded-sparse-batches",
+          "dense-encrypted-windows"
+        ],
+        "recommendationInputs": {
+          "featureCount": 64,
+          "activeEventCount": 18,
+          "density": 0.28125,
+          "classCount": 2,
+          "metadataTolerance": "medium",
+          "sparsityProtection": "partial"
+        },
+        "recommendedMode": "padded-sparse-batches",
+        "rationale": "Use padded sparse batches as the default comparison lane: it reduces exact sparsity disclosure while staying cheaper than dense encrypted windows.",
+        "publicActivePositions": {
+          "id": "public-active-positions",
+          "label": "Public active positions",
+          "encryptedFeatureSlots": 18,
+          "operationCounts": {
+            "encryptions": 20,
+            "scalarMultiplies": 36,
+            "adds": 36,
+            "decryptions": 2
+          },
+          "metadataTradeoff": "Fastest path, but exact active positions, timing, and event count are visible to compute."
+        },
+        "paddedSparseBatches": {
+          "id": "padded-sparse-batches",
+          "label": "Padded sparse batches",
+          "encryptedFeatureSlots": 32,
+          "operationCounts": {
+            "encryptions": 34,
+            "scalarMultiplies": 64,
+            "adds": 64,
+            "decryptions": 2
+          },
+          "metadataTradeoff": "Hides exact active-event count inside a fixed bucket, while keeping lower cost than dense windows."
+        },
+        "denseEncryptedWindows": {
+          "id": "dense-encrypted-windows",
+          "label": "Dense encrypted windows",
+          "encryptedFeatureSlots": 64,
+          "operationCounts": {
+            "encryptions": 66,
+            "scalarMultiplies": 128,
+            "adds": 128,
+            "decryptions": 2
+          },
+          "metadataTradeoff": "Best of these three at hiding active positions and sparsity, with the highest encrypted workload."
+        },
+        "currentOpenFheTarget": "The included OpenFHE BFVrns target currently demonstrates the public active-neuron-position sparse path; use this decision object to choose whether future comparison runs should stay public sparse, add padding, or move dense.",
+        "productionClaim": false
+      },
+      "packedVectorPlanning": {
+        "schema": "neurofhe.packedVectorPlanning.v1",
+        "scoreContract": "scores = W x + bias",
+        "defaultLane": "bfv-bgv-packed-integer",
+        "featureCount": 64,
+        "activeEventCount": 18,
+        "classCount": 2,
+        "lanes": [
+          {
+            "id": "bfv-bgv-packed-integer",
+            "schemeFamily": "BFV/BGV",
+            "scoreContract": "scores = W x + bias",
+            "valueDomain": "non-negative integer spike counts and public non-negative weights",
+            "slotTargets": {
+              "activeSparseSlots": 32,
+              "denseWindowSlots": 64
+            },
+            "packingNotes": [
+              "pack active values",
+              "keep active indices public or padded according to the privacy-mode decision",
+              "pack one class row or one event window per ciphertext before testing rotations",
+              "start with ciphertext-plaintext multiplies for public weights and public bias"
+            ],
+            "firstMeasurement": "Compare public active positions, padded sparse batches, and dense encrypted windows under the same BFV/BGV parameter family.",
+            "caveats": [
+              "parameter selection and noise budget must be measured in a reviewed library",
+              "public active positions can leak timing and sparsity metadata"
+            ]
+          },
+          {
+            "id": "ckks-packed-approximate",
+            "schemeFamily": "CKKS",
+            "scoreContract": "scores = W x + bias after quantization/scale review",
+            "valueDomain": "approximate real or fixed-point features",
+            "slotTargets": {
+              "activeSparseSlots": 32,
+              "denseWindowSlots": 64
+            },
+            "packingNotes": [
+              "pack dense or padded vectors when approximate features are justified",
+              "track scale, rescale, and rounding error against plaintext scores",
+              "treat CKKS as a comparison lane until the integer contract needs approximate features"
+            ],
+            "firstMeasurement": "Record score drift, classification agreement, latency, and ciphertext bytes against the integer BFV/BGV lane.",
+            "caveats": [
+              "approximate arithmetic changes the integer score contract",
+              "classification margins must absorb CKKS rounding error before any stronger claim"
+            ]
+          }
+        ],
+        "nonGoals": [
+          "encrypted argmax",
+          "encrypted training",
+          "medical diagnosis",
+          "treatment",
+          "production cryptographic assurance"
+        ],
+        "productionClaim": false
+      },
+      "framingGuardrail": {
+        "schema": "neurofhe.framingGuardrail.v1",
+        "preferredFrame": "privacy-preserving event intelligence",
+        "boundaryDomain": "bio-digital-event-intelligence",
+        "useLanguage": [
+          "sensitive signals stay local",
+          "approved event features cross the boundary under privacy and cryptographic controls",
+          "encrypted scoring over a bounded event representation"
+        ],
+        "avoidClaims": [
+          "medical diagnosis",
+          "treatment",
+          "clinical validation",
+          "mind reading",
+          "production cryptography"
+        ],
+        "note": "Bio-digital language is used here for privacy-preserving event intelligence, not medical diagnosis or treatment."
+      },
+      "detection": {
+        "available": true,
+        "manifestPath": "prototype/tfhe-rs/Cargo.toml",
+        "manifestExists": true,
+        "cargo": "cargo 1.92.0 (344c4567c 2025-10-21)",
+        "reason": null
+      },
+      "manifestPath": "prototype/tfhe-rs/Cargo.toml",
+      "sourcePath": "prototype/tfhe-rs/src/lib.rs",
+      "buildDirectory": "target directory managed by Cargo under prototype/tfhe-rs/target",
+      "runContract": "The native target must preserve public model metadata, public or padded active-position policy, encrypted active feature values, encrypted class-score ciphertexts, and a client-decrypted threshold decision bit.",
+      "productionClaim": false
+    },
+    "nativeResult": {
+      "accuracy": {
+        "caveat": "Synthetic contract agreement on one event window, not dataset accuracy.",
+        "metric": "single-window-plaintext-agreement",
+        "sampleCount": 1,
+        "schema": "neurofhe.accuracy.v1",
+        "value": 1
+      },
+      "activeEventCount": 18,
+      "activeNeuronPositions": [
+        {
+          "index": 1,
+          "neuronId": 1,
+          "timeBin": 0,
+          "unitX": 1,
+          "unitY": 0
+        },
+        {
+          "index": 4,
+          "neuronId": 4,
+          "timeBin": 0,
+          "unitX": 0,
+          "unitY": 1
+        },
+        {
+          "index": 9,
+          "neuronId": 1,
+          "timeBin": 1,
+          "unitX": 1,
+          "unitY": 0
+        },
+        {
+          "index": 11,
+          "neuronId": 3,
+          "timeBin": 1,
+          "unitX": 3,
+          "unitY": 0
+        },
+        {
+          "index": 12,
+          "neuronId": 4,
+          "timeBin": 1,
+          "unitX": 0,
+          "unitY": 1
+        },
+        {
+          "index": 19,
+          "neuronId": 3,
+          "timeBin": 2,
+          "unitX": 3,
+          "unitY": 0
+        },
+        {
+          "index": 20,
+          "neuronId": 4,
+          "timeBin": 2,
+          "unitX": 0,
+          "unitY": 1
+        },
+        {
+          "index": 26,
+          "neuronId": 2,
+          "timeBin": 3,
+          "unitX": 2,
+          "unitY": 0
+        },
+        {
+          "index": 27,
+          "neuronId": 3,
+          "timeBin": 3,
+          "unitX": 3,
+          "unitY": 0
+        },
+        {
+          "index": 28,
+          "neuronId": 4,
+          "timeBin": 3,
+          "unitX": 0,
+          "unitY": 1
+        },
+        {
+          "index": 34,
+          "neuronId": 2,
+          "timeBin": 4,
+          "unitX": 2,
+          "unitY": 0
+        },
+        {
+          "index": 36,
+          "neuronId": 4,
+          "timeBin": 4,
+          "unitX": 0,
+          "unitY": 1
+        },
+        {
+          "index": 37,
+          "neuronId": 5,
+          "timeBin": 4,
+          "unitX": 1,
+          "unitY": 1
+        },
+        {
+          "index": 44,
+          "neuronId": 4,
+          "timeBin": 5,
+          "unitX": 0,
+          "unitY": 1
+        },
+        {
+          "index": 45,
+          "neuronId": 5,
+          "timeBin": 5,
+          "unitX": 1,
+          "unitY": 1
+        },
+        {
+          "index": 52,
+          "neuronId": 4,
+          "timeBin": 6,
+          "unitX": 0,
+          "unitY": 1
+        },
+        {
+          "index": 54,
+          "neuronId": 6,
+          "timeBin": 6,
+          "unitX": 2,
+          "unitY": 1
+        },
+        {
+          "index": 62,
+          "neuronId": 6,
+          "timeBin": 7,
+          "unitX": 2,
+          "unitY": 1
+        }
+      ],
+      "booleanDecision": {
+        "decrypted": true,
+        "encryptedResultType": "FheBool",
+        "expectedPlaintext": true,
+        "gate": "anomaly_score_gt_normal_score",
+        "matchesExpected": true,
+        "schema": "neurofhe.tfheRs.booleanDecisionResult.v1"
+      },
+      "boundaryDomain": "bio-digital-event-intelligence",
+      "caveat": "TFHE-rs research prototype path only; not production cryptography, not clinical validation, and not side-channel reviewed.",
+      "ciphertextBytes": {
+        "activeValueCiphertexts": 2377818,
+        "classScoreCiphertexts": 264202,
+        "measurement": "TFHE-rs safe_serialized_size",
+        "thresholdDecisionBit": 16593,
+        "total": 2658613
+      },
+      "classification": "anomaly",
+      "cryptoInventory": {
+        "encryptedComputation": [
+          "tfhe-rs-1.6.1-integer-boolean-research-only"
+        ],
+        "productionClaim": false,
+        "schema": "neurofhe.crypto.inventory.v1",
+        "tfheRs": {
+          "crate": "tfhe",
+          "defaultFeatures": false,
+          "features": [
+            "boolean",
+            "integer"
+          ],
+          "role": "encrypted sparse integer scoring plus encrypted Boolean threshold/comparison gate",
+          "version": "1.6.1"
+        }
+      },
+      "encoder": {
+        "id": "canonical-spatial-aware-spike-sorter-v1",
+        "implementationTarget": "fpga-or-edge-fsm",
+        "outputSchema": "neurofhe.events.v1.spatial-sorter",
+        "productionClaim": false,
+        "schema": "neurofhe.encoder.spatialSpikeSorter.v1"
+      },
+      "encoding": "spatial-binned-spike-count",
+      "eventRepresentation": "spatial-sorted-events",
+      "eventSchema": "neurofhe.events.v1.spatial-sorter",
+      "expectedClassification": "anomaly",
+      "expectedScores": {
+        "anomaly": 51,
+        "normal": 9
+      },
+      "featureShape": [
+        8,
+        8
+      ],
+      "latencyMs": 7233.972,
+      "operationCounts": {
+        "adds": 36,
+        "decryptions": 3,
+        "encryptedComparisons": 1,
+        "encryptions": 20,
+        "scalarMultiplies": 36
+      },
+      "plaintextMatchesExpected": true,
+      "privacyBoundary": {
+        "clientSees": [
+          "decrypted class scores",
+          "decrypted threshold decision bit",
+          "final classification"
+        ],
+        "computeSees": [
+          "approved active event positions",
+          "public model weights",
+          "public model bias",
+          "encrypted TFHE-rs active spike values",
+          "encrypted TFHE-rs class scores",
+          "encrypted TFHE-rs threshold decision bit"
+        ],
+        "gatewaySees": [
+          "sorted event window",
+          "active event values before encryption",
+          "active event positions"
+        ],
+        "productionClaim": false,
+        "schema": "neurofhe.tfheRs.privacyBoundary.v1",
+        "withheld": [
+          "raw neural samples",
+          "raw electrode identifiers",
+          "raw sample timestamp order",
+          "device identifiers",
+          "local subject or session references",
+          "operator notes"
+        ]
+      },
+      "privacyMode": {
+        "encryptedFields": [
+          "activeFeatureValues",
+          "classScoreCiphertexts",
+          "thresholdDecisionBit"
+        ],
+        "id": "public-active-neuron-positions-encrypted-features",
+        "metadataLeakage": [
+          "active neuron identity and time-bin pattern",
+          "exact sorted active event count",
+          "coarse spatial activity"
+        ],
+        "publicFields": [
+          "activeNeuronPositions",
+          "featureShape",
+          "publicModelWeights",
+          "publicBias"
+        ]
+      },
+      "productionClaim": false,
+      "schema": "neurofhe.tfheRs.result.v1",
+      "scheme": "tfhe-rs-integer-threshold",
+      "scoreEquation": "scores = W x + bias",
+      "scores": {
+        "anomaly": 51,
+        "normal": 9
+      },
+      "securityParameters": {
+        "configuration": "ConfigBuilder::default() high-level API",
+        "crate": "tfhe",
+        "crateVersion": "1.6.1",
+        "encryptedTypes": [
+          "FheUint16",
+          "FheBool"
+        ],
+        "library": "TFHE-rs",
+        "productionClaim": false,
+        "reproducibility": "Synthetic event/model data are deterministic; key generation uses runtime cryptographic randomness.",
+        "schema": "neurofhe.securityParameters.v1",
+        "scheme": "tfhe-rs-integer-threshold"
+      },
+      "spatialBins": [
+        4,
+        2
+      ]
+    },
+    "productionClaim": false
+  },
+  "framingGuardrail": {
+    "schema": "neurofhe.framingGuardrail.v1",
+    "preferredFrame": "privacy-preserving event intelligence",
+    "boundaryDomain": "bio-digital-event-intelligence",
+    "useLanguage": [
+      "sensitive signals stay local",
+      "approved event features cross the boundary under privacy and cryptographic controls",
+      "encrypted scoring over a bounded event representation"
+    ],
+    "avoidClaims": [
+      "medical diagnosis",
+      "treatment",
+      "clinical validation",
+      "mind reading",
+      "production cryptography"
+    ],
+    "note": "Bio-digital language is used here for privacy-preserving event intelligence, not medical diagnosis or treatment."
+  },
+  "productionClaim": false
+}

@@ -1,0 +1,20 @@
+[package]
+name = "neurofhe-tfhe-rs"
+version = "0.1.0"
+edition = "2021"
+license = "CC0-1.0"
+publish = false
+rust-version = "1.91.1"
+
+[lib]
+name = "neurofhe_tfhe_rs"
+path = "src/lib.rs"
+
+[[bin]]
+name = "neurofhe-tfhe-demo"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tfhe = { version = "1.6.1", default-features = false, features = ["boolean", "integer"] }
