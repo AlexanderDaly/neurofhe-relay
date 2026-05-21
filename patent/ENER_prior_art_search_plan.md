@@ -15,11 +15,30 @@ The ENER search plan should therefore test blockchain and access-control referen
 - Latent compression occurs before encryption.
 - Raw neural telemetry remains local by default.
 - Remote inference is performed on encrypted latent-space representations.
+- A spatial spike sorter can convert event-derived neural telemetry into sorted sparse events before encrypted relay.
+- A privacy mode can expose permitted active positions while encrypting active feature values, or can escalate to padded sparse batches or dense encrypted windows when metadata leakage is too high.
+- A BFVrns depth-1 linear scorer can compute `scores = W x + bias` over encrypted active feature values rather than executing a full encrypted SNN as the primary claim center.
 - Embeddings are designed to be reconstruction-resistant or identity-obfuscating.
 - Compression adapts based on encryption cost, bandwidth, entropy, signal quality, and task type.
 - The architecture is split across neural acquisition, edge encoding, encrypted relay, and encrypted inference.
 - The system performs privacy-preserving inference before any optional storage or access-management layer becomes relevant.
 - The inventive center is not blockchain storage, smart-contract decryption authorization, or encrypted record retrieval.
+
+## HE-SNN and Sparse HE Prior Art Watchlist
+
+These technical references are close enough that a later nonprovisional should differentiate them explicitly. They are included as search leads, not as a completed IDS.
+
+| Reference | What It Appears to Teach | ENER Differentiator to Preserve |
+|---|---|---|
+| PrivSpike: Employing Homomorphic Encryption for Private Inference of Deep Spiking Neural Networks, arXiv:2510.03995 | CKKS-based private inference for deep SNNs, including neuromorphic datasets and reported encrypted-inference runtimes. | Do not claim "HE for SNN inference" broadly. Emphasize local trusted-boundary neural relay, spatial sorting before encrypted relay, active-position/privacy-mode selection, and encrypted active-value scoring. |
+| SpENCNN: Orchestrating Encoding and Sparsity for Fast Homomorphically Encrypted Neural Network Inference, ICML/PMLR 2023 | HE-aware sparsity and packing to improve encrypted neural-network inference latency. | Tie sparsity to neural telemetry privacy boundaries, sorted event descriptors, metadata-leakage controls, and raw-neural-data retention rather than generic cloud ML acceleration. |
+| Nikfam et al., A Homomorphic Encryption Framework for Privacy-Preserving Spiking Neural Networks, Information 2023 | BFV/Pyfhel-style encrypted SNN framework and parameter discussion. | Distinguish a split-device BCI relay where raw neural event streams stay local and only encrypted active feature values leave the device. |
+| FHE-DiSNN / Privacy-Preserving Discretized Spiking Neural Networks, arXiv:2308.12529 | Homomorphic evaluation of discretized SNN operations, including protected firing/reset style operations. | Claim the bounded sorted-event relay and depth-1 linear scorer as a concrete low-depth implementation, with broader encrypted SNN layers as optional alternatives. |
+| PrivateSNN and related privacy-preserving SNN work | Privacy-preserving SNN training or model-protection approaches. | Keep claim focus on protected inference over locally derived neural representations and reconstruction-resistant event/embedding release criteria. |
+
+Suggested examiner-facing distinction language:
+
+> The disclosed preferred embodiment does not merely apply homomorphic encryption to an SNN. It first enforces a local neural telemetry boundary, converts event-derived telemetry into a sorted sparse representation, separates permitted active-position descriptors from active feature values, encrypts the active feature values before external transmission, and selects among public-position, padded-sparse, and dense encrypted privacy modes based on metadata leakage and encrypted-compute cost.
 
 ## Search Table
 
@@ -34,6 +53,10 @@ The ENER search plan should therefore test blockchain and access-control referen
 | "federated BCI learning" | arXiv; IEEE Xplore; PubMed | Captures local training and multi-user BCI model improvement. | Distinguish federated model updates from encrypted inference over latent embeddings. |
 | "secure neurotechnology" | WIPO Patentscope; Google Patents; PubMed | Captures broader neurotech security. | Test whether security protects raw telemetry during remote inference. |
 | "homomorphic encrypted inference" | Google Patents; arXiv; IEEE Xplore | Captures general encrypted ML inference methods. | Determine whether general FHE inference is adapted to neural telemetry via local latent compression. |
+| "PrivSpike" | arXiv; Google Scholar; Semantic Scholar | Captures CKKS encrypted SNN inference that could be close to broad HE-SNN claims. | Distinguish local trusted-boundary sorting, active-position/privacy-mode selection, and active-value encryption. |
+| "SpENCNN" | PMLR; arXiv; Google Scholar | Captures HE-aware sparsity and packing. | Distinguish neural telemetry-specific privacy boundary and metadata leakage controls from generic CNN acceleration. |
+| "FHE-DiSNN" | arXiv; Google Scholar | Captures discretized SNN homomorphic evaluation. | Distinguish low-depth sorted sparse-event scorer and local raw-telemetry retention. |
+| "homomorphic encryption framework privacy preserving spiking neural networks BFV" | MDPI; Google Scholar; arXiv | Captures Nikfam BFV/Pyfhel SNN work. | Compare BFV encrypted SNN framing against BFVrns sorted active-value relay. |
 | "privacy-preserving neuroimaging" | PubMed; arXiv; IEEE Xplore | Captures fMRI, MEG, fNIRS, and broader neuroimaging privacy. | Compare de-identification or federated analytics against encrypted latent inference. |
 | "EEG feature encryption classifier" | IEEE Xplore; Google Patents | Captures EEG feature-based classifiers with encryption. | Test whether the feature vector is task-compressed, reconstruction-resistant, and adaptively shaped for encrypted compute. |
 | "brain signal homomorphic classifier" | arXiv; IEEE Xplore; Google Patents | Captures classifiers running over encrypted brain signals. | Compare model depth, protected feature type, and edge-compression policy. |
@@ -128,6 +151,15 @@ Search for clinical neurotechnology, BCI privacy, neuroimaging privacy, and neur
 | Reference A |  |  |  |  |  |  |  |  |
 | Reference B |  |  |  |  |  |  |  |  |
 | Reference C |  |  |  |  |  |  |  |  |
+
+## Examiner Distinction Matrix Template
+
+| Reference | Does it keep raw neural telemetry local? | Does it disclose a local spatial spike sorter? | Does it separate public/padded active positions from encrypted active values? | Does it select privacy modes based on metadata leakage? | Does it use a BFVrns depth-1 sorted-event scorer? | Distinction notes |
+|---|---|---|---|---|---|---|
+| PrivSpike |  |  |  |  |  |  |
+| SpENCNN |  |  |  |  |  |  |
+| Nikfam BFV-SNN |  |  |  |  |  |  |
+| FHE-DiSNN |  |  |  |  |  |  |
 
 ## Blockchain Risk Comparison Template
 

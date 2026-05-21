@@ -17,6 +17,7 @@ This folder contains publication-oriented briefing materials derived from the EN
 | `ENER_weak_claims_evidence_gaps.md` | Inventor and diligence teams | Evidence gaps and claims needing support. |
 | `ENER_legal_review_flags.md` | Counsel and communications reviewers | Statements to review before publication. |
 | `ENER_visual_recommendations.md` | Designers and technical illustrators | Recommended diagrams and visual treatments. |
+| `ENER_reference_sources.md` | Drafters and reviewers | Policy and technical source list for briefing and prior-art watchlist. |
 
 ## Framing Principle
 

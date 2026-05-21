@@ -175,6 +175,12 @@
       "boundary": "Non-medical, research-grade argument for BCI privacy architecture. Do not imply arbitrary thought reading, diagnosis, treatment, or production cryptographic assurance."
     }
   ],
+  "patentPackage": {
+    "directory": "patent/",
+    "leadClaimFocus": "spatial spike sorter -> permitted active positions -> encrypted active feature values -> BFVrns depth-1 scores = W x + bias scorer",
+    "status": "provisional drafting package; not legal advice or filed-submission confirmation",
+    "reviewRule": "Keep broad latent-compression language as fallback and lead with the concrete sorted sparse-event embodiment when patentability risk is the main concern."
+  },
   "architecture": {
     "edge": "neuromorphic sensor or SNN encoder",
     "encoder": "binary spikes, spike counts, or low-bit event windows",
@@ -204,6 +210,7 @@
     "https://docs.octra.org/tech-docs/hfhe",
     "https://arxiv.org/abs/2308.05636",
     "https://arxiv.org/abs/2510.03995",
+    "https://arxiv.org/abs/2308.12529",
     "https://proceedings.mlr.press/v202/ran23b.html",
     "https://www.intel.com/content/www/us/en/research/neuromorphic-computing.html",
     "https://csrc.nist.gov/Projects/post-quantum-cryptography",

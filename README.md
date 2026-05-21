@@ -72,6 +72,7 @@ The cryptographic design target is:
 - `08-encrypted-thoughts-whitepaper.md` - whitepaper on encrypted-thoughts architecture for BCI and neural-data privacy.
 - `09-relay-gateway-pattern.md` - local-first gateway pattern for raw-signal intake, privacy filtering, model-facing events, recommendations, audit, replay, and failure handling.
 - `10-native-performance-track.md` - native-first implementation boundary for low-latency and energy-aware execution.
+- `patent/` - ENER provisional drafting materials, claim seeds, drawings, prior-art search plan, filing checklist, and briefing package.
 - `project-brief.json` - structured project metadata for agents.
 - `index.html` - self-contained briefing deck for browser presentation.
 - `prototype/` - dependency-free educational sparse encrypted spike-count prototype, relay gateway scaffold, benchmark runner, real OpenFHE BFVrns and TFHE-rs integration lanes, tests, and research assumptions.

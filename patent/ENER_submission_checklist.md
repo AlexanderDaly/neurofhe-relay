@@ -20,7 +20,7 @@ Primary official sources:
 - [x] Mirrored figure source directory: `patent/ENER_figures/`
 - [x] Prior art search plan: `patent/ENER_prior_art_search_plan.md`
 - [x] Submission checklist: `patent/ENER_submission_checklist.md`
-- [ ] Final filing PDF generated from specification and drawings
+- [x] Final filing PDF regenerated from the revised specification and drawings
 - [ ] Optional DOCX checked before upload if using DOCX route
 
 ## B. Enablement Checklist
@@ -34,8 +34,11 @@ Primary official sources:
 | How embeddings are encrypted | Yes | Sections F.6, J.3-J.6, K | Covers FHE, SHE, CKKS, BFV, BGV, TFHE, MPC, TEE, differential privacy, hybrid modes. |
 | How encrypted inference is performed | Yes | Sections F.7, J.3-J.6 | Covers encrypted linear, approximate, threshold, and MPC paths. |
 | How outputs are decrypted or consumed | Yes | Sections F.7, F.10, G, J.1 | Covers authorized endpoint decryption and encrypted results. |
-| How reconstruction risk is reduced | Yes | Sections F.8, Figure 4 description, K | Covers adversarial decoders, bottlenecks, identity-obfuscation, risk metrics. |
-| How bandwidth and compute efficiency improve | Yes | Sections D, F.4, F.5, J.3 | Explains compression before encryption and reduced encrypted operations. |
+| How reconstruction risk is reduced | Yes | Sections F.8, J.10, Figure 4 description, K | Covers adversarial decoders, bottlenecks, identity-obfuscation, attack tests, and risk metrics. |
+| How bandwidth and compute efficiency improve | Yes | Sections D, F.4, F.5, J.3, J.7 | Explains compression before encryption and reduced encrypted operations. |
+| Spatial sparse-event embodiment | Yes | Sections F.3.1, F.13, G.6, J.7-J.9, Figure 6 | Supports the narrower spatial spike sorter, public-position/encrypted-feature, BFVrns depth-1 scorer path. |
+| Adaptive privacy-mode selector | Yes | Sections F.5, J.8 | Includes public active positions, padded sparse batches, dense encrypted windows, and local-only routing. |
+| Prior-art distinction support | Yes | Section L, `ENER_prior_art_search_plan.md` | Differentiates the local trusted-boundary sorted-event relay from general HE-SNN and sparse HE inference work. |
 
 ## C. Weak Areas Needing Inventor Input
 
@@ -49,6 +52,11 @@ Primary official sources:
 - Actual encoder architecture and training data used or planned.
 - Actual compression ratio, latent dimension ranges, quantization levels, and benchmark evidence.
 - Preferred cryptographic implementation path: BFV/BGV, CKKS, TFHE, MPC, TEE, or hybrid.
+- Whether the spatial sparse-event BFVrns scorer is the intended first nonprovisional lead claim family.
+- Target hardware for the spatial spike sorter: headset controller, implant controller, FPGA, ASIC, neuromorphic front end, mobile DSP, secure enclave, or edge server.
+- Real OpenFHE BFVrns benchmark outputs, if available before filing or before nonprovisional conversion.
+- Reconstruction attack, identity attack, membership/linkage attack, and metadata-only attack metrics.
+- Counsel-verified distinction chart against PrivSpike, SpENCNN, Nikfam BFV-SNN, FHE-DiSNN, and any closer patent families.
 - Whether the first filing should include medical or neurodiagnostic examples, consumer-only examples, or both.
 - Whether any government funding or institutional ownership interest exists.
 - Whether micro entity or small entity status is available.
@@ -100,7 +108,20 @@ The claim seeds in this package are included for later nonprovisional planning a
 - [ ] Confirm title matches across the specification and cover sheet.
 - [ ] Confirm drawings are legible in black and white and referenced by figure number.
 - [ ] Confirm the specification includes enough detail to support later claims.
+- [ ] Confirm whether revised Markdown or regenerated PDFs are the filing source of truth.
+- [ ] Confirm Figure 6 is included if leading with the sorted sparse-event BFVrns embodiment.
+- [ ] Confirm the combined filing PDF reflects the revised claim-focus language before upload.
 - [ ] Confirm no confidential third-party information, proprietary code, or unlicensed material is included.
 - [ ] Confirm no unsupported production cryptography, clinical, or regulatory claims are overstated.
 - [ ] Confirm the filing fee and entity status match the applicant's actual status.
 - [ ] Confirm no automatic submission is performed by this drafting package.
+
+## H. Examiner-Style Review Actions Addressed
+
+- [x] Narrowed claim seeds toward the spatial spike sorter, public/permitted active positions, encrypted active feature values, and BFVrns depth-1 linear scorer.
+- [x] Added prototype operation-count comparisons for sparse, padded sparse, and dense encrypted modes.
+- [x] Added explicit adversarial reconstruction and identity-linkage training/test procedures.
+- [x] Added adaptive privacy-mode selector pseudocode and OpenFHE BFVrns best-mode parameter table.
+- [x] Added hardware co-design support for FPGA/ASIC/neuromorphic front end plus edge CPU/server execution.
+- [x] Added examiner-facing distinctions over HE-SNN and sparse HE prior-art lanes.
+- [x] Regenerate final filing PDFs after this Markdown revision if filing from PDF rather than Markdown/DOCX.

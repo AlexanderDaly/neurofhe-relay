@@ -19,6 +19,7 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `08-encrypted-thoughts-whitepaper.md` - whitepaper arguing for encrypted-thoughts architecture in BCI and neural-data systems.
 - `09-relay-gateway-pattern.md` - local-first relay gateway pattern covering raw-signal intake, trust boundary, normalization, privacy/safety filtering, model-facing event schemas, command recommendations, audit/replay, and failure handling.
 - `10-native-performance-track.md` - native-first boundary for low-level performance, energy measurement, and hot-path implementation choices.
+- `patent/` - ENER provisional drafting package, revised claim seeds, drawings, prior-art search plan, submission checklist, and policy/commercial briefing materials.
 - `project-brief.json` - agent-readable structured project summary.
 - `index.html` - self-contained browser briefing deck.
 - `prototype/` - dependency-free educational sparse encrypted spike-count prototype, spatial spike sorter, local relay gateway scaffold, benchmark runner, plaintext baseline, OpenFHE BFVrns lane, TFHE-rs integer/Boolean lane, tests, handoffs, and research assumptions.

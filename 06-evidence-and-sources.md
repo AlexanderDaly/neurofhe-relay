@@ -51,12 +51,16 @@ Sources:
 - A Homomorphic Encryption Framework for Privacy-Preserving Spiking Neural Networks: https://arxiv.org/abs/2308.05636
 - PrivSpike: Employing Homomorphic Encryption for Private Inference of Deep Spiking Neural Networks: https://arxiv.org/abs/2510.03995
 - SpENCNN: Orchestrating Encoding and Sparsity for Fast Homomorphically Encrypted Neural Network Inference: https://proceedings.mlr.press/v202/ran23b.html
+- FHE-DiSNN / Privacy-Preserving Discretized Spiking Neural Networks: https://arxiv.org/abs/2308.12529
+- MDPI version of Nikfam et al. BFV-SNN framework: https://www.mdpi.com/2078-2489/14/10/537
 
 Useful takeaways:
 
 - Published work has already explored HE-protected SNN inference.
 - PrivSpike uses CKKS and reports meaningful encrypted SNN inference results, but latency is still measured in many seconds or minutes for non-trivial models.
 - SpENCNN is not neuromorphic-specific, but it supports the broader point that sparsity and HE-aware packing can materially improve encrypted inference.
+- FHE-DiSNN reinforces that encrypted SNN operations are an active prior-art lane, so NeuroFHE should not claim the broad idea of "SNN plus FHE" as the project center.
+- The stronger NeuroFHE wedge is the local trusted-boundary relay: spatial event sorting, policy-governed active-position descriptors, encrypted active feature values, and low-depth scorer benchmarking.
 
 ## Neuromorphic Hardware and SNN Tooling
 

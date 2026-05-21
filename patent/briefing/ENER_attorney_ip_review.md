@@ -16,6 +16,14 @@ neural telemetry -> local preprocessing -> compressed latent embedding -> encryp
 
 The strongest claim center is not encrypted storage. It is the transformation of raw neural telemetry into task-sufficient latent representations before encryption, followed by protected inference over those representations.
 
+After the May 21 examiner-style review, the strongest lead embodiment is narrower:
+
+```text
+spike-event telemetry -> local spatial spike sorter -> permitted active positions -> encrypted active feature values -> BFVrns depth-1 scorer -> local authorized output
+```
+
+This narrower family should be considered for the first independent claim set because it is more concrete than generic encrypted SNN inference and easier to compare against the repo's working benchmark artifacts.
+
 ## FTO-Informed Drafting Boundary
 
 The user-provided Patsnap Eureka extraction reviewed 100 patent references, identified 14 high-relevance patents and 5 medium-relevance patents, and flagged several high-risk families in blockchain-based encrypted storage and decentralized access management. The cited risk families include HK1249783A, CN110765488A, CN114363362A, CN110990407A, and JP2020155801A.
@@ -34,6 +42,7 @@ Those concepts may remain optional infrastructure if necessary, but they should 
 
 | Family | Claim Focus | Evidence Needed |
 |---|---|---|
+| Spatial sparse-event encrypted scorer | Local spatial spike sorter, permitted active-position descriptor, encrypted active feature values, BFVrns depth-1 `scores = W x + bias` scorer. | Native OpenFHE results, parameter table, dense/padded/sparse comparison, metadata-leakage assessment. |
 | Local latent neural relay | Edge generation of compressed embeddings from neural telemetry before encryption. | Encoder architecture, modality examples, windowing details. |
 | Adaptive encryption-aware compression | Compression policy based on encryption budget, bandwidth, entropy, signal quality, and task type. | Controller logic, benchmark comparisons, parameter ranges. |
 | Reconstruction-resistant embeddings | Training or testing embeddings against raw-signal reconstruction and identity leakage. | Adversarial decoder tests, leakage metrics, acceptance thresholds. |

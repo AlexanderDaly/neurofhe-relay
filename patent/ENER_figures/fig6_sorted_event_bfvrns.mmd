@@ -1,0 +1,12 @@
+flowchart LR
+    A[Spike-event neural telemetry] --> B[Local spatial spike sorter]
+    B --> C[Active position descriptor]
+    B --> D[Active feature values]
+    C --> E[Relay policy gate]
+    D --> F[Encrypt active feature values]
+    E --> G[Permitted positions]
+    F --> H[Encrypted active values]
+    G --> I[BFVrns depth-1 linear scorer]
+    H --> I
+    I --> J[Encrypted class scores]
+    J --> K[Authorized local decryptor]

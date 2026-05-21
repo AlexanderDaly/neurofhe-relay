@@ -37,6 +37,8 @@ Known approaches to neural-data security often focus on encrypting raw EEG files
 
 An encrypted neural embedding relay receives neural telemetry at or near a user, segments the telemetry into windows, and uses a local encoder to generate a compressed latent embedding. The encoder may be trained or configured to preserve task-relevant information while reducing reconstruction of raw cognitive or neural signals. The embedding is compressed, quantized, sparsified, packed, or otherwise shaped for privacy-preserving computation. An encryption module encrypts the latent embedding using homomorphic encryption or related cryptographic methods. A relay interface transmits encrypted latent representations to a compute environment that performs inference over encrypted embeddings. The system returns an encrypted result, a decrypted result to an authorized party, a proof, or a policy decision without exposing raw neural telemetry to the remote processor.
 
+In a presently preferred embodiment, spike-event or event-derived neural telemetry is processed by a spatial spike sorter within a trusted local boundary. The spatial spike sorter converts a temporal neural event window into sorted sparse events. A permitted descriptor of active neuron, channel, time-bin, or spatial-bin positions may be transmitted in public, padded, coarsened, or encrypted form according to a privacy policy. Active feature values are encrypted before leaving the local boundary. A remote encrypted inference engine evaluates a depth-1 linear score contract over the encrypted active feature values, such as `scores = W x + bias`, using BFV, BFVrns, BGV, TFHE-style integer operations, or a related protected arithmetic mode. The remote engine therefore receives enough structure to perform the selected score computation, but does not receive raw neural telemetry or plaintext active feature values.
+
 The system may use fully homomorphic encryption, somewhat homomorphic encryption, leveled homomorphic encryption, secure multiparty computation, trusted execution environments, differential privacy, secure enclaves, hybrid public-key and symmetric encryption, post-quantum key establishment, or combinations thereof. Compression may adapt dynamically based on encryption cost, bandwidth, entropy, signal quality, device power, inference target, privacy budget, and model confidence.
 
 ### Advantages
@@ -68,6 +70,12 @@ Potential applications include assistive brain-computer interfaces, prosthetic-c
 "Relay" means a communication, translation, packaging, routing, policy, or orchestration layer that moves protected embeddings between a local device and an inference engine.
 
 "Privacy budget" means a system-level parameter or set of parameters controlling acceptable information exposure, including differential-privacy noise, latent dimensionality, metadata exposure, quantization level, padding, batching, retention, or reconstruction-risk thresholds.
+
+"Spatial spike sorter" means a local hardware, firmware, software, or mixed-signal component that receives spike-event or event-derived telemetry and emits a sorted sparse event representation keyed by time bin, neuron or channel identifier, spatial bin, and active feature value.
+
+"Permitted position descriptor" means metadata describing active positions of a sparse representation, such as active neuron identifiers, channel identifiers, time bins, spatial bins, or flattened feature indices, that may be transmitted in public, padded, coarsened, randomized, or encrypted form according to a privacy policy. A permitted position descriptor does not include plaintext active feature values unless the selected policy expressly allows them to remain local or public.
+
+"Depth-1 encrypted linear scorer" means an encrypted inference component that evaluates a bounded-depth score function such as `scores = W x + bias`, in which encrypted inputs are multiplied by plaintext, encrypted, secret-shared, or enclave-protected weights and accumulated into encrypted class scores with a single multiplicative layer.
 
 ## A. Title
 
@@ -111,6 +119,8 @@ Figure 4 illustrates reconstruction-resistant encoder training in which an encod
 
 Figure 5 illustrates an encrypted cognitive-state classifier in which an encrypted latent vector is processed by encrypted model layers to produce encrypted or authorized classification results.
 
+Figure 6 illustrates a spatial sparse-event embodiment in which a local spatial spike sorter emits public, padded, coarsened, or encrypted active-position descriptors and encrypted active feature values for a BFVrns depth-1 linear scorer.
+
 ## F. Detailed Description
 
 ### F.1 System Overview
@@ -147,6 +157,25 @@ The encoder may output:
 - A secret-shared embedding for multiparty computation.
 
 The encoder may be personalized to a user or generalized across users. Personalization may occur locally using calibration data that does not leave the trusted boundary. Model updates may be transferred using federated learning, encrypted gradients, secure aggregation, differential privacy, or update filtering.
+
+### F.3.1 Spatial Spike Sorter Embodiment
+
+In a preferred event-derived embodiment, the local encoder includes a spatial spike sorter. The sorter receives an event window containing spike counts, threshold crossings, binned firing activity, event-camera-adjacent signals, or other sparse neural or neuro-adjacent events. The sorter maps each event to a canonical position tuple such as:
+
+```text
+event = {
+    index: flattened feature index,
+    timeBin: local time bin,
+    neuronId: local neuron or channel identifier,
+    unitX: spatial bin x-coordinate,
+    unitY: spatial bin y-coordinate,
+    value: active feature value
+}
+```
+
+The sorter may be implemented as FPGA logic, an ASIC block, a neuromorphic front end, an implant-controller routine, a headset controller, a secure-enclave routine, a mobile digital-signal-processing stage, or an edge finite-state machine. The sorter output may separate position metadata from feature values. Position metadata may be public, padded, coarsened, randomized, encrypted, or withheld based on a selected privacy mode. Active feature values are encrypted before being transmitted outside the trusted local boundary.
+
+This embodiment supports a lightweight encrypted linear path in which the encrypted inference engine evaluates active events directly. Because inactive zero features need not be encrypted in the fastest sparse mode, the remote scorer can avoid encrypted operations for inactive positions while still returning encrypted class scores. A denser mode may encrypt inactive and active positions alike when the position pattern itself is sensitive.
 
 ### F.4 Compression Before Encryption
 
@@ -212,6 +241,28 @@ The latent encoder may be trained or configured to resist reconstruction of raw 
 
 An adversarial decoder may receive embeddings and attempt to reconstruct raw windows, identity labels, session labels, or sensitive attributes. The encoder is optimized to maintain target task performance while reducing decoder success. The system may reject an encoder version if reconstruction-risk metrics exceed a configured threshold.
 
+In one training procedure, an encoder `E`, task head `T`, reconstruction decoder `D`, and identity adversary `A` are trained on local or governed training data. The decoder is trained to minimize:
+
+```text
+L_decoder = L1(raw_window, D(E(raw_window)))
+          + alpha * spectral_loss(raw_window, D(E(raw_window)))
+```
+
+The identity adversary is trained to minimize `L_identity = cross_entropy(identity_label, A(E(raw_window)))`. The encoder is trained with a gradient-reversal or alternating-update objective:
+
+```text
+L_encoder = L_task(T(E(raw_window)), task_label)
+          + lambda_sparse * sparsity_penalty(E(raw_window))
+          + lambda_quant * quantization_penalty(E(raw_window))
+          - lambda_recon * L_decoder
+          - lambda_identity * L_identity
+          + lambda_metadata * metadata_leakage_score(E(raw_window))
+```
+
+In another procedure, the encoder is accepted only if a held-out attack suite satisfies all configured acceptance criteria, such as normalized reconstruction error above a threshold, identity-classification accuracy no better than a permitted baseline margin, mutual-information estimate below a threshold, and task accuracy or task agreement above a target threshold. Example metrics may include normalized mean absolute reconstruction error, spectral reconstruction error, structural similarity for event rasters, identity AUC, membership-inference advantage, mutual-information estimate, active-position leakage score, task accuracy, and encrypted/plaintext score agreement.
+
+For an event dataset such as N-MNIST or another rights-cleared event stream, a test protocol may compare dense raw windows, unsorted sparse events, spatial-sorted sparse events, padded sparse batches, and dense encrypted windows. The protocol may report task agreement, encrypted operation counts, ciphertext bytes, runtime, active-event density, reconstruction-attack success, and metadata leakage for each representation.
+
 ### F.9 Metadata Leakage Controls
 
 Even when latent values are encrypted, metadata may reveal sensitive information. Metadata may include active channel positions, event timing, packet frequency, window density, session length, model selection, confidence scores, device identifiers, calibration state, and error flags. The system may reduce metadata leakage by padding sparse events, batching windows, coarsening timing, encrypting active indices, using private information retrieval, sending fixed-rate traffic, applying dummy traffic, or routing high-risk sessions to local-only inference.
@@ -235,6 +286,14 @@ The system may decide whether inference is local, encrypted remote, enclave-prot
 
 The relay may generate an audit record identifying the sensor type, encoder version, compression policy, cryptographic scheme, privacy mode, inference target, authorization basis, retention policy, and result-handling rule. The audit record may avoid raw telemetry while preserving enough information to verify that the computation used an approved privacy boundary.
 
+### F.13 Hardware Co-Design
+
+The system may be implemented as a co-designed hardware and cryptographic pipeline. A neural acquisition device, headset controller, implant controller, neuromorphic front end, FPGA, ASIC, or digital signal processor may perform event detection, event binning, spatial sorting, thresholding, and active-position extraction. A local CPU, GPU, secure enclave, mobile processor, or edge server may perform policy selection, active-value encryption, key handling, audit-record generation, and optional local fallback inference. A remote CPU, GPU, accelerator, or server cluster may perform encrypted inference using OpenFHE, SEAL, TFHE-rs, Concrete, or another reviewed encrypted-computation library.
+
+In one hardware-oriented embodiment, an FPGA or ASIC spike sorter emits a fixed schema of sorted sparse events. The local edge CPU encrypts the event values under a BFVrns parameter set and sends permitted active positions plus encrypted values to a remote scorer. The remote scorer applies public non-negative integer model weights and returns encrypted class scores. The local endpoint decrypts scores and applies safety, consent, and task-policy checks before displaying a result or issuing a control signal.
+
+This hardware split improves the technological character of the system by making the privacy boundary a concrete signal-processing and cryptographic boundary: raw sample order, raw electrode identifiers, raw waveform traces, subject/session references, and active feature values remain local, while only policy-approved sparse descriptors and ciphertexts leave the device.
+
 ## G. Example Embodiments
 
 ### G.1 EEG Attention Classifier
@@ -256,6 +315,14 @@ Multiple participants use local devices that generate encrypted neural embedding
 ### G.5 Clinical Edge Server
 
 A hospital workstation receives neural telemetry from a clinical neural device and performs local encoding. Encrypted embeddings are transmitted to a local hospital server or cloud enclave for specialized inference. The result is decrypted only by the clinical workstation or a threshold group authorized by hospital policy.
+
+### G.6 Spatial-Sorted BFVrns Motor-Intent Scorer
+
+An implanted array, headset, or event-derived neural device emits sparse activity over short windows, such as 50 ms windows. A local spatial spike sorter converts raw event order and raw electrode identifiers into a canonical event grid. For an 8 by 8 feature grid, a representative event window may contain 64 possible positions and 18 active positions. The local edge device publishes or otherwise permits active neuron/time positions according to a privacy policy, encrypts only the 18 active feature values, and withholds raw neural samples, raw electrode identifiers, raw sample ordering, device identifiers, and subject/session references.
+
+A remote encrypted inference engine uses a BFVrns integer context to compute class scores under the contract `scores = W x + bias`. Public model weights are multiplied by encrypted active feature values and accumulated into encrypted class-score ciphertexts. The remote engine returns encrypted class scores to the local endpoint. The local endpoint decrypts the scores and applies authorized result handling, such as local safety checks for an assistive-control command.
+
+In a prototype implementation, the BFVrns integration target uses a plaintext modulus of 65537, multiplicative depth 1, batch size 1, non-negative integer feature values, public non-negative integer model weights, public bias values, encrypted active feature values, public active-position descriptors, and client-side score decryption. These parameters are an implementation and benchmark target, not a production security claim.
 
 ## H. Alternative Embodiments
 
@@ -347,6 +414,98 @@ In another implementation, the embedding is binarized into thresholded neural ev
 
 In another implementation, the local device secret-shares the latent embedding among multiple non-colluding servers. The servers jointly evaluate an inference function without any one server seeing the embedding. The result is reconstructed only for an authorized endpoint.
 
+### J.7 Quantitative Prototype Comparison
+
+The following prototype data comes from the repository benchmark artifact for a synthetic 8 by 8 event window. It is included as support for the type of comparative evidence the system reports. It is not a clinical result and is not a production cryptographic security claim.
+
+| Representation or mode | Feature slots encrypted | Active events | Encryptions | Scalar multiplies | Adds | Decryptions | Relative scalar multiplies |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Public active positions | 18 | 18 | 20 | 36 | 36 | 2 | 1.00x |
+| Public active neuron positions + encrypted features | 18 | 18 | 20 | 36 | 36 | 2 | 1.00x |
+| Padded sparse batches | 32 | 18 | 34 | 64 | 64 | 2 | 1.78x |
+| Dense encrypted windows | 64 | 18 | 66 | 128 | 128 | 2 | 3.56x |
+
+For this representative window, the active-event density is 18/64, or 28.125 percent. The public-active-neuron-positions mode uses 20 encryptions and 36 scalar multiplies, while the dense encrypted window mode uses 66 encryptions and 128 scalar multiplies. On this window, the sparse public-position mode therefore reduces scalar multiplications and additions by 92 out of 128 operations, or about 71.875 percent, and reduces encryptions by 46 out of 66, or about 69.7 percent, compared with encrypting every dense feature slot. A toy additive benchmark artifact measured 1.897 ms and 200 ciphertext bytes for the demonstration path, while expressly marking the security parameters as research-only. A native OpenFHE BFVrns implementation target is provided for real-library benchmarking when OpenFHE is installed.
+
+### J.8 Adaptive Privacy-Mode Selector Pseudocode
+
+```text
+inputs:
+    active_count
+    feature_count
+    signal_quality
+    bandwidth
+    latency_target
+    encryption_budget
+    reconstruction_risk
+    metadata_leakage
+    task_sensitivity
+
+density = active_count / feature_count
+
+if reconstruction_risk > policy.max_reconstruction_risk:
+    return LOCAL_ONLY
+
+if metadata_leakage > policy.max_metadata_leakage:
+    if encryption_budget.permits_dense_window:
+        return DENSE_ENCRYPTED_WINDOW
+    return PADDED_SPARSE_BATCH
+
+if task_sensitivity == HIGH and policy.hide_exact_event_count:
+    return PADDED_SPARSE_BATCH
+
+if density <= policy.sparse_density_limit
+   and bandwidth >= policy.min_sparse_bandwidth
+   and latency_target.allows_remote:
+    return PUBLIC_ACTIVE_POSITIONS_ENCRYPTED_FEATURES
+
+if encryption_budget.permits_dense_window:
+    return DENSE_ENCRYPTED_WINDOW
+
+return LOCAL_ONLY_OR_DEFERRED
+```
+
+The selector may emit a policy record including selected representation, padding bucket, encryption scheme, parameter set identifier, metadata fields allowed outside the trusted boundary, result-handling rule, and reason codes. The policy record may be stored without raw neural telemetry.
+
+### J.9 OpenFHE BFVrns Best-Mode Implementation Parameters
+
+The current native integration target is `prototype/openfhe/openfhe_linear_demo.cpp` with `prototype/openfhe/CMakeLists.txt`. The implementation uses OpenFHE BFVrns exact integer arithmetic for a sparse sorted-event linear scorer.
+
+| Parameter | Example value or rule |
+|---|---|
+| Event representation | Spatial-sorted sparse events |
+| Feature shape | 8 by 8 feature grid |
+| Feature count | 64 |
+| Active event count | 18 in the representative synthetic window |
+| Privacy mode | Public active neuron positions + encrypted feature values |
+| Score contract | `scores = W x + bias` |
+| Score domain | Non-negative integers |
+| Classes | `normal`, `anomaly` in the prototype target |
+| Scheme | OpenFHE BFVrns |
+| Plaintext modulus | 65537 |
+| Multiplicative depth | 1 |
+| Batch size | 1 |
+| Encrypted fields | Active feature values and class-score ciphertexts |
+| Public fields in the fastest sparse mode | Active neuron positions, feature shape, public model weights, public bias |
+| Withheld fields | Raw neural samples, raw electrode identifiers, raw sample timestamp order, device identifiers, local subject/session references |
+| Expected prototype scores | `normal: 9`, `anomaly: 51` |
+| Expected prototype classification | `anomaly` |
+| Native build commands | `cmake -S prototype/openfhe -B build/openfhe`; `cmake --build build/openfhe`; `build/openfhe/openfhe_linear_demo` |
+
+The OpenFHE target should be treated as the best currently documented implementation mode for the narrow sorted-event BFVrns scorer. Production deployment would require reviewed security parameters, side-channel review, key-management design, real neural or event-dataset validation, and performance measurements on the target hardware.
+
+### J.10 Privacy Metrics and Attack Test Protocol
+
+A reconstruction-resistance test may run the following attacks against each candidate representation:
+
+1. A raw-window decoder trained to reconstruct waveform or event-raster content from embeddings or sorted sparse events.
+2. An identity classifier trained to infer user, session, device, or calibration identifiers.
+3. A sensitive-attribute classifier trained to infer task-irrelevant cognitive, physiological, or demographic labels where such testing is lawful and ethically approved.
+4. A metadata-only classifier trained on active-position descriptors, event counts, timing patterns, padding bucket sizes, and packet timing.
+5. A membership or linkage attack that attempts to determine whether two encrypted-relay records came from the same user or session.
+
+For each attack, the system may report task utility, reconstruction loss, attack accuracy, attack AUC, mutual-information estimate, event-count leakage, position-pattern leakage, and whether the result passes a configured privacy policy. An encoder or privacy mode may be rejected if task utility is adequate but reconstruction or linkage risk exceeds the threshold.
+
 ## K. Security and Privacy Properties
 
 The disclosed architecture may provide one or more of the following properties:
@@ -364,32 +523,59 @@ The disclosed architecture may provide one or more of the following properties:
 
 No particular cryptographic primitive is required in all embodiments. The system may be cryptographically agile so that encryption schemes, parameter sets, and execution modes can be replaced as performance, security standards, and deployment constraints evolve.
 
-## L. Claim-Like Embodiments
+## L. Examiner-Facing Prior-Art Distinctions
+
+This section identifies candidate prior-art distinctions to preserve during later nonprovisional drafting. It is not an information disclosure statement and should be verified by counsel before filing any nonprovisional claims.
+
+Candidate HE-SNN references show that homomorphic encryption has already been applied to spiking neural networks and sparse neural-network inference. For example, PrivSpike uses CKKS for private inference of deep SNNs and reports encrypted SNN inference on MNIST, CIFAR-10, Neuromorphic MNIST, and CIFAR-10 DVS. Nikfam et al. describe BFV-based privacy-preserving SNN inference using Pyfhel and FashionMNIST-style models. FHE-DiSNN describes homomorphic evaluation of discretized SNN operations, including protected firing and reset behavior. SpENCNN describes HE-aware sparsity and packing for faster encrypted neural-network inference.
+
+The narrow embodiment disclosed here should therefore not be framed merely as "using HE on an SNN" or "using sparsity to speed encrypted neural-network inference." The stronger distinction is a local trusted-boundary relay for neural telemetry in which raw event order, raw electrode identifiers, raw waveform material, subject/session references, and active feature values remain local; a spatial spike sorter emits a policy-governed sparse event representation; active positions may be public, padded, coarsened, randomized, or encrypted according to metadata-leakage policy; active feature values are encrypted before external transmission; and the remote scorer evaluates a bounded-depth encrypted linear contract over that representation.
+
+In relation to HE-SNN systems, this disclosure emphasizes:
+
+- local neural telemetry boundary before remote encrypted compute;
+- sorted sparse event readiness as a relay representation rather than a full encrypted SNN model as the inventive center;
+- public-active-position plus encrypted-active-value mode as one explicit privacy/performance point in a selectable family;
+- metadata-leakage controls that can move between public active positions, padded sparse batches, and dense encrypted windows;
+- reconstruction-resistance testing and identity/linkage attack testing for neural embeddings or sorted event representations; and
+- audit records that document encoder version, sorter version, privacy mode, cryptographic scheme, and result handling without retaining raw telemetry.
+
+In relation to generic HE neural-network acceleration, this disclosure ties the compression and sparse-event choices to neural telemetry, BCI privacy, local raw-signal retention, and task-specific cognitive-state inference rather than generic image or cloud ML inference alone.
+
+In relation to blockchain storage and access-control references, this disclosure is not centered on storing encrypted neural records, smart-contract permissioning, off-chain address retrieval, or decentralized key-release workflows. Those functions may be optional infrastructure. The inventive center is local transformation and privacy-mode selection before encrypted neuroinference.
+
+## M. Claim-Like Embodiments
 
 The following embodiments are written in claim-like form for later conversion into formal claims:
 
-1. A method comprising receiving neural telemetry at a local device, segmenting the neural telemetry into a time window, generating a compressed latent embedding from the time window using a local encoder, encrypting the compressed latent embedding, transmitting the encrypted compressed latent embedding to a remote inference engine, performing inference on the encrypted compressed latent embedding, and outputting a cognitive-state classification without exposing raw neural telemetry to the remote inference engine.
+1. A method comprising receiving spike-event or event-derived neural telemetry at a local device, segmenting the telemetry into a time window, sorting the time window into a sparse event representation using a local spatial spike sorter, encrypting active feature values from the sparse event representation, transmitting encrypted active feature values and a permitted position descriptor to a remote inference engine, performing bounded-depth encrypted inference on the encrypted active feature values, and outputting an encrypted or authorized cognitive-state classification without exposing raw neural telemetry or plaintext active feature values to the remote inference engine.
 
 2. The method of embodiment 1, wherein the neural telemetry comprises EEG, ECoG, fNIRS, MEG, implanted-array telemetry, wearable BCI telemetry, local field potentials, spike events, or combinations thereof.
 
-3. The method of embodiment 1, wherein generating the compressed latent embedding comprises reducing dimensionality of the neural telemetry before encryption.
+3. The method of embodiment 1, wherein the permitted position descriptor includes active neuron positions, channel positions, time bins, spatial bins, or flattened feature indices and excludes the active feature values.
 
-4. The method of embodiment 1, wherein the compressed latent embedding is reconstruction-resistant.
+4. The method of embodiment 1, wherein the encrypted inference comprises a BFVrns depth-1 linear score contract.
 
-5. The method of embodiment 1, wherein the local encoder is trained using an adversarial decoder that attempts to reconstruct raw neural telemetry from the compressed latent embedding.
+5. The method of embodiment 4, wherein the score contract is `scores = W x + bias`.
 
-6. The method of embodiment 1, wherein encrypting comprises applying fully homomorphic encryption, somewhat homomorphic encryption, leveled homomorphic encryption, secure multiparty computation, trusted execution environment protection, differential privacy, secure enclave processing, hybrid encryption, or combinations thereof.
+6. The method of embodiment 1, wherein the permitted position descriptor is selected between public active positions, padded sparse batches, and dense encrypted windows based on a privacy policy.
 
-7. The method of embodiment 1, further comprising adapting a latent dimensionality, quantization precision, sparsity level, packing layout, or encryption scheme based on encryption cost, bandwidth, entropy, task type, or signal quality.
+7. The method of embodiment 1, wherein the sparse event representation, compressed latent embedding, or active feature vector is reconstruction-resistant.
 
-8. A system comprising a neural acquisition device, an edge latent encoder configured to generate compressed latent embeddings from neural telemetry, an encryption module configured to encrypt the compressed latent embeddings, a relay interface configured to transmit encrypted embeddings, and an encrypted inference engine configured to perform inference on the encrypted embeddings.
+8. The method of embodiment 1, wherein the local encoder is trained using an adversarial decoder that attempts to reconstruct raw neural telemetry from the sparse event representation or a compressed latent embedding.
 
-9. The system of embodiment 8, wherein the edge latent encoder is located in a wearable headset, implant controller, mobile phone, local server, secure enclave, or edge hub.
+9. The method of embodiment 1, wherein encrypting comprises applying fully homomorphic encryption, somewhat homomorphic encryption, leveled homomorphic encryption, secure multiparty computation, trusted execution environment protection, differential privacy, secure enclave processing, hybrid encryption, or combinations thereof.
 
-10. The system of embodiment 8, wherein the encrypted inference engine is located in a cloud server, local server, hospital server, decentralized compute network, secure enclave, or multiparty computation environment.
+10. The method of embodiment 1, further comprising adapting sparse-event padding, latent dimensionality, quantization precision, sparsity level, packing layout, local-vs-remote routing, or encryption scheme based on encryption cost, bandwidth, entropy, task type, signal quality, reconstruction risk, or metadata leakage.
 
-11. A non-transitory computer-readable medium storing instructions that, when executed by one or more processors, cause the processors to receive neural telemetry, segment the neural telemetry into windows, generate compressed latent embeddings, select an adaptive compression policy, encrypt the compressed latent embeddings, transmit the encrypted compressed latent embeddings to an inference engine, and receive encrypted or authorized inference results.
+11. A system comprising a neural acquisition device, a local edge device comprising a spatial spike sorter configured to generate sorted sparse events from neural telemetry, an encryption module configured to encrypt active feature values, a relay interface configured to transmit encrypted active feature values and permitted position descriptors, and an encrypted inference engine configured to perform inference on the encrypted active feature values.
 
-## M. Abstract
+12. The system of embodiment 11, wherein the spatial spike sorter is implemented in a wearable headset, implant controller, FPGA, ASIC, neuromorphic front end, digital signal processor, mobile phone, local server, secure enclave, or edge hub.
 
-An encrypted neural embedding relay receives neural telemetry and processes the telemetry locally to generate compressed latent embeddings. An adaptive compression controller may select latent dimensionality, quantization, sparsity, packing, and encryption parameters based on signal quality, bandwidth, encryption budget, entropy, task type, and privacy budget. The latent embeddings are encrypted using homomorphic encryption or related privacy-preserving cryptography and transmitted to an inference engine that performs neuroinference over encrypted latent-space representations. The system may support EEG, ECoG, fNIRS, MEG, implanted arrays, wearable BCI devices, mobile devices, local servers, cloud servers, secure enclaves, fully or somewhat homomorphic encryption, secure multiparty computation, trusted execution environments, differential privacy, and hybrid encryption. The architecture prevents exposure of raw neural telemetry to remote processors while enabling cognitive-state, motor-intent, attention-state, medical, or neurodiagnostic inference from protected embeddings.
+13. The system of embodiment 11, wherein the encrypted inference engine is located in a cloud server, local server, hospital server, decentralized compute network, secure enclave, or multiparty computation environment.
+
+14. A non-transitory computer-readable medium storing instructions that, when executed by one or more processors, cause the processors to receive neural telemetry, segment the neural telemetry into windows, generate sorted sparse events or compressed latent embeddings, select an adaptive compression policy, encrypt active feature values or latent values, transmit encrypted values to an inference engine, and receive encrypted or authorized inference results.
+
+## N. Abstract
+
+An encrypted neural embedding relay receives neural telemetry and processes the telemetry locally to generate compressed latent embeddings or sorted sparse event representations. In a preferred embodiment, a spatial spike sorter located within a trusted local boundary converts spike-event or event-derived neural telemetry into active position descriptors and active feature values. Active feature values are encrypted before external transmission, while active position descriptors are public, padded, coarsened, encrypted, or withheld according to a privacy policy. A remote encrypted inference engine may evaluate a depth-1 linear score contract over the encrypted active feature values using BFV, BFVrns, BGV, TFHE-style integer operations, or related privacy-preserving computation. An adaptive compression controller may select latent dimensionality, quantization, sparsity, padding, packing, local-vs-remote routing, and encryption parameters based on signal quality, bandwidth, encryption budget, entropy, task type, metadata leakage, reconstruction risk, and privacy budget. The architecture prevents exposure of raw neural telemetry and plaintext active feature values to remote processors while enabling cognitive-state, motor-intent, attention-state, medical, or neurodiagnostic inference from protected representations.

@@ -78,3 +78,22 @@ flowchart LR
 ```
 
 Figure 5 illustrates an encrypted cognitive-state classifier. An encrypted latent vector is provided to encrypted model layers that may include linear projections, polynomial activations, threshold logic, encrypted accumulation, encrypted lookup tables, or other privacy-preserving operations. The classifier produces an encrypted classification result, encrypted score vector, or encrypted confidence value. An authorized decryption endpoint decrypts or consumes the result and outputs a cognitive-state classification, motor-intent command, attention-state estimate, medical or neurodiagnostic label, or other authorized result.
+
+## Figure 6 - Spatial Sparse-Event BFVrns Scorer
+
+```mermaid
+flowchart LR
+    A[Spike-event neural telemetry] --> B[Local spatial spike sorter]
+    B --> C[Active position descriptor]
+    B --> D[Active feature values]
+    C --> E[Relay policy gate]
+    D --> F[Encrypt active feature values]
+    E --> G[Permitted positions]
+    F --> H[Encrypted active values]
+    G --> I[BFVrns depth-1 linear scorer]
+    H --> I
+    I --> J[Encrypted class scores]
+    J --> K[Authorized local decryptor]
+```
+
+Figure 6 illustrates a preferred sorted sparse-event embodiment. Spike-event or event-derived neural telemetry is processed by a local spatial spike sorter within a trusted boundary. The sorter separates active position descriptors from active feature values. A relay policy gate determines whether active positions are public, padded, coarsened, encrypted, or withheld. Active feature values are encrypted before external transmission. A BFVrns depth-1 linear scorer computes encrypted class scores using the permitted positions and encrypted active values, and an authorized local decryptor decrypts or consumes the result.
