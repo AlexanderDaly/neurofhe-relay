@@ -41,7 +41,7 @@ Run the benchmark:
 npm run benchmark
 ```
 
-Expected result: JSON output with schema `neurofhe.benchmark.v1`, sparse operation counts, dense baseline comparison, dense/raw vs unsorted-spike vs spatial-sorted representation comparison, privacy boundary, and crypto inventory.
+Expected result: JSON output with schema `neurofhe.benchmark.v1`, sparse operation counts, dense baseline comparison, dense/raw vs unsorted-spike vs spatial-sorted representation comparison, public-active-neuron privacy mode, spatial-cluster readiness for SNN/encrypted model handoff, privacy boundary, and crypto inventory.
 
 Run the relay gateway scaffold:
 
@@ -49,7 +49,7 @@ Run the relay gateway scaffold:
 npm run gateway:demo
 ```
 
-Expected result: JSON output with schema `neurofhe.gateway.demo.v1`, a simulated raw-intake summary, canonical spatial spike-sorter metadata, approved model-facing event, accepted safe local recommendation, rejected unsafe command recommendation, audit log, and sanitized replay stream.
+Expected result: JSON output with schema `neurofhe.gateway.demo.v1`, a simulated raw-intake summary, canonical spatial spike-sorter metadata, approved reconstruction-resistant model-facing event, accepted safe local recommendation, rejected unsafe command recommendation, audit log, and sanitized replay stream.
 
 Run tests:
 
@@ -65,7 +65,7 @@ npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 
 ## Caveat
 
-The included JavaScript prototype demonstrates the privacy boundary with toy additive homomorphic encryption. It is not production cryptography, not full FHE, and not the low-level runtime target. It uses public active event positions plus encrypted active spike values, so sparse metadata is visible to the compute layer. The next milestone is to make the native OpenFHE path the source of truth for performance, then port the encoder and benchmark reporting into native or hardware-aware code.
+The included JavaScript prototype demonstrates the privacy boundary with toy additive homomorphic encryption. It is not production cryptography, not full FHE, and not the low-level runtime target. It uses public active neuron positions plus encrypted active feature values for the sorted-event path, so sparse metadata is visible to the compute layer. The native OpenFHE path now carries the same sparse sorted-event score contract and should become the source of truth for performance once OpenFHE is installed and reviewed.
 
 ## Proprietary Track Note
 

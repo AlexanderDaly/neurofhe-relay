@@ -8,6 +8,7 @@ import {
   buildBenchmarkArtifact,
   buildPrivacyModeComparison,
   buildRepresentationComparison,
+  evaluateSpatialClusterReadiness,
   runPrototypeBenchmark,
 } from "../lib/benchmark.mjs";
 import { publishBenchmarkArtifact } from "../lib/artifacts.mjs";
@@ -181,6 +182,7 @@ test("prototype benchmark emits privacy boundary, crypto inventory, and dense ba
   assert.ok(benchmark.denseBaseline.operationCounts.scalarMultiplies > benchmark.operationCounts.scalarMultiplies);
   assert.deepEqual(benchmark.privacyModes.modes.map((mode) => mode.id), [
     "public-active-positions",
+    "public-active-neuron-positions-encrypted-features",
     "padded-sparse-batches",
     "dense-encrypted-windows",
   ]);
@@ -259,6 +261,45 @@ test("spatial spike sorter converts raw neural intake into a stable event window
   assert.equal(sorted.droppedSamples.length, 0);
 });
 
+test("spatial clustering outputs evaluate SNN and encrypted model readiness", () => {
+  const evaluation = evaluateSpatialClusterReadiness();
+
+  assert.equal(evaluation.schema, "neurofhe.spatialClusterReadiness.v1");
+  assert.equal(evaluation.conclusion, "yes-with-adapters");
+  assert.equal(evaluation.clusteringBasis, "deterministic spatial bins, not learned neural clusters");
+  assert.equal(evaluation.snnPath.status, "adapter-ready");
+  assert.equal(evaluation.snnPath.directFeed, false);
+  assert.equal(evaluation.snnPath.eventStreamCompatible, true);
+  assert.deepEqual(evaluation.snnPath.feedFields, [
+    "timeBin",
+    "neuronId",
+    "unitX",
+    "unitY",
+    "value",
+  ]);
+  assert.deepEqual(evaluation.snnPath.previewEvents[0], {
+    timeBin: 0,
+    neuronId: 1,
+    unitX: 1,
+    unitY: 0,
+    value: 1,
+  });
+  assert.ok(evaluation.snnPath.requiredAdapters.includes("count-to-spike-train expansion"));
+  assert.equal(evaluation.lightweightEncryptedLinearPath.status, "ready-now");
+  assert.equal(
+    evaluation.lightweightEncryptedLinearPath.privacyMode,
+    "public-active-neuron-positions-encrypted-features",
+  );
+  assert.equal(evaluation.lightweightEncryptedLinearPath.encryptedFeatureSlots, 18);
+  assert.deepEqual(evaluation.lightweightEncryptedLinearPath.operationFamily, [
+    "integer addition",
+    "plaintext scalar multiplication",
+  ]);
+  assert.equal(evaluation.lightweightEncryptedNonlinearPath.status, "research-only");
+  assert.ok(evaluation.caveats.includes("not a trained SNN"));
+  assert.ok(evaluation.caveats.includes("not clinical or biological validation"));
+});
+
 test("gateway demo exports a minimal model event without raw signal leakage", () => {
   const demo = runGatewayDemo({
     observedAt: "2026-05-21T12:34:56.000Z",
@@ -329,6 +370,220 @@ test("gateway validates and sanitizes sorted neural event input", () => {
   assert.equal(serializedModelEvent.includes("sample-local-only"), false);
   assert.equal(serializedModelEvent.includes("do-not-export"), false);
   assert.equal(serializedModelEvent.includes("localOperatorNote"), false);
+});
+
+test("sorted neural model events resist raw payload reconstruction", () => {
+  const sorted = sortSpatialSpikes(buildSimulatedRawNeuralFrame());
+  const rawSignal = {
+    schema: "neurofhe.gateway.rawSignal.v1",
+    intakeId: "raw-sorted-event-reconstruction-001",
+    observedAt: "2026-05-21T12:34:56.000Z",
+    receivedAt: "2026-05-21T12:35:02.000Z",
+    localOnly: true,
+    sensitivity: "sensitive-by-default",
+    source: {
+      sourceId: "sorted-source-local",
+      kind: "simulated-bio-digital-event-stream",
+      adapter: "local-sorted-event-import",
+      authorization: "synthetic-demo-only",
+    },
+    payload: {
+      sortedNeuralEvent: {
+        schema: "neurofhe.gateway.sortedNeuralEvent.v1",
+        eventWindow: sorted.eventWindow,
+        encoder: sorted.encoder,
+        sorterConfig: {
+          ...sorted.config,
+          localCalibrationRef: "CALIBRATION-SECRET-LOCAL-ONLY",
+        },
+        sourcePayload: {
+          rawNeuralSamples: [
+            {
+              sampleId: "RAW-SAMPLE-SECRET-001",
+              electrodeId: "electrode-7",
+              timestampUs: 1234,
+              amplitude: 9001,
+            },
+          ],
+          operatorNote: "NEVER_EXPORT_SORTED_RAW_SOURCE",
+        },
+      },
+    },
+  };
+
+  const normalized = normalizeRawSignal(rawSignal);
+  const policyDecision = applyPrivacySafetyPolicy(normalized, buildDefaultGatewayPolicy());
+  const modelEvent = policyDecision.modelFacingEvent;
+  const serializedModelEvent = JSON.stringify(modelEvent);
+
+  assert.equal(policyDecision.decision, "approved");
+  assert.equal(modelEvent.provenance.rawPayloadHash, "withheld-local-audit-only");
+  assert.equal(modelEvent.reconstructionResistance.schema, "neurofhe.gateway.reconstructionResistance.v1");
+  assert.equal(modelEvent.reconstructionResistance.rawPayloadReconstruction, "blocked-by-policy");
+  assert.equal(modelEvent.reconstructionResistance.activeValueVisibility, "encrypted-references-only");
+  assert.ok(
+    modelEvent.reconstructionResistance.residualMetadataLeakage.includes(
+      "public active neuron positions",
+    ),
+  );
+  assert.equal(modelEvent.plaintext.activePositions.every((position) => !("value" in position)), true);
+  assert.equal(modelEvent.encrypted.activeSpikeValues.length, modelEvent.plaintext.activePositions.length);
+  assert.equal(serializedModelEvent.includes("RAW-SAMPLE-SECRET-001"), false);
+  assert.equal(serializedModelEvent.includes("electrode-7"), false);
+  assert.equal(serializedModelEvent.includes("timestampUs"), false);
+  assert.equal(serializedModelEvent.includes("9001"), false);
+  assert.equal(serializedModelEvent.includes("NEVER_EXPORT_SORTED_RAW_SOURCE"), false);
+  assert.equal(serializedModelEvent.includes("CALIBRATION-SECRET-LOCAL-ONLY"), false);
+});
+
+test("sorted neural context tags aggregate cortical region and layer by default", () => {
+  const sorted = sortSpatialSpikes(buildSimulatedRawNeuralFrame());
+  const rawSignal = {
+    schema: "neurofhe.gateway.rawSignal.v1",
+    intakeId: "raw-sorted-event-context-001",
+    observedAt: "2026-05-21T12:34:56.000Z",
+    receivedAt: "2026-05-21T12:35:02.000Z",
+    localOnly: true,
+    sensitivity: "sensitive-by-default",
+    source: {
+      sourceId: "sorted-source-local",
+      kind: "simulated-bio-digital-event-stream",
+      adapter: "local-sorted-event-import",
+      authorization: "synthetic-demo-only",
+    },
+    payload: {
+      sortedNeuralEvent: {
+        schema: "neurofhe.gateway.sortedNeuralEvent.v1",
+        eventWindow: sorted.eventWindow,
+        encoder: sorted.encoder,
+        sorterConfig: sorted.config,
+        contextTags: {
+          schema: "neurofhe.gateway.neuralContextTags.v1",
+          region: "A1",
+          corticalLayer: "IV",
+          source: "kiwi-inspired-simulated-context",
+          confidence: 0.51,
+        },
+      },
+    },
+  };
+
+  const normalized = normalizeRawSignal(rawSignal);
+  const modelEvent = applyPrivacySafetyPolicy(
+    normalized,
+    buildDefaultGatewayPolicy(),
+  ).modelFacingEvent;
+  const serializedPlaintext = JSON.stringify(modelEvent.plaintext);
+  const serializedModelEvent = JSON.stringify(modelEvent);
+
+  assert.equal(normalized.validation.status, "valid");
+  assert.equal(normalized.features.neuralContext.region.code, "A1");
+  assert.equal(normalized.features.neuralContext.corticalLayer.code, "IV");
+  assert.deepEqual(modelEvent.aggregated.neuralContextSummary, {
+    schema: "neurofhe.gateway.neuralContextSummary.v1",
+    visibility: "aggregated",
+    tagCount: 2,
+    regionGroup: "auditory-cortex",
+    corticalLayerGroup: "middle-layers",
+    confidenceBucket: "0.5-0.75",
+    exactContextWithheld: true,
+  });
+  assert.equal(serializedPlaintext.includes("A1"), false);
+  assert.equal(serializedModelEvent.includes("primary-auditory-cortex"), false);
+  assert.equal(serializedModelEvent.includes("kiwi-inspired-simulated-context"), false);
+});
+
+test("sorted neural context tags can export as encrypted references", () => {
+  const sorted = sortSpatialSpikes(buildSimulatedRawNeuralFrame());
+  const rawSignal = {
+    schema: "neurofhe.gateway.rawSignal.v1",
+    intakeId: "raw-sorted-event-context-encrypted-001",
+    observedAt: "2026-05-21T12:34:56.000Z",
+    receivedAt: "2026-05-21T12:35:02.000Z",
+    localOnly: true,
+    sensitivity: "sensitive-by-default",
+    source: {
+      sourceId: "sorted-source-local",
+      kind: "simulated-bio-digital-event-stream",
+      adapter: "local-sorted-event-import",
+      authorization: "synthetic-demo-only",
+    },
+    payload: {
+      sortedNeuralEvent: {
+        schema: "neurofhe.gateway.sortedNeuralEvent.v1",
+        eventWindow: sorted.eventWindow,
+        encoder: sorted.encoder,
+        sorterConfig: sorted.config,
+        contextTags: {
+          region: "A1",
+          corticalLayer: "VI",
+          confidence: 0.88,
+        },
+      },
+    },
+  };
+
+  const normalized = normalizeRawSignal(rawSignal);
+  const modelEvent = applyPrivacySafetyPolicy(
+    normalized,
+    buildDefaultGatewayPolicy({ neuralContextVisibility: "encrypted" }),
+  ).modelFacingEvent;
+  const serializedModelEvent = JSON.stringify(modelEvent);
+
+  assert.equal(modelEvent.aggregated.neuralContextSummary.visibility, "encrypted");
+  assert.equal(modelEvent.aggregated.neuralContextSummary.tagCount, 2);
+  assert.deepEqual(modelEvent.encrypted.neuralContextTags, [
+    {
+      field: "region",
+      ciphertextRef: "enc-neural-context-region",
+      encoding: "encrypted-context-tag-code",
+    },
+    {
+      field: "corticalLayer",
+      ciphertextRef: "enc-neural-context-corticalLayer",
+      encoding: "encrypted-context-tag-code",
+    },
+  ]);
+  assert.equal(serializedModelEvent.includes("A1"), false);
+  assert.equal(serializedModelEvent.includes("\"VI\""), false);
+});
+
+test("gateway rejects invalid cortical context tags", () => {
+  const sorted = sortSpatialSpikes(buildSimulatedRawNeuralFrame());
+  const rawSignal = {
+    schema: "neurofhe.gateway.rawSignal.v1",
+    intakeId: "raw-sorted-event-context-invalid-001",
+    observedAt: "2026-05-21T12:34:56.000Z",
+    receivedAt: "2026-05-21T12:35:02.000Z",
+    localOnly: true,
+    sensitivity: "sensitive-by-default",
+    source: {
+      sourceId: "sorted-source-local",
+      kind: "simulated-bio-digital-event-stream",
+      adapter: "local-sorted-event-import",
+      authorization: "synthetic-demo-only",
+    },
+    payload: {
+      sortedNeuralEvent: {
+        schema: "neurofhe.gateway.sortedNeuralEvent.v1",
+        eventWindow: sorted.eventWindow,
+        encoder: sorted.encoder,
+        contextTags: {
+          region: "A17",
+          corticalLayer: "VII",
+        },
+      },
+    },
+  };
+
+  const normalized = normalizeRawSignal(rawSignal);
+  const policyDecision = applyPrivacySafetyPolicy(normalized, buildDefaultGatewayPolicy());
+
+  assert.equal(normalized.validation.status, "rejected");
+  assert.ok(normalized.validation.errors.includes("neural context region A17 is not allowed"));
+  assert.ok(normalized.validation.errors.includes("cortical layer VII is not allowed"));
+  assert.equal(policyDecision.decision, "blocked");
+  assert.equal(policyDecision.modelFacingEvent, null);
 });
 
 test("gateway blocks malformed sorted neural event input", () => {
@@ -458,16 +713,40 @@ test("benchmark artifacts publish a run JSON and latest JSON with required field
 
 test("privacy mode benchmark compares speed against sparsity metadata protection", () => {
   const comparison = buildPrivacyModeComparison(buildSparseEventWindow(), 2);
-  const [publicSparse, paddedSparse, dense] = comparison.modes;
+  const [publicSparse, publicNeurons, paddedSparse, dense] = comparison.modes;
 
   assert.equal(comparison.schema, "neurofhe.privacyModes.v1");
   assert.equal(comparison.activeEventCount, 18);
   assert.equal(comparison.featureCount, 64);
+  assert.deepEqual(comparison.modes.map((mode) => mode.id), [
+    "public-active-positions",
+    "public-active-neuron-positions-encrypted-features",
+    "padded-sparse-batches",
+    "dense-encrypted-windows",
+  ]);
   assert.equal(publicSparse.speedTier, "fastest");
   assert.equal(publicSparse.sparsityProtection, "low");
   assert.equal(publicSparse.encryptedFeatureSlots, 18);
   assert.equal(publicSparse.operationCounts.scalarMultiplies, 36);
   assert.ok(publicSparse.metadataLeakage.includes("exact active event positions"));
+
+  assert.equal(publicNeurons.label, "Public active neuron positions + encrypted features");
+  assert.equal(publicNeurons.representation, "spatial-sorted-events");
+  assert.equal(publicNeurons.encryptedFeatureSlots, 18);
+  assert.equal(publicNeurons.operationCounts.scalarMultiplies, 36);
+  assert.deepEqual(publicNeurons.publicFields, [
+    "activeNeuronPositions",
+    "featureShape",
+    "publicModelWeights",
+    "publicBias",
+  ]);
+  assert.deepEqual(publicNeurons.encryptedFields, [
+    "activeFeatureValues",
+    "classScoreCiphertexts",
+  ]);
+  assert.ok(publicNeurons.metadataLeakage.includes("active neuron identity and time-bin pattern"));
+  assert.ok(publicNeurons.hides.includes("raw sorted-event feature values"));
+  assert.equal(publicNeurons.relativeScalarMultiplies, 1);
 
   assert.equal(paddedSparse.speedTier, "middle");
   assert.equal(paddedSparse.sparsityProtection, "partial");
@@ -491,8 +770,21 @@ test("OpenFHE demo contract preserves the sparse linear score boundary", () => {
   assert.equal(contract.scheme, "openfhe-bfvrns");
   assert.equal(contract.scoreEquation, "scores = W x + bias");
   assert.equal(contract.boundaryDomain, "bio-digital-event-intelligence");
+  assert.equal(contract.eventRepresentation, "spatial-sorted-events");
+  assert.equal(contract.encoder.id, "canonical-spatial-aware-spike-sorter-v1");
+  assert.deepEqual(contract.spatialBins, [4, 2]);
+  assert.equal(contract.privacyMode.id, "public-active-neuron-positions-encrypted-features");
   assert.deepEqual(contract.matrixShape, [2, 64]);
   assert.equal(contract.activeEventCount, 18);
+  assert.equal(contract.publicActiveNeuronPositions.length, 18);
+  assert.equal("value" in contract.publicActiveNeuronPositions[0], false);
+  assert.deepEqual(contract.publicActiveNeuronPositions[0], {
+    index: 1,
+    timeBin: 0,
+    neuronId: 1,
+    unitX: 1,
+    unitY: 0,
+  });
   assert.deepEqual(contract.expectedPlaintextScores, { normal: 9, anomaly: 51 });
   assert.equal(contract.expectedClassification, "anomaly");
   assert.deepEqual(validateOpenFheContract(contract), []);
@@ -521,6 +813,7 @@ test("OpenFHE contract validation rejects unsafe integer-domain inputs", () => {
     "activeEvents[1].index 64 is outside feature count 64",
     "activeEvents[2].value must be a non-negative integer",
     "activeEvents[3].value must be a non-negative integer",
+    "publicActiveNeuronPositions length must match activeEvents length",
     "weights.normal length 2 does not match feature count 64",
     "weights.normal[1] must be a non-negative integer",
     "bias.normal must be a non-negative integer",
@@ -536,6 +829,8 @@ test("OpenFHE integration plan reports build commands and local detection state"
   assert.equal(plan.nativeTarget, "openfhe_linear_demo");
   assert.ok(plan.sourcePath.endsWith("prototype/openfhe/openfhe_linear_demo.cpp"));
   assert.ok(plan.cmakePath.endsWith("prototype/openfhe/CMakeLists.txt"));
+  assert.equal(plan.contract.eventRepresentation, "spatial-sorted-events");
+  assert.equal(plan.contract.privacyMode.id, "public-active-neuron-positions-encrypted-features");
   assert.deepEqual(plan.commands, [
     "cmake -S prototype/openfhe -B build/openfhe",
     "cmake --build build/openfhe",
@@ -552,6 +847,11 @@ test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {
   );
 
   assert.match(source, /#include "openfhe\.h"/);
+  assert.match(source, /SortedSpatialEventWindow/);
+  assert.match(source, /PublicActiveNeuronPositions/);
+  assert.match(source, /spatial-sorted-events/);
+  assert.match(source, /public-active-neuron-positions-encrypted-features/);
+  assert.match(source, /activeNeuronPositions/);
   assert.match(source, /CryptoContextBFVRNS/);
   assert.match(source, /GenCryptoContext/);
   assert.match(source, /EvalMult/);

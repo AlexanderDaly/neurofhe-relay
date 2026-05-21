@@ -69,11 +69,19 @@ Prototype event-list contract:
 ```json
 {
   "schema": "neurofhe.events.active-list.v1",
-  "publicActivePositions": [{"time": 0, "channel": 1}],
-  "encryptedActiveValues": ["ciphertext"],
-  "metadataCaveat": "Active positions reduce encrypted work but may reveal sparsity and timing patterns."
+  "privacyMode": "public-active-neuron-positions-encrypted-features",
+  "publicActiveNeuronPositions": [{"timeBin": 0, "neuronId": 1, "unitX": 1, "unitY": 0}],
+  "encryptedActiveFeatureValues": ["ciphertext"],
+  "metadataCaveat": "Active neuron positions reduce encrypted work but may reveal spatial, sparsity, and timing patterns."
 }
 ```
+
+Optional local-only context tags can annotate a sorted event with coarse cortical
+region or layer hints. The gateway currently allows a small simulated vocabulary
+such as `A1` and cortical layers `I` through `VI`. Exact tags stay inside the
+local boundary unless policy exports them as encrypted references; the default
+model-facing path emits only aggregate groups such as `auditory-cortex` or
+`middle-layers`.
 
 ### 2. Canonical Spatial-Aware Spike Sorter
 
@@ -109,6 +117,13 @@ Edge implementation target:
 - No model call and no external service before the gateway policy boundary.
 
 The current implementation is `prototype/lib/spike-sorter.mjs`. It is deterministic and simulated; real neural sorting requires lawful data rights, calibration, validation, and hardware review.
+
+The sorted spatial-cluster output is intentionally shaped as a model handoff
+rather than a raw-signal substitute. It can feed a future SNN experiment after a
+thin adapter converts count bins into spike trains, maps unit IDs to SNN neuron
+indices, calibrates timestep duration, and selects membrane/synapse dynamics. It
+can feed the current lightweight encrypted linear scorer directly because the
+contract is already sparse integer events over `scores = W x + bias`.
 
 ### 3. Spike/Event Encoder
 
@@ -163,6 +178,11 @@ The first kernel should avoid the hardest operations:
 The current prototype uses a sparse active-event linear score. For an 8 by 8 window with 18 active spikes and two output classes, the toy encrypted path performs 36 public scalar multiplications and 36 homomorphic additions. A dense encrypted tensor path over all 64 features would perform 128 of each operation.
 
 The score equation is fixed as `scores = W x + bias`, with matrix rows as classes and columns as flattened event features. The current benchmark emits this matrix shape so future BFV/BGV, CKKS, TFHE, or HFHE experiments can compare the same contract rather than changing the task midstream.
+
+The benchmark also emits `neurofhe.spatialClusterReadiness.v1`: SNN handoff is
+`adapter-ready`, lightweight encrypted linear scoring is `ready-now`, and
+encrypted nonlinear scoring is `research-only` until real HE parameter sets and
+operation costs are measured.
 
 Non-goals for the first prototype:
 

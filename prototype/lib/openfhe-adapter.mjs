@@ -4,8 +4,13 @@ import { existsSync } from "node:fs";
 import { delimiter, join, resolve } from "node:path";
 
 import { classifyScores } from "./classifier.mjs";
+import { buildPublicActiveNeuronPrivacyMode } from "./benchmark.mjs";
 import { activeEvents, buildSparseEventWindow, flattenEventWindow } from "./events.mjs";
 import { buildDemoLinearModel, sparseMatVec } from "./linear-algebra.mjs";
+import {
+  buildSimulatedRawNeuralFrame,
+  sortSpatialSpikes,
+} from "./spike-sorter.mjs";
 
 const DEFAULT_OPENFHE_ROOTS = [
   "/opt/homebrew",
@@ -16,13 +21,25 @@ const DEFAULT_OPENFHE_ROOTS = [
 ];
 
 export function buildOpenFheDemoContract(options = {}) {
-  const eventWindow = options.eventWindow ?? buildSparseEventWindow();
+  const sourceEventWindow = options.eventWindow ?? buildSparseEventWindow();
+  const sorted =
+    options.sortedEvent ??
+    sortSpatialSpikes(
+      options.rawNeuralFrame ??
+        buildSimulatedRawNeuralFrame({
+          eventWindow: sourceEventWindow,
+        }),
+      options.spatialSorterOptions ?? {},
+    );
+  const eventWindow = options.sortedEventWindow ?? sorted.eventWindow;
   const vector = flattenEventWindow(eventWindow);
-  const eventList = activeEvents(eventWindow).map(({ index, value }) => ({ index, value }));
+  const activeEventRows = activeEvents(eventWindow);
+  const eventList = activeEventRows.map(({ index, value }) => ({ index, value }));
   const model =
     options.model ??
     buildDemoLinearModel({ featureCount: vector.length, channels: eventWindow.channels });
   const scores = sparseMatVec(model, eventList);
+  const privacyMode = buildPublicActiveNeuronPrivacyMode(eventList.length, model.classes.length);
 
   return {
     schema: "neurofhe.openfhe.contract.v1",
@@ -30,12 +47,27 @@ export function buildOpenFheDemoContract(options = {}) {
     scoreEquation: model.scoreEquation,
     scoreDomain: "non-negative-integers",
     boundaryDomain: "bio-digital-event-intelligence",
-    eventRepresentation: "public active positions with encrypted active spike counts",
+    eventRepresentation: "spatial-sorted-events",
+    encoder: {
+      id: sorted.encoder.id,
+      schema: sorted.schema,
+      implementationTarget: sorted.encoder.implementationTarget,
+      outputSchema: eventWindow.schema,
+      productionClaim: false,
+    },
+    eventSchema: eventWindow.schema,
+    encoding: eventWindow.encoding,
+    spatialBins: Array.isArray(eventWindow.spatialBins) ? [...eventWindow.spatialBins] : null,
+    windowMs: eventWindow.windowMs,
+    privacyMode,
     featureShape: model.featureShape,
     featureCount: vector.length,
     classes: [...model.classes],
     matrixShape: [...model.matrixShape],
     activeEventCount: eventList.length,
+    publicActiveNeuronPositions: activeEventRows.map((event) =>
+      publicActiveNeuronPosition(event, eventWindow.spatialBins),
+    ),
     activeEvents: eventList,
     weights: cloneClassRows(model.classes, model.weights),
     bias: Object.fromEntries(model.classes.map((label) => [label, model.bias[label]])),
@@ -71,8 +103,15 @@ export function validateOpenFheContract(contract) {
   }
 
   validateActiveEvents(contract.activeEvents, featureCount, errors);
+  validatePublicActiveNeuronPositions(
+    contract.publicActiveNeuronPositions,
+    contract.activeEvents,
+    featureCount,
+    errors,
+  );
   validateWeights(contract.weights, classes, featureCount, errors);
   validateBias(contract.bias, classes, errors);
+  validateOpenFhePrivacyMode(contract.privacyMode, errors);
 
   return errors;
 }
@@ -122,6 +161,20 @@ function cloneClassRows(classes, weights) {
   return Object.fromEntries(classes.map((label) => [label, [...weights[label]]]));
 }
 
+function publicActiveNeuronPosition(event, spatialBins) {
+  const [width] = Array.isArray(spatialBins) ? spatialBins : [undefined, undefined];
+  const unitX = Number.isInteger(width) && width > 0 ? event.channel % width : null;
+  const unitY = Number.isInteger(width) && width > 0 ? Math.floor(event.channel / width) : null;
+
+  return {
+    index: event.index,
+    timeBin: event.time,
+    neuronId: event.channel,
+    unitX,
+    unitY,
+  };
+}
+
 function inferFeatureCount(contract) {
   if (Number.isInteger(contract.featureCount)) return contract.featureCount;
   if (Array.isArray(contract.matrixShape) && Number.isInteger(contract.matrixShape[1])) {
@@ -154,6 +207,52 @@ function validateActiveEvents(activeEventRows, featureCount, errors) {
       errors.push(`activeEvents[${rowIndex}].value must be a non-negative integer`);
     }
   });
+}
+
+function validatePublicActiveNeuronPositions(positions, activeEventRows, featureCount, errors) {
+  if (!Array.isArray(positions)) {
+    errors.push("publicActiveNeuronPositions must be an array");
+    return;
+  }
+  if (Array.isArray(activeEventRows) && positions.length !== activeEventRows.length) {
+    errors.push("publicActiveNeuronPositions length must match activeEvents length");
+  }
+
+  positions.forEach((position, rowIndex) => {
+    if (!position || typeof position !== "object") {
+      errors.push(`publicActiveNeuronPositions[${rowIndex}] must be an object`);
+      return;
+    }
+    if ("value" in position) {
+      errors.push(`publicActiveNeuronPositions[${rowIndex}] must not include value`);
+    }
+    if (!Number.isInteger(position.index) || position.index < 0) {
+      errors.push(`publicActiveNeuronPositions[${rowIndex}].index must be a non-negative integer`);
+    } else if (Number.isInteger(featureCount) && position.index >= featureCount) {
+      errors.push(
+        `publicActiveNeuronPositions[${rowIndex}].index ${position.index} is outside feature count ${featureCount}`,
+      );
+    }
+    if (!Number.isInteger(position.timeBin) || position.timeBin < 0) {
+      errors.push(`publicActiveNeuronPositions[${rowIndex}].timeBin must be a non-negative integer`);
+    }
+    if (!Number.isInteger(position.neuronId) || position.neuronId < 0) {
+      errors.push(`publicActiveNeuronPositions[${rowIndex}].neuronId must be a non-negative integer`);
+    }
+  });
+}
+
+function validateOpenFhePrivacyMode(privacyMode, errors) {
+  if (!privacyMode || typeof privacyMode !== "object") {
+    errors.push("privacyMode must be an object");
+    return;
+  }
+  if (privacyMode.id !== "public-active-neuron-positions-encrypted-features") {
+    errors.push("privacyMode.id must be public-active-neuron-positions-encrypted-features");
+  }
+  if (!Array.isArray(privacyMode.encryptedFields) || !privacyMode.encryptedFields.includes("activeFeatureValues")) {
+    errors.push("privacyMode.encryptedFields must include activeFeatureValues");
+  }
 }
 
 function validateWeights(weights, classes, featureCount, errors) {

@@ -14,6 +14,20 @@ import {
 
 const DEFAULT_TIMESTAMP = "2026-05-21T00:00:00.000Z";
 const SORTED_EVENT_ENCODER_ID = "canonical-spatial-aware-spike-sorter-v1";
+const REGION_CONTEXTS = {
+  A1: { code: "A1", label: "primary-auditory-cortex", group: "auditory-cortex" },
+  M1: { code: "M1", label: "primary-motor-cortex", group: "motor-cortex" },
+  S1: { code: "S1", label: "primary-somatosensory-cortex", group: "somatosensory-cortex" },
+  V1: { code: "V1", label: "primary-visual-cortex", group: "visual-cortex" },
+};
+const CORTICAL_LAYER_CONTEXTS = {
+  I: { code: "I", ordinal: 1, group: "superficial-layers" },
+  II: { code: "II", ordinal: 2, group: "superficial-layers" },
+  III: { code: "III", ordinal: 3, group: "superficial-layers" },
+  IV: { code: "IV", ordinal: 4, group: "middle-layers" },
+  V: { code: "V", ordinal: 5, group: "deep-layers" },
+  VI: { code: "VI", ordinal: 6, group: "deep-layers" },
+};
 
 export function buildSimulatedRawSignal(options = {}) {
   const observedAt = options.observedAt ?? DEFAULT_TIMESTAMP;
@@ -105,6 +119,7 @@ export function normalizeRawSignal(rawSignal, options = {}) {
           encoder: encoded.encoder,
           sparseEvents,
           metrics,
+          neuralContext: encoded.neuralContext ?? null,
         }
       : null,
   };
@@ -123,6 +138,7 @@ export function buildDefaultGatewayPolicy(options = {}) {
     maxActiveEvents: options.maxActiveEvents ?? 64,
     timeBucketMs: options.timeBucketMs ?? 60_000,
     timestepBucketSize: options.timestepBucketSize ?? 2,
+    neuralContextVisibility: options.neuralContextVisibility ?? "aggregated",
     fieldRules: [
       {
         field: "payload",
@@ -143,6 +159,11 @@ export function buildDefaultGatewayPolicy(options = {}) {
         field: "payload.sortedNeuralEvent.sourcePayload",
         action: "withhold",
         reason: "any source payload attached to a sorted event stays inside the local boundary",
+      },
+      {
+        field: "payload.sortedNeuralEvent.contextTags",
+        action: "aggregate-or-encrypt",
+        reason: "cortical layer and region context tags are optional sensitive metadata",
       },
       {
         field: "payload.deviceSerial",
@@ -183,8 +204,8 @@ export function buildDefaultGatewayPolicy(options = {}) {
         "sparseMetrics",
         "activePositions",
       ],
-      encryptedFields: ["activeSpikeValues"],
-      aggregatedFields: ["densityBucket", "activeEventCount"],
+      encryptedFields: ["activeSpikeValues", "neuralContextTags"],
+      aggregatedFields: ["densityBucket", "activeEventCount", "neuralContextSummary"],
       withheldFields: [
         "rawPayload",
         "deviceSerial",
@@ -196,6 +217,8 @@ export function buildDefaultGatewayPolicy(options = {}) {
         "rawSamplePayloads",
         "sortedNeuralEventSourcePayload",
         "rawSorterImportMetadata",
+        "exactNeuralContextTags",
+        "neuralContextSource",
       ],
     },
     recommendationRules: {
@@ -265,6 +288,7 @@ export function applyPrivacySafetyPolicy(normalizedEvent, policy = buildDefaultG
 export function buildModelFacingEvent(normalizedEvent, policy = buildDefaultGatewayPolicy()) {
   const sparseEvents = normalizedEvent.features.sparseEvents;
   const metrics = normalizedEvent.features.metrics;
+  const neuralContext = normalizedEvent.features.neuralContext;
 
   return {
     schema: "neurofhe.gateway.modelEvent.v1",
@@ -315,6 +339,9 @@ export function buildModelFacingEvent(normalizedEvent, policy = buildDefaultGate
         ciphertextRef: `enc-active-value-${rowIndex}`,
         encoding: "encrypted-non-negative-integer-spike-count",
       })),
+      ...(policy.neuralContextVisibility === "encrypted" && neuralContext
+        ? { neuralContextTags: buildEncryptedNeuralContextTags(neuralContext) }
+        : {}),
       targetPath: "BFV/BGV integer scoring or compatible FHE-style adapter after review",
       currentPrototype: "placeholder references only; no production cryptography claim",
     },
@@ -322,14 +349,19 @@ export function buildModelFacingEvent(normalizedEvent, policy = buildDefaultGate
       spikeCountBucket: countBucket(metrics.spikeCount),
       activeEventCount: sparseEvents.length,
       densityBucket: densityBucket(metrics.density),
+      ...(neuralContext
+        ? { neuralContextSummary: buildNeuralContextSummary(neuralContext, policy) }
+        : {}),
     },
+    reconstructionResistance: buildReconstructionResistance(normalizedEvent),
     withheld: policy.modelEventRules.withheldFields.map((field) => ({
       field,
       reason: "withheld by gateway export policy",
     })),
     provenance: {
       intakeId: normalizedEvent.provenance.intakeId,
-      rawPayloadHash: normalizedEvent.provenance.rawPayloadHash,
+      rawPayloadHash: "withheld-local-audit-only",
+      rawPayloadHashPolicy: "available only in local audit records",
       transformIds: normalizedEvent.provenance.transformIds,
       simulated: normalizedEvent.provenance.simulated,
     },
@@ -340,6 +372,79 @@ export function buildModelFacingEvent(normalizedEvent, policy = buildDefaultGate
       withheld: policy.modelEventRules.withheldFields,
     },
   };
+}
+
+function buildReconstructionResistance(normalizedEvent) {
+  const inputKind = normalizedEvent.features?.encoder?.inputKind ?? "raw-neural-frame";
+
+  return {
+    schema: "neurofhe.gateway.reconstructionResistance.v1",
+    inputKind,
+    rawPayloadReconstruction: "blocked-by-policy",
+    activeValueVisibility: "encrypted-references-only",
+    plaintextEventValues: "withheld",
+    protectedAgainst: [
+      "direct raw sample replay",
+      "raw sorted-source payload export",
+      "stable device identifier export",
+      "exact raw timestamp export",
+      "model-side active feature value inspection",
+    ],
+    residualMetadataLeakage: [
+      "public active neuron positions",
+      "coarse timestep buckets",
+      "active event count",
+      "density bucket",
+      "encoder summary",
+    ],
+    caveat:
+      "This is a reconstruction-resistance export contract, not a proof of anonymity or clinical privacy.",
+    productionClaim: false,
+  };
+}
+
+function buildNeuralContextSummary(neuralContext, policy) {
+  const visibility = policy.neuralContextVisibility === "encrypted" ? "encrypted" : "aggregated";
+  const summary = {
+    schema: "neurofhe.gateway.neuralContextSummary.v1",
+    visibility,
+    tagCount: neuralContextTagCount(neuralContext),
+    confidenceBucket: confidenceBucket(neuralContext.confidence),
+    exactContextWithheld: true,
+  };
+
+  if (visibility === "aggregated") {
+    return {
+      ...summary,
+      regionGroup: neuralContext.region?.group ?? "unspecified",
+      corticalLayerGroup: neuralContext.corticalLayer?.group ?? "unspecified",
+    };
+  }
+
+  return summary;
+}
+
+function buildEncryptedNeuralContextTags(neuralContext) {
+  return [
+    neuralContext.region
+      ? {
+          field: "region",
+          ciphertextRef: "enc-neural-context-region",
+          encoding: "encrypted-context-tag-code",
+        }
+      : null,
+    neuralContext.corticalLayer
+      ? {
+          field: "corticalLayer",
+          ciphertextRef: "enc-neural-context-corticalLayer",
+          encoding: "encrypted-context-tag-code",
+        }
+      : null,
+  ].filter(Boolean);
+}
+
+function neuralContextTagCount(neuralContext) {
+  return [neuralContext.region, neuralContext.corticalLayer].filter(Boolean).length;
 }
 
 export function buildLocalAnnotationRecommendation(modelFacingEvent, options = {}) {
@@ -681,18 +786,71 @@ function encodeRawSignal(rawSignal, options) {
 
 function encodeSortedNeuralEvent(sortedNeuralEvent) {
   const eventWindow = sanitizeSortedEventWindow(sortedNeuralEvent?.eventWindow);
-  const validationErrors = validateSortedNeuralEvent(sortedNeuralEvent, eventWindow);
+  const neuralContext = sanitizeNeuralContext(sortedNeuralEvent?.contextTags);
+  const validationErrors = [
+    ...validateSortedNeuralEvent(sortedNeuralEvent, eventWindow),
+    ...neuralContext.errors,
+  ];
   const encoder = summarizeSortedNeuralEvent(sortedNeuralEvent, eventWindow, validationErrors);
 
   return {
     eventWindow,
     encoder,
+    neuralContext: neuralContext.context,
     validationErrors,
     transformIds: [
       "validate-sorted-neural-event",
       "sanitize-sorted-neural-event",
+      ...(neuralContext.context ? ["sanitize-neural-context-tags"] : []),
       encoder.id,
     ],
+  };
+}
+
+function sanitizeNeuralContext(contextTags) {
+  if (contextTags == null) return { context: null, errors: [] };
+  if (!contextTags || typeof contextTags !== "object") {
+    return { context: null, errors: ["neural context tags must be an object"] };
+  }
+
+  const errors = [];
+  const regionCode = contextTags.region;
+  const layerCode = contextTags.corticalLayer;
+  const region = REGION_CONTEXTS[regionCode];
+  const corticalLayer = CORTICAL_LAYER_CONTEXTS[layerCode];
+
+  if (regionCode != null && !region) {
+    errors.push(`neural context region ${regionCode} is not allowed`);
+  }
+  if (layerCode != null && !corticalLayer) {
+    errors.push(`cortical layer ${layerCode} is not allowed`);
+  }
+  if (regionCode == null && layerCode == null) {
+    errors.push("neural context tags must include region or corticalLayer");
+  }
+
+  const confidence =
+    typeof contextTags.confidence === "number" && contextTags.confidence >= 0 && contextTags.confidence <= 1
+      ? contextTags.confidence
+      : null;
+  if (contextTags.confidence != null && confidence == null) {
+    errors.push("neural context confidence must be a number from 0 to 1");
+  }
+
+  return {
+    context: errors.length
+      ? null
+      : {
+          schema: "neurofhe.gateway.neuralContext.v1",
+          region: region ? { ...region } : null,
+          corticalLayer: corticalLayer ? { ...corticalLayer } : null,
+          confidence,
+          source: "optional-local-context-tag",
+          caveat:
+            "Optional simulated context tag only; not clinical localization or biological validation.",
+          productionClaim: false,
+        },
+    errors,
   };
 }
 
@@ -852,6 +1010,14 @@ function densityBucket(density) {
   if (density <= 0.25) return "0.1-0.25";
   if (density <= 0.5) return "0.25-0.5";
   return "0.5-1.0";
+}
+
+function confidenceBucket(confidence) {
+  if (confidence == null) return "unspecified";
+  if (confidence < 0.25) return "0-0.25";
+  if (confidence < 0.5) return "0.25-0.5";
+  if (confidence < 0.75) return "0.5-0.75";
+  return "0.75-1.0";
 }
 
 function countBucket(count) {

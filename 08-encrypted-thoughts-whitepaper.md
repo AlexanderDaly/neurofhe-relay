@@ -175,7 +175,7 @@ The cryptographic gate decides what leaves the local boundary:
 - which policy authorizes each computation,
 - which audit record is produced.
 
-This layer must account for metadata leakage. In the current NeuroFHE Relay prototype, public active event positions reduce encrypted operation count but reveal sparsity and timing patterns. That is acceptable for an educational benchmark only because the caveat is explicit. A production system would need stronger metadata controls, padding, batching, private set techniques, or a risk-based decision about what sparsity can safely be public.
+This layer must account for metadata leakage. In the current NeuroFHE Relay prototype, public active event positions reduce encrypted operation count but reveal sparsity and timing patterns. The sorted-event path makes that trade explicit as `public-active-neuron-positions-encrypted-features`: active neuron/time-bin positions are public, feature values are encrypted, and raw source payloads are withheld from model-facing events. That is acceptable for an educational benchmark only because the caveat is explicit. A production system would need stronger metadata controls, padding, batching, private set techniques, or a risk-based decision about what sparsity can safely be public.
 
 ### 6.4 Encrypted Compute Provider
 
@@ -360,7 +360,7 @@ The value of encrypted thoughts is more specific: it prevents a dangerous defaul
 
 NeuroFHE Relay is a public-domain reference package for one part of this problem: privacy-preserving event intelligence at the boundary between biological signal, neuromorphic representation, and encrypted computation.
 
-The current prototype is deliberately small. It uses a synthetic event window, public active event positions, encrypted active spike values, and a toy additive homomorphic scheme to demonstrate the privacy boundary and operation-count difference between sparse and dense scoring. It is not production cryptography and not a medical device.
+The current prototype is deliberately small. It uses a synthetic spatial-sorted event window, public active neuron positions, encrypted active feature values, and a toy additive homomorphic scheme to demonstrate the privacy boundary and operation-count difference between sparse and dense scoring. The OpenFHE BFVrns target now carries the same sparse sorted-event linear scorer when OpenFHE is installed locally. It is not production cryptography and not a medical device.
 
 That modesty is a strength. The correct first milestone is not to claim encrypted cognition. It is to produce an inspectable contract:
 

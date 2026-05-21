@@ -37,12 +37,14 @@ npm run benchmark:artifact
 ```
 
 Each artifact includes accuracy, latency, ciphertext bytes, operation counts,
-security parameters, privacy boundary, and crypto inventory.
+security parameters, privacy boundary, crypto inventory, and spatial-cluster
+readiness for future SNN or lightweight encrypted model paths.
 
-The benchmark now compares three privacy modes for the same `scores = W x + bias`
+The benchmark now compares four privacy modes for the same `scores = W x + bias`
 contract:
 
 - Public active positions: 18 encrypted feature slots, fastest, leaks exact timing/sparsity metadata.
+- Public active neuron positions + encrypted features: 18 encrypted feature slots, sorted-event OpenFHE target mode, leaks active neuron identity and time-bin pattern.
 - Padded sparse batches: 32 encrypted feature slots, middle ground, hides exact active count inside a bucket.
 - Dense encrypted windows: 64 encrypted feature slots, slowest, hides sparsity better by encrypting zero and non-zero positions alike.
 
@@ -50,7 +52,14 @@ It also compares three input representations on the same task:
 
 - Dense/raw window: 64 encrypted feature slots, complete dense reference path.
 - Unsorted spikes: 18 encrypted feature slots, keeps raw sample order and electrode metadata visible.
-- Spatial-sorted events: 18 encrypted feature slots, canonical sorter path with spatial-bin provenance, crypto inventory, and explicit sorted-event privacy boundary.
+- Spatial-sorted events: 18 encrypted feature slots, canonical sorter path with spatial-bin provenance, crypto inventory, reconstruction-resistance checks, and explicit sorted-event privacy boundary.
+
+The `spatialClusterReadiness` block answers whether sorted spatial clusters can
+feed downstream models:
+
+- SNN path: adapter-ready, not direct trained-SNN behavior. It needs count-to-spike-train expansion, neuron-index mapping, timestep duration calibration, and membrane/synapse model selection.
+- Lightweight encrypted linear path: ready now for the fixed sparse `scores = W x + bias` scorer, with public active neuron positions and encrypted feature values.
+- Lightweight encrypted nonlinear path: research-only until polynomial, lookup-table, or threshold-gate costs are measured under reviewed HE parameters.
 
 Print the real OpenFHE BFVrns integration plan:
 
@@ -80,7 +89,7 @@ Current modules:
 - `lib/nmnist.mjs` - N-MNIST event parsing, feature extraction, and plaintext baseline evaluation.
 - `lib/openfhe-adapter.mjs` - OpenFHE contract builder, validation, local detection, and build-plan output.
 - `lib/classifier.mjs` - plaintext and encrypted linear spike-count classifiers.
-- `lib/benchmark.mjs` - benchmark schema, accuracy summary, security parameters, crypto inventory, dense baseline comparison, three-mode privacy comparison, and privacy boundary.
+- `lib/benchmark.mjs` - benchmark schema, accuracy summary, security parameters, crypto inventory, dense baseline comparison, four-mode privacy comparison, spatial-cluster readiness, and privacy boundary.
 - `lib/artifacts.mjs` - benchmark artifact publisher.
 - `openfhe/` - real OpenFHE BFVrns C++ demo and CMake target for the sparse score contract.
 - `openfhe-benchmark.mjs` - OpenFHE plan/run CLI.

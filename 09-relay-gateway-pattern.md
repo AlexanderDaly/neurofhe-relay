@@ -225,7 +225,13 @@ The model-facing event is the only event object that downstream services may rec
   "aggregated": {
     "spikeCountBucket": "17-32",
     "activeEventCount": 18,
-    "densityBucket": "0.25-0.5"
+    "densityBucket": "0.25-0.5",
+    "neuralContextSummary": {
+      "visibility": "aggregated",
+      "regionGroup": "auditory-cortex",
+      "corticalLayerGroup": "middle-layers",
+      "exactContextWithheld": true
+    }
   },
   "withheld": [
     {
@@ -235,12 +241,17 @@ The model-facing event is the only event object that downstream services may rec
   ],
   "fieldVisibility": {
     "plaintext": ["eventId", "eventType", "confidence", "activePositions"],
-    "encrypted": ["activeSpikeValues"],
-    "aggregated": ["densityBucket", "activeEventCount"],
-    "withheld": ["rawPayload", "deviceSerial", "localSubjectRef"]
+    "encrypted": ["activeSpikeValues", "neuralContextTags"],
+    "aggregated": ["densityBucket", "activeEventCount", "neuralContextSummary"],
+    "withheld": ["rawPayload", "deviceSerial", "localSubjectRef", "exactNeuralContextTags"]
   }
 }
 ```
+
+Optional cortical context tags are local provenance hints, not clinical labels.
+Inspired by KIWI-style A1 layer notation, the scaffold currently validates `A1`
+and cortical layers `I` through `VI` as simulated tags. Policy may export only a
+coarse aggregate summary or encrypted tag references.
 
 ## Command Recommendation Schema
 
@@ -324,6 +335,10 @@ Default posture:
       "action": "withhold"
     },
     {
+      "field": "payload.sortedNeuralEvent.contextTags",
+      "action": "aggregate-or-encrypt"
+    },
+    {
       "field": "source.sourceId",
       "action": "hash"
     },
@@ -369,7 +384,7 @@ Additional policy profiles:
 3. The spatial-aware spike sorter applies an integer threshold, electrode-to-spatial-bin lookup, refractory gate, and bounded count accumulation to produce `neurofhe.events.v1.spatial-sorter`.
 4. If an FPGA, edge process, or file adapter provides a pre-sorted `sortedNeuralEvent`, the gateway still validates schema, encoding, spatial bins, and event-window shape, then strips source payloads and import metadata before normalization.
 5. The Normalization Layer validates the event window, extracts 18 active sparse events, records sorter provenance, and creates `neurofhe.gateway.normalizedEvent.v1`.
-6. The Privacy And Safety Filter hashes the source ID, buckets the timestamp, buckets density, withholds raw payload and high-risk metadata, and marks active spike values as encrypted references.
+6. The Privacy And Safety Filter hashes the source ID, buckets the timestamp, buckets density, withholds raw payload, raw payload hashes, and high-risk metadata from model-facing events, and marks active feature values as encrypted references.
 7. The Model-Facing Event Interface emits `neurofhe.gateway.modelEvent.v1`.
 8. A model or encrypted compute service can score only the approved representation. It receives no raw sample payloads, device serial, local subject reference, precise source path, or direct command surface.
 9. The model returns a recommendation.
@@ -525,7 +540,7 @@ Threats and controls:
 | Model service is mistaken or overconfident | Recommendations require confidence and uncertainty and pass through command validation | Bad recommendations can still waste review time or influence humans |
 | Prompt injection asks for raw data | Raw export is denied by policy; recommendations cannot override field rules | A human could still broaden policy incorrectly |
 | Agent proposes direct device control | Raw device commands and external control actions are blocked | Future allowlists must remain narrow |
-| Sensitive-field reconstruction | Raw payloads, exact timestamps, device IDs, subject refs, precise paths, and values are withheld, hashed, bucketed, aggregated, or encrypted | Hashes can become join keys; sparse metadata can be identifying |
+| Sensitive-field reconstruction | Raw payloads, raw payload hashes, exact timestamps, device IDs, subject refs, precise paths, and values are withheld from model-facing events, bucketed, aggregated, or encrypted | Sparse metadata can still be identifying |
 | Schema drift | Every event carries schema, schema version, validation status, and transform IDs | Old replay streams may need migration |
 | Timing leakage | Exact timestamps are bucketed before export | Buckets may still leak behavior in high-frequency settings |
 | Sparsity leakage | Dense encrypted mode is available for stronger protection; sparse mode is caveated | Dense mode costs more compute |

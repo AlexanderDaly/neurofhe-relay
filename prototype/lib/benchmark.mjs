@@ -62,6 +62,7 @@ export function runPrototypeBenchmark(options = {}) {
     denseBaseline: denseBaselineComparison(eventWindow, classCount),
     privacyModes: buildPrivacyModeComparison(eventWindow, classCount),
     representationComparison: buildRepresentationComparison({ eventWindow }),
+    spatialClusterReadiness: evaluateSpatialClusterReadiness({ eventWindow }),
     results,
     encryptedPreview: encrypted.encryptedPreview,
     cryptoInventory: buildCryptoInventory(),
@@ -99,6 +100,7 @@ export function buildBenchmarkArtifact(benchmark, options = {}) {
     cryptoInventory: benchmark.cryptoInventory,
     privacyModes: benchmark.privacyModes,
     representationComparison: benchmark.representationComparison,
+    spatialClusterReadiness: benchmark.spatialClusterReadiness,
     results: benchmark.results,
     productionClaim: benchmark.productionClaim,
     benchmark,
@@ -156,6 +158,7 @@ export function buildPrivacyModeComparison(eventWindow, classCount, options = {}
       notes:
         "Fastest mode; suitable only when active-position and timing metadata are acceptable to expose.",
     },
+    buildPublicActiveNeuronPrivacyMode(activeEventCount, classCount),
     {
       id: "padded-sparse-batches",
       label: "Padded sparse batches",
@@ -210,6 +213,44 @@ export function buildPrivacyModeComparison(eventWindow, classCount, options = {}
     })),
     nextMeasurement:
       "Run the same three modes under OpenFHE BFVrns after native OpenFHE is installed.",
+  };
+}
+
+export function buildPublicActiveNeuronPrivacyMode(activeEventCount, classCount) {
+  return {
+    id: "public-active-neuron-positions-encrypted-features",
+    label: "Public active neuron positions + encrypted features",
+    representation: "spatial-sorted-events",
+    speedTier: "fastest",
+    sparsityProtection: "low",
+    encryptedFeatureSlots: activeEventCount,
+    positionPolicy:
+      "sorted active neuron positions are public; sorted event feature values are encrypted",
+    paddingPolicy: "none",
+    publicFields: [
+      "activeNeuronPositions",
+      "featureShape",
+      "publicModelWeights",
+      "publicBias",
+    ],
+    encryptedFields: ["activeFeatureValues", "classScoreCiphertexts"],
+    operationCounts: operationCountsForSlots(activeEventCount, classCount),
+    metadataLeakage: [
+      "active neuron identity and time-bin pattern",
+      "exact sorted active event count",
+      "coarse spatial activity",
+      "timing/sparsity metadata",
+    ],
+    hides: [
+      "raw sorted-event feature values",
+      "raw neural samples",
+      "raw electrode identifiers",
+      "final class scores until client decrypts",
+    ],
+    reconstructionResistance:
+      "prevents raw sample replay or value inspection by the compute provider, but does not hide public position metadata",
+    notes:
+      "OpenFHE BFVrns target mode for sparse sorted-event scoring; use only where public active neuron metadata is acceptable.",
   };
 }
 
@@ -320,6 +361,90 @@ export function buildRepresentationComparison(options = {}) {
     ],
     caveat:
       "All three representations are compared on one synthetic task. This is a representation and operation-count comparison, not dataset accuracy.",
+  };
+}
+
+export function evaluateSpatialClusterReadiness(options = {}) {
+  const eventWindow = options.eventWindow ?? buildSparseEventWindow();
+  const rawFrame =
+    options.rawNeuralFrame ??
+    buildSimulatedRawNeuralFrame({
+      eventWindow,
+    });
+  const sorted =
+    options.sortedEvent ??
+    sortSpatialSpikes(rawFrame, options.spatialSorterOptions ?? {});
+  const activeEventRows = activeEvents(sorted.eventWindow);
+  const classCount = options.classCount ?? 2;
+  const previewEvents = sorted.sortedSpikes.slice(0, 5).map((event) => ({
+    timeBin: event.timeBin,
+    neuronId: event.unitId,
+    unitX: event.unitX,
+    unitY: event.unitY,
+    value: event.value,
+  }));
+  const encryptedFeatureSlots = activeEventRows.length;
+
+  return {
+    schema: "neurofhe.spatialClusterReadiness.v1",
+    sourceRepresentation: "spatial-sorted-events",
+    clusteringBasis: "deterministic spatial bins, not learned neural clusters",
+    conclusion: "yes-with-adapters",
+    snnPath: {
+      status: "adapter-ready",
+      directFeed: false,
+      eventStreamCompatible: true,
+      feedContract: "discrete event stream keyed by time bin and neuron ID",
+      feedFields: ["timeBin", "neuronId", "unitX", "unitY", "value"],
+      previewEvents,
+      requiredAdapters: [
+        "count-to-spike-train expansion",
+        "neuron-index mapping",
+        "timestep duration calibration",
+        "membrane and synapse model selection",
+      ],
+      unsuitableForDirectClaim: [
+        "trained SNN behavior",
+        "biological fidelity",
+        "clinical interpretation",
+      ],
+    },
+    lightweightEncryptedLinearPath: {
+      status: "ready-now",
+      directFeed: true,
+      privacyMode: "public-active-neuron-positions-encrypted-features",
+      encryptedFeatureSlots,
+      publicFields: [
+        "activeNeuronPositions",
+        "featureShape",
+        "publicModelWeights",
+        "publicBias",
+      ],
+      encryptedFields: ["activeFeatureValues", "classScoreCiphertexts"],
+      operationFamily: ["integer addition", "plaintext scalar multiplication"],
+      operationCounts: operationCountsForSlots(encryptedFeatureSlots, classCount),
+    },
+    lightweightEncryptedNonlinearPath: {
+      status: "research-only",
+      directFeed: false,
+      candidateFamilies: [
+        "low-degree polynomial approximations",
+        "small lookup-table circuits",
+        "TFHE-style binary threshold gates",
+      ],
+      blockers: [
+        "nonlinear activation cost under HE",
+        "metadata leakage from sparse positions",
+        "need for reviewed parameter sets and implementation benchmarks",
+      ],
+    },
+    caveats: [
+      "not a trained SNN",
+      "not clinical or biological validation",
+      "spatial bins are deterministic prototype features",
+      "public active neuron positions leak spatial and timing metadata",
+      "production cryptography requires real library integration and review",
+    ],
   };
 }
 

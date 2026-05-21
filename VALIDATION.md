@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 25
-pass 25
+tests 30
+pass 30
 fail 0
 ```
 
@@ -28,12 +28,13 @@ Covered behaviours:
 - Event-window validation and sparse metrics.
 - Plaintext and encrypted classifier agreement.
 - Linear model metadata, dense/sparse matrix-vector agreement, public bias, and model validation.
-- Benchmark accuracy, latency, ciphertext bytes, operation counts, security parameters, privacy boundary, crypto inventory, dense baseline comparison, and three privacy modes.
-- Representation benchmark comparing dense/raw windows, unsorted spikes, and spatial-sorted events on the same `scores = W x + bias` task, including sorted-event crypto inventory and privacy boundary metadata.
+- Benchmark accuracy, latency, ciphertext bytes, operation counts, security parameters, privacy boundary, crypto inventory, dense baseline comparison, and four privacy modes.
+- Representation benchmark comparing dense/raw windows, unsorted spikes, and spatial-sorted events on the same `scores = W x + bias` task, including sorted-event crypto inventory, reconstruction-resistance posture, and privacy boundary metadata.
+- Spatial-cluster readiness evaluation showing sorted events are adapter-ready for future SNN experiments, ready now for the lightweight encrypted linear score contract, and research-only for nonlinear encrypted model paths.
 - Spatial spike sorting from simulated raw neural-like intake into stable event windows.
-- Relay gateway raw-intake summarization, canonical sorter insertion, sorted-event input validation and sanitization, normalization, minimal model-facing event export, raw-leakage checks, accepted safe local recommendations, rejected unsafe command recommendations, and strict policy blocking.
+- Relay gateway raw-intake summarization, canonical sorter insertion, sorted-event input validation and sanitization, optional cortical region/layer context aggregation or encrypted export, sorted-event reconstruction-resistance checks, normalization, minimal model-facing event export, raw-leakage checks, accepted safe local recommendations, rejected unsafe command recommendations, and strict policy blocking.
 - Benchmark artifact publishing to timestamped run JSON and `latest.json`.
-- OpenFHE contract validation, native build-plan detection, and C++ API source markers.
+- OpenFHE sorted-event contract validation, native build-plan detection, and C++ API source markers.
 - N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
 - Research assumptions with clean-room and naming guardrails.
 
@@ -219,6 +220,12 @@ Result summary:
         "relativeScalarMultiplies": 1
       },
       {
+        "id": "public-active-neuron-positions-encrypted-features",
+        "encryptedFeatureSlots": 18,
+        "scalarMultiplies": 36,
+        "relativeScalarMultiplies": 1
+      },
+      {
         "id": "padded-sparse-batches",
         "encryptedFeatureSlots": 32,
         "scalarMultiplies": 64,
@@ -231,6 +238,26 @@ Result summary:
         "relativeScalarMultiplies": 3.56
       }
     ]
+  },
+  "spatialClusterReadiness": {
+    "schema": "neurofhe.spatialClusterReadiness.v1",
+    "sourceRepresentation": "spatial-sorted-events",
+    "clusteringBasis": "deterministic spatial bins, not learned neural clusters",
+    "conclusion": "yes-with-adapters",
+    "snnPath": {
+      "status": "adapter-ready",
+      "directFeed": false,
+      "eventStreamCompatible": true,
+      "feedFields": ["timeBin", "neuronId", "unitX", "unitY", "value"]
+    },
+    "lightweightEncryptedLinearPath": {
+      "status": "ready-now",
+      "privacyMode": "public-active-neuron-positions-encrypted-features",
+      "encryptedFeatureSlots": 18
+    },
+    "lightweightEncryptedNonlinearPath": {
+      "status": "research-only"
+    }
   },
   "results": {
     "plaintextMatchesEncrypted": true,
@@ -380,4 +407,4 @@ ascii scan complete
 
 ## Scope Note
 
-The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes a real OpenFHE BFVrns native integration target for the same sparse score contract, gated on a local OpenFHE installation.
+The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes a real OpenFHE BFVrns native integration target for the same sparse sorted-event score contract, gated on a local OpenFHE installation.

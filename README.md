@@ -112,6 +112,7 @@ The runnable scaffold demonstrates:
 - Sensitive raw intake treated as local-only by default.
 - A canonical `rawNeuralFrame -> spatialSpikeSorter -> eventWindow` encoder stage designed around FPGA- or edge-friendly integer operations.
 - Pre-sorted `sortedNeuralEvent` imports still pass through gateway validation, sanitization, and export policy before normalization.
+- Optional cortical region or layer context tags, such as A1 and layers I through VI, are validated locally and exported only as aggregate summaries or encrypted references.
 - Normalized event records with provenance, confidence, schema version, and validation status.
 - Model-facing events with explicit plaintext, encrypted, aggregated, and withheld fields.
 - Recommendation validation that accepts safe local reversible actions and rejects raw device commands.
@@ -127,7 +128,7 @@ Run the included educational prototype:
 npm run demo
 ```
 
-Emit the benchmark schema, including dense/raw, unsorted-spike, and spatial-sorted representation comparison:
+Emit the benchmark schema, including dense/raw, unsorted-spike, and spatial-sorted representation comparison plus SNN/encrypted-readiness evaluation:
 
 ```sh
 npm run benchmark
@@ -151,7 +152,7 @@ Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 ```
 
-The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The benchmark now compares dense/raw windows, unsorted spikes, and spatial-sorted events on that same task so representation cost and metadata leakage stay visible. Each spatial-sorted benchmark entry carries its own crypto inventory and sorted-event privacy boundary. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is now included under `prototype/openfhe/`, while SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment remain candidate follow-on lanes.
+The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The benchmark now compares dense/raw windows, unsorted spikes, and spatial-sorted events on that same task so representation cost and metadata leakage stay visible. Each spatial-sorted benchmark entry carries its own crypto inventory, sorted-event privacy boundary, reconstruction-resistance caveat, and explicit metadata-leakage list. The benchmark also emits `spatialClusterReadiness`: spatial-sorted events can feed a future SNN path after count-to-spike-train, neuron-index, timestep, and membrane/synapse adapters; the same representation can feed the current lightweight encrypted linear score path directly. The compute side can use the `public-active-neuron-positions-encrypted-features` mode: active neuron/time positions are public, feature values are encrypted, and raw samples remain local. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is now included under `prototype/openfhe/` for the same sparse sorted-event scorer, while SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment remain candidate follow-on lanes.
 
 ## Prototype Boundary
 

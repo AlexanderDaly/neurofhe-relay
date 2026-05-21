@@ -1,22 +1,24 @@
 # OpenFHE Integration
 
-This lane ports the sparse event scoring contract to a real OpenFHE BFVrns
-native target while preserving the same public boundary used by the toy demo:
+This lane ports the sparse spatial-sorted event scoring contract to a real
+OpenFHE BFVrns native target while preserving the same public boundary used by
+the toy demo:
 
 ```text
 scores = W x + bias
 ```
 
-The current native demo encrypts only active spike counts, keeps active event
-positions public, applies public non-negative integer class weights, and
-decrypts only the final class scores. It is an integration target, not a
-production security claim.
+The current native demo encrypts only active sorted-event feature values, keeps
+active neuron/time-bin positions public, applies public non-negative integer
+class weights, and decrypts only the final class scores. It uses the
+`public-active-neuron-positions-encrypted-features` privacy mode. It is an
+integration target, not a production security claim.
 
 ## Files
 
 - `lib/openfhe-adapter.mjs` - JS-side contract builder, validation, local OpenFHE detection, and build-plan output.
 - `openfhe/CMakeLists.txt` - CMake target using `find_package(OpenFHE CONFIG REQUIRED)`.
-- `openfhe/openfhe_linear_demo.cpp` - BFVrns integer demo using OpenFHE `Encrypt`, `EvalMult`, `EvalAdd`, and `Decrypt`.
+- `openfhe/openfhe_linear_demo.cpp` - BFVrns integer sorted-event demo using OpenFHE `Encrypt`, `EvalMult`, `EvalAdd`, and `Decrypt`.
 - `openfhe-benchmark.mjs` - CLI runner for printing the plan or building/running the native target.
 
 ## Commands
@@ -49,7 +51,10 @@ directory containing `OpenFHEConfig.cmake`.
 The native executable emits `neurofhe.openfhe.result.v1` JSON with:
 
 - scheme: `openfhe-bfvrns`
+- event representation: `spatial-sorted-events`
+- privacy mode: `public-active-neuron-positions-encrypted-features`
 - active event count: `18`
+- active neuron positions: public, value-free positions with index, time bin, neuron ID, and spatial bin coordinates
 - scores: `{ "normal": 9, "anomaly": 51 }`
 - classification: `anomaly`
 - operation counts: `20` encryptions, `36` scalar/plaintext multiplies, `36` adds, `2` decryptions

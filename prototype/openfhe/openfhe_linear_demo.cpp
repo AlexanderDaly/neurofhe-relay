@@ -14,10 +14,20 @@ namespace {
 
 struct ActiveEvent {
     std::size_t index;
+    std::size_t timeBin;
+    std::size_t neuronId;
     int64_t value;
 };
 
-std::vector<std::vector<int64_t>> DemoEventWindow() {
+struct PublicActiveNeuronPosition {
+    std::size_t index;
+    std::size_t timeBin;
+    std::size_t neuronId;
+    std::size_t unitX;
+    std::size_t unitY;
+};
+
+std::vector<std::vector<int64_t>> SortedSpatialEventWindow() {
     return {
         {0, 1, 0, 0, 1, 0, 0, 0},
         {0, 1, 0, 1, 1, 0, 0, 0},
@@ -37,11 +47,30 @@ std::vector<ActiveEvent> ActiveEvents(const std::vector<std::vector<int64_t>>& v
         for (std::size_t channel = 0; channel < values[time].size(); ++channel) {
             const auto value = values[time][channel];
             if (value > 0) {
-                events.push_back({time * channels + channel, value});
+                events.push_back({time * channels + channel, time, channel, value});
             }
         }
     }
     return events;
+}
+
+std::vector<PublicActiveNeuronPosition> PublicActiveNeuronPositions(
+    const std::vector<ActiveEvent>& events,
+    std::size_t spatialWidth) {
+    std::vector<PublicActiveNeuronPosition> positions;
+    positions.reserve(events.size());
+
+    for (const auto& event : events) {
+        positions.push_back({
+            event.index,
+            event.timeBin,
+            event.neuronId,
+            event.neuronId % spatialWidth,
+            event.neuronId / spatialWidth,
+        });
+    }
+
+    return positions;
 }
 
 std::vector<int64_t> MakeNormalWeights() {
@@ -108,11 +137,41 @@ void PrintScoreObject(const std::map<std::string, int64_t>& scores) {
     std::cout << "}";
 }
 
+void PrintStringArray(const std::vector<std::string>& values) {
+    std::cout << "[";
+    for (std::size_t index = 0; index < values.size(); ++index) {
+        if (index > 0) {
+            std::cout << ",";
+        }
+        std::cout << "\"" << values[index] << "\"";
+    }
+    std::cout << "]";
+}
+
+void PrintActiveNeuronPositions(const std::vector<PublicActiveNeuronPosition>& positions) {
+    std::cout << "[";
+    for (std::size_t index = 0; index < positions.size(); ++index) {
+        const auto& position = positions[index];
+        if (index > 0) {
+            std::cout << ",";
+        }
+        std::cout << "{";
+        std::cout << "\"index\":" << position.index << ",";
+        std::cout << "\"timeBin\":" << position.timeBin << ",";
+        std::cout << "\"neuronId\":" << position.neuronId << ",";
+        std::cout << "\"unitX\":" << position.unitX << ",";
+        std::cout << "\"unitY\":" << position.unitY;
+        std::cout << "}";
+    }
+    std::cout << "]";
+}
+
 }  // namespace
 
 int main() {
-    const auto values = DemoEventWindow();
+    const auto values = SortedSpatialEventWindow();
     const auto events = ActiveEvents(values);
+    const auto activeNeuronPositions = PublicActiveNeuronPositions(events, 4);
     const std::vector<std::string> classes = {"normal", "anomaly"};
     const std::map<std::string, std::vector<int64_t>> weights = {
         {"normal", MakeNormalWeights()},
@@ -180,8 +239,42 @@ int main() {
     std::cout << "\"scheme\":\"openfhe-bfvrns\",";
     std::cout << "\"scoreEquation\":\"scores = W x + bias\",";
     std::cout << "\"boundaryDomain\":\"bio-digital-event-intelligence\",";
-    std::cout << "\"eventRepresentation\":\"public active positions with encrypted active spike counts\",";
+    std::cout << "\"eventRepresentation\":\"spatial-sorted-events\",";
+    std::cout << "\"encoder\":{";
+    std::cout << "\"id\":\"canonical-spatial-aware-spike-sorter-v1\",";
+    std::cout << "\"schema\":\"neurofhe.encoder.spatialSpikeSorter.v1\",";
+    std::cout << "\"implementationTarget\":\"fpga-or-edge-fsm\",";
+    std::cout << "\"outputSchema\":\"neurofhe.events.v1.spatial-sorter\",";
+    std::cout << "\"productionClaim\":false";
+    std::cout << "},";
+    std::cout << "\"privacyMode\":{";
+    std::cout << "\"id\":\"public-active-neuron-positions-encrypted-features\",";
+    std::cout << "\"publicFields\":";
+    PrintStringArray({
+        "activeNeuronPositions",
+        "featureShape",
+        "publicModelWeights",
+        "publicBias",
+    });
+    std::cout << ",";
+    std::cout << "\"encryptedFields\":";
+    PrintStringArray({"activeFeatureValues", "classScoreCiphertexts"});
+    std::cout << ",";
+    std::cout << "\"metadataLeakage\":";
+    PrintStringArray({
+        "active neuron identity and time-bin pattern",
+        "exact sorted active event count",
+        "coarse spatial activity",
+    });
+    std::cout << "},";
+    std::cout << "\"eventSchema\":\"neurofhe.events.v1.spatial-sorter\",";
+    std::cout << "\"encoding\":\"spatial-binned-spike-count\",";
+    std::cout << "\"featureShape\":[8,8],";
+    std::cout << "\"spatialBins\":[4,2],";
     std::cout << "\"activeEventCount\":" << events.size() << ",";
+    std::cout << "\"activeNeuronPositions\":";
+    PrintActiveNeuronPositions(activeNeuronPositions);
+    std::cout << ",";
     std::cout << "\"scores\":";
     PrintScoreObject(decryptedScores);
     std::cout << ",";
