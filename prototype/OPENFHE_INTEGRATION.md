@@ -16,10 +16,25 @@ integration target, not a production security claim.
 
 ## Files
 
-- `lib/openfhe-adapter.mjs` - JS-side contract builder, validation, local OpenFHE detection, and build-plan output.
+- `lib/openfhe-adapter.mjs` - JS-side contract builder, validation, contract-bound real-library adapter manifest, local OpenFHE detection, and build-plan output.
 - `openfhe/CMakeLists.txt` - CMake target using `find_package(OpenFHE CONFIG REQUIRED)`.
 - `openfhe/openfhe_linear_demo.cpp` - BFVrns integer sorted-event demo using OpenFHE `Encrypt`, `EvalMult`, `EvalAdd`, and `Decrypt`.
-- `openfhe-benchmark.mjs` - CLI runner for printing the plan or building/running the native target.
+- `openfhe-benchmark.mjs` - CLI runner for printing the plan, writing adapter comparison artifacts, or building/running the native target.
+
+## Adapter Contract
+
+`buildOpenFheRealLibraryAdapter()` emits
+`neurofhe.realLibraryAdapter.v1`. The adapter is bound to the generated
+`neurofhe.openfhe.contract.v1` payload by a SHA-256 digest and carries:
+
+- exact score contract: `scores = W x + bias`
+- non-negative integer score domain
+- expected plaintext scores and classification
+- native target and CMake path
+- OpenFHE detection state
+- packed-vector planning notes for BFV/BGV and CKKS
+- privacy-mode decision for public active positions, padded sparse batches, or dense encrypted windows
+- framing guardrail: privacy-preserving event intelligence, not diagnosis or treatment
 
 ## Commands
 
@@ -29,10 +44,23 @@ Print the OpenFHE build plan and local detection state:
 npm run benchmark:openfhe
 ```
 
+Write an optional comparison artifact for the adapter plan:
+
+```sh
+npm run benchmark:openfhe -- --artifact
+```
+
 Build and run the native demo when OpenFHE is installed:
 
 ```sh
 npm run benchmark:openfhe -- --run
+```
+
+Build, run, and persist the native result for comparison when OpenFHE is
+installed:
+
+```sh
+npm run benchmark:openfhe -- --run --artifact
 ```
 
 Equivalent native commands:
@@ -45,6 +73,26 @@ build/openfhe/openfhe_linear_demo
 
 If OpenFHE is installed in a non-standard location, set `OpenFHE_DIR` to the
 directory containing `OpenFHEConfig.cmake`.
+
+## Packed-Vector Plan
+
+The current integer spike-count contract should start with BFV/BGV packing:
+
+- pack active values for the sparse path, with public or padded active indices depending on the privacy-mode decision
+- compare against full dense-window packing so sparsity cost and metadata leakage remain visible
+- keep weights and bias public for the first benchmark lane, using ciphertext-plaintext multiplies
+
+CKKS is a comparison lane, not the default. Use it only when the feature
+contract becomes approximate real or fixed-point, and record score drift against
+the integer plaintext baseline.
+
+## Privacy-Mode Decision
+
+The default comparison decision is `padded-sparse-batches`: it hides exact
+active-event count inside a bucket while staying cheaper than dense encrypted
+windows. Use `public-active-positions` only when exact position and timing
+metadata are acceptable. Use `dense-encrypted-windows` when active positions and
+sparsity metadata must be hidden and the higher encrypted workload is acceptable.
 
 ## Expected Native Output
 

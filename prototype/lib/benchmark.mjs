@@ -61,12 +61,15 @@ export function runPrototypeBenchmark(options = {}) {
     securityParameters: buildSecurityParameters(options),
     denseBaseline: denseBaselineComparison(eventWindow, classCount),
     privacyModes: buildPrivacyModeComparison(eventWindow, classCount),
+    privacyModeDecision: buildPrivacyModeDecision(eventWindow, classCount),
+    packedVectorPlanning: buildPackedVectorPlanningNotes(eventWindow, classCount),
     representationComparison: buildRepresentationComparison({ eventWindow }),
     spatialClusterReadiness: evaluateSpatialClusterReadiness({ eventWindow }),
     results,
     encryptedPreview: encrypted.encryptedPreview,
     cryptoInventory: buildCryptoInventory(),
     privacyBoundary: buildPrivacyBoundary(),
+    framingGuardrail: buildFramingGuardrail(),
     caveats: [
       "Toy additive homomorphic arithmetic only; not production cryptography.",
       "Public active event positions may reveal sparsity patterns.",
@@ -99,8 +102,11 @@ export function buildBenchmarkArtifact(benchmark, options = {}) {
     privacyBoundary: benchmark.privacyBoundary,
     cryptoInventory: benchmark.cryptoInventory,
     privacyModes: benchmark.privacyModes,
+    privacyModeDecision: benchmark.privacyModeDecision,
+    packedVectorPlanning: benchmark.packedVectorPlanning,
     representationComparison: benchmark.representationComparison,
     spatialClusterReadiness: benchmark.spatialClusterReadiness,
+    framingGuardrail: benchmark.framingGuardrail,
     results: benchmark.results,
     productionClaim: benchmark.productionClaim,
     benchmark,
@@ -129,6 +135,161 @@ export function buildAccuracySummary(results) {
 
 export function buildSecurityParameters(options = {}) {
   return toyPaillierSecurityParameters(options.keypairOptions ?? {});
+}
+
+export function buildPrivacyModeDecision(source = buildSparseEventWindow(), classCount = 2, options = {}) {
+  const metrics = planningMetricsFromSource(source);
+  const activeEventCount = metrics.activeEventCount;
+  const paddedSlotCount = Math.max(
+    activeEventCount,
+    options.paddedSlotCount ?? nextPowerOfTwo(Math.max(activeEventCount, 1)),
+  );
+  const publicActivePositions = {
+    id: "public-active-positions",
+    label: "Public active positions",
+    encryptedFeatureSlots: activeEventCount,
+    operationCounts: operationCountsForSlots(activeEventCount, classCount),
+    metadataTradeoff:
+      "Fastest path, but exact active positions, timing, and event count are visible to compute.",
+  };
+  const paddedSparseBatches = {
+    id: "padded-sparse-batches",
+    label: "Padded sparse batches",
+    encryptedFeatureSlots: paddedSlotCount,
+    operationCounts: operationCountsForSlots(paddedSlotCount, classCount),
+    metadataTradeoff:
+      "Hides exact active-event count inside a fixed bucket, while keeping lower cost than dense windows.",
+  };
+  const denseEncryptedWindows = {
+    id: "dense-encrypted-windows",
+    label: "Dense encrypted windows",
+    encryptedFeatureSlots: metrics.featureCount,
+    operationCounts: operationCountsForSlots(metrics.featureCount, classCount),
+    metadataTradeoff:
+      "Best of these three at hiding active positions and sparsity, with the highest encrypted workload.",
+  };
+  const recommendedMode = choosePrivacyMode(options);
+
+  return {
+    schema: "neurofhe.privacyModeDecision.v1",
+    scoreContract: "scores = W x + bias",
+    allowedModes: [
+      "public-active-positions",
+      "padded-sparse-batches",
+      "dense-encrypted-windows",
+    ],
+    recommendationInputs: {
+      featureCount: metrics.featureCount,
+      activeEventCount,
+      density: metrics.density,
+      classCount,
+      metadataTolerance: options.metadataTolerance ?? "medium",
+      sparsityProtection: options.sparsityProtection ?? "partial",
+    },
+    recommendedMode,
+    rationale: privacyModeRationale(recommendedMode),
+    publicActivePositions,
+    paddedSparseBatches,
+    denseEncryptedWindows,
+    currentOpenFheTarget:
+      "The included OpenFHE BFVrns target currently demonstrates the public active-neuron-position sparse path; use this decision object to choose whether future comparison runs should stay public sparse, add padding, or move dense.",
+    productionClaim: false,
+  };
+}
+
+export function buildPackedVectorPlanningNotes(
+  source = buildSparseEventWindow(),
+  classCount = 2,
+  options = {},
+) {
+  const metrics = planningMetricsFromSource(source);
+  const denseSlotTarget = options.denseSlotTarget ?? nextPowerOfTwo(metrics.featureCount);
+  const activeSlotTarget =
+    options.activeSlotTarget ?? nextPowerOfTwo(Math.max(metrics.activeEventCount, 1));
+
+  return {
+    schema: "neurofhe.packedVectorPlanning.v1",
+    scoreContract: "scores = W x + bias",
+    defaultLane: "bfv-bgv-packed-integer",
+    featureCount: metrics.featureCount,
+    activeEventCount: metrics.activeEventCount,
+    classCount,
+    lanes: [
+      {
+        id: "bfv-bgv-packed-integer",
+        schemeFamily: "BFV/BGV",
+        scoreContract: "scores = W x + bias",
+        valueDomain: "non-negative integer spike counts and public non-negative weights",
+        slotTargets: {
+          activeSparseSlots: activeSlotTarget,
+          denseWindowSlots: denseSlotTarget,
+        },
+        packingNotes: [
+          "pack active values",
+          "keep active indices public or padded according to the privacy-mode decision",
+          "pack one class row or one event window per ciphertext before testing rotations",
+          "start with ciphertext-plaintext multiplies for public weights and public bias",
+        ],
+        firstMeasurement:
+          "Compare public active positions, padded sparse batches, and dense encrypted windows under the same BFV/BGV parameter family.",
+        caveats: [
+          "parameter selection and noise budget must be measured in a reviewed library",
+          "public active positions can leak timing and sparsity metadata",
+        ],
+      },
+      {
+        id: "ckks-packed-approximate",
+        schemeFamily: "CKKS",
+        scoreContract: "scores = W x + bias after quantization/scale review",
+        valueDomain: "approximate real or fixed-point features",
+        slotTargets: {
+          activeSparseSlots: activeSlotTarget,
+          denseWindowSlots: denseSlotTarget,
+        },
+        packingNotes: [
+          "pack dense or padded vectors when approximate features are justified",
+          "track scale, rescale, and rounding error against plaintext scores",
+          "treat CKKS as a comparison lane until the integer contract needs approximate features",
+        ],
+        firstMeasurement:
+          "Record score drift, classification agreement, latency, and ciphertext bytes against the integer BFV/BGV lane.",
+        caveats: [
+          "approximate arithmetic changes the integer score contract",
+          "classification margins must absorb CKKS rounding error before any stronger claim",
+        ],
+      },
+    ],
+    nonGoals: [
+      "encrypted argmax",
+      "encrypted training",
+      "medical diagnosis",
+      "treatment",
+      "production cryptographic assurance",
+    ],
+    productionClaim: false,
+  };
+}
+
+export function buildFramingGuardrail() {
+  return {
+    schema: "neurofhe.framingGuardrail.v1",
+    preferredFrame: "privacy-preserving event intelligence",
+    boundaryDomain: "bio-digital-event-intelligence",
+    useLanguage: [
+      "sensitive signals stay local",
+      "approved event features cross the boundary under privacy and cryptographic controls",
+      "encrypted scoring over a bounded event representation",
+    ],
+    avoidClaims: [
+      "medical diagnosis",
+      "treatment",
+      "clinical validation",
+      "mind reading",
+      "production cryptography",
+    ],
+    note:
+      "Bio-digital language is used here for privacy-preserving event intelligence, not medical diagnosis or treatment.",
+  };
 }
 
 export function buildPrivacyModeComparison(eventWindow, classCount, options = {}) {
@@ -205,6 +366,7 @@ export function buildPrivacyModeComparison(eventWindow, classCount, options = {}
     activeEventCount,
     density: metrics.density,
     classCount,
+    decision: buildPrivacyModeDecision(eventWindow, classCount, options),
     modes: modes.map((mode) => ({
       ...mode,
       relativeScalarMultiplies: Number(
@@ -563,6 +725,51 @@ function operationCountsForSlots(slotCount, classCount) {
     adds: slotCount * classCount,
     decryptions: classCount,
   };
+}
+
+function planningMetricsFromSource(source) {
+  if (
+    source &&
+    Number.isInteger(source.featureCount) &&
+    Number.isInteger(source.activeEventCount)
+  ) {
+    return {
+      featureCount: source.featureCount,
+      activeEventCount: source.activeEventCount,
+      density:
+        typeof source.density === "number"
+          ? source.density
+          : Number((source.activeEventCount / source.featureCount).toFixed(6)),
+    };
+  }
+
+  const eventWindow = source ?? buildSparseEventWindow();
+  const metrics = spikeMetrics(eventWindow);
+  return {
+    featureCount: eventWindow.timesteps * eventWindow.channels,
+    activeEventCount: activeEvents(eventWindow).length,
+    density: metrics.density,
+  };
+}
+
+function choosePrivacyMode(options) {
+  if (options.sparsityProtection === "highest" || options.metadataTolerance === "low") {
+    return "dense-encrypted-windows";
+  }
+  if (options.metadataTolerance === "high") {
+    return "public-active-positions";
+  }
+  return "padded-sparse-batches";
+}
+
+function privacyModeRationale(mode) {
+  if (mode === "public-active-positions") {
+    return "Use public active positions only when the application accepts exact position, count, and timing metadata exposure in exchange for the lowest encrypted workload.";
+  }
+  if (mode === "dense-encrypted-windows") {
+    return "Use dense encrypted windows when active-position and sparsity metadata must be hidden and the higher encrypted workload is acceptable.";
+  }
+  return "Use padded sparse batches as the default comparison lane: it reduces exact sparsity disclosure while staying cheaper than dense encrypted windows.";
 }
 
 function nextPowerOfTwo(value) {

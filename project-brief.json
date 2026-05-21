@@ -53,6 +53,9 @@
       "demo": "npm run demo",
       "gatewayDemo": "npm run gateway:demo",
       "benchmark": "npm run benchmark",
+      "benchmarkArtifact": "npm run benchmark:artifact",
+      "openFhePlan": "npm run benchmark:openfhe",
+      "openFheComparisonArtifact": "npm run benchmark:openfhe -- --artifact",
       "plaintextBaseline": "npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10",
       "test": "npm test"
     },
@@ -91,6 +94,28 @@
     "operationCounts": {
       "sparseScalarMultiplies": 36,
       "denseScalarMultiplies": 128
+    },
+    "privacyModeDecision": {
+      "schema": "neurofhe.privacyModeDecision.v1",
+      "allowedModes": [
+        "public-active-positions",
+        "padded-sparse-batches",
+        "dense-encrypted-windows"
+      ],
+      "defaultComparisonLane": "padded-sparse-batches",
+      "rule": "Use public active positions only when exact metadata exposure is acceptable; use dense encrypted windows when active-position and sparsity metadata must be hidden."
+    },
+    "packedVectorPlanning": {
+      "schema": "neurofhe.packedVectorPlanning.v1",
+      "defaultLane": "BFV/BGV for non-negative integer spike counts",
+      "comparisonLane": "CKKS for approximate real or fixed-point features after score-drift review"
+    },
+    "realLibraryAdapter": {
+      "schema": "neurofhe.realLibraryAdapter.v1",
+      "adapterId": "openfhe-bfvrns-sparse-linear-v1",
+      "contract": "neurofhe.openfhe.contract.v1",
+      "nativeTarget": "openfhe_linear_demo",
+      "artifactCommand": "npm run benchmark:openfhe -- --artifact"
     },
     "representationComparison": {
       "schema": "neurofhe.representationComparison.v1",

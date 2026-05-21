@@ -1,10 +1,16 @@
 // SPDX-License-Identifier: CC0-1.0
 
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { delimiter, join, resolve } from "node:path";
 
 import { classifyScores } from "./classifier.mjs";
-import { buildPublicActiveNeuronPrivacyMode } from "./benchmark.mjs";
+import {
+  buildFramingGuardrail,
+  buildPackedVectorPlanningNotes,
+  buildPrivacyModeDecision,
+  buildPublicActiveNeuronPrivacyMode,
+} from "./benchmark.mjs";
 import { activeEvents, buildSparseEventWindow, flattenEventWindow } from "./events.mjs";
 import { buildDemoLinearModel, sparseMatVec } from "./linear-algebra.mjs";
 import {
@@ -137,13 +143,64 @@ export function detectOpenFhe(options = {}) {
   };
 }
 
+export function buildOpenFheRealLibraryAdapter(options = {}) {
+  const contract = options.contract ?? buildOpenFheDemoContract(options);
+  const contractValidationErrors = validateOpenFheContract(contract);
+  const planningSource = {
+    featureCount: contract.featureCount,
+    activeEventCount: contract.activeEventCount,
+  };
+
+  return {
+    schema: "neurofhe.realLibraryAdapter.v1",
+    adapterId: "openfhe-bfvrns-sparse-linear-v1",
+    library: {
+      name: "OpenFHE",
+      scheme: "BFVrns",
+      role: "real-library encrypted integer scoring adapter",
+      requiredForNativeRun: true,
+    },
+    nativeTarget: "openfhe_linear_demo",
+    contractDigest: {
+      algorithm: "sha256",
+      value: digestContract(contract),
+    },
+    contractValidation: {
+      status: contractValidationErrors.length === 0 ? "valid" : "invalid",
+      errors: contractValidationErrors,
+    },
+    contract,
+    exactContractAssertions: {
+      scoreEquation: "scores = W x + bias",
+      scoreDomain: "non-negative-integers",
+      featureShape: contract.featureShape,
+      matrixShape: contract.matrixShape,
+      classes: contract.classes,
+      expectedPlaintextScores: contract.expectedPlaintextScores,
+      expectedClassification: contract.expectedClassification,
+    },
+    privacyModeDecision: buildPrivacyModeDecision(planningSource, contract.classes.length),
+    packedVectorPlanning: buildPackedVectorPlanningNotes(planningSource, contract.classes.length),
+    framingGuardrail: buildFramingGuardrail(),
+    detection: detectOpenFhe(options),
+    sourcePath: "prototype/openfhe/openfhe_linear_demo.cpp",
+    cmakePath: "prototype/openfhe/CMakeLists.txt",
+    buildDirectory: "build/openfhe",
+    runContract:
+      "The native target must preserve this generated contract: public model metadata, public or padded active-position policy, encrypted active feature values, and client-side score decryption.",
+    productionClaim: false,
+  };
+}
+
 export function openFheIntegrationPlan(options = {}) {
+  const adapter = buildOpenFheRealLibraryAdapter(options);
   return {
     schema: "neurofhe.openfhe.integrationPlan.v1",
     nativeTarget: "openfhe_linear_demo",
     scheme: "openfhe-bfvrns",
-    contract: buildOpenFheDemoContract(options),
-    detection: detectOpenFhe(options),
+    contract: adapter.contract,
+    adapter,
+    detection: adapter.detection,
     sourcePath: "prototype/openfhe/openfhe_linear_demo.cpp",
     cmakePath: "prototype/openfhe/CMakeLists.txt",
     buildDirectory: "build/openfhe",
@@ -293,6 +350,23 @@ function validateBias(bias, classes, errors) {
 
 function isNonNegativeInteger(value) {
   return Number.isInteger(value) && value >= 0;
+}
+
+function digestContract(contract) {
+  return createHash("sha256").update(canonicalJson(contract)).digest("hex");
+}
+
+function canonicalJson(value) {
+  if (Array.isArray(value)) {
+    return `[${value.map((item) => canonicalJson(item)).join(",")}]`;
+  }
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value)
+      .sort()
+      .map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`)
+      .join(",")}}`;
+  }
+  return JSON.stringify(value);
 }
 
 function openFheConfigCandidates(env, roots) {

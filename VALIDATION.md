@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 30
-pass 30
+tests 35
+pass 35
 fail 0
 ```
 
@@ -28,13 +28,14 @@ Covered behaviours:
 - Event-window validation and sparse metrics.
 - Plaintext and encrypted classifier agreement.
 - Linear model metadata, dense/sparse matrix-vector agreement, public bias, and model validation.
-- Benchmark accuracy, latency, ciphertext bytes, operation counts, security parameters, privacy boundary, crypto inventory, dense baseline comparison, and four privacy modes.
+- Benchmark accuracy, latency, ciphertext bytes, operation counts, security parameters, privacy boundary, crypto inventory, dense baseline comparison, four privacy modes, privacy-mode decision, packed-vector planning, and framing guardrail.
 - Representation benchmark comparing dense/raw windows, unsorted spikes, and spatial-sorted events on the same `scores = W x + bias` task, including sorted-event crypto inventory, reconstruction-resistance posture, and privacy boundary metadata.
 - Spatial-cluster readiness evaluation showing sorted events are adapter-ready for future SNN experiments, ready now for the lightweight encrypted linear score contract, and research-only for nonlinear encrypted model paths.
 - Spatial spike sorting from simulated raw neural-like intake into stable event windows.
 - Relay gateway raw-intake summarization, canonical sorter insertion, sorted-event input validation and sanitization, optional cortical region/layer context aggregation or encrypted export, sorted-event reconstruction-resistance checks, normalization, minimal model-facing event export, raw-leakage checks, accepted safe local recommendations, rejected unsafe command recommendations, and strict policy blocking.
 - Benchmark artifact publishing to timestamped run JSON and `latest.json`.
-- OpenFHE sorted-event contract validation, native build-plan detection, and C++ API source markers.
+- Comparison artifact publishing for adapter plans and future native library runs.
+- OpenFHE sorted-event contract validation, digest-bound real-library adapter manifest, native build-plan detection, and C++ API source markers.
 - N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
 - Research assumptions with clean-room and naming guardrails.
 
@@ -212,6 +213,10 @@ Result summary:
   },
   "privacyModes": {
     "schema": "neurofhe.privacyModes.v1",
+    "decision": {
+      "schema": "neurofhe.privacyModeDecision.v1",
+      "recommendedMode": "padded-sparse-batches"
+    },
     "modes": [
       {
         "id": "public-active-positions",
@@ -238,6 +243,16 @@ Result summary:
         "relativeScalarMultiplies": 3.56
       }
     ]
+  },
+  "packedVectorPlanning": {
+    "schema": "neurofhe.packedVectorPlanning.v1",
+    "defaultLane": "bfv-bgv-packed-integer",
+    "lanes": ["bfv-bgv-packed-integer", "ckks-packed-approximate"]
+  },
+  "framingGuardrail": {
+    "schema": "neurofhe.framingGuardrail.v1",
+    "preferredFrame": "privacy-preserving event intelligence",
+    "avoidClaims": ["medical diagnosis", "treatment"]
   },
   "spatialClusterReadiness": {
     "schema": "neurofhe.spatialClusterReadiness.v1",
@@ -271,7 +286,7 @@ Result summary:
 Command:
 
 ```sh
-npm run benchmark:artifact --silent
+tmpdir=$(mktemp -d); npm run benchmark:artifact -- --out "$tmpdir/benchmark-artifacts" --seed 91
 ```
 
 Result summary:
@@ -295,7 +310,8 @@ Result summary:
 }
 ```
 
-The current published artifact is `benchmark-artifacts/latest.json`.
+The publisher was validated against a temporary output directory so this check
+did not refresh the committed `benchmark-artifacts/latest.json`.
 
 ### OpenFHE Integration Plan
 
@@ -312,6 +328,17 @@ Result summary:
   "schema": "neurofhe.openfhe.integrationPlan.v1",
   "nativeTarget": "openfhe_linear_demo",
   "scheme": "openfhe-bfvrns",
+  "adapter": {
+    "schema": "neurofhe.realLibraryAdapter.v1",
+    "adapterId": "openfhe-bfvrns-sparse-linear-v1",
+    "contractDigest": {
+      "algorithm": "sha256"
+    },
+    "contractValidation": {
+      "status": "valid",
+      "errors": []
+    }
+  },
   "sourcePath": "prototype/openfhe/openfhe_linear_demo.cpp",
   "cmakePath": "prototype/openfhe/CMakeLists.txt",
   "buildDirectory": "build/openfhe"
@@ -326,6 +353,30 @@ OpenFHEConfig.cmake not found
 
 The real BFVrns C++ target is present, but this machine does not currently
 have OpenFHE installed or discoverable by CMake.
+
+### OpenFHE Comparison Artifact
+
+Command:
+
+```sh
+tmpdir=$(mktemp -d); npm run benchmark:openfhe -- --artifact --out "$tmpdir/openfhe-comparison"
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.comparisonArtifact.publish.v1",
+  "subjectSchema": "neurofhe.openfhe.integrationPlan.v1",
+  "paths": {
+    "run": "<tmp>/openfhe-comparison/runs/<artifact-id>.json",
+    "latest": "<tmp>/openfhe-comparison/latest.json"
+  }
+}
+```
+
+This validates optional on-disk comparison artifacts without adding generated
+OpenFHE comparison JSON to the repository.
 
 ### JSON Validation
 
@@ -407,4 +458,4 @@ ascii scan complete
 
 ## Scope Note
 
-The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes a real OpenFHE BFVrns native integration target for the same sparse sorted-event score contract, gated on a local OpenFHE installation.
+The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes a digest-bound real-library adapter manifest plus a real OpenFHE BFVrns native integration target for the same sparse sorted-event score contract, gated on a local OpenFHE installation. Bio-digital language remains scoped to privacy-preserving event intelligence, not medical diagnosis or treatment.

@@ -21,6 +21,8 @@ Included desk demo:
 - `benchmark-artifacts/latest.json` publishes the current benchmark artifact for review and comparison.
 - `prototype/openfhe-benchmark.mjs` emits the real OpenFHE BFVrns build plan and local detection state.
 - `prototype/openfhe/openfhe_linear_demo.cpp` ports the same sparse `scores = W x + bias` contract to OpenFHE APIs.
+- `prototype/lib/openfhe-adapter.mjs` emits a digest-bound `neurofhe.realLibraryAdapter.v1` manifest around that exact contract.
+- `npm run benchmark:openfhe -- --artifact` writes optional OpenFHE comparison artifacts for adapter plans or native runs.
 - `10-native-performance-track.md` defines the boundary between JavaScript scaffolding and the native, energy-aware implementation path.
 - `prototype/research-assumptions.json` captures falsifiable assumptions and clean-room/proprietary-track guardrails.
 - It is not production cryptography and not full FHE.
@@ -42,6 +44,8 @@ Current prototype foothold:
 - Synthetic 8 by 8 event window.
 - Public active event positions with encrypted active spike counts.
 - Three privacy modes: public active positions, padded sparse batches, and dense encrypted windows.
+- Explicit privacy-mode decision: padded sparse batches are the default comparison lane unless exact active-position metadata is acceptable or dense-window privacy is required.
+- Packed-vector planning notes: BFV/BGV first for non-negative integer spike counts; CKKS only as an approximate comparison lane.
 - Plaintext and encrypted linear classifier agreement.
 - Dense encrypted tensor baseline comparison.
 - `prototype/LINEAR_ALGEBRA_NEXT.md` records the next matrix/vector cleanup pass.

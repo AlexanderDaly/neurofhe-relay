@@ -6,12 +6,17 @@ import test from "node:test";
 
 import {
   buildBenchmarkArtifact,
+  buildPackedVectorPlanningNotes,
+  buildPrivacyModeDecision,
   buildPrivacyModeComparison,
   buildRepresentationComparison,
   evaluateSpatialClusterReadiness,
   runPrototypeBenchmark,
 } from "../lib/benchmark.mjs";
-import { publishBenchmarkArtifact } from "../lib/artifacts.mjs";
+import {
+  publishBenchmarkArtifact,
+  publishComparisonArtifact,
+} from "../lib/artifacts.mjs";
 import {
   runEncryptedLinearClassifier,
   runPlaintextLinearClassifier,
@@ -35,6 +40,7 @@ import {
 } from "../lib/linear-algebra.mjs";
 import {
   buildOpenFheDemoContract,
+  buildOpenFheRealLibraryAdapter,
   detectOpenFhe,
   openFheIntegrationPlan,
   validateOpenFheContract,
@@ -763,6 +769,62 @@ test("privacy mode benchmark compares speed against sparsity metadata protection
   assert.ok(dense.hides.includes("active positions"));
 });
 
+test("privacy mode decision picks one explicit comparison mode", () => {
+  const eventWindow = buildSparseEventWindow();
+  const defaultDecision = buildPrivacyModeDecision(eventWindow, 2);
+  const publicDecision = buildPrivacyModeDecision(eventWindow, 2, {
+    metadataTolerance: "high",
+  });
+  const denseDecision = buildPrivacyModeDecision(eventWindow, 2, {
+    sparsityProtection: "highest",
+  });
+
+  assert.equal(defaultDecision.schema, "neurofhe.privacyModeDecision.v1");
+  assert.deepEqual(defaultDecision.allowedModes, [
+    "public-active-positions",
+    "padded-sparse-batches",
+    "dense-encrypted-windows",
+  ]);
+  assert.equal(defaultDecision.recommendedMode, "padded-sparse-batches");
+  assert.equal(defaultDecision.rationale.includes("default comparison lane"), true);
+  assert.equal(defaultDecision.publicActivePositions.operationCounts.scalarMultiplies, 36);
+  assert.equal(defaultDecision.paddedSparseBatches.operationCounts.scalarMultiplies, 64);
+  assert.equal(defaultDecision.denseEncryptedWindows.operationCounts.scalarMultiplies, 128);
+  assert.equal(publicDecision.recommendedMode, "public-active-positions");
+  assert.equal(denseDecision.recommendedMode, "dense-encrypted-windows");
+});
+
+test("packed-vector planning notes preserve BFV/BGV and CKKS lanes", () => {
+  const notes = buildPackedVectorPlanningNotes(buildSparseEventWindow(), 2);
+
+  assert.equal(notes.schema, "neurofhe.packedVectorPlanning.v1");
+  assert.equal(notes.defaultLane, "bfv-bgv-packed-integer");
+  assert.equal(notes.featureCount, 64);
+  assert.equal(notes.activeEventCount, 18);
+  assert.deepEqual(notes.lanes.map((lane) => lane.id), [
+    "bfv-bgv-packed-integer",
+    "ckks-packed-approximate",
+  ]);
+  assert.equal(notes.lanes[0].schemeFamily, "BFV/BGV");
+  assert.equal(notes.lanes[0].scoreContract, "scores = W x + bias");
+  assert.ok(notes.lanes[0].packingNotes.includes("pack active values"));
+  assert.equal(notes.lanes[1].schemeFamily, "CKKS");
+  assert.ok(notes.lanes[1].caveats.includes("approximate arithmetic changes the integer score contract"));
+  assert.ok(notes.nonGoals.includes("encrypted argmax"));
+});
+
+test("prototype benchmark carries adapter planning, privacy decision, and framing guardrail", () => {
+  const benchmark = runPrototypeBenchmark({ seed: 91 });
+
+  assert.equal(benchmark.packedVectorPlanning.schema, "neurofhe.packedVectorPlanning.v1");
+  assert.equal(benchmark.privacyModeDecision.schema, "neurofhe.privacyModeDecision.v1");
+  assert.equal(benchmark.privacyModeDecision.recommendedMode, "padded-sparse-batches");
+  assert.equal(benchmark.framingGuardrail.schema, "neurofhe.framingGuardrail.v1");
+  assert.equal(benchmark.framingGuardrail.preferredFrame, "privacy-preserving event intelligence");
+  assert.ok(benchmark.framingGuardrail.avoidClaims.includes("medical diagnosis"));
+  assert.ok(benchmark.framingGuardrail.avoidClaims.includes("treatment"));
+});
+
 test("OpenFHE demo contract preserves the sparse linear score boundary", () => {
   const contract = buildOpenFheDemoContract();
 
@@ -788,6 +850,25 @@ test("OpenFHE demo contract preserves the sparse linear score boundary", () => {
   assert.deepEqual(contract.expectedPlaintextScores, { normal: 9, anomaly: 51 });
   assert.equal(contract.expectedClassification, "anomaly");
   assert.deepEqual(validateOpenFheContract(contract), []);
+});
+
+test("OpenFHE real-library adapter is bound to the generated score contract", () => {
+  const adapter = buildOpenFheRealLibraryAdapter();
+
+  assert.equal(adapter.schema, "neurofhe.realLibraryAdapter.v1");
+  assert.equal(adapter.adapterId, "openfhe-bfvrns-sparse-linear-v1");
+  assert.equal(adapter.library.name, "OpenFHE");
+  assert.equal(adapter.library.scheme, "BFVrns");
+  assert.equal(adapter.contract.schema, "neurofhe.openfhe.contract.v1");
+  assert.equal(adapter.contract.scoreEquation, "scores = W x + bias");
+  assert.equal(adapter.contract.scoreDomain, "non-negative-integers");
+  assert.equal(adapter.contractDigest.algorithm, "sha256");
+  assert.match(adapter.contractDigest.value, /^[0-9a-f]{64}$/);
+  assert.deepEqual(adapter.contractValidation.errors, []);
+  assert.equal(adapter.nativeTarget, "openfhe_linear_demo");
+  assert.equal(adapter.privacyModeDecision.recommendedMode, "padded-sparse-batches");
+  assert.equal(adapter.packedVectorPlanning.defaultLane, "bfv-bgv-packed-integer");
+  assert.equal(adapter.framingGuardrail.preferredFrame, "privacy-preserving event intelligence");
 });
 
 test("OpenFHE contract validation rejects unsafe integer-domain inputs", () => {
@@ -827,6 +908,7 @@ test("OpenFHE integration plan reports build commands and local detection state"
 
   assert.equal(plan.schema, "neurofhe.openfhe.integrationPlan.v1");
   assert.equal(plan.nativeTarget, "openfhe_linear_demo");
+  assert.equal(plan.adapter.schema, "neurofhe.realLibraryAdapter.v1");
   assert.ok(plan.sourcePath.endsWith("prototype/openfhe/openfhe_linear_demo.cpp"));
   assert.ok(plan.cmakePath.endsWith("prototype/openfhe/CMakeLists.txt"));
   assert.equal(plan.contract.eventRepresentation, "spatial-sorted-events");
@@ -838,6 +920,26 @@ test("OpenFHE integration plan reports build commands and local detection state"
   ]);
   assert.equal(detection.available, false);
   assert.equal(detection.reason, "OpenFHEConfig.cmake not found");
+});
+
+test("comparison artifacts can persist adapter plans for later library runs", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-comparison-"));
+  const published = await publishComparisonArtifact({
+    outputDir,
+    subject: buildOpenFheRealLibraryAdapter(),
+    artifactId: "adapter-plan",
+    generatedAt: "2026-05-21T00:00:00.000Z",
+  });
+  const runArtifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+  const latestArtifact = JSON.parse(await readFile(published.paths.latest, "utf8"));
+
+  assert.equal(published.schema, "neurofhe.comparisonArtifact.publish.v1");
+  assert.equal(runArtifact.schema, "neurofhe.comparisonArtifact.v1");
+  assert.equal(runArtifact.artifactId, "adapter-plan");
+  assert.equal(runArtifact.subject.schema, "neurofhe.realLibraryAdapter.v1");
+  assert.equal(runArtifact.subject.adapterId, "openfhe-bfvrns-sparse-linear-v1");
+  assert.equal(runArtifact.framingGuardrail.preferredFrame, "privacy-preserving event intelligence");
+  assert.deepEqual(latestArtifact, runArtifact);
 });
 
 test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {

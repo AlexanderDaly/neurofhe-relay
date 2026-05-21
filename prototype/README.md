@@ -38,7 +38,9 @@ npm run benchmark:artifact
 
 Each artifact includes accuracy, latency, ciphertext bytes, operation counts,
 security parameters, privacy boundary, crypto inventory, and spatial-cluster
-readiness for future SNN or lightweight encrypted model paths.
+readiness for future SNN or lightweight encrypted model paths. It also includes
+packed-vector planning notes, a privacy-mode decision, and a framing guardrail
+for privacy-preserving event intelligence rather than diagnosis or treatment.
 
 The benchmark now compares four privacy modes for the same `scores = W x + bias`
 contract:
@@ -67,6 +69,12 @@ Print the real OpenFHE BFVrns integration plan:
 npm run benchmark:openfhe
 ```
 
+Write an optional OpenFHE comparison artifact:
+
+```sh
+npm run benchmark:openfhe -- --artifact
+```
+
 Run tests:
 
 ```sh
@@ -87,10 +95,10 @@ Current modules:
 - `lib/spike-sorter.mjs` - canonical spatial-aware spike sorter for raw neural-like intake, designed around FPGA- or edge-friendly integer operations.
 - `lib/linear-algebra.mjs` - model metadata, dense matrix-vector scoring, sparse event scoring, and model validation.
 - `lib/nmnist.mjs` - N-MNIST event parsing, feature extraction, and plaintext baseline evaluation.
-- `lib/openfhe-adapter.mjs` - OpenFHE contract builder, validation, local detection, and build-plan output.
+- `lib/openfhe-adapter.mjs` - OpenFHE contract builder, validation, contract-bound real-library adapter manifest, local detection, and build-plan output.
 - `lib/classifier.mjs` - plaintext and encrypted linear spike-count classifiers.
-- `lib/benchmark.mjs` - benchmark schema, accuracy summary, security parameters, crypto inventory, dense baseline comparison, four-mode privacy comparison, spatial-cluster readiness, and privacy boundary.
-- `lib/artifacts.mjs` - benchmark artifact publisher.
+- `lib/benchmark.mjs` - benchmark schema, accuracy summary, security parameters, crypto inventory, dense baseline comparison, packed-vector planning, explicit privacy-mode decision, four-mode privacy comparison, spatial-cluster readiness, and privacy boundary.
+- `lib/artifacts.mjs` - benchmark and comparison artifact publisher.
 - `openfhe/` - real OpenFHE BFVrns C++ demo and CMake target for the sparse score contract.
 - `openfhe-benchmark.mjs` - OpenFHE plan/run CLI.
 - `LINEAR_ALGEBRA_NEXT.md` - handoff for the next matrix/vector cleanup pass.

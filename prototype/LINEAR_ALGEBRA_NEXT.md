@@ -21,7 +21,7 @@ W in Z_nonnegative^(2 by 64)
 The score contract is:
 
 ```text
-scores = W x
+scores = W x + bias
 class = argmax(scores)
 ```
 
@@ -88,11 +88,28 @@ windows.
    - `sparseMatVec(model, activeEvents)`
    - `validateLinearModel(model, featureCount)`
 
-5. Decide the first real-library packing target.
+5. Add the first real-library adapter surface.
 
-   Still pending. For integer spike counts, BFV/BGV is the first serious lane.
-   CKKS remains a useful comparison for approximate packed vectors. TFHE is
-   worth holding for binary threshold logic.
+   Implemented in `lib/openfhe-adapter.mjs` as
+   `neurofhe.realLibraryAdapter.v1`. The adapter binds the generated
+   `neurofhe.openfhe.contract.v1` object to the native OpenFHE BFVrns C++
+   target with a SHA-256 contract digest, validation errors, detection state,
+   privacy-mode decision, packed-vector planning notes, and framing guardrail.
+
+6. Decide the first packed-vector target.
+
+   Implemented in `lib/benchmark.mjs` as
+   `neurofhe.packedVectorPlanning.v1`. BFV/BGV is the default lane for the
+   current non-negative integer spike-count contract. CKKS remains a comparison
+   lane only when approximate real or fixed-point features are justified.
+
+7. Add a privacy-mode decision.
+
+   Implemented in `lib/benchmark.mjs` as `neurofhe.privacyModeDecision.v1`.
+   The explicit options are public active positions, padded sparse batches, and
+   dense encrypted windows. The default comparison lane is padded sparse
+   batches because it reduces exact sparsity disclosure while staying cheaper
+   than dense encrypted windows.
 
 ## Test Coverage
 
@@ -104,20 +121,26 @@ Current tests cover:
 - Benchmark output names matrix shape and active-event count.
 - Operation counts remain lower for sparse active-event scoring than dense
   encrypted tensor scoring on the current synthetic window.
+- The benchmark now carries packed-vector planning, privacy-mode decision, and
+  a framing guardrail that keeps bio-digital language scoped to
+  privacy-preserving event intelligence, not medical diagnosis or treatment.
+- OpenFHE adapter tests validate the generated contract, native build-plan
+  surface, comparison artifact publisher, and source-level use of real BFVrns
+  APIs.
 
 ## Next Work
 
-1. Add a real-library adapter around this exact contract.
-2. Emit optional benchmark artifacts to disk for comparison runs.
-3. Add packed-vector planning notes for BFV/BGV and CKKS.
-4. Add a privacy mode decision: public active positions, padded sparse batches,
-   or dense encrypted windows.
-5. Keep bio-digital language framed as privacy-preserving event intelligence,
+1. Install OpenFHE on a benchmark host and run the native BFVrns target through
+   `npm run benchmark:openfhe -- --run --artifact`.
+2. Compare public active positions, padded sparse batches, and dense encrypted
+   windows under the same OpenFHE parameter family.
+3. Add native memory and energy fields once the host can measure them
+   consistently.
+4. Keep bio-digital language framed as privacy-preserving event intelligence,
    not medical diagnosis or treatment.
 
 ## Non-Goals For This Pass
 
-- Do not add a real HE dependency until the matrix contract is stable.
 - Do not implement encrypted argmax yet.
 - Do not hide the active-position metadata leak in the benchmark language.
 - Do not mix proprietary adapters or partner data into this CC0 reference repo.
