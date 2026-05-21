@@ -35,7 +35,9 @@
   "currentPrototype": {
     "commands": {
       "demo": "npm run demo",
+      "gatewayDemo": "npm run gateway:demo",
       "benchmark": "npm run benchmark",
+      "plaintextBaseline": "npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10",
       "test": "npm test"
     },
     "schema": "neurofhe.benchmark.v1",
@@ -49,12 +51,58 @@
       "activeEventCount": 18
     },
     "toyScheme": "toy-paillier-additive-research-only",
+    "plaintextRealDataBaseline": {
+      "dataset": "N-MNIST-compatible local directory",
+      "featureShape": [4, 8, 8, 2],
+      "classifier": "nearest-centroid-linear",
+      "metrics": [
+        "accuracy",
+        "latencyMs",
+        "averageActiveEvents",
+        "averageNonZeroFeatures",
+        "featureShape"
+      ]
+    },
     "operationCounts": {
       "sparseScalarMultiplies": 36,
       "denseScalarMultiplies": 128
     },
     "caveat": "The current prototype is educational and not production cryptography."
   },
+  "gatewayPattern": {
+    "file": "09-relay-gateway-pattern.md",
+    "scaffold": "prototype/lib/gateway.mjs",
+    "demoCommand": "npm run gateway:demo",
+    "principle": "Sensitive signals stay local. Models receive only validated, transformed, permissioned event representations.",
+    "boundary": "The local gateway is the only trusted component allowed to inspect raw signals.",
+    "schemas": [
+      "neurofhe.gateway.rawSignal.v1",
+      "neurofhe.gateway.normalizedEvent.v1",
+      "neurofhe.gateway.modelEvent.v1",
+      "neurofhe.gateway.recommendation.v1",
+      "neurofhe.gateway.commandDecision.v1",
+      "neurofhe.gateway.auditRecord.v1",
+      "neurofhe.gateway.sanitizedReplay.v1"
+    ],
+    "policyDefaults": [
+      "raw payload export denied",
+      "source IDs hashed before export",
+      "timestamps bucketed before export",
+      "sparse metrics aggregated",
+      "active values encrypted or withheld",
+      "models return recommendations only",
+      "safe actions must be local and reversible"
+    ],
+    "caveat": "Simulated gateway scaffold only. Do not use for medical, surveillance, coercive, external-control, or production cryptography claims without separate authorization and review."
+  },
+  "whitepapers": [
+    {
+      "file": "08-encrypted-thoughts-whitepaper.md",
+      "title": "Why We Need Encrypted Thoughts for Brain-Computer Interfaces",
+      "position": "Encrypted thoughts is an architecture phrase: raw neural and biosignal streams stay local by default, selected event features are minimized and encrypted, external compute operates on ciphertext, and only authorized parties decrypt the result.",
+      "boundary": "Non-medical, research-grade argument for BCI privacy architecture. Do not imply arbitrary thought reading, diagnosis, treatment, or production cryptographic assurance."
+    }
+  ],
   "architecture": {
     "edge": "neuromorphic sensor or SNN encoder",
     "encoder": "binary spikes, spike counts, or low-bit event windows",
@@ -89,6 +137,11 @@
     "https://csrc.nist.gov/Projects/post-quantum-cryptography",
     "https://csrc.nist.gov/News/2024/postquantum-cryptography-fips-approved",
     "https://openfhe.org/",
-    "https://github.com/microsoft/SEAL"
+    "https://github.com/microsoft/SEAL",
+    "https://www.unesco.org/en/legal-affairs/recommendation-ethics-neurotechnology",
+    "https://leg.colorado.gov/bills/hb24-1058",
+    "https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202320240SB1223",
+    "https://www.nature.com/articles/s41593-023-01304-9",
+    "https://www.nature.com/articles/s41586-023-06443-4"
   ]
 }

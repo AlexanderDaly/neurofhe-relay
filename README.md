@@ -32,9 +32,11 @@ The cryptographic design target is:
 - `05-risk-register.md` - technical, market, and execution risks.
 - `06-evidence-and-sources.md` - source-backed research notes.
 - `07-post-quantum-cryptography-track.md` - PQC design target and roadmap.
+- `08-encrypted-thoughts-whitepaper.md` - whitepaper on encrypted-thoughts architecture for BCI and neural-data privacy.
+- `09-relay-gateway-pattern.md` - local-first gateway pattern for raw-signal intake, privacy filtering, model-facing events, recommendations, audit, replay, and failure handling.
 - `project-brief.json` - structured project metadata for agents.
 - `index.html` - self-contained briefing deck for browser presentation.
-- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, benchmark runner, tests, and research assumptions.
+- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, relay gateway scaffold, benchmark runner, tests, and research assumptions.
 - `package.json` - local command scripts. The package is marked private to prevent accidental npm publication; it does not change the repository's CC0 license.
 
 ## Recommended Framing
@@ -47,6 +49,14 @@ For the biology and digital interface framing, use:
 
 > Bio-digital event intelligence: sensitive signals stay local, compact event features cross the boundary under explicit privacy and cryptographic controls.
 
+For the BCI privacy framing, use "encrypted thoughts" as an architecture phrase, not as a literal mind-reading claim:
+
+> Signals capable of supporting thought, intent, language, or cognitive-state inference should stay local by default, and selected event features should remain encrypted during external computation.
+
+For the gateway framing, use:
+
+> The local gateway is the only trusted boundary allowed to inspect raw signals. Models receive only validated, transformed, permissioned event representations.
+
 Avoid medical-device language until a real regulated use case, dataset, clinical validation path, and legal review exist. The current prototype is about privacy-preserving event representation and encrypted scoring, not diagnosis or treatment.
 
 Avoid saying:
@@ -54,6 +64,20 @@ Avoid saying:
 > We run Octra directly on neuromorphic chips.
 
 That is not defensible today. The defensible near-term claim is a hybrid architecture: neuromorphic preprocessing plus FHE-protected inference/verification.
+
+## Relay Gateway Pattern
+
+The relay gateway is the local trust boundary for the project. It accepts raw or semi-structured local signals, normalizes them into structured events, applies privacy and safety policy, and exports only approved minimal event representations to downstream encrypted compute, model services, or agents.
+
+The runnable scaffold demonstrates:
+
+- Sensitive raw intake treated as local-only by default.
+- Normalized event records with provenance, confidence, schema version, and validation status.
+- Model-facing events with explicit plaintext, encrypted, aggregated, and withheld fields.
+- Recommendation validation that accepts safe local reversible actions and rejects raw device commands.
+- Audit and sanitized replay records that do not expose raw signal payloads.
+
+The gateway is simulated and educational in this package. It is not a medical, surveillance, coercive-control, mind-reading, external-control, or production cryptography system.
 
 ## Desk Demo
 
@@ -69,10 +93,22 @@ Emit the benchmark schema:
 npm run benchmark
 ```
 
+Run the local-first relay gateway scaffold:
+
+```sh
+npm run gateway:demo
+```
+
 Print the real OpenFHE BFVrns integration plan:
 
 ```sh
 npm run benchmark:openfhe
+```
+
+Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
+
+```sh
+npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 ```
 
 The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is now included under `prototype/openfhe/`, while SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment remain candidate follow-on lanes.

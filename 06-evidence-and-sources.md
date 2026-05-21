@@ -1,5 +1,26 @@
 # NeuroFHE Relay - Evidence and Sources
 
+## Neural Data, BCI Privacy, and Mental Privacy
+
+Sources:
+
+- UNESCO neurotechnology ethics standard press release: https://www.unesco.org/en/articles/ethics-neurotechnology-unesco-adopts-first-global-standard-cutting-edge-technology
+- UNESCO Recommendation on the Ethics of Neurotechnology: https://www.unesco.org/en/legal-affairs/recommendation-ethics-neurotechnology
+- OECD responsible innovation and neurotechnology policy work: https://www.oecd.org/en/topics/responsible-innovation.html
+- Colorado HB24-1058, Protect Privacy of Biological Data: https://leg.colorado.gov/bills/hb24-1058
+- California SB 1223, neural data under sensitive personal information: https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202320240SB1223
+- FDA neurological devices page and implanted BCI guidance pointer: https://www.fda.gov/medical-devices/products-and-medical-procedures/neurological-devices
+- Semantic reconstruction of continuous language from non-invasive brain recordings: https://www.nature.com/articles/s41593-023-01304-9
+- A high-performance neuroprosthesis for speech decoding and avatar control: https://www.nature.com/articles/s41586-023-06443-4
+
+Useful takeaways:
+
+- Neural data is moving from speculative ethics issue into explicit law and policy. Colorado added biological data, including neural data, to sensitive-data treatment in 2024. California added neural data to CCPA sensitive personal information in 2024.
+- UNESCO's 2025 neurotechnology recommendation places mental privacy, personal identity, autonomy, human dignity, consent, transparency, and safeguards against manipulation near the center of the governance problem.
+- BCI and neural-decoding research already demonstrates useful language and speech reconstruction workflows. The responsible public claim is not that arbitrary thoughts are readable today; it is that decode-capable neural and biosignal features deserve stronger privacy defaults before the technology becomes routine.
+- FDA's implanted BCI guidance confirms that clinical BCI devices are a serious regulated device category. NeuroFHE Relay should keep its current non-medical, research-grade boundary unless a real regulated use case, dataset, validation plan, and legal review exist.
+- These sources support the encrypted-thoughts whitepaper's architecture claim: raw neural signals should stay local by default, and selected event features should remain encrypted during external computation.
+
 ## Octra
 
 Octra's official docs describe the network as an FHE blockchain with isolated execution environments, usable as a standalone L1 or decentralized encrypted middleware.
@@ -51,6 +72,21 @@ Useful takeaways:
 - Neuromorphic processors are designed for sparse, event-driven computation and spiking neural networks.
 - They are not general-purpose FHE accelerators.
 - Their value in this project is data/model shaping: reduce activity, time windows, and operation count before encryption.
+
+## Real Event Dataset Baseline
+
+Sources:
+
+- N-MNIST dataset page: https://www.garrickorchard.com/datasets/n-mnist
+- N-MNIST entry in LAND: https://neuromorphicsystems.github.io/land/n-mnist
+- N-MNIST paper: https://doi.org/10.3389/fnins.2015.00437
+
+Useful takeaways:
+
+- N-MNIST is a spiking version of MNIST with 60,000 training samples and 10,000 testing samples.
+- Each recording is stored as a separate binary event file.
+- Each event occupies 40 bits: x address, y address, polarity, and timestamp in microseconds.
+- It is a convenient first real event dataset, but the stronger pilot should later move to DVS Gesture or rights-clean wearable/industrial telemetry.
 
 ## HE Libraries for Prototype
 

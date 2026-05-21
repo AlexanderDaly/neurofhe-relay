@@ -6,6 +6,21 @@ Keep neuromorphic and FHE responsibilities separate.
 
 Neuromorphic systems are best at event-driven sparse computation. FHE systems are best at preserving privacy across selected arithmetic or logic circuits. The bridge is a bio-digital representation contract: sensitive biological, behavioral, or sensor signals stay local while compact spike/event tensors are designed to be both biologically inspired and encryption-friendly.
 
+## Relay Gateway Boundary
+
+Before any encrypted compute or model service sees an event, raw or semi-structured local signals pass through the NeuroFHE Relay Gateway. The gateway is the only trusted component allowed to inspect raw payloads.
+
+Gateway responsibilities:
+
+- Intake local files, sensors, apps, logs, or simulated event streams and mark them sensitive by default.
+- Normalize raw signals into stable structured events with timestamps, source IDs, event type, confidence, provenance, schema version, and validation status.
+- Apply privacy and safety policy before export: withhold raw payloads, hash source IDs, bucket timestamps, aggregate sparse metrics, and mark active values as encrypted or withheld.
+- Expose only bounded model-facing event representations with explicit plaintext, encrypted, aggregated, and withheld fields.
+- Route model recommendations back through policy validation and execute only safe, local, reversible actions.
+- Write audit and sanitized replay records that explain transformations without exporting raw signals.
+
+See `09-relay-gateway-pattern.md` and `prototype/lib/gateway.mjs` for the concrete schema and scaffold.
+
 ## System Components
 
 ### 1. Event Source

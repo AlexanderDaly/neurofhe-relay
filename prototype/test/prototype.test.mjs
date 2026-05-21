@@ -45,6 +45,16 @@ import {
   runPlaintextEventBaseline,
   trainCentroidLinearClassifier,
 } from "../lib/nmnist.mjs";
+import {
+  applyPrivacySafetyPolicy,
+  buildDefaultGatewayPolicy,
+  buildLocalAnnotationRecommendation,
+  buildSimulatedRawSignal,
+  buildUnsafeDeviceCommandRecommendation,
+  evaluateRecommendation,
+  normalizeRawSignal,
+  runGatewayDemo,
+} from "../lib/gateway.mjs";
 
 test("toy additive cipher preserves addition and public scalar multiplication", () => {
   const { publicKey, privateKey } = createToyKeypair();
@@ -176,6 +186,58 @@ test("prototype benchmark emits privacy boundary, crypto inventory, and dense ba
   assert.equal(benchmark.cryptoInventory.productionClaim, false);
   assert.ok(benchmark.privacyBoundary.computeSees.includes("ciphertext active spike values"));
   assert.ok(benchmark.privacyBoundary.computeSees.includes("public active event positions"));
+});
+
+test("gateway demo exports a minimal model event without raw signal leakage", () => {
+  const demo = runGatewayDemo({
+    observedAt: "2026-05-21T12:34:56.000Z",
+    receivedAt: "2026-05-21T12:35:02.000Z",
+  });
+  const modelEvent = demo.policyDecision.modelFacingEvent;
+  const serialized = JSON.stringify(demo);
+
+  assert.equal(demo.schema, "neurofhe.gateway.demo.v1");
+  assert.equal(demo.boundaryDomain, "bio-digital-event-intelligence");
+  assert.equal(modelEvent.schema, "neurofhe.gateway.modelEvent.v1");
+  assert.equal(modelEvent.boundary, "local-trust-boundary-approved-export");
+  assert.equal(modelEvent.productionClaim, false);
+  assert.equal(modelEvent.plaintext.observedAtBucket, "2026-05-21T12:34:00.000Z");
+  assert.equal(modelEvent.plaintext.sparseMetrics.activeEventCount, 18);
+  assert.equal(modelEvent.plaintext.sparseMetrics.densityBucket, "0.25-0.5");
+  assert.equal(modelEvent.plaintext.activePositions.length, 18);
+  assert.equal(modelEvent.encrypted.activeSpikeValues.length, 18);
+  assert.equal(demo.auditLog.every((record) => record.containsRawPayload === false), true);
+  assert.equal(demo.sanitizedReplayStream.containsRawPayload, false);
+  assert.equal(serialized.includes("SIM-DEVICE-LOCAL-ONLY"), false);
+  assert.equal(serialized.includes("simulated-subject-local-only"), false);
+  assert.equal(serialized.includes("/local-only/simulated/raw-signal.json"), false);
+  assert.equal(serialized.includes("local-simulation-lab"), false);
+});
+
+test("gateway accepts safe local recommendations and rejects raw device commands", () => {
+  const rawSignal = buildSimulatedRawSignal();
+  const normalized = normalizeRawSignal(rawSignal);
+  const policy = buildDefaultGatewayPolicy();
+  const policyDecision = applyPrivacySafetyPolicy(normalized, policy);
+  const modelEvent = policyDecision.modelFacingEvent;
+  const acceptedRecommendation = buildLocalAnnotationRecommendation(modelEvent);
+  const rejectedRecommendation = buildUnsafeDeviceCommandRecommendation(modelEvent);
+  const acceptedDecision = evaluateRecommendation(acceptedRecommendation, modelEvent, policy);
+  const rejectedDecision = evaluateRecommendation(rejectedRecommendation, modelEvent, policy);
+  const strictDecision = applyPrivacySafetyPolicy(
+    normalized,
+    buildDefaultGatewayPolicy({ maxActiveEvents: 1 }),
+  );
+
+  assert.equal(policyDecision.decision, "approved");
+  assert.equal(acceptedDecision.decision, "accepted");
+  assert.equal(acceptedDecision.approvedAction.executionScope, "safe-local-reversible");
+  assert.equal(rejectedDecision.decision, "rejected");
+  assert.ok(rejectedDecision.reasons.includes("raw device commands are blocked"));
+  assert.ok(rejectedDecision.reasons.includes("action type raw_device_command is blocked"));
+  assert.equal(strictDecision.decision, "blocked");
+  assert.equal(strictDecision.modelFacingEvent, null);
+  assert.ok(strictDecision.reasons[0].includes("active event count 18 exceeds policy maximum 1"));
 });
 
 test("prototype benchmark emits the scientific artifact fields every run needs", () => {

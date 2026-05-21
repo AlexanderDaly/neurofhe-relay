@@ -74,6 +74,28 @@ Mitigation:
 - Do not make diagnostic or treatment claims.
 - Require real datasets, clinical validation, regulatory strategy, and legal review before any medical-adjacent deployment language.
 
+### R8 - Gateway Export Policy Too Broad
+
+Risk: a model-facing event accidentally leaks raw payloads, stable source identifiers, exact timestamps, or reconstructable sparse signal details.
+
+Mitigation:
+
+- Treat all raw intake as sensitive by default.
+- Require explicit export allowlists for source kind, event type, fields, and action types.
+- Hash source IDs, bucket timestamps, aggregate sparse metrics, and withhold raw payloads before model access.
+- Add tests that scan gateway outputs for known local-only fields and identifiers.
+
+### R9 - Unsafe Recommendation Becomes Action
+
+Risk: a model or agent returns a direct device command, coercive action, surveillance action, or overconfident recommendation that bypasses local review.
+
+Mitigation:
+
+- Allow models to return recommendations only, never direct raw-device commands.
+- Route every recommendation back through the gateway policy validator.
+- Execute only local, reversible, allowlisted actions.
+- Require explicit human approval for higher-risk actions and reject external-control actions by default.
+
 ## Market Risks
 
 ### M1 - Too Technical for Buyers

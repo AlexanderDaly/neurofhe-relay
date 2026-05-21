@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 19
-pass 19
+tests 21
+pass 21
 fail 0
 ```
 
@@ -29,6 +29,7 @@ Covered behaviours:
 - Plaintext and encrypted classifier agreement.
 - Linear model metadata, dense/sparse matrix-vector agreement, public bias, and model validation.
 - Benchmark accuracy, latency, ciphertext bytes, operation counts, security parameters, privacy boundary, crypto inventory, dense baseline comparison, and three privacy modes.
+- Relay gateway raw-intake summarization, normalization, minimal model-facing event export, raw-leakage checks, accepted safe local recommendations, rejected unsafe command recommendations, and strict policy blocking.
 - Benchmark artifact publishing to timestamped run JSON and `latest.json`.
 - OpenFHE contract validation, native build-plan detection, and C++ API source markers.
 - N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
@@ -69,6 +70,63 @@ Result summary:
   "classification": "anomaly"
 }
 ```
+
+### Relay Gateway Demo
+
+Command:
+
+```sh
+npm run gateway:demo --silent
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.gateway.demo.v1",
+  "boundaryDomain": "bio-digital-event-intelligence",
+  "rawIntake": {
+    "sensitivity": "sensitive-by-default",
+    "rawPayload": "withheld-local-only"
+  },
+  "policyDecision": {
+    "decision": "approved",
+    "modelFacingEvent": {
+      "schema": "neurofhe.gateway.modelEvent.v1",
+      "boundary": "local-trust-boundary-approved-export",
+      "productionClaim": false,
+      "plaintext": {
+        "sparseMetrics": {
+          "activeEventCount": 18,
+          "densityBucket": "0.25-0.5"
+        }
+      },
+      "encrypted": {
+        "activeSpikeValues": "18 ciphertext references"
+      }
+    }
+  },
+  "acceptedDecision": {
+    "decision": "accepted",
+    "approvedAction": {
+      "actionType": "annotate_local_session",
+      "executionScope": "safe-local-reversible"
+    }
+  },
+  "rejectedDecision": {
+    "decision": "rejected",
+    "reasons": [
+      "raw device commands are blocked",
+      "action type raw_device_command is blocked"
+    ]
+  },
+  "sanitizedReplayStream": {
+    "containsRawPayload": false
+  }
+}
+```
+
+The gateway demo is simulated and intentionally exports no raw signal payload.
 
 ### Benchmark
 

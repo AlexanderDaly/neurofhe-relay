@@ -6,6 +6,7 @@
   "license": "CC0-1.0",
   "scripts": {
     "demo": "node prototype/toy-neurohe-demo.mjs",
+    "gateway:demo": "node prototype/gateway-demo.mjs",
     "benchmark": "node prototype/benchmark.mjs",
     "benchmark:artifact": "node prototype/benchmark.mjs --artifact",
     "benchmark:openfhe": "node prototype/openfhe-benchmark.mjs",
