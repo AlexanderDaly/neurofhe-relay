@@ -2,6 +2,17 @@
 
 import { runEncryptedLinearClassifier, runPlaintextLinearClassifier } from "./classifier.mjs";
 import { activeEvents, buildSparseEventWindow, spikeMetrics } from "./events.mjs";
+import { toyPaillierSecurityParameters } from "./toy-paillier.mjs";
+
+const REQUIRED_ARTIFACT_FIELDS = [
+  "accuracy",
+  "latencyMs",
+  "ciphertextBytes",
+  "operationCounts",
+  "securityParameters",
+  "privacyBoundary",
+  "cryptoInventory",
+];
 
 export function runPrototypeBenchmark(options = {}) {
   const eventWindow = options.eventWindow ?? buildSparseEventWindow();
@@ -11,6 +22,14 @@ export function runPrototypeBenchmark(options = {}) {
   const latencyMs = Number((now() - started).toFixed(3));
   const metrics = spikeMetrics(eventWindow);
   const classCount = encrypted.publicModel.classes.length;
+  const results = {
+    plaintextScores: plaintext.scores,
+    decryptedScores: encrypted.decryptedScores,
+    classification: encrypted.classification,
+    plaintextMatchesEncrypted:
+      JSON.stringify(plaintext.scores) === JSON.stringify(encrypted.decryptedScores) &&
+      plaintext.classification === encrypted.classification,
+  };
 
   return {
     schema: "neurofhe.benchmark.v1",
@@ -31,18 +50,13 @@ export function runPrototypeBenchmark(options = {}) {
     sparseMetrics: metrics,
     linearModel: encrypted.publicModel,
     publicModel: encrypted.publicModel,
+    accuracy: buildAccuracySummary(results),
     operationCounts: encrypted.operationCounts,
     ciphertextBytes: encrypted.ciphertextBytes,
+    securityParameters: buildSecurityParameters(options),
     denseBaseline: denseBaselineComparison(eventWindow, classCount),
     privacyModes: buildPrivacyModeComparison(eventWindow, classCount),
-    results: {
-      plaintextScores: plaintext.scores,
-      decryptedScores: encrypted.decryptedScores,
-      classification: encrypted.classification,
-      plaintextMatchesEncrypted:
-        JSON.stringify(plaintext.scores) === JSON.stringify(encrypted.decryptedScores) &&
-        plaintext.classification === encrypted.classification,
-    },
+    results,
     encryptedPreview: encrypted.encryptedPreview,
     cryptoInventory: buildCryptoInventory(),
     privacyBoundary: buildPrivacyBoundary(),
@@ -55,6 +69,57 @@ export function runPrototypeBenchmark(options = {}) {
     nextStep:
       "Port this event-list and linear score contract to BFV/BGV, CKKS, TFHE, or an Octra/HFHE experiment and preserve the same benchmark schema.",
   };
+}
+
+export function buildBenchmarkArtifact(benchmark, options = {}) {
+  const generatedAt = options.generatedAt ?? new Date().toISOString();
+  const artifactId = options.artifactId ?? artifactIdFromTimestamp(generatedAt);
+
+  return {
+    schema: "neurofhe.benchmarkArtifact.v1",
+    artifactId,
+    generatedAt,
+    project: benchmark.project,
+    dataset: benchmark.dataset,
+    model: benchmark.model,
+    scheme: benchmark.scheme,
+    requiredFields: [...REQUIRED_ARTIFACT_FIELDS],
+    accuracy: benchmark.accuracy,
+    latencyMs: benchmark.latencyMs,
+    ciphertextBytes: benchmark.ciphertextBytes,
+    operationCounts: benchmark.operationCounts,
+    securityParameters: benchmark.securityParameters,
+    privacyBoundary: benchmark.privacyBoundary,
+    cryptoInventory: benchmark.cryptoInventory,
+    privacyModes: benchmark.privacyModes,
+    results: benchmark.results,
+    productionClaim: benchmark.productionClaim,
+    benchmark,
+  };
+}
+
+export function buildAccuracySummary(results) {
+  const scoreAgreement =
+    JSON.stringify(results.plaintextScores) === JSON.stringify(results.decryptedScores);
+  const classificationAgreement = results.plaintextMatchesEncrypted === true;
+  const correct = scoreAgreement && classificationAgreement ? 1 : 0;
+
+  return {
+    schema: "neurofhe.accuracy.v1",
+    metric: "single-window-plaintext-agreement",
+    value: correct,
+    correct,
+    sampleCount: 1,
+    scoreAgreement,
+    classificationAgreement,
+    baseline: "plaintext-linear-spike-count-classifier",
+    caveat:
+      "This is contract agreement on one synthetic event window, not dataset accuracy. Use baseline:plaintext for real event data.",
+  };
+}
+
+export function buildSecurityParameters(options = {}) {
+  return toyPaillierSecurityParameters(options.keypairOptions ?? {});
 }
 
 export function buildPrivacyModeComparison(eventWindow, classCount, options = {}) {
@@ -200,4 +265,8 @@ function nextPowerOfTwo(value) {
 
 function now() {
   return Number(process.hrtime.bigint()) / 1_000_000;
+}
+
+function artifactIdFromTimestamp(generatedAt) {
+  return `benchmark-${generatedAt.replace(/[^0-9A-Za-z]+/g, "-").replace(/^-|-$/g, "")}`;
 }

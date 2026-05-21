@@ -76,6 +76,33 @@ export function estimateBigIntBytes(value) {
   return Math.ceil(hex.length / 2);
 }
 
+export function toyPaillierSecurityParameters(options = {}) {
+  const p = BigInt(options.p ?? DEFAULT_P);
+  const q = BigInt(options.q ?? DEFAULT_Q);
+  const n = p * q;
+  const n2 = n * n;
+
+  return {
+    schema: "neurofhe.securityParameters.v1",
+    scheme: "toy-paillier-additive-research-only",
+    publicModulusBits: bitLength(n),
+    ciphertextModulusBits: bitLength(n2),
+    plaintextDomain: "[0, n)",
+    supportedOperations: ["ciphertext_addition", "public_non_negative_scalar_multiply"],
+    multiplicativeDepth: 0,
+    randomness: "deterministic seeded demo RNG",
+    seedPolicy: "fixed seed for reproducible artifact generation",
+    keyManagement: "ephemeral local demo keypair",
+    productionClaim: false,
+    securityClaim:
+      "No security claim. Educational additive homomorphic arithmetic only; replace with reviewed OpenFHE parameters for real measurements.",
+  };
+}
+
+function bitLength(value) {
+  return BigInt(value).toString(2).length;
+}
+
 function makeRng(seed) {
   let state = BigInt(seed);
   return function next() {

@@ -1,0 +1,467 @@
+{
+  "schema": "neurofhe.benchmarkArtifact.v1",
+  "artifactId": "benchmark-2026-05-21T03-29-02-058Z",
+  "generatedAt": "2026-05-21T03:29:02.058Z",
+  "project": "NeuroFHE Relay",
+  "dataset": "synthetic-events-v0",
+  "model": "tiny-linear-spike-count-v0",
+  "scheme": "toy-paillier-additive-research-only",
+  "requiredFields": [
+    "accuracy",
+    "latencyMs",
+    "ciphertextBytes",
+    "operationCounts",
+    "securityParameters",
+    "privacyBoundary",
+    "cryptoInventory"
+  ],
+  "accuracy": {
+    "schema": "neurofhe.accuracy.v1",
+    "metric": "single-window-plaintext-agreement",
+    "value": 1,
+    "correct": 1,
+    "sampleCount": 1,
+    "scoreAgreement": true,
+    "classificationAgreement": true,
+    "baseline": "plaintext-linear-spike-count-classifier",
+    "caveat": "This is contract agreement on one synthetic event window, not dataset accuracy. Use baseline:plaintext for real event data."
+  },
+  "latencyMs": 1.767,
+  "ciphertextBytes": 200,
+  "operationCounts": {
+    "encryptions": 20,
+    "scalarMultiplies": 36,
+    "adds": 36,
+    "decryptions": 2
+  },
+  "securityParameters": {
+    "schema": "neurofhe.securityParameters.v1",
+    "scheme": "toy-paillier-additive-research-only",
+    "publicModulusBits": 40,
+    "ciphertextModulusBits": 80,
+    "plaintextDomain": "[0, n)",
+    "supportedOperations": [
+      "ciphertext_addition",
+      "public_non_negative_scalar_multiply"
+    ],
+    "multiplicativeDepth": 0,
+    "randomness": "deterministic seeded demo RNG",
+    "seedPolicy": "fixed seed for reproducible artifact generation",
+    "keyManagement": "ephemeral local demo keypair",
+    "productionClaim": false,
+    "securityClaim": "No security claim. Educational additive homomorphic arithmetic only; replace with reviewed OpenFHE parameters for real measurements."
+  },
+  "privacyBoundary": {
+    "edgeSees": [
+      "raw synthetic event window",
+      "plaintext spikes",
+      "active event positions"
+    ],
+    "computeSees": [
+      "public model weights",
+      "public active event positions",
+      "ciphertext active spike values",
+      "encrypted score ciphertexts"
+    ],
+    "clientSees": [
+      "decrypted class scores",
+      "final classification"
+    ]
+  },
+  "cryptoInventory": {
+    "schema": "neurofhe.crypto.inventory.v1",
+    "keyEstablishment": [
+      "ML-KEM-768-design-target"
+    ],
+    "signatures": [
+      "ML-DSA-65-design-target",
+      "SLH-DSA-design-target"
+    ],
+    "encryptedComputation": [
+      "toy-paillier-additive-research-only"
+    ],
+    "hashes": [
+      "SHA3-256-design-target",
+      "BLAKE3-design-target"
+    ],
+    "classicalFallbacks": [
+      "X25519-design-target",
+      "Ed25519-design-target"
+    ],
+    "hybridMode": true,
+    "productionClaim": false,
+    "notes": "Inventory names desired roles for the prototype roadmap. The current runnable code uses only educational additive HE."
+  },
+  "privacyModes": {
+    "schema": "neurofhe.privacyModes.v1",
+    "comparisonBasis": "same event window, same public linear score contract",
+    "scoreEquation": "scores = W x + bias",
+    "featureCount": 64,
+    "activeEventCount": 18,
+    "density": 0.28125,
+    "classCount": 2,
+    "modes": [
+      {
+        "id": "public-active-positions",
+        "label": "Public active positions",
+        "speedTier": "fastest",
+        "sparsityProtection": "low",
+        "encryptedFeatureSlots": 18,
+        "positionPolicy": "active indices are public",
+        "paddingPolicy": "none",
+        "operationCounts": {
+          "encryptions": 20,
+          "scalarMultiplies": 36,
+          "adds": 36,
+          "decryptions": 2
+        },
+        "metadataLeakage": [
+          "exact active event positions",
+          "exact active event count",
+          "timing/sparsity metadata"
+        ],
+        "hides": [
+          "raw spike values",
+          "final class scores until client decrypts"
+        ],
+        "notes": "Fastest mode; suitable only when active-position and timing metadata are acceptable to expose.",
+        "relativeScalarMultiplies": 1
+      },
+      {
+        "id": "padded-sparse-batches",
+        "label": "Padded sparse batches",
+        "speedTier": "middle",
+        "sparsityProtection": "partial",
+        "encryptedFeatureSlots": 32,
+        "positionPolicy": "active indices are sent inside a fixed-size padded sparse batch",
+        "paddingPolicy": "next-power-of-two active-slot bucket",
+        "operationCounts": {
+          "encryptions": 34,
+          "scalarMultiplies": 64,
+          "adds": 64,
+          "decryptions": 2
+        },
+        "metadataLeakage": [
+          "padding bucket size",
+          "coarse timing/sparsity metadata",
+          "upper bound on active event count"
+        ],
+        "hides": [
+          "exact active event count within the padding bucket",
+          "which padded slots are dummy zeros"
+        ],
+        "notes": "Middle-ground mode; spends extra encrypted work to avoid revealing exact sparse workload size.",
+        "relativeScalarMultiplies": 1.78
+      },
+      {
+        "id": "dense-encrypted-windows",
+        "label": "Dense encrypted windows",
+        "speedTier": "slowest",
+        "sparsityProtection": "highest of these three modes",
+        "encryptedFeatureSlots": 64,
+        "positionPolicy": "all feature positions are encrypted every window",
+        "paddingPolicy": "full dense feature grid",
+        "operationCounts": {
+          "encryptions": 66,
+          "scalarMultiplies": 128,
+          "adds": 128,
+          "decryptions": 2
+        },
+        "metadataLeakage": [
+          "fixed window shape",
+          "model shape"
+        ],
+        "hides": [
+          "active positions",
+          "event-count sparsity",
+          "dummy-versus-real slots"
+        ],
+        "notes": "Slowest mode; hides sparsity better by encrypting zero and non-zero features alike.",
+        "relativeScalarMultiplies": 3.56
+      }
+    ],
+    "nextMeasurement": "Run the same three modes under OpenFHE BFVrns after native OpenFHE is installed."
+  },
+  "results": {
+    "plaintextScores": {
+      "normal": 9,
+      "anomaly": 51
+    },
+    "decryptedScores": {
+      "normal": 9,
+      "anomaly": 51
+    },
+    "classification": "anomaly",
+    "plaintextMatchesEncrypted": true
+  },
+  "productionClaim": false,
+  "benchmark": {
+    "schema": "neurofhe.benchmark.v1",
+    "project": "NeuroFHE Relay",
+    "demo": "Relay-2 Diagnostic Demo",
+    "boundaryDomain": "bio-digital-event-intelligence",
+    "dataset": "synthetic-events-v0",
+    "model": "tiny-linear-spike-count-v0",
+    "scheme": "toy-paillier-additive-research-only",
+    "productionClaim": false,
+    "latencyMs": 1.767,
+    "eventWindow": {
+      "schema": "neurofhe.events.v1.demo",
+      "shape": [
+        8,
+        8
+      ],
+      "encoding": "binary-spike-count",
+      "windowMs": 50
+    },
+    "sparseMetrics": {
+      "featureCount": 64,
+      "spikeCount": 18,
+      "density": 0.28125,
+      "activeChannels": 6,
+      "activeTimesteps": 8
+    },
+    "linearModel": {
+      "schema": "neurofhe.linearModel.v1",
+      "type": "non-negative linear spike-count classifier",
+      "classes": [
+        "normal",
+        "anomaly"
+      ],
+      "featureShape": [
+        8,
+        8
+      ],
+      "flatteningOrder": "time-major-channel-minor",
+      "matrixOrientation": "rows-are-classes-columns-are-features",
+      "matrixShape": [
+        2,
+        64
+      ],
+      "scoreEquation": "scores = W x + bias",
+      "biasPublic": true,
+      "activeEventCount": 18
+    },
+    "publicModel": {
+      "schema": "neurofhe.linearModel.v1",
+      "type": "non-negative linear spike-count classifier",
+      "classes": [
+        "normal",
+        "anomaly"
+      ],
+      "featureShape": [
+        8,
+        8
+      ],
+      "flatteningOrder": "time-major-channel-minor",
+      "matrixOrientation": "rows-are-classes-columns-are-features",
+      "matrixShape": [
+        2,
+        64
+      ],
+      "scoreEquation": "scores = W x + bias",
+      "biasPublic": true,
+      "activeEventCount": 18
+    },
+    "accuracy": {
+      "schema": "neurofhe.accuracy.v1",
+      "metric": "single-window-plaintext-agreement",
+      "value": 1,
+      "correct": 1,
+      "sampleCount": 1,
+      "scoreAgreement": true,
+      "classificationAgreement": true,
+      "baseline": "plaintext-linear-spike-count-classifier",
+      "caveat": "This is contract agreement on one synthetic event window, not dataset accuracy. Use baseline:plaintext for real event data."
+    },
+    "operationCounts": {
+      "encryptions": 20,
+      "scalarMultiplies": 36,
+      "adds": 36,
+      "decryptions": 2
+    },
+    "ciphertextBytes": 200,
+    "securityParameters": {
+      "schema": "neurofhe.securityParameters.v1",
+      "scheme": "toy-paillier-additive-research-only",
+      "publicModulusBits": 40,
+      "ciphertextModulusBits": 80,
+      "plaintextDomain": "[0, n)",
+      "supportedOperations": [
+        "ciphertext_addition",
+        "public_non_negative_scalar_multiply"
+      ],
+      "multiplicativeDepth": 0,
+      "randomness": "deterministic seeded demo RNG",
+      "seedPolicy": "fixed seed for reproducible artifact generation",
+      "keyManagement": "ephemeral local demo keypair",
+      "productionClaim": false,
+      "securityClaim": "No security claim. Educational additive homomorphic arithmetic only; replace with reviewed OpenFHE parameters for real measurements."
+    },
+    "denseBaseline": {
+      "representation": "full dense event tensor with encrypted zero and non-zero features",
+      "featureCount": 64,
+      "operationCounts": {
+        "encryptions": 66,
+        "scalarMultiplies": 128,
+        "adds": 128,
+        "decryptions": 2
+      }
+    },
+    "privacyModes": {
+      "schema": "neurofhe.privacyModes.v1",
+      "comparisonBasis": "same event window, same public linear score contract",
+      "scoreEquation": "scores = W x + bias",
+      "featureCount": 64,
+      "activeEventCount": 18,
+      "density": 0.28125,
+      "classCount": 2,
+      "modes": [
+        {
+          "id": "public-active-positions",
+          "label": "Public active positions",
+          "speedTier": "fastest",
+          "sparsityProtection": "low",
+          "encryptedFeatureSlots": 18,
+          "positionPolicy": "active indices are public",
+          "paddingPolicy": "none",
+          "operationCounts": {
+            "encryptions": 20,
+            "scalarMultiplies": 36,
+            "adds": 36,
+            "decryptions": 2
+          },
+          "metadataLeakage": [
+            "exact active event positions",
+            "exact active event count",
+            "timing/sparsity metadata"
+          ],
+          "hides": [
+            "raw spike values",
+            "final class scores until client decrypts"
+          ],
+          "notes": "Fastest mode; suitable only when active-position and timing metadata are acceptable to expose.",
+          "relativeScalarMultiplies": 1
+        },
+        {
+          "id": "padded-sparse-batches",
+          "label": "Padded sparse batches",
+          "speedTier": "middle",
+          "sparsityProtection": "partial",
+          "encryptedFeatureSlots": 32,
+          "positionPolicy": "active indices are sent inside a fixed-size padded sparse batch",
+          "paddingPolicy": "next-power-of-two active-slot bucket",
+          "operationCounts": {
+            "encryptions": 34,
+            "scalarMultiplies": 64,
+            "adds": 64,
+            "decryptions": 2
+          },
+          "metadataLeakage": [
+            "padding bucket size",
+            "coarse timing/sparsity metadata",
+            "upper bound on active event count"
+          ],
+          "hides": [
+            "exact active event count within the padding bucket",
+            "which padded slots are dummy zeros"
+          ],
+          "notes": "Middle-ground mode; spends extra encrypted work to avoid revealing exact sparse workload size.",
+          "relativeScalarMultiplies": 1.78
+        },
+        {
+          "id": "dense-encrypted-windows",
+          "label": "Dense encrypted windows",
+          "speedTier": "slowest",
+          "sparsityProtection": "highest of these three modes",
+          "encryptedFeatureSlots": 64,
+          "positionPolicy": "all feature positions are encrypted every window",
+          "paddingPolicy": "full dense feature grid",
+          "operationCounts": {
+            "encryptions": 66,
+            "scalarMultiplies": 128,
+            "adds": 128,
+            "decryptions": 2
+          },
+          "metadataLeakage": [
+            "fixed window shape",
+            "model shape"
+          ],
+          "hides": [
+            "active positions",
+            "event-count sparsity",
+            "dummy-versus-real slots"
+          ],
+          "notes": "Slowest mode; hides sparsity better by encrypting zero and non-zero features alike.",
+          "relativeScalarMultiplies": 3.56
+        }
+      ],
+      "nextMeasurement": "Run the same three modes under OpenFHE BFVrns after native OpenFHE is installed."
+    },
+    "results": {
+      "plaintextScores": {
+        "normal": 9,
+        "anomaly": 51
+      },
+      "decryptedScores": {
+        "normal": 9,
+        "anomaly": 51
+      },
+      "classification": "anomaly",
+      "plaintextMatchesEncrypted": true
+    },
+    "encryptedPreview": {
+      "firstSpikeCiphertext": "440820866823...92975971",
+      "normalScoreCiphertext": "917154944639...19156876",
+      "anomalyScoreCiphertext": "423685811738...69153632"
+    },
+    "cryptoInventory": {
+      "schema": "neurofhe.crypto.inventory.v1",
+      "keyEstablishment": [
+        "ML-KEM-768-design-target"
+      ],
+      "signatures": [
+        "ML-DSA-65-design-target",
+        "SLH-DSA-design-target"
+      ],
+      "encryptedComputation": [
+        "toy-paillier-additive-research-only"
+      ],
+      "hashes": [
+        "SHA3-256-design-target",
+        "BLAKE3-design-target"
+      ],
+      "classicalFallbacks": [
+        "X25519-design-target",
+        "Ed25519-design-target"
+      ],
+      "hybridMode": true,
+      "productionClaim": false,
+      "notes": "Inventory names desired roles for the prototype roadmap. The current runnable code uses only educational additive HE."
+    },
+    "privacyBoundary": {
+      "edgeSees": [
+        "raw synthetic event window",
+        "plaintext spikes",
+        "active event positions"
+      ],
+      "computeSees": [
+        "public model weights",
+        "public active event positions",
+        "ciphertext active spike values",
+        "encrypted score ciphertexts"
+      ],
+      "clientSees": [
+        "decrypted class scores",
+        "final classification"
+      ]
+    },
+    "caveats": [
+      "Toy additive homomorphic arithmetic only; not production cryptography.",
+      "Public active event positions may reveal sparsity patterns.",
+      "Secret key remains client-side in this prototype contract.",
+      "Post-quantum algorithms are design targets until real libraries and parameter sets are wired in."
+    ],
+    "nextStep": "Port this event-list and linear score contract to BFV/BGV, CKKS, TFHE, or an Octra/HFHE experiment and preserve the same benchmark schema."
+  }
+}

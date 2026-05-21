@@ -23,6 +23,15 @@ Emit the benchmark JSON:
 npm run benchmark
 ```
 
+Publish a benchmark artifact under `benchmark-artifacts/`:
+
+```sh
+npm run benchmark:artifact
+```
+
+Each artifact includes accuracy, latency, ciphertext bytes, operation counts,
+security parameters, privacy boundary, and crypto inventory.
+
 The benchmark now compares three privacy modes for the same `scores = W x + bias`
 contract:
 
@@ -57,7 +66,8 @@ Current modules:
 - `lib/nmnist.mjs` - N-MNIST event parsing, feature extraction, and plaintext baseline evaluation.
 - `lib/openfhe-adapter.mjs` - OpenFHE contract builder, validation, local detection, and build-plan output.
 - `lib/classifier.mjs` - plaintext and encrypted linear spike-count classifiers.
-- `lib/benchmark.mjs` - benchmark schema, crypto inventory, dense baseline comparison, three-mode privacy comparison, and privacy boundary.
+- `lib/benchmark.mjs` - benchmark schema, accuracy summary, security parameters, crypto inventory, dense baseline comparison, three-mode privacy comparison, and privacy boundary.
+- `lib/artifacts.mjs` - benchmark artifact publisher.
 - `openfhe/` - real OpenFHE BFVrns C++ demo and CMake target for the sparse score contract.
 - `openfhe-benchmark.mjs` - OpenFHE plan/run CLI.
 - `LINEAR_ALGEBRA_NEXT.md` - handoff for the next matrix/vector cleanup pass.

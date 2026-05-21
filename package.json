@@ -7,6 +7,7 @@
   "scripts": {
     "demo": "node prototype/toy-neurohe-demo.mjs",
     "benchmark": "node prototype/benchmark.mjs",
+    "benchmark:artifact": "node prototype/benchmark.mjs --artifact",
     "benchmark:openfhe": "node prototype/openfhe-benchmark.mjs",
     "baseline:plaintext": "node prototype/plaintext-baseline.mjs",
     "test": "node --test prototype/test/*.test.mjs",

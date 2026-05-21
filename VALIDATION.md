@@ -1,6 +1,6 @@
 # Validation
 
-Validated locally on 2026-05-20.
+Validated locally on 2026-05-21.
 
 Commands below are written for the standalone package root.
 
@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 17
-pass 17
+tests 19
+pass 19
 fail 0
 ```
 
@@ -28,7 +28,8 @@ Covered behaviours:
 - Event-window validation and sparse metrics.
 - Plaintext and encrypted classifier agreement.
 - Linear model metadata, dense/sparse matrix-vector agreement, public bias, and model validation.
-- Benchmark privacy boundary, crypto inventory, dense baseline comparison, and three privacy modes.
+- Benchmark accuracy, latency, ciphertext bytes, operation counts, security parameters, privacy boundary, crypto inventory, dense baseline comparison, and three privacy modes.
+- Benchmark artifact publishing to timestamped run JSON and `latest.json`.
 - OpenFHE contract validation, native build-plan detection, and C++ API source markers.
 - N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
 - Research assumptions with clean-room and naming guardrails.
@@ -98,11 +99,23 @@ Result summary:
     "spikeCount": 18,
     "density": 0.28125
   },
+  "accuracy": {
+    "metric": "single-window-plaintext-agreement",
+    "value": 1,
+    "sampleCount": 1
+  },
   "operationCounts": {
     "encryptions": 20,
     "scalarMultiplies": 36,
     "adds": 36,
     "decryptions": 2
+  },
+  "ciphertextBytes": 200,
+  "securityParameters": {
+    "scheme": "toy-paillier-additive-research-only",
+    "publicModulusBits": 40,
+    "ciphertextModulusBits": 80,
+    "productionClaim": false
   },
   "denseBaseline": {
     "operationCounts": {
@@ -141,6 +154,37 @@ Result summary:
   }
 }
 ```
+
+### Published Benchmark Artifact
+
+Command:
+
+```sh
+npm run benchmark:artifact --silent
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.benchmarkArtifact.publish.v1",
+  "paths": {
+    "run": "benchmark-artifacts/runs/<artifact-id>.json",
+    "latest": "benchmark-artifacts/latest.json"
+  },
+  "requiredFields": [
+    "accuracy",
+    "latencyMs",
+    "ciphertextBytes",
+    "operationCounts",
+    "securityParameters",
+    "privacyBoundary",
+    "cryptoInventory"
+  ]
+}
+```
+
+The current published artifact is `benchmark-artifacts/latest.json`.
 
 ### OpenFHE Integration Plan
 

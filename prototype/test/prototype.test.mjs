@@ -1,11 +1,15 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
 
 import {
+  buildBenchmarkArtifact,
   buildPrivacyModeComparison,
   runPrototypeBenchmark,
 } from "../lib/benchmark.mjs";
+import { publishBenchmarkArtifact } from "../lib/artifacts.mjs";
 import {
   runEncryptedLinearClassifier,
   runPlaintextLinearClassifier,
@@ -172,6 +176,63 @@ test("prototype benchmark emits privacy boundary, crypto inventory, and dense ba
   assert.equal(benchmark.cryptoInventory.productionClaim, false);
   assert.ok(benchmark.privacyBoundary.computeSees.includes("ciphertext active spike values"));
   assert.ok(benchmark.privacyBoundary.computeSees.includes("public active event positions"));
+});
+
+test("prototype benchmark emits the scientific artifact fields every run needs", () => {
+  const benchmark = runPrototypeBenchmark({ seed: 91 });
+
+  assert.equal(benchmark.accuracy.schema, "neurofhe.accuracy.v1");
+  assert.equal(benchmark.accuracy.metric, "single-window-plaintext-agreement");
+  assert.equal(benchmark.accuracy.value, 1);
+  assert.equal(benchmark.accuracy.correct, 1);
+  assert.equal(benchmark.accuracy.sampleCount, 1);
+  assert.equal(typeof benchmark.latencyMs, "number");
+  assert.equal(benchmark.ciphertextBytes, 200);
+  assert.equal(benchmark.operationCounts.scalarMultiplies, 36);
+  assert.equal(benchmark.securityParameters.schema, "neurofhe.securityParameters.v1");
+  assert.equal(benchmark.securityParameters.scheme, "toy-paillier-additive-research-only");
+  assert.equal(benchmark.securityParameters.productionClaim, false);
+  assert.equal(benchmark.privacyBoundary.computeSees.length > 0, true);
+  assert.deepEqual(benchmark.cryptoInventory.encryptedComputation, [
+    "toy-paillier-additive-research-only",
+  ]);
+});
+
+test("benchmark artifacts publish a run JSON and latest JSON with required fields", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-benchmark-"));
+  const published = await publishBenchmarkArtifact({
+    outputDir,
+    seed: 91,
+    artifactId: "test-run",
+    generatedAt: "2026-05-20T00:00:00.000Z",
+  });
+  const runArtifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+  const latestArtifact = JSON.parse(await readFile(published.paths.latest, "utf8"));
+
+  assert.equal(published.schema, "neurofhe.benchmarkArtifact.publish.v1");
+  assert.equal(runArtifact.schema, "neurofhe.benchmarkArtifact.v1");
+  assert.equal(runArtifact.artifactId, "test-run");
+  assert.equal(runArtifact.generatedAt, "2026-05-20T00:00:00.000Z");
+  assert.equal(runArtifact.accuracy.value, 1);
+  assert.equal(runArtifact.latencyMs, runArtifact.benchmark.latencyMs);
+  assert.equal(runArtifact.ciphertextBytes, 200);
+  assert.equal(runArtifact.operationCounts.scalarMultiplies, 36);
+  assert.equal(runArtifact.securityParameters.productionClaim, false);
+  assert.ok(runArtifact.privacyBoundary.computeSees.includes("ciphertext active spike values"));
+  assert.ok(runArtifact.cryptoInventory.encryptedComputation.includes("toy-paillier-additive-research-only"));
+  assert.deepEqual(latestArtifact, runArtifact);
+  assert.deepEqual(buildBenchmarkArtifact(runArtifact.benchmark, {
+    artifactId: "test-copy",
+    generatedAt: "2026-05-20T00:00:00.000Z",
+  }).requiredFields, [
+    "accuracy",
+    "latencyMs",
+    "ciphertextBytes",
+    "operationCounts",
+    "securityParameters",
+    "privacyBoundary",
+    "cryptoInventory",
+  ]);
 });
 
 test("privacy mode benchmark compares speed against sparsity metadata protection", () => {
