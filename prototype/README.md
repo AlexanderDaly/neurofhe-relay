@@ -23,6 +23,12 @@ Emit the benchmark JSON:
 npm run benchmark
 ```
 
+Print the real OpenFHE BFVrns integration plan:
+
+```sh
+npm run benchmark:openfhe
+```
+
 Run tests:
 
 ```sh
@@ -42,10 +48,15 @@ Current modules:
 - `lib/events.mjs` - event-window construction, validation, flattening, and sparse metrics.
 - `lib/linear-algebra.mjs` - model metadata, dense matrix-vector scoring, sparse event scoring, and model validation.
 - `lib/nmnist.mjs` - N-MNIST event parsing, feature extraction, and plaintext baseline evaluation.
+- `lib/openfhe-adapter.mjs` - OpenFHE contract builder, validation, local detection, and build-plan output.
 - `lib/classifier.mjs` - plaintext and encrypted linear spike-count classifiers.
 - `lib/benchmark.mjs` - benchmark schema, crypto inventory, dense baseline comparison, and privacy boundary.
+- `openfhe/` - real OpenFHE BFVrns C++ demo and CMake target for the sparse score contract.
+- `openfhe-benchmark.mjs` - OpenFHE plan/run CLI.
 - `LINEAR_ALGEBRA_NEXT.md` - handoff for the next matrix/vector cleanup pass.
 - `PLAINTEXT_BASELINE.md` - real-event-data baseline notes and CLI usage.
+- `OPENFHE_INTEGRATION.md` - native OpenFHE build/run notes.
 - `research-assumptions.json` - falsifiable assumptions and clean-room/IP guardrails.
 
-The next real prototype should replace this toy scheme with OpenFHE, SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment once the operation family is fixed.
+The toy scheme remains the dependency-free demo. The OpenFHE lane is now the
+first real HE integration target and runs once OpenFHE is installed locally.

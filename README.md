@@ -69,7 +69,13 @@ Emit the benchmark schema:
 npm run benchmark
 ```
 
-The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production and should be replaced with OpenFHE, SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment in the next milestone.
+Print the real OpenFHE BFVrns integration plan:
+
+```sh
+npm run benchmark:openfhe
+```
+
+The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The compute side sees public active event positions and ciphertext active spike values, which lowers encrypted operations but may leak sparsity/timing metadata. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is now included under `prototype/openfhe/`, while SEAL/TenSEAL, Concrete, TFHE-rs, or an Octra/HFHE experiment remain candidate follow-on lanes.
 
 ## Prototype Boundary
 

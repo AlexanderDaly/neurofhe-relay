@@ -25,6 +25,12 @@ import {
   validateLinearModel,
 } from "../lib/linear-algebra.mjs";
 import {
+  buildOpenFheDemoContract,
+  detectOpenFhe,
+  openFheIntegrationPlan,
+  validateOpenFheContract,
+} from "../lib/openfhe-adapter.mjs";
+import {
   encodeNmnistEvent,
   eventsToFeatureVector,
   evaluateLinearClassifier,
@@ -158,6 +164,81 @@ test("prototype benchmark emits privacy boundary, crypto inventory, and dense ba
   assert.equal(benchmark.cryptoInventory.productionClaim, false);
   assert.ok(benchmark.privacyBoundary.computeSees.includes("ciphertext active spike values"));
   assert.ok(benchmark.privacyBoundary.computeSees.includes("public active event positions"));
+});
+
+test("OpenFHE demo contract preserves the sparse linear score boundary", () => {
+  const contract = buildOpenFheDemoContract();
+
+  assert.equal(contract.schema, "neurofhe.openfhe.contract.v1");
+  assert.equal(contract.scheme, "openfhe-bfvrns");
+  assert.equal(contract.scoreEquation, "scores = W x + bias");
+  assert.equal(contract.boundaryDomain, "bio-digital-event-intelligence");
+  assert.deepEqual(contract.matrixShape, [2, 64]);
+  assert.equal(contract.activeEventCount, 18);
+  assert.deepEqual(contract.expectedPlaintextScores, { normal: 9, anomaly: 51 });
+  assert.equal(contract.expectedClassification, "anomaly");
+  assert.deepEqual(validateOpenFheContract(contract), []);
+});
+
+test("OpenFHE contract validation rejects unsafe integer-domain inputs", () => {
+  const contract = buildOpenFheDemoContract();
+  const malformed = {
+    ...contract,
+    matrixShape: [2, 63],
+    activeEvents: [
+      { index: 0, value: 1 },
+      { index: 64, value: 1 },
+      { index: 3, value: -1 },
+      { index: 4, value: 1.5 },
+    ],
+    weights: {
+      normal: [1, -2],
+      anomaly: Array(64).fill(1),
+    },
+    bias: { normal: -1, anomaly: 0.25 },
+  };
+
+  assert.deepEqual(validateOpenFheContract(malformed), [
+    "matrixShape 2x63 does not match classes/features",
+    "activeEvents[1].index 64 is outside feature count 64",
+    "activeEvents[2].value must be a non-negative integer",
+    "activeEvents[3].value must be a non-negative integer",
+    "weights.normal length 2 does not match feature count 64",
+    "weights.normal[1] must be a non-negative integer",
+    "bias.normal must be a non-negative integer",
+    "bias.anomaly must be a non-negative integer",
+  ]);
+});
+
+test("OpenFHE integration plan reports build commands and local detection state", () => {
+  const plan = openFheIntegrationPlan();
+  const detection = detectOpenFhe({ env: {}, roots: [] });
+
+  assert.equal(plan.schema, "neurofhe.openfhe.integrationPlan.v1");
+  assert.equal(plan.nativeTarget, "openfhe_linear_demo");
+  assert.ok(plan.sourcePath.endsWith("prototype/openfhe/openfhe_linear_demo.cpp"));
+  assert.ok(plan.cmakePath.endsWith("prototype/openfhe/CMakeLists.txt"));
+  assert.deepEqual(plan.commands, [
+    "cmake -S prototype/openfhe -B build/openfhe",
+    "cmake --build build/openfhe",
+    "build/openfhe/openfhe_linear_demo",
+  ]);
+  assert.equal(detection.available, false);
+  assert.equal(detection.reason, "OpenFHEConfig.cmake not found");
+});
+
+test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {
+  const source = await readFile(
+    new URL("../openfhe/openfhe_linear_demo.cpp", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(source, /#include "openfhe\.h"/);
+  assert.match(source, /CryptoContextBFVRNS/);
+  assert.match(source, /GenCryptoContext/);
+  assert.match(source, /EvalMult/);
+  assert.match(source, /EvalAdd/);
+  assert.match(source, /Decrypt/);
 });
 
 test("research assumptions are falsifiable and preserve clean-room guardrails", async () => {

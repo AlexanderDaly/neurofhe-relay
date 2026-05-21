@@ -1,6 +1,6 @@
 # Validation
 
-Validated locally on 2026-05-19.
+Validated locally on 2026-05-20.
 
 Commands below are written for the standalone package root.
 
@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 12
-pass 12
+tests 16
+pass 16
 fail 0
 ```
 
@@ -29,6 +29,7 @@ Covered behaviours:
 - Plaintext and encrypted classifier agreement.
 - Linear model metadata, dense/sparse matrix-vector agreement, public bias, and model validation.
 - Benchmark privacy boundary, crypto inventory, and dense baseline comparison.
+- OpenFHE contract validation, native build-plan detection, and C++ API source markers.
 - N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
 - Research assumptions with clean-room and naming guardrails.
 
@@ -118,6 +119,36 @@ Result summary:
 }
 ```
 
+### OpenFHE Integration Plan
+
+Command:
+
+```sh
+npm run benchmark:openfhe --silent
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.openfhe.integrationPlan.v1",
+  "nativeTarget": "openfhe_linear_demo",
+  "scheme": "openfhe-bfvrns",
+  "sourcePath": "prototype/openfhe/openfhe_linear_demo.cpp",
+  "cmakePath": "prototype/openfhe/CMakeLists.txt",
+  "buildDirectory": "build/openfhe"
+}
+```
+
+Local native execution status:
+
+```text
+OpenFHEConfig.cmake not found
+```
+
+The real BFVrns C++ target is present, but this machine does not currently
+have OpenFHE installed or discoverable by CMake.
+
 ### JSON Validation
 
 Command:
@@ -198,4 +229,4 @@ ascii scan complete
 
 ## Scope Note
 
-The runnable prototype is still research-grade and uses educational additive HE only. It now has a reusable library surface, tests, benchmark output, dense baseline comparison, crypto inventory, and explicit clean-room/proprietary-track guardrails.
+The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes a real OpenFHE BFVrns native integration target for the same sparse score contract, gated on a local OpenFHE installation.

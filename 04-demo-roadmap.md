@@ -18,6 +18,8 @@ Included desk demo:
 - `prototype/toy-neurohe-demo.mjs` runs a dependency-free encrypted spike-count classifier.
 - It uses educational additive homomorphic arithmetic to make the privacy boundary visible.
 - `prototype/benchmark.mjs` emits `neurofhe.benchmark.v1` with sparse operation counts, dense baseline comparison, privacy boundary, and crypto inventory.
+- `prototype/openfhe-benchmark.mjs` emits the real OpenFHE BFVrns build plan and local detection state.
+- `prototype/openfhe/openfhe_linear_demo.cpp` ports the same sparse `scores = W x + bias` contract to OpenFHE APIs.
 - `prototype/research-assumptions.json` captures falsifiable assumptions and clean-room/proprietary-track guardrails.
 - It is not production cryptography and not full FHE.
 
@@ -41,6 +43,7 @@ Current prototype foothold:
 - Dense encrypted tensor baseline comparison.
 - `prototype/LINEAR_ALGEBRA_NEXT.md` records the next matrix/vector cleanup pass.
 - `prototype/PLAINTEXT_BASELINE.md` and `npm run baseline:plaintext` define the first real-data N-MNIST-compatible plaintext baseline.
+- `prototype/OPENFHE_INTEGRATION.md` defines the native OpenFHE BFVrns build/run path for the fixed score contract.
 
 Decision gate:
 
@@ -54,7 +57,7 @@ Tasks:
 
 - Start with OpenFHE, Microsoft SEAL, TenSEAL, Concrete, or TFHE-rs.
 - Reuse the toy demo's event-window and score contract as the migration target.
-- Implement encrypted linear/accumulation layer.
+- Build and run the OpenFHE BFVrns encrypted linear/accumulation layer on a host with OpenFHE installed.
 - Approximate activation with polynomial or lookup path.
 - Decrypt only final score during local test.
 - Record operation counts, latency, ciphertext size, and accuracy change.
