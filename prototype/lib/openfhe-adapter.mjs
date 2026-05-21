@@ -25,6 +25,11 @@ const DEFAULT_OPENFHE_ROOTS = [
   "/opt/openfhe",
   "/usr/local/openfhe",
 ];
+const OPENFHE_BFVRNS_COMMANDS = [
+  "cmake -S prototype/openfhe -B build/openfhe",
+  "cmake --build build/openfhe",
+  "build/openfhe/openfhe_linear_demo",
+];
 
 export function buildOpenFheDemoContract(options = {}) {
   const sourceEventWindow = options.eventWindow ?? buildSparseEventWindow();
@@ -204,13 +209,44 @@ export function openFheIntegrationPlan(options = {}) {
     sourcePath: "prototype/openfhe/openfhe_linear_demo.cpp",
     cmakePath: "prototype/openfhe/CMakeLists.txt",
     buildDirectory: "build/openfhe",
-    commands: [
-      "cmake -S prototype/openfhe -B build/openfhe",
-      "cmake --build build/openfhe",
-      "build/openfhe/openfhe_linear_demo",
-    ],
+    commands: [...OPENFHE_BFVRNS_COMMANDS],
     caveat:
       "This is a real OpenFHE BFVrns build target. It runs only where OpenFHE is installed and discoverable by CMake.",
+  };
+}
+
+export function buildOpenFheUnavailableReport(options = {}) {
+  const detection = options.detection ?? detectOpenFhe(options);
+  return {
+    schema: "neurofhe.openfhe.unavailable.v1",
+    detection,
+    blocker: {
+      reason: detection.reason ?? "OpenFHE unavailable",
+      checked: detection.checked ?? [],
+    },
+    attemptedCommands: [...OPENFHE_BFVRNS_COMMANDS],
+    parameterEvidence: {
+      scheme: "BFVrns",
+      library: "OpenFHE",
+      securityLevelTarget: "HEStd_128_classic",
+      plaintextModulus: 65537,
+      multiplicativeDepth: 1,
+      batchSize: 1,
+      evalMultKeyGeneration: "required and present in native source",
+      ciphertextCiphertextMultiplications: 0,
+      relinearizationBehavior:
+        "native demo uses ciphertext-plaintext multiplies; EvalMult keys are generated, but ciphertext-ciphertext relinearization is not exercised",
+      ciphertextDimensions:
+        "unavailable until OpenFHE builds and the native executable can report serialized ciphertext metadata",
+      noiseBudget:
+        "not reported by this portable build blocker; add native OpenFHE instrumentation after dependency installation",
+      toyPaillierIsSecurityEvidence: false,
+    },
+    smallestNextStep:
+      "Install OpenFHE, set OpenFHE_DIR to the directory containing OpenFHEConfig.cmake if needed, then rerun npm run benchmark:openfhe -- --run --artifact.",
+    adapter: buildOpenFheRealLibraryAdapter(options),
+    plan: openFheIntegrationPlan(options),
+    productionClaim: false,
   };
 }
 

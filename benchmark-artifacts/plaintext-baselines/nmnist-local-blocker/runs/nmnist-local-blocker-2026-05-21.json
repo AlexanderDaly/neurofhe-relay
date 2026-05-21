@@ -1,0 +1,26 @@
+{
+  "schema": "neurofhe.plaintextBaselineArtifact.v1",
+  "artifactId": "nmnist-local-blocker-2026-05-21",
+  "generatedAt": "2026-05-21T12:11:00.000Z",
+  "subjectSchema": "neurofhe.plaintextBaseline.unavailable.v1",
+  "evidenceClass": "real-public-dataset-blocker-report",
+  "subject": {
+    "schema": "neurofhe.plaintextBaseline.unavailable.v1",
+    "datasetKind": "public-nmnist-local-copy",
+    "isRealDataset": true,
+    "blocker": {
+      "reason": "ENOENT: no such file or directory, scandir '/Users/alexanderdaly/Downloads/N-MNIST/Train'",
+      "datasetRoot": "/Users/alexanderdaly/Downloads/N-MNIST"
+    },
+    "attemptedCommand": "npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --grid-size 8 --time-bins 4 --window-us 105000",
+    "publicDatasetReference": {
+      "name": "N-MNIST",
+      "url": "https://www.garrickorchard.com/datasets/n-mnist",
+      "doi": "10.17632/468j46mzdv.1",
+      "license": "CC BY 4.0 / CC BY-SA 4.0 references must be reviewed for downstream redistribution"
+    },
+    "smallestNextStep": "Download and extract the public N-MNIST Train and Test directories outside git, then rerun the attempted command with --artifact.",
+    "productionClaim": false
+  },
+  "productionClaim": false
+}

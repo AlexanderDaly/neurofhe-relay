@@ -1,0 +1,166 @@
+{
+  "schema": "neurofhe.plaintextBaselineArtifact.v1",
+  "artifactId": "nmnist-smoke-fixture-2026-05-21",
+  "generatedAt": "2026-05-21T12:10:00.000Z",
+  "subjectSchema": "neurofhe.plaintextBaseline.v1",
+  "evidenceClass": "format-fixture-smoke-test",
+  "subject": {
+    "schema": "neurofhe.plaintextBaseline.v1",
+    "dataset": "N-MNIST-compatible-event-records",
+    "classifier": "nearest-centroid-linear",
+    "featureShape": [
+      4,
+      8,
+      8,
+      2
+    ],
+    "matrixShape": [
+      2,
+      512
+    ],
+    "metrics": {
+      "accuracy": 1,
+      "correct": 2,
+      "total": 2,
+      "averageActiveEvents": 2,
+      "averageNonZeroFeatures": 1.5,
+      "latencyMs": 1
+    },
+    "confusion": {
+      "0": {
+        "0": 1,
+        "1": 0
+      },
+      "1": {
+        "0": 0,
+        "1": 1
+      }
+    },
+    "operationCounts": {
+      "plaintextDotProducts": 4,
+      "scalarMultiplies": 2048,
+      "adds": 2044
+    },
+    "privacyBoundary": {
+      "localDeviceSees": [
+        "N-MNIST-compatible event records",
+        "plaintext features"
+      ],
+      "computeSees": [
+        "plaintext baseline only"
+      ],
+      "productionClaim": false
+    },
+    "compressionCurve": {
+      "schema": "neurofhe.plaintextCompressionCurve.v1",
+      "metric": "accuracy-versus-feature-compression",
+      "referenceFeatureShape": [
+        4,
+        8,
+        8,
+        2
+      ],
+      "referenceFeatureCount": 512,
+      "levels": [
+        {
+          "id": "grid-1-time-1",
+          "gridSize": 1,
+          "timeBins": 1,
+          "polarityBins": 2,
+          "featureShape": [
+            1,
+            1,
+            1,
+            2
+          ],
+          "featureCount": 2,
+          "compressionFactorVsReference": 256,
+          "accuracy": 0.5,
+          "correct": 1,
+          "total": 2,
+          "averageActiveEvents": 2,
+          "averageNonZeroFeatures": 1,
+          "plaintextDotProducts": 4
+        },
+        {
+          "id": "grid-2-time-2",
+          "gridSize": 2,
+          "timeBins": 2,
+          "polarityBins": 2,
+          "featureShape": [
+            2,
+            2,
+            2,
+            2
+          ],
+          "featureCount": 16,
+          "compressionFactorVsReference": 32,
+          "accuracy": 1,
+          "correct": 2,
+          "total": 2,
+          "averageActiveEvents": 2,
+          "averageNonZeroFeatures": 1,
+          "plaintextDotProducts": 4
+        },
+        {
+          "id": "grid-4-time-2",
+          "gridSize": 4,
+          "timeBins": 2,
+          "polarityBins": 2,
+          "featureShape": [
+            2,
+            4,
+            4,
+            2
+          ],
+          "featureCount": 64,
+          "compressionFactorVsReference": 8,
+          "accuracy": 1,
+          "correct": 2,
+          "total": 2,
+          "averageActiveEvents": 2,
+          "averageNonZeroFeatures": 1,
+          "plaintextDotProducts": 4
+        },
+        {
+          "id": "grid-8-time-4",
+          "gridSize": 8,
+          "timeBins": 4,
+          "polarityBins": 2,
+          "featureShape": [
+            4,
+            8,
+            8,
+            2
+          ],
+          "featureCount": 512,
+          "compressionFactorVsReference": 1,
+          "accuracy": 1,
+          "correct": 2,
+          "total": 2,
+          "averageActiveEvents": 2,
+          "averageNonZeroFeatures": 1.5,
+          "plaintextDotProducts": 4
+        }
+      ],
+      "caveat": "Compression levels change plaintext feature resolution before encryption. This curve is not an encrypted-compute benchmark.",
+      "productionClaim": false
+    },
+    "source": {
+      "schema": "neurofhe.datasetProvenance.v1",
+      "datasetKind": "nmnist-format-smoke-fixture",
+      "isRealDataset": false,
+      "publicDatasetReference": {
+        "name": "N-MNIST",
+        "url": "https://www.garrickorchard.com/datasets/n-mnist",
+        "doi": "10.17632/468j46mzdv.1",
+        "license": "CC BY 4.0 for the public dataset; this fixture contains deterministic format-test events only"
+      },
+      "caveat": "This fixture exercises the N-MNIST 40-bit event format and compression pipeline, but it is not sampled from the public N-MNIST recordings and must not be reported as real-data accuracy.",
+      "datasetId": "nmnist-smoke",
+      "trainRecords": 4,
+      "testRecords": 2
+    }
+  },
+  "productionClaim": false
+}

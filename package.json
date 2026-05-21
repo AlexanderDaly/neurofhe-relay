@@ -11,6 +11,7 @@
     "benchmark:artifact": "node prototype/benchmark.mjs --artifact",
     "benchmark:openfhe": "node prototype/openfhe-benchmark.mjs",
     "benchmark:openfhe-ckks": "node prototype/openfhe-ckks-benchmark.mjs",
+    "benchmark:privacy-modes": "node prototype/privacy-mode-ablation.mjs",
     "benchmark:tfhe": "node prototype/tfhe-rs-benchmark.mjs",
     "baseline:plaintext": "node prototype/plaintext-baseline.mjs",
     "test": "node --test prototype/test/*.test.mjs",

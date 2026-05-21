@@ -184,6 +184,7 @@ int main() {
     parameters.SetPlaintextModulus(65537);
     parameters.SetMultiplicativeDepth(1);
     parameters.SetBatchSize(1);
+    parameters.SetSecurityLevel(HEStd_128_classic);
 
     CryptoContext<DCRTPoly> cryptoContext = GenCryptoContext(parameters);
     cryptoContext->Enable(PKE);
@@ -284,6 +285,17 @@ int main() {
     std::cout << ",";
     std::cout << "\"expectedClassification\":\"" << Classify(expectedScores) << "\",";
     std::cout << "\"plaintextMatchesExpected\":" << (scoresMatch ? "true" : "false") << ",";
+    std::cout << "\"parameterEvidence\":{";
+    std::cout << "\"scheme\":\"BFVrns\",";
+    std::cout << "\"securityLevelTarget\":\"HEStd_128_classic\",";
+    std::cout << "\"plaintextModulus\":65537,";
+    std::cout << "\"multiplicativeDepth\":1,";
+    std::cout << "\"batchSize\":1,";
+    std::cout << "\"evalMultKeyGenerated\":true,";
+    std::cout << "\"ciphertextCiphertextMultiplications\":0,";
+    std::cout << "\"relinearizationRequired\":false,";
+    std::cout << "\"noiseBudget\":\"not reported by this portable demo\"";
+    std::cout << "},";
     std::cout << "\"operationCounts\":{";
     std::cout << "\"encryptions\":" << encryptions << ",";
     std::cout << "\"scalarMultiplies\":" << scalarMultiplies << ",";

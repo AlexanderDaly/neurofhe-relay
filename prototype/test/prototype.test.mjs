@@ -6,6 +6,7 @@ import test from "node:test";
 
 import {
   buildBenchmarkArtifact,
+  buildPaddingOverheadAblation,
   buildPackedVectorPlanningNotes,
   buildPrivacyModeDecision,
   buildPrivacyModeComparison,
@@ -41,6 +42,7 @@ import {
 import {
   buildOpenFheDemoContract,
   buildOpenFheRealLibraryAdapter,
+  buildOpenFheUnavailableReport,
   detectOpenFhe,
   openFheIntegrationPlan,
   validateOpenFheContract,
@@ -58,10 +60,12 @@ import {
   validateTfheRsContract,
 } from "../lib/tfhe-rs-adapter.mjs";
 import {
+  buildNmnistSmokeFixtureRecords,
   encodeNmnistEvent,
   eventsToFeatureVector,
   evaluateLinearClassifier,
   parseNmnistEvents,
+  runPlaintextCompressionSweep,
   runPlaintextEventBaseline,
   trainCentroidLinearClassifier,
 } from "../lib/nmnist.mjs";
@@ -781,6 +785,29 @@ test("privacy mode benchmark compares speed against sparsity metadata protection
   assert.ok(dense.hides.includes("active positions"));
 });
 
+test("padding ablation quantifies leakage masking and operation overhead", () => {
+  const ablation = buildPaddingOverheadAblation(buildSparseEventWindow(), 2, {
+    paddedSlotCount: 32,
+  });
+  const [sparse, padded, dense] = ablation.modes;
+
+  assert.equal(ablation.schema, "neurofhe.metadataPaddingAblation.v1");
+  assert.equal(ablation.measurementBasis, "synthetic-events-v0 operation-count model");
+  assert.equal(ablation.activeEventCount, 18);
+  assert.equal(sparse.id, "public-active-neuron-positions-encrypted-features");
+  assert.equal(sparse.encryptedFeatureSlots, 18);
+  assert.equal(padded.id, "padded-sparse-batches");
+  assert.equal(padded.encryptedFeatureSlots, 32);
+  assert.equal(padded.dummySlotCount, 14);
+  assert.equal(padded.relativeScalarMultiplies, 1.78);
+  assert.equal(padded.payloadSlotIncrease, 1.78);
+  assert.ok(padded.leakageMasked.includes("exact active event count"));
+  assert.ok(padded.leakageRemaining.includes("padding bucket size"));
+  assert.equal(dense.id, "dense-encrypted-windows");
+  assert.equal(dense.relativeScalarMultiplies, 3.56);
+  assert.equal(ablation.toyRuntimeCaveat.includes("not native FHE"), true);
+});
+
 test("privacy mode decision picks one explicit comparison mode", () => {
   const eventWindow = buildSparseEventWindow();
   const defaultDecision = buildPrivacyModeDecision(eventWindow, 2);
@@ -938,6 +965,24 @@ test("OpenFHE integration plan reports build commands and local detection state"
   ]);
   assert.equal(detection.available, false);
   assert.equal(detection.reason, "OpenFHEConfig.cmake not found");
+});
+
+test("OpenFHE unavailable report records attempted commands and parameter evidence target", () => {
+  const report = buildOpenFheUnavailableReport({
+    detection: detectOpenFhe({ env: {}, roots: [] }),
+  });
+
+  assert.equal(report.schema, "neurofhe.openfhe.unavailable.v1");
+  assert.equal(report.blocker.reason, "OpenFHEConfig.cmake not found");
+  assert.deepEqual(report.attemptedCommands, [
+    "cmake -S prototype/openfhe -B build/openfhe",
+    "cmake --build build/openfhe",
+    "build/openfhe/openfhe_linear_demo",
+  ]);
+  assert.equal(report.parameterEvidence.scheme, "BFVrns");
+  assert.equal(report.parameterEvidence.securityLevelTarget, "HEStd_128_classic");
+  assert.equal(report.parameterEvidence.toyPaillierIsSecurityEvidence, false);
+  assert.ok(report.smallestNextStep.includes("Install OpenFHE"));
 });
 
 test("OpenFHE CKKS demo contract preserves approximate sparse linear scoring", () => {
@@ -1327,4 +1372,40 @@ test("plaintext event baseline trains and evaluates a small linear classifier", 
   assert.deepEqual(report.featureShape, [2, 4, 4, 2]);
   assert.equal(report.metrics.accuracy, 1);
   assert.equal(report.metrics.averageActiveEvents, 1);
+});
+
+test("plaintext N-MNIST fixture baseline emits an accuracy versus compression curve", () => {
+  const fixture = buildNmnistSmokeFixtureRecords();
+  const compressionLevels = [
+    { id: "grid-1-time-1", gridSize: 1, timeBins: 1 },
+    { id: "grid-2-time-2", gridSize: 2, timeBins: 2 },
+    { id: "grid-8-time-4", gridSize: 8, timeBins: 4 },
+  ];
+  const report = runPlaintextEventBaseline({
+    trainRecords: fixture.trainRecords,
+    testRecords: fixture.testRecords,
+    options: { gridSize: 8, timeBins: 4 },
+    compressionLevels,
+  });
+  const sweep = runPlaintextCompressionSweep({
+    trainRecords: fixture.trainRecords,
+    testRecords: fixture.testRecords,
+    levels: compressionLevels,
+    referenceOptions: { gridSize: 8, timeBins: 4 },
+  });
+
+  assert.equal(fixture.source.datasetKind, "nmnist-format-smoke-fixture");
+  assert.equal(fixture.source.isRealDataset, false);
+  assert.equal(report.compressionCurve.schema, "neurofhe.plaintextCompressionCurve.v1");
+  assert.deepEqual(report.compressionCurve.levels.map((level) => level.id), [
+    "grid-1-time-1",
+    "grid-2-time-2",
+    "grid-8-time-4",
+  ]);
+  assert.equal(report.compressionCurve.levels[0].featureCount, 2);
+  assert.equal(report.compressionCurve.levels[2].featureCount, 512);
+  assert.equal(report.compressionCurve.levels[0].compressionFactorVsReference, 256);
+  assert.equal(report.compressionCurve.levels[0].accuracy, 0.5);
+  assert.equal(report.compressionCurve.levels[2].accuracy, 1);
+  assert.deepEqual(sweep.levels, report.compressionCurve.levels);
 });

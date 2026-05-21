@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 46
-pass 46
+tests 49
+pass 49
 fail 0
 ```
 
@@ -34,11 +34,12 @@ Covered behaviours:
 - Spatial spike sorting from simulated raw neural-like intake into stable event windows.
 - Relay gateway raw-intake summarization, canonical sorter insertion, sorted-event input validation and sanitization, optional cortical region/layer context aggregation or encrypted export, sorted-event reconstruction-resistance checks, normalization, minimal model-facing event export, raw-leakage checks, accepted safe local recommendations, rejected unsafe command recommendations, and strict policy blocking.
 - Benchmark artifact publishing to timestamped run JSON and `latest.json`.
+- Padding ablation output for sparse metadata leakage versus padded sparse and dense encrypted-window overhead.
 - Comparison artifact publishing for adapter plans and future native library runs.
-- OpenFHE sorted-event contract validation, digest-bound real-library adapter manifest, native build-plan detection, and C++ API source markers.
+- OpenFHE sorted-event contract validation, digest-bound real-library adapter manifest, native build-plan detection, C++ API source markers, and unavailable-run blocker reporting.
 - OpenFHE CKKS approximate-real sorted-event contract validation, digest-bound real-library adapter manifest, CKKS parameter inventory, privacy boundary, native build-plan detection, comparison artifact publishing, and C++ CKKS API source markers.
 - TFHE-rs sorted-event contract validation, digest-bound real-library adapter manifest, Cargo build-plan detection, Rust source markers, encrypted threshold-gate metadata, TFHE-vs-OpenFHE comparison notes, and comparison artifact publishing.
-- N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
+- N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
 - Research assumptions with clean-room and naming guardrails.
 
 ### Desk Demo
@@ -323,6 +324,114 @@ Result summary:
 The publisher was validated against a temporary output directory so this check
 did not refresh the committed `benchmark-artifacts/latest.json`.
 
+### Plaintext N-MNIST-Format Fixture Artifact
+
+Command:
+
+```sh
+npm run baseline:plaintext -- --fixture nmnist-smoke --artifact --artifact-id nmnist-smoke-fixture-2026-05-21 --generated-at 2026-05-21T12:10:00.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/plaintext-baselines/nmnist-smoke/latest.json
+benchmark-artifacts/plaintext-baselines/nmnist-smoke/runs/nmnist-smoke-fixture-2026-05-21.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.plaintextBaseline.v1",
+  "evidenceClass": "format-fixture-smoke-test",
+  "source": {
+    "datasetKind": "nmnist-format-smoke-fixture",
+    "isRealDataset": false
+  },
+  "featureShape": [4, 8, 8, 2],
+  "accuracy": 1,
+  "compressionCurve": [
+    {"level": "grid-1-time-1", "compressionFactorVsReference": 256, "accuracy": 0.5},
+    {"level": "grid-2-time-2", "compressionFactorVsReference": 32, "accuracy": 1},
+    {"level": "grid-4-time-2", "compressionFactorVsReference": 8, "accuracy": 1},
+    {"level": "grid-8-time-4", "compressionFactorVsReference": 1, "accuracy": 1}
+  ]
+}
+```
+
+This validates the N-MNIST 40-bit parser, feature extraction, plaintext
+classifier, compression-curve reporting, and artifact shape. It is not sampled
+from the public N-MNIST recordings and is not real-data accuracy.
+
+### Public N-MNIST Local Dataset Blocker
+
+Command attempted:
+
+```sh
+npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --artifact --artifact-id nmnist-local-blocker-2026-05-21 --generated-at 2026-05-21T12:11:00.000Z
+```
+
+Result:
+
+```text
+exit 2
+ENOENT: no such file or directory, scandir '/Users/alexanderdaly/Downloads/N-MNIST/Train'
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json
+benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/runs/nmnist-local-blocker-2026-05-21.json
+```
+
+The artifact is a `neurofhe.plaintextBaseline.unavailable.v1` blocker report,
+not a failed silent benchmark. It records the exact rerun command and the
+smallest next step: download and extract public N-MNIST `Train/` and `Test/`
+directories outside git, then rerun with `--artifact`.
+
+Dataset provenance for the intended real-data lane:
+
+- N-MNIST dataset page: https://www.garrickorchard.com/datasets/n-mnist
+- Mendeley Data DOI: 10.17632/468j46mzdv.1
+
+### Privacy-Mode Padding Ablation Artifact
+
+Command:
+
+```sh
+npm run benchmark:privacy-modes -- --iterations 25 --padded-slot-count 32 --artifact --artifact-id padding-ablation-2026-05-21 --generated-at 2026-05-21T12:12:00.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/privacy-modes/padding-ablation/latest.json
+benchmark-artifacts/privacy-modes/padding-ablation/runs/padding-ablation-2026-05-21.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.metadataPaddingAblation.v1",
+  "measurementBasis": "synthetic-events-v0 operation-count model plus local toy arithmetic timing",
+  "modes": [
+    {"id": "public-active-neuron-positions-encrypted-features", "encryptedFeatureSlots": 18, "scalarMultiplies": 36, "relativeScalarMultiplies": 1},
+    {"id": "padded-sparse-batches", "encryptedFeatureSlots": 32, "scalarMultiplies": 64, "relativeScalarMultiplies": 1.78},
+    {"id": "dense-encrypted-windows", "encryptedFeatureSlots": 64, "scalarMultiplies": 128, "relativeScalarMultiplies": 3.56}
+  ]
+}
+```
+
+For the current synthetic 18-event window, padding to 32 slots masks the exact
+active-event count inside a bucket at 1.78x scalar multiplies and 1.78x payload
+slots. It does not hide bucket size, public or cover position policy, coarse
+timing/sparsity metadata, or public model shape. The recorded local latency
+measurements are deterministic Node toy-arithmetic timings only, not native FHE
+performance evidence.
+
 ### OpenFHE Integration Plan
 
 Command:
@@ -363,6 +472,43 @@ OpenFHEConfig.cmake not found
 
 The real BFVrns C++ target is present, but this machine does not currently
 have OpenFHE installed or discoverable by CMake.
+
+### OpenFHE BFVrns Blocker Artifact
+
+Command attempted:
+
+```sh
+npm run benchmark:openfhe -- --run --artifact --artifact-id openfhe-bfvrns-blocker-2026-05-21 --generated-at 2026-05-21T12:13:00.000Z
+```
+
+Result:
+
+```text
+exit 2
+OpenFHEConfig.cmake not found
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/comparisons/openfhe/latest.json
+benchmark-artifacts/comparisons/openfhe/runs/openfhe-bfvrns-blocker-2026-05-21.json
+```
+
+The artifact is `neurofhe.openfhe.unavailable.v1`. It records the attempted
+commands:
+
+```sh
+cmake -S prototype/openfhe -B build/openfhe
+cmake --build build/openfhe
+build/openfhe/openfhe_linear_demo
+```
+
+Target parameter evidence captured in the blocker: BFVrns, OpenFHE,
+`HEStd_128_classic`, plaintext modulus 65537, multiplicative depth 1, batch
+size 1, and no ciphertext-ciphertext multiplication in the current sparse
+scoring contract. Ciphertext dimensions and noise budget remain blocked until
+OpenFHE is installed and the native executable can run.
 
 ### OpenFHE CKKS Integration Plan
 
@@ -436,15 +582,52 @@ Command:
 npm run benchmark:openfhe-ckks -- --artifact --artifact-id ckks-adapter-2026-05-21 --generated-at 2026-05-21T12:00:00.000Z
 ```
 
-Published artifact:
+Published adapter-plan run artifact:
 
 ```text
-benchmark-artifacts/comparisons/openfhe-ckks/latest.json
 benchmark-artifacts/comparisons/openfhe-ckks/runs/ckks-adapter-2026-05-21.json
 ```
 
 This records the adapter plan and local OpenFHE detection state. It is not a
-native CKKS performance result.
+native CKKS performance result. The current `latest.json` for this lane now
+points at the unavailable-run blocker below, because that is the newest
+reproducible CKKS evidence artifact.
+
+### OpenFHE CKKS Blocker Artifact
+
+Command attempted:
+
+```sh
+npm run benchmark:openfhe-ckks -- --run --artifact --artifact-id openfhe-ckks-blocker-2026-05-21 --generated-at 2026-05-21T12:14:00.000Z
+```
+
+Result:
+
+```text
+exit 2
+OpenFHEConfig.cmake not found
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/comparisons/openfhe-ckks/latest.json
+benchmark-artifacts/comparisons/openfhe-ckks/runs/openfhe-ckks-blocker-2026-05-21.json
+```
+
+The artifact is `neurofhe.openfheCkks.unavailable.v1`. It records the attempted
+commands:
+
+```sh
+cmake -S prototype/openfhe-ckks -B build/openfhe-ckks
+cmake --build build/openfhe-ckks
+build/openfhe-ckks/openfhe_ckks_linear_demo
+```
+
+Target parameter evidence captured in the blocker: CKKS, OpenFHE,
+`HEStd_128_classic`, multiplicative depth 2, scaling modulus size 50, first
+modulus size 60, batch size 64, and `FLEXIBLEAUTO`. Ciphertext dimensions,
+score drift, and noise observations remain blocked until OpenFHE is installed.
 
 ### OpenFHE Comparison Artifact
 
@@ -536,7 +719,7 @@ events, public active-neuron-position projection, plaintext scores
 Command:
 
 ```sh
-npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-synthetic-8x8-2026-05-21 --generated-at 2026-05-21T12:00:00.000Z
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-validation-2026-05-21 --generated-at 2026-05-21T12:15:00.000Z
 ```
 
 Result summary:
@@ -568,7 +751,7 @@ Result summary:
     "thresholdDecisionBit": 16593,
     "total": 2658613
   },
-  "latencyMs": 7233.972,
+  "latencyMs": 7200.658,
   "productionClaim": false
 }
 ```
@@ -577,7 +760,7 @@ Published artifact:
 
 ```text
 benchmark-artifacts/comparisons/tfhe-rs/latest.json
-benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-synthetic-8x8-2026-05-21.json
+benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-validation-2026-05-21.json
 ```
 
 The TFHE-rs result is a single local synthetic 8x8 run. The latency is not a
@@ -605,13 +788,15 @@ Command:
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 ```
 
-Expected result:
+Expected behaviour:
 
 ```text
-Requires a local extracted N-MNIST directory. The dataset is not bundled in this repository.
+Requires a local extracted N-MNIST directory. The dataset is not bundled in this repository. Add --artifact to persist an unavailable-dataset blocker report instead of losing the failure context.
 ```
 
-The parser and baseline engine are covered by the Node test suite using small in-memory N-MNIST-compatible event records.
+The parser and baseline engine are covered by the Node test suite using
+in-memory N-MNIST-compatible event records and the committed `nmnist-smoke`
+fixture artifact.
 
 ### Placeholder Scan
 

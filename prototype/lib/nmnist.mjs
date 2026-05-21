@@ -36,6 +36,57 @@ export function loadNmnistRecords(datasetRoot, options = {}) {
   return records;
 }
 
+export function buildNmnistSmokeFixtureRecords() {
+  const source = {
+    schema: "neurofhe.datasetProvenance.v1",
+    datasetKind: "nmnist-format-smoke-fixture",
+    isRealDataset: false,
+    publicDatasetReference: {
+      name: "N-MNIST",
+      url: "https://www.garrickorchard.com/datasets/n-mnist",
+      doi: "10.17632/468j46mzdv.1",
+      license: "CC BY 4.0 for the public dataset; this fixture contains deterministic format-test events only",
+    },
+    caveat:
+      "This fixture exercises the N-MNIST 40-bit event format and compression pipeline, but it is not sampled from the public N-MNIST recordings and must not be reported as real-data accuracy.",
+  };
+  const trainRecords = [
+    fixtureRecord("0", "Train/0/fixture-0-a.bin", [
+      { x: 4, y: 4, polarity: 1, timestampUs: 1000 },
+      { x: 5, y: 4, polarity: 1, timestampUs: 2000 },
+    ]),
+    fixtureRecord("0", "Train/0/fixture-0-b.bin", [
+      { x: 4, y: 5, polarity: 1, timestampUs: 1000 },
+      { x: 5, y: 5, polarity: 1, timestampUs: 2000 },
+    ]),
+    fixtureRecord("1", "Train/1/fixture-1-a.bin", [
+      { x: 28, y: 28, polarity: 1, timestampUs: 1000 },
+      { x: 29, y: 28, polarity: 1, timestampUs: 2000 },
+    ]),
+    fixtureRecord("1", "Train/1/fixture-1-b.bin", [
+      { x: 28, y: 29, polarity: 1, timestampUs: 1000 },
+      { x: 29, y: 29, polarity: 1, timestampUs: 2000 },
+    ]),
+  ];
+  const testRecords = [
+    fixtureRecord("0", "Test/0/fixture-0.bin", [
+      { x: 4, y: 4, polarity: 1, timestampUs: 1500 },
+      { x: 5, y: 5, polarity: 1, timestampUs: 2500 },
+    ]),
+    fixtureRecord("1", "Test/1/fixture-1.bin", [
+      { x: 28, y: 28, polarity: 1, timestampUs: 1500 },
+      { x: 29, y: 29, polarity: 1, timestampUs: 2500 },
+    ]),
+  ];
+
+  return {
+    schema: "neurofhe.nmnistSmokeFixture.v1",
+    source,
+    trainRecords,
+    testRecords,
+  };
+}
+
 export function encodeNmnistEvent(event) {
   const x = requireByte("x", event.x);
   const y = requireByte("y", event.y);
@@ -196,13 +247,18 @@ export function evaluateLinearClassifier(model, records, options = {}) {
   };
 }
 
-export function runPlaintextEventBaseline({ trainRecords, testRecords, options = {} }) {
+export function runPlaintextEventBaseline({
+  trainRecords,
+  testRecords,
+  options = {},
+  compressionLevels = [],
+}) {
   const startedAt = Date.now();
   const model = trainCentroidLinearClassifier(trainRecords, options);
   const evaluation = evaluateLinearClassifier(model, testRecords, options);
   const featureCount = model.matrixShape[1];
   const dotProducts = evaluation.total * model.classes.length;
-  return {
+  const report = {
     schema: "neurofhe.plaintextBaseline.v1",
     dataset: "N-MNIST-compatible-event-records",
     classifier: model.classifier,
@@ -227,6 +283,67 @@ export function runPlaintextEventBaseline({ trainRecords, testRecords, options =
       computeSees: ["plaintext baseline only"],
       productionClaim: false,
     },
+  };
+
+  if (compressionLevels.length > 0) {
+    report.compressionCurve = runPlaintextCompressionSweep({
+      trainRecords,
+      testRecords,
+      levels: compressionLevels,
+      referenceOptions: options,
+    });
+  }
+
+  return report;
+}
+
+export function runPlaintextCompressionSweep({
+  trainRecords,
+  testRecords,
+  levels,
+  referenceOptions = {},
+}) {
+  if (!Array.isArray(levels) || levels.length === 0) {
+    throw new Error("compression sweep levels must be a non-empty array");
+  }
+  const referenceFeatureCount = featureCountFor(referenceOptions);
+
+  return {
+    schema: "neurofhe.plaintextCompressionCurve.v1",
+    metric: "accuracy-versus-feature-compression",
+    referenceFeatureShape: featureShapeFor(referenceOptions),
+    referenceFeatureCount,
+    levels: levels.map((level, index) => {
+      const levelOptions = {
+        ...referenceOptions,
+        ...level,
+      };
+      const report = runPlaintextEventBaseline({
+        trainRecords,
+        testRecords,
+        options: levelOptions,
+      });
+      const featureCount = report.matrixShape[1];
+
+      return {
+        id: level.id ?? `level-${index + 1}`,
+        gridSize: levelOptions.gridSize ?? 8,
+        timeBins: levelOptions.timeBins ?? 4,
+        polarityBins: levelOptions.polarityBins ?? 2,
+        featureShape: report.featureShape,
+        featureCount,
+        compressionFactorVsReference: round(referenceFeatureCount / featureCount),
+        accuracy: report.metrics.accuracy,
+        correct: report.metrics.correct,
+        total: report.metrics.total,
+        averageActiveEvents: report.metrics.averageActiveEvents,
+        averageNonZeroFeatures: report.metrics.averageNonZeroFeatures,
+        plaintextDotProducts: report.operationCounts.plaintextDotProducts,
+      };
+    }),
+    caveat:
+      "Compression levels change plaintext feature resolution before encryption. This curve is not an encrypted-compute benchmark.",
+    productionClaim: false,
   };
 }
 
@@ -283,6 +400,20 @@ function dot(values, weights) {
 function average(values) {
   if (values.length === 0) return 0;
   return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function fixtureRecord(label, path, events) {
+  const bytes = Uint8Array.from(events.flatMap((event) => [...encodeNmnistEvent(event)]));
+  return {
+    label,
+    path,
+    events: parseNmnistEvents(bytes),
+  };
+}
+
+function round(value, places = 2) {
+  const factor = 10 ** places;
+  return Math.round(value * factor) / factor;
 }
 
 function featureShapeFor(options) {

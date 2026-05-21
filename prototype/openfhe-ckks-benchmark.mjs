@@ -27,7 +27,7 @@ if (args.has("--help")) {
     "",
     "--plan prints the native OpenFHE CKKS build plan.",
     "--adapter prints the digest-bound CKKS adapter contract.",
-    "--artifact writes the adapter plan or native run result as a comparison artifact.",
+    "--artifact writes the adapter plan, blocker report, or native run result as a comparison artifact.",
     "--artifact-id <id> and --generated-at <iso> make artifact output reproducible.",
     "--run configures, builds, and executes the CKKS demo when OpenFHE is installed.",
   ].join("\n"));
@@ -57,6 +57,32 @@ if (!detection.available) {
   const unavailable = {
     schema: "neurofhe.openfheCkks.unavailable.v1",
     detection,
+    blocker: {
+      reason: detection.reason ?? "OpenFHE unavailable",
+      checked: detection.checked ?? [],
+    },
+    attemptedCommands: [
+      "cmake -S prototype/openfhe-ckks -B build/openfhe-ckks",
+      "cmake --build build/openfhe-ckks",
+      "build/openfhe-ckks/openfhe_ckks_linear_demo",
+    ],
+    parameterEvidence: {
+      scheme: "CKKS",
+      library: "OpenFHE",
+      securityLevelTarget: "HEStd_128_classic",
+      multiplicativeDepth: 2,
+      scalingModSize: 50,
+      firstModSize: 60,
+      batchSize: 64,
+      scalingTechnique: "FLEXIBLEAUTO",
+      toyPaillierIsSecurityEvidence: false,
+      noiseBudget:
+        "not reported until OpenFHE builds and the native executable can run",
+      ciphertextDimensions:
+        "not reported until OpenFHE builds and the native executable can run",
+    },
+    smallestNextStep:
+      "Install OpenFHE, set OpenFHE_DIR to the directory containing OpenFHEConfig.cmake if needed, then rerun npm run benchmark:openfhe-ckks -- --run --artifact.",
     adapter: buildOpenFheCkksRealLibraryAdapter(),
     plan: openFheCkksIntegrationPlan(),
     productionClaim: false,

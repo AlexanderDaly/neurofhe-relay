@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import { publishComparisonArtifact } from "./lib/artifacts.mjs";
 import {
   buildOpenFheRealLibraryAdapter,
+  buildOpenFheUnavailableReport,
   detectOpenFhe,
   openFheIntegrationPlan,
 } from "./lib/openfhe-adapter.mjs";
@@ -13,6 +14,8 @@ const rawArgs = process.argv.slice(2);
 const args = new Set(rawArgs);
 const shouldPublishArtifact = args.has("--artifact") || args.has("--publish");
 const outputDir = readOption(rawArgs, "--out") ?? "benchmark-artifacts/comparisons/openfhe";
+const artifactId = readOption(rawArgs, "--artifact-id");
+const generatedAt = readOption(rawArgs, "--generated-at");
 
 if (args.has("--help")) {
   console.log([
@@ -23,7 +26,8 @@ if (args.has("--help")) {
     "  npm run benchmark:openfhe -- --run --artifact",
     "",
     "--plan prints the native OpenFHE build plan.",
-    "--artifact writes the adapter plan or run result as a comparison artifact.",
+    "--artifact writes the adapter plan, blocker report, or run result as a comparison artifact.",
+    "--artifact-id <id> and --generated-at <iso> make artifact output reproducible.",
     "--run configures, builds, and executes the BFVrns demo when OpenFHE is installed.",
   ].join("\n"));
   process.exit(0);
@@ -32,7 +36,7 @@ if (args.has("--help")) {
 if (!args.has("--run")) {
   const subject = args.has("--adapter") ? buildOpenFheRealLibraryAdapter() : openFheIntegrationPlan();
   if (shouldPublishArtifact) {
-    const published = await publishComparisonArtifact({ outputDir, subject });
+    const published = await publishComparisonArtifact({ outputDir, subject, artifactId, generatedAt });
     console.log(JSON.stringify(published, null, 2));
   } else {
     console.log(JSON.stringify(subject, null, 2));
@@ -42,15 +46,14 @@ if (!args.has("--run")) {
 
 const detection = detectOpenFhe();
 if (!detection.available) {
-  const unavailable = {
-    schema: "neurofhe.openfhe.unavailable.v1",
-    detection,
-    adapter: buildOpenFheRealLibraryAdapter(),
-    plan: openFheIntegrationPlan(),
-    productionClaim: false,
-  };
+  const unavailable = buildOpenFheUnavailableReport({ detection });
   if (shouldPublishArtifact) {
-    const published = await publishComparisonArtifact({ outputDir, subject: unavailable });
+    const published = await publishComparisonArtifact({
+      outputDir,
+      subject: unavailable,
+      artifactId,
+      generatedAt,
+    });
     console.log(JSON.stringify(published, null, 2));
   } else {
     console.log(JSON.stringify(unavailable, null, 2));
@@ -74,6 +77,8 @@ if (shouldPublishArtifact) {
   const parsed = JSON.parse(nativeResult.stdout);
   const published = await publishComparisonArtifact({
     outputDir,
+    artifactId,
+    generatedAt,
     subject: {
       schema: "neurofhe.openfhe.runComparison.v1",
       adapter: buildOpenFheRealLibraryAdapter(),

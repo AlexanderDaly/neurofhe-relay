@@ -54,6 +54,12 @@ contract:
 - Padded sparse batches: 32 encrypted feature slots, middle ground, hides exact active count inside a bucket.
 - Dense encrypted windows: 64 encrypted feature slots, slowest, hides sparsity better by encrypting zero and non-zero positions alike.
 
+Publish the current padding ablation:
+
+```sh
+npm run benchmark:privacy-modes -- --artifact
+```
+
 It also compares three input representations on the same task:
 
 - Dense/raw window: 64 encrypted feature slots, complete dense reference path.
@@ -127,6 +133,15 @@ Run the plaintext real-data baseline against a local N-MNIST directory:
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 ```
 
+Run the deterministic N-MNIST-format smoke fixture:
+
+```sh
+npm run baseline:plaintext -- --fixture nmnist-smoke --artifact
+```
+
+The fixture validates parsing, feature extraction, compression-curve reporting,
+and artifact publishing. It is not real N-MNIST accuracy.
+
 Current modules:
 
 - `lib/math.mjs` - BigInt modular arithmetic helpers.
@@ -145,6 +160,7 @@ Current modules:
 - `openfhe-benchmark.mjs` - OpenFHE plan/run CLI.
 - `openfhe-ckks/` - real OpenFHE CKKS C++ demo and CMake target for approximate real-valued sparse scoring.
 - `openfhe-ckks-benchmark.mjs` - OpenFHE CKKS plan/run CLI and comparison-artifact publisher.
+- `privacy-mode-ablation.mjs` - metadata leakage versus padding overhead artifact publisher.
 - `tfhe-rs/` - real TFHE-rs Rust crate using `FheUint16` sparse scoring and an encrypted `FheBool` threshold/comparison gate.
 - `tfhe-rs-benchmark.mjs` - TFHE-rs plan/run CLI and comparison-artifact publisher.
 - `LINEAR_ALGEBRA_NEXT.md` - handoff for the next matrix/vector cleanup pass.

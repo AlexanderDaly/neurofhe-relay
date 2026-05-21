@@ -1,0 +1,111 @@
+{
+  "schema": "neurofhe.privacyModeAblationArtifact.v1",
+  "artifactId": "padding-ablation-2026-05-21",
+  "generatedAt": "2026-05-21T12:12:00.000Z",
+  "subjectSchema": "neurofhe.metadataPaddingAblation.v1",
+  "subject": {
+    "schema": "neurofhe.metadataPaddingAblation.v1",
+    "measurementBasis": "synthetic-events-v0 operation-count model plus local toy arithmetic timing",
+    "scoreEquation": "scores = W x + bias",
+    "featureCount": 64,
+    "activeEventCount": 18,
+    "classCount": 2,
+    "modes": [
+      {
+        "id": "public-active-neuron-positions-encrypted-features",
+        "encryptedFeatureSlots": 18,
+        "dummySlotCount": 0,
+        "operationCounts": {
+          "encryptions": 20,
+          "scalarMultiplies": 36,
+          "adds": 36,
+          "decryptions": 2
+        },
+        "relativeScalarMultiplies": 1,
+        "payloadSlotIncrease": 1,
+        "leakageMasked": [
+          "active feature values",
+          "final class scores until client decrypts"
+        ],
+        "leakageRemaining": [
+          "exact active event count",
+          "active neuron identity and time-bin pattern",
+          "coarse spatial activity",
+          "timing/sparsity metadata"
+        ]
+      },
+      {
+        "id": "padded-sparse-batches",
+        "encryptedFeatureSlots": 32,
+        "dummySlotCount": 14,
+        "operationCounts": {
+          "encryptions": 34,
+          "scalarMultiplies": 64,
+          "adds": 64,
+          "decryptions": 2
+        },
+        "relativeScalarMultiplies": 1.78,
+        "payloadSlotIncrease": 1.78,
+        "leakageMasked": [
+          "exact active event count",
+          "which padded slots are dummy zeros",
+          "exact sparse workload size inside the padding bucket"
+        ],
+        "leakageRemaining": [
+          "padding bucket size",
+          "public or cover active-position policy",
+          "coarse timing/sparsity metadata",
+          "public model shape"
+        ]
+      },
+      {
+        "id": "dense-encrypted-windows",
+        "encryptedFeatureSlots": 64,
+        "dummySlotCount": 46,
+        "operationCounts": {
+          "encryptions": 66,
+          "scalarMultiplies": 128,
+          "adds": 128,
+          "decryptions": 2
+        },
+        "relativeScalarMultiplies": 3.56,
+        "payloadSlotIncrease": 3.56,
+        "leakageMasked": [
+          "active event count",
+          "active positions",
+          "dummy-versus-real slots",
+          "event-count sparsity"
+        ],
+        "leakageRemaining": [
+          "fixed window shape",
+          "public model shape"
+        ]
+      }
+    ],
+    "interpretation": "Padding reduces exact sparse workload leakage by spending extra encrypted slots and multiplies. It does not make the toy arithmetic secure and it does not hide all metadata.",
+    "toyRuntimeCaveat": "Any JavaScript runtime attached to this report is not native FHE performance; use OpenFHE or TFHE-rs run artifacts for cryptographic-library timing.",
+    "productionClaim": false,
+    "runtimeMeasurements": [
+      {
+        "modeId": "public-active-neuron-positions-encrypted-features",
+        "iterations": 25,
+        "averageLatencyMs": 1.104,
+        "relativeLatency": 1
+      },
+      {
+        "modeId": "padded-sparse-batches",
+        "iterations": 25,
+        "averageLatencyMs": 1.332,
+        "relativeLatency": 1.21
+      },
+      {
+        "modeId": "dense-encrypted-windows",
+        "iterations": 25,
+        "averageLatencyMs": 1.3,
+        "relativeLatency": 1.18
+      }
+    ],
+    "runtimeMeasurementCaveat": "Runtime uses deterministic toy additive arithmetic in Node.js. It quantifies local harness overhead only and is not OpenFHE, TFHE-rs, security, energy, or production performance evidence."
+  },
+  "productionClaim": false
+}
