@@ -196,6 +196,22 @@ Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 ```
 
+Run the real public UCI EEG Eye State baseline. The raw ARFF is downloaded into
+`.cache/` and is not committed; only the derived artifact is published:
+
+```sh
+npm run baseline:eeg-eye-state -- --artifact
+npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact
+```
+
+The committed EEG artifact at
+`benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json` uses a
+chronological 70/30 split, 8-row by 8-channel sparse latent event windows, and
+the same `scores = W x + bias` contract shape `[2, 64]`. It reports 301/561
+correct windows, accuracy `0.536542`, and a compression curve for active budgets
+of 8, 16, 32, and 64 values per window. This is real-data plaintext evidence,
+not encrypted-compute, medical, or generalization evidence.
+
 Run the deterministic N-MNIST-format smoke fixture and publish a compression
 curve artifact:
 

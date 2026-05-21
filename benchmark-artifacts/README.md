@@ -20,6 +20,8 @@ library runs:
 ```sh
 npm run baseline:plaintext -- --fixture nmnist-smoke --artifact
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10 --artifact
+npm run baseline:eeg-eye-state -- --artifact
+npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact
 npm run benchmark:privacy-modes -- --artifact
 npm run benchmark:openfhe -- --artifact
 npm run benchmark:openfhe -- --run --artifact
@@ -40,7 +42,9 @@ Plaintext baseline artifacts are written under
 `nmnist-smoke` artifact is a deterministic format fixture, not real N-MNIST
 accuracy. The committed `nmnist-local-blocker` artifact records the missing
 local public dataset directory and the exact command to rerun after extracting
-N-MNIST outside git.
+N-MNIST outside git. The committed `eeg-eye-state` artifact is a real public
+UCI EEG Eye State plaintext baseline; it stores only derived metrics and
+provenance, not raw EEG rows.
 
 Privacy-mode ablation artifacts are written under
 `benchmark-artifacts/privacy-modes/padding-ablation/`. These quantify unpadded
@@ -65,10 +69,12 @@ Current artifacts also include:
 - native comparison lane planning for BFVrns integer, CKKS approximate-real, and TFHE-rs threshold paths
 - privacy-mode decision for public active positions, padded sparse batches, or dense encrypted windows
 - metadata padding ablation output for leakage masking versus operation overhead
-- plaintext N-MNIST-compatible fixture and real public dataset blocker reports
+- plaintext N-MNIST-compatible fixture, real public UCI EEG Eye State baseline, and real public dataset blocker reports
 - framing guardrail for privacy-preserving event intelligence, not diagnosis or treatment
 - optional OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs adapter/native comparison artifacts for the same synthetic 8x8 sparse score contract
 
 The current accuracy field is synthetic contract agreement against the
 plaintext classifier, not real dataset accuracy. Use the N-MNIST-compatible
-plaintext baseline before making dataset performance claims.
+plaintext baseline or the committed UCI EEG Eye State artifact before making
+dataset performance claims. The EEG artifact is plaintext preprocessing/model
+evidence only; it is not encrypted runtime evidence.

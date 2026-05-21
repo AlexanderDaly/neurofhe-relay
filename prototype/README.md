@@ -133,6 +133,22 @@ Run the plaintext real-data baseline against a local N-MNIST directory:
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 ```
 
+Run the real public UCI EEG Eye State baseline:
+
+```sh
+npm run baseline:eeg-eye-state -- --artifact
+npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact
+```
+
+The EEG path downloads the ARFF into `.cache/`, converts chronological EEG rows
+into sparse latent event windows with public active positions and signed
+z-score active values, trains the same nearest-centroid linear `scores = W x +
+bias` contract, and writes the derived artifact under
+`benchmark-artifacts/plaintext-baselines/eeg-eye-state/`. The native OpenFHE
+BFVrns and CKKS binaries are installed comparison lanes, but this real-data
+artifact is still plaintext until a dynamic native input/model loader consumes
+the emitted contract directly.
+
 Run the deterministic N-MNIST-format smoke fixture:
 
 ```sh
@@ -150,6 +166,7 @@ Current modules:
 - `lib/spike-sorter.mjs` - canonical spatial-aware spike sorter for raw neural-like intake, designed around FPGA- or edge-friendly integer operations.
 - `lib/linear-algebra.mjs` - model metadata, dense matrix-vector scoring, sparse event scoring, and model validation.
 - `lib/nmnist.mjs` - N-MNIST event parsing, feature extraction, and plaintext baseline evaluation.
+- `lib/eeg-eye-state.mjs` - UCI EEG Eye State ARFF loading, sparse latent event projection, accuracy/compression baseline, and OpenFHE contract-readiness notes.
 - `lib/openfhe-adapter.mjs` - OpenFHE contract builder, validation, contract-bound real-library adapter manifest, local detection, and build-plan output.
 - `lib/openfhe-ckks-adapter.mjs` - OpenFHE CKKS approximate-real contract builder, validation, privacy boundary, crypto inventory, BFV/TFHE comparison guidance, and build-plan output.
 - `lib/tfhe-rs-adapter.mjs` - TFHE-rs contract builder, validation, crypto inventory, privacy boundary, OpenFHE comparison table, local Cargo detection, and build-plan output.

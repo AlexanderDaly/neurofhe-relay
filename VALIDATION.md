@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 49
-pass 49
+tests 50
+pass 50
 fail 0
 ```
 
@@ -40,6 +40,7 @@ Covered behaviours:
 - OpenFHE CKKS approximate-real sorted-event contract validation, digest-bound real-library adapter manifest, CKKS parameter inventory, privacy boundary, native build-plan detection, comparison artifact publishing, and C++ CKKS API source markers.
 - TFHE-rs sorted-event contract validation, digest-bound real-library adapter manifest, Cargo build-plan detection, Rust source markers, encrypted threshold-gate metadata, TFHE-vs-OpenFHE comparison notes, and comparison artifact publishing.
 - N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
+- UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, real-data privacy caveats, OpenFHE contract-readiness notes, and active-budget compression-curve output.
 - Research assumptions with clean-room and naming guardrails.
 
 ### Desk Demo
@@ -797,6 +798,42 @@ Requires a local extracted N-MNIST directory. The dataset is not bundled in this
 The parser and baseline engine are covered by the Node test suite using
 in-memory N-MNIST-compatible event records and the committed `nmnist-smoke`
 fixture artifact.
+
+### UCI EEG Eye State Real-Data Baseline
+
+Command:
+
+```sh
+npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact --artifact-id eeg-eye-state-real-2026-05-21 --generated-at 2026-05-21T17:30:00.000Z
+```
+
+Result summary:
+
+```json
+{
+  "datasetKind": "public-uci-eeg-eye-state-arff",
+  "rows": 14980,
+  "featureShape": [8, 8],
+  "matrixShape": [2, 64],
+  "split": "chronological 70/30",
+  "accuracy": 0.536542,
+  "correct": 301,
+  "total": 561,
+  "activeBudgetCompressionLevels": [8, 16, 32, 64],
+  "productionClaim": false
+}
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json
+benchmark-artifacts/plaintext-baselines/eeg-eye-state/runs/eeg-eye-state-real-2026-05-21.json
+```
+
+The raw ARFF is cached under `.cache/` and is not committed. This result is
+real-data plaintext preprocessing/model evidence only. It does not show
+encrypted runtime on the real dataset, medical validity, or generalization.
 
 ### Placeholder Scan
 

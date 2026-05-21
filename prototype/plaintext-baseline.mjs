@@ -5,6 +5,12 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import {
+  buildEegEyeStateSmokeFixtureRows,
+  EEG_EYE_STATE_PROVENANCE,
+  loadOrFetchEegEyeStateRows,
+  runEegEyeStatePlaintextBaseline,
+} from "./lib/eeg-eye-state.mjs";
+import {
   buildNmnistSmokeFixtureRecords,
   loadNmnistRecords,
   runPlaintextEventBaseline,
@@ -12,27 +18,112 @@ import {
 
 const args = parseArgs(process.argv.slice(2));
 const shouldPublishArtifact = args.artifact === "true" || args.publish === "true";
+const sourceKind = args.source ?? inferSourceKind(args);
 
-if (!args.dataset && args.fixture !== "nmnist-smoke") {
+if (
+  sourceKind === "nmnist" &&
+  !args.dataset &&
+  args.fixture !== "nmnist-smoke"
+) {
   console.error([
     "Usage:",
     "  npm run baseline:plaintext -- --dataset /path/to/N-MNIST",
     "  npm run baseline:plaintext -- --fixture nmnist-smoke",
+    "  npm run baseline:plaintext -- --source eeg-eye-state --fetch",
+    "  npm run baseline:plaintext -- --source eeg-eye-state --dataset '/path/to/EEG Eye State.arff'",
+    "  npm run baseline:plaintext -- --source eeg-eye-state --fixture eeg-eye-state-smoke",
     "",
-    "Expected layout:",
+    "Expected N-MNIST layout:",
     "  /path/to/N-MNIST/Train/0/*.bin",
     "  /path/to/N-MNIST/Test/0/*.bin",
     "",
-    "Options:",
+    "N-MNIST options:",
     "  --limit-per-class 10",
     "  --grid-size 8",
     "  --time-bins 4",
     "  --window-us 105000",
     "  --compression-levels 1x1,2x2,4x2,8x4",
+    "",
+    "EEG Eye State options:",
+    "  --fetch",
+    "  --cache-dir .cache/neurofhe/eeg-eye-state",
+    "  --train-fraction 0.7",
+    "  --window-size 8",
+    "  --stride 8",
+    "  --channel-count 8",
+    "  --active-per-timestep 4",
+    "  --compression-levels active1,active2,active4,active8",
+    "",
+    "Artifact options:",
     "  --artifact",
     "  --artifact-id nmnist-baseline-local",
     "  --generated-at 2026-05-21T12:00:00.000Z",
   ].join("\n"));
+  process.exit(2);
+}
+
+if (sourceKind === "eeg-eye-state") {
+  const eegOptions = {
+    trainFraction: Number(args["train-fraction"] ?? 0.7),
+    windowSize: Number(args["window-size"] ?? 8),
+    stride: Number(args.stride ?? args["window-size"] ?? 8),
+    channelCount: Number(args["channel-count"] ?? 8),
+    activePerTimestep: Number(args["active-per-timestep"] ?? 4),
+  };
+  const compressionLevels = parseEegCompressionLevels(
+    args["compression-levels"] ?? "active1,active2,active4,active8",
+  );
+
+  let loaded;
+  try {
+    loaded = await loadEegBaselineRows(args);
+  } catch (error) {
+    const unavailable = buildEegBaselineUnavailableReport(args, error);
+    if (shouldPublishArtifact) {
+      const published = await publishPlaintextBaselineArtifact(unavailable, {
+        outputDir:
+          args.out ??
+          "benchmark-artifacts/plaintext-baselines/eeg-eye-state-blocker",
+        artifactId: args["artifact-id"],
+        generatedAt: args["generated-at"],
+      });
+      console.log(JSON.stringify(published, null, 2));
+    } else {
+      console.log(JSON.stringify(unavailable, null, 2));
+    }
+    process.exit(2);
+  }
+
+  const report = runEegEyeStatePlaintextBaseline({
+    rows: loaded.rows,
+    options: eegOptions,
+    compressionLevels,
+  });
+  const subject = {
+    ...report,
+    source: {
+      ...loaded.source,
+      rows: loaded.rows.length,
+    },
+  };
+
+  if (shouldPublishArtifact) {
+    const published = await publishPlaintextBaselineArtifact(subject, {
+      outputDir:
+        args.out ??
+        `benchmark-artifacts/plaintext-baselines/${loaded.source.datasetId}`,
+      artifactId: args["artifact-id"],
+      generatedAt: args["generated-at"],
+    });
+    console.log(JSON.stringify(published, null, 2));
+  } else {
+    console.log(JSON.stringify(subject, null, 2));
+  }
+  process.exit(0);
+}
+
+if (sourceKind !== "nmnist") {
+  console.error(`Unsupported plaintext baseline source: ${sourceKind}`);
   process.exit(2);
 }
 
@@ -120,6 +211,47 @@ function buildPlaintextBaselineUnavailableReport(parsedArgs, loadOptions, error)
   };
 }
 
+function buildEegBaselineUnavailableReport(parsedArgs, error) {
+  return {
+    schema: "neurofhe.plaintextBaseline.unavailable.v1",
+    datasetKind: "public-uci-eeg-eye-state-arff",
+    isRealDataset: true,
+    blocker: {
+      reason: error.message,
+      datasetPath: parsedArgs.dataset,
+      fetchRequested: parsedArgs.fetch === "true",
+    },
+    attemptedCommand: [
+      "npm run baseline:plaintext --",
+      "--source eeg-eye-state",
+      parsedArgs.dataset ? `--dataset ${parsedArgs.dataset}` : "--fetch",
+      `--window-size ${parsedArgs["window-size"] ?? 8}`,
+      `--channel-count ${parsedArgs["channel-count"] ?? 8}`,
+      `--active-per-timestep ${parsedArgs["active-per-timestep"] ?? 4}`,
+    ].join(" "),
+    publicDatasetReference: EEG_EYE_STATE_PROVENANCE.publicDatasetReference,
+    smallestNextStep:
+      "Rerun with --fetch on a networked machine or download the public ARFF outside git and pass --dataset '/path/to/EEG Eye State.arff'.",
+    productionClaim: false,
+  };
+}
+
+async function loadEegBaselineRows(parsedArgs) {
+  if (parsedArgs.fixture === "eeg-eye-state-smoke") {
+    const fixture = buildEegEyeStateSmokeFixtureRows();
+    return {
+      rows: fixture.rows,
+      source: fixture.source,
+    };
+  }
+
+  return loadOrFetchEegEyeStateRows({
+    datasetPath: parsedArgs.dataset,
+    fetch: parsedArgs.fetch === "true",
+    cacheDir: parsedArgs["cache-dir"],
+  });
+}
+
 function loadBaselineRecords(parsedArgs, loadOptions) {
   if (parsedArgs.fixture === "nmnist-smoke") {
     const fixture = buildNmnistSmokeFixtureRecords();
@@ -178,6 +310,32 @@ function parseCompressionLevels(value) {
         timeBins,
       };
     });
+}
+
+function parseEegCompressionLevels(value) {
+  if (value === "none") return [];
+  return String(value)
+    .split(",")
+    .filter(Boolean)
+    .map((item) => {
+      const match = item.match(/^active(\d+)$/);
+      if (!match) {
+        throw new Error(`invalid EEG compression level ${item}; expected active<N>`);
+      }
+      const activePerTimestep = Number(match[1]);
+      if (!Number.isInteger(activePerTimestep) || activePerTimestep <= 0) {
+        throw new Error(`invalid EEG active-per-timestep in ${item}`);
+      }
+      return {
+        id: `active-${activePerTimestep}-per-timestep`,
+        activePerTimestep,
+      };
+    });
+}
+
+function inferSourceKind(parsedArgs) {
+  if (parsedArgs.fixture === "eeg-eye-state-smoke") return "eeg-eye-state";
+  return "nmnist";
 }
 
 async function publishPlaintextBaselineArtifact(subject, options = {}) {

@@ -70,6 +70,11 @@ import {
   trainCentroidLinearClassifier,
 } from "../lib/nmnist.mjs";
 import {
+  buildEegEyeStateSmokeFixtureRows,
+  parseEegEyeStateArff,
+  runEegEyeStatePlaintextBaseline,
+} from "../lib/eeg-eye-state.mjs";
+import {
   buildSimulatedRawNeuralFrame,
   sortSpatialSpikes,
 } from "../lib/spike-sorter.mjs";
@@ -1408,4 +1413,61 @@ test("plaintext N-MNIST fixture baseline emits an accuracy versus compression cu
   assert.equal(report.compressionCurve.levels[0].accuracy, 0.5);
   assert.equal(report.compressionCurve.levels[2].accuracy, 1);
   assert.deepEqual(sweep.levels, report.compressionCurve.levels);
+});
+
+test("EEG Eye State ARFF parser and sparse baseline preserve real-data caveats", () => {
+  const fixture = buildEegEyeStateSmokeFixtureRows();
+  const parsed = parseEegEyeStateArff([
+    "@relation eeg-eye-state-mini",
+    "@attribute AF3 numeric",
+    "@attribute F7 numeric",
+    "@attribute F3 numeric",
+    "@attribute FC5 numeric",
+    "@attribute T7 numeric",
+    "@attribute P7 numeric",
+    "@attribute O1 numeric",
+    "@attribute O2 numeric",
+    "@attribute P8 numeric",
+    "@attribute T8 numeric",
+    "@attribute FC6 numeric",
+    "@attribute F4 numeric",
+    "@attribute F8 numeric",
+    "@attribute AF4 numeric",
+    "@attribute eyeDetection {0,1}",
+    "@data",
+    "1,2,3,4,5,6,7,8,9,10,11,12,13,14,0",
+    "2,3,4,5,6,7,8,9,10,11,12,13,14,15,1",
+  ].join("\n"));
+  const report = runEegEyeStatePlaintextBaseline({
+    rows: fixture.rows,
+    options: {
+      trainFraction: 0.7,
+      windowSize: 2,
+      stride: 2,
+      channelCount: 4,
+      activePerTimestep: 2,
+    },
+    compressionLevels: [
+      { id: "active-1-per-timestep", activePerTimestep: 1 },
+      { id: "active-2-per-timestep", activePerTimestep: 2 },
+    ],
+  });
+
+  assert.equal(parsed.length, 2);
+  assert.equal(parsed[0].label, "eye-open");
+  assert.equal(parsed[1].label, "eye-closed");
+  assert.equal(fixture.source.isRealDataset, false);
+  assert.equal(fixture.source.datasetKind, "eeg-eye-state-format-smoke-fixture");
+  assert.equal(report.schema, "neurofhe.plaintextBaseline.v1");
+  assert.equal(report.datasetKind, "public-uci-eeg-eye-state-arff");
+  assert.deepEqual(report.matrixShape, [2, 8]);
+  assert.equal(report.scoreEquation, "scores = W x + bias");
+  assert.equal(report.openFheCompatibility.ckksPath.includes("CKKS-friendly"), true);
+  assert.equal(report.privacyBoundary.productionClaim, false);
+  assert.deepEqual(report.compressionCurve.levels.map((level) => level.id), [
+    "active-1-per-timestep",
+    "active-2-per-timestep",
+  ]);
+  assert.equal(report.compressionCurve.levels[0].activeBudgetCompressionVsDense, 4);
+  assert.equal(report.compressionCurve.levels[1].activeBudgetCompressionVsDense, 2);
 });

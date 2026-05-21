@@ -13,6 +13,7 @@
     "benchmark:openfhe-ckks": "node prototype/openfhe-ckks-benchmark.mjs",
     "benchmark:privacy-modes": "node prototype/privacy-mode-ablation.mjs",
     "benchmark:tfhe": "node prototype/tfhe-rs-benchmark.mjs",
+    "baseline:eeg-eye-state": "node prototype/plaintext-baseline.mjs --source eeg-eye-state --fetch",
     "baseline:plaintext": "node prototype/plaintext-baseline.mjs",
     "test": "node --test prototype/test/*.test.mjs",
     "validate": "npm test && node -e \"JSON.parse(require('fs').readFileSync('project-brief.json','utf8')); JSON.parse(require('fs').readFileSync('prototype/research-assumptions.json','utf8')); console.log('json ok')\" && node prototype/scripts/placeholder-scan.mjs"

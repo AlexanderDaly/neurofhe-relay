@@ -8,14 +8,23 @@ Start with N-MNIST because it is convenient, event-based, and small enough to
 adapt quickly. The repository does not bundle the dataset. Keep the data outside
 git and point the CLI at a local extracted directory.
 
+The repo now also includes a directly runnable real biosignal baseline using
+UCI EEG Eye State. It is not an event-camera dataset, so preprocessing projects
+chronological EEG rows into sparse latent event windows before evaluating the
+same linear score contract.
+
 Public provenance:
 
 - N-MNIST dataset page: https://www.garrickorchard.com/datasets/n-mnist
 - Mendeley Data DOI: 10.17632/468j46mzdv.1
+- UCI EEG Eye State dataset page: https://archive.ics.uci.edu/dataset/264/eeg+eye+state
+- UCI EEG Eye State DOI: 10.24432/C57G7J
+- UCI EEG Eye State license: CC BY 4.0
 
 Review the public dataset license and redistribution terms before copying any
 raw recordings into another package. This repository stores only code and small
-deterministic format fixtures.
+deterministic format fixtures. The EEG command downloads the ARFF into `.cache/`
+and commits only derived benchmark JSON.
 
 Expected layout:
 
@@ -70,6 +79,32 @@ If `--dataset` points at a missing or malformed local dataset and `--artifact`
 is present, the CLI writes a `neurofhe.plaintextBaseline.unavailable.v1`
 blocker report with the exact attempted command and smallest next step.
 
+Run the real public UCI EEG Eye State baseline:
+
+```sh
+npm run baseline:eeg-eye-state -- --artifact
+npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact
+```
+
+Use a local ARFF copy instead of fetching:
+
+```sh
+npm run baseline:plaintext -- --source eeg-eye-state --dataset "/path/to/EEG Eye State.arff" --artifact
+```
+
+Useful EEG options:
+
+```sh
+--cache-dir .cache/neurofhe/eeg-eye-state
+--train-fraction 0.7
+--window-size 8
+--stride 8
+--channel-count 8
+--active-per-timestep 4
+--compression-levels active1,active2,active4,active8
+--artifact
+```
+
 ## Frozen Feature Contract
 
 Default feature shape:
@@ -96,6 +131,25 @@ The baseline classifier is dependency-free and intentionally simple:
 nearest-centroid linear classifier
 scores = W x + bias
 ```
+
+For the UCI EEG Eye State lane, the default feature shape is:
+
+```json
+[8, 8]
+```
+
+Meaning:
+
+- 8 chronological EEG rows per window
+- first 8 EEG channels in ARFF order
+- top-k absolute training-split z-score channels per row become public active
+  positions
+- the signed z-score is the active feature value
+
+This preserves the same two-class, 64-feature `scores = W x + bias` shape used
+by the OpenFHE BFVrns and CKKS demos, but the committed EEG run is still a
+plaintext baseline. BFVrns needs explicit fixed-point quantization before native
+encrypted execution; CKKS is the more natural approximate-real lane.
 
 ## Output Metrics
 
@@ -125,6 +179,14 @@ Current committed examples:
   deterministic format-fixture smoke test.
 - `benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json`:
   missing-local-dataset blocker for the real public N-MNIST path.
+- `benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json`:
+  real public UCI EEG Eye State plaintext baseline. The committed run uses a
+  chronological 70/30 split over 14,980 rows, 8x8 sparse latent event windows,
+  4 active channels per row, and reports 301/561 correct windows
+  (`0.536542` accuracy). Its compression curve reports active budgets of 8,
+  16, 32, and 64 values per window. Treat these as baseline evidence for the
+  preprocessing and linear score contract only, not model quality or encrypted
+  runtime evidence.
 
 ## Compression Curve
 
@@ -149,6 +211,8 @@ After N-MNIST:
 - DVS Gesture for richer event-camera motion.
 - Wearable or industrial telemetry for a stronger pilot, once a rights-clean
   dataset or partner source is available.
+- Native OpenFHE dynamic input loading for the EEG-derived `[2, 64]` model and
+  sparse active event contract.
 
 ## Scope Guardrail
 
@@ -156,4 +220,5 @@ This is a plaintext baseline. It makes no encrypted-compute, medical,
 diagnostic, treatment, or production-security claim. It exists to freeze the
 event-data feature shape and classifier contract before the first real HE
 adapter. Use the smoke fixture for parser and artifact validation only; use a
-local public N-MNIST extraction before making any real-data performance claim.
+local public N-MNIST extraction or the committed UCI EEG Eye State plaintext
+artifact before making any real-data performance claim.
