@@ -46,6 +46,12 @@ import {
   validateOpenFheContract,
 } from "../lib/openfhe-adapter.mjs";
 import {
+  buildOpenFheCkksDemoContract,
+  buildOpenFheCkksRealLibraryAdapter,
+  openFheCkksIntegrationPlan,
+  validateOpenFheCkksContract,
+} from "../lib/openfhe-ckks-adapter.mjs";
+import {
   buildTfheRsDemoContract,
   buildTfheRsRealLibraryAdapter,
   tfheRsIntegrationPlan,
@@ -823,6 +829,12 @@ test("prototype benchmark carries adapter planning, privacy decision, and framin
   const benchmark = runPrototypeBenchmark({ seed: 91 });
 
   assert.equal(benchmark.packedVectorPlanning.schema, "neurofhe.packedVectorPlanning.v1");
+  assert.equal(benchmark.nativeComparisonLanes.schema, "neurofhe.nativeLaneComparison.v1");
+  assert.ok(
+    benchmark.nativeComparisonLanes.lanes
+      .map((lane) => lane.id)
+      .includes("openfhe-ckks-approximate"),
+  );
   assert.equal(benchmark.privacyModeDecision.schema, "neurofhe.privacyModeDecision.v1");
   assert.equal(benchmark.privacyModeDecision.recommendedMode, "padded-sparse-batches");
   assert.equal(benchmark.framingGuardrail.schema, "neurofhe.framingGuardrail.v1");
@@ -926,6 +938,119 @@ test("OpenFHE integration plan reports build commands and local detection state"
   ]);
   assert.equal(detection.available, false);
   assert.equal(detection.reason, "OpenFHEConfig.cmake not found");
+});
+
+test("OpenFHE CKKS demo contract preserves approximate sparse linear scoring", () => {
+  const contract = buildOpenFheCkksDemoContract();
+
+  assert.equal(contract.schema, "neurofhe.openfheCkks.contract.v1");
+  assert.equal(contract.scheme, "openfhe-ckks");
+  assert.equal(contract.scoreEquation, "scores = W x + bias");
+  assert.equal(contract.scoreDomain, "approximate-real");
+  assert.equal(contract.boundaryDomain, "bio-digital-event-intelligence");
+  assert.equal(contract.eventRepresentation, "spatial-sorted-events");
+  assert.equal(contract.encoder.id, "canonical-spatial-aware-spike-sorter-v1");
+  assert.equal(contract.privacyMode.id, "public-active-neuron-positions-encrypted-features");
+  assert.equal(contract.featureValueDomain, "approximate-real-neural-features");
+  assert.deepEqual(contract.matrixShape, [2, 64]);
+  assert.equal(contract.activeEventCount, 18);
+  assert.equal("value" in contract.publicActiveNeuronPositions[0], false);
+  assert.deepEqual(contract.expectedPlaintextScores, { normal: 9, anomaly: 51 });
+  assert.equal(contract.expectedClassification, "anomaly");
+  assert.equal(contract.approximationTolerance.maxAbsScoreError, 0.001);
+  assert.equal(contract.ckksParameters.securityLevel, "HEStd_128_classic");
+  assert.equal(contract.ckksParameters.scalingModSize, 50);
+  assert.equal(contract.ckksParameters.firstModSize, 60);
+  assert.equal(contract.ckksParameters.rescalingTechnique, "FLEXIBLEAUTO");
+  assert.equal(contract.ckksParameters.defaultMode, "leveled-no-bootstrap");
+  assert.equal(contract.ckksParameters.bootstrapping.supported, true);
+  assert.equal(contract.operationCounts.encryptions, 20);
+  assert.equal(contract.operationCounts.plaintextMultiplies, 36);
+  assert.equal(contract.operationCounts.adds, 36);
+  assert.equal(contract.operationCounts.decryptions, 2);
+  assert.equal(contract.operationCounts.rescaleOrModReduceOps, 36);
+  assert.equal(
+    contract.cryptoInventory.encryptedComputation.includes(
+      "openfhe-ckks-approximate-real-research-only",
+    ),
+    true,
+  );
+  assert.ok(contract.privacyBoundary.computeSees.includes("encrypted CKKS active feature values"));
+  assert.deepEqual(validateOpenFheCkksContract(contract), []);
+});
+
+test("OpenFHE CKKS contract validation rejects malformed approximate inputs", () => {
+  const contract = buildOpenFheCkksDemoContract();
+  const malformed = {
+    ...contract,
+    scheme: "openfhe-bfvrns",
+    scoreDomain: "non-negative-integers",
+    activeEvents: [
+      { index: 0, value: 1.25 },
+      { index: 64, value: 0.5 },
+      { index: 3, value: Number.NaN },
+    ],
+    weights: {
+      normal: [1, Number.POSITIVE_INFINITY],
+      anomaly: Array(64).fill(1),
+    },
+    bias: { normal: 0, anomaly: "bad" },
+  };
+
+  assert.deepEqual(validateOpenFheCkksContract(malformed), [
+    "scheme must be openfhe-ckks",
+    "scoreDomain must be approximate-real",
+    "activeEvents[1].index 64 is outside feature count 64",
+    "activeEvents[2].value must be a finite number",
+    "publicActiveNeuronPositions length must match activeEvents length",
+    "weights.normal length 2 does not match feature count 64",
+    "weights.normal[1] must be a finite number",
+    "bias.anomaly must be a finite number",
+  ]);
+});
+
+test("OpenFHE CKKS real-library adapter is bound to the generated score contract", () => {
+  const adapter = buildOpenFheCkksRealLibraryAdapter();
+
+  assert.equal(adapter.schema, "neurofhe.realLibraryAdapter.v1");
+  assert.equal(adapter.adapterId, "openfhe-ckks-sparse-approx-linear-v1");
+  assert.equal(adapter.library.name, "OpenFHE");
+  assert.equal(adapter.library.scheme, "CKKS");
+  assert.equal(adapter.contract.schema, "neurofhe.openfheCkks.contract.v1");
+  assert.equal(adapter.contract.scoreEquation, "scores = W x + bias");
+  assert.equal(adapter.contract.scoreDomain, "approximate-real");
+  assert.equal(adapter.contractDigest.algorithm, "sha256");
+  assert.match(adapter.contractDigest.value, /^[0-9a-f]{64}$/);
+  assert.deepEqual(adapter.contractValidation.errors, []);
+  assert.equal(adapter.nativeTarget, "openfhe_ckks_linear_demo");
+  assert.equal(adapter.privacyModeDecision.recommendedMode, "padded-sparse-batches");
+  assert.equal(adapter.packedVectorPlanning.defaultLane, "bfv-bgv-packed-integer");
+  assert.equal(adapter.ckksVsBfvTfheComparison.sameTask, true);
+  assert.equal(
+    adapter.ckksVsBfvTfheComparison.ckksBestFor.includes(
+      "approximate neural or ML feature scoring",
+    ),
+    true,
+  );
+});
+
+test("OpenFHE CKKS integration plan reports build commands and native source paths", () => {
+  const plan = openFheCkksIntegrationPlan();
+
+  assert.equal(plan.schema, "neurofhe.openfheCkks.integrationPlan.v1");
+  assert.equal(plan.nativeTarget, "openfhe_ckks_linear_demo");
+  assert.equal(plan.scheme, "openfhe-ckks");
+  assert.equal(plan.adapter.schema, "neurofhe.realLibraryAdapter.v1");
+  assert.ok(plan.sourcePath.endsWith("prototype/openfhe-ckks/openfhe_ckks_linear_demo.cpp"));
+  assert.ok(plan.cmakePath.endsWith("prototype/openfhe-ckks/CMakeLists.txt"));
+  assert.equal(plan.contract.eventRepresentation, "spatial-sorted-events");
+  assert.equal(plan.contract.privacyMode.id, "public-active-neuron-positions-encrypted-features");
+  assert.deepEqual(plan.commands, [
+    "cmake -S prototype/openfhe-ckks -B build/openfhe-ckks",
+    "cmake --build build/openfhe-ckks",
+    "build/openfhe-ckks/openfhe_ckks_linear_demo",
+    "node prototype/openfhe-ckks-benchmark.mjs --artifact",
+  ]);
 });
 
 test("TFHE-rs demo contract preserves sparse integer scoring and encrypted threshold boundary", () => {
@@ -1036,6 +1161,26 @@ test("comparison artifacts can persist TFHE-rs adapter plans for later library r
   assert.deepEqual(latestArtifact, runArtifact);
 });
 
+test("comparison artifacts can persist OpenFHE CKKS adapter plans for later library runs", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-ckks-comparison-"));
+  const published = await publishComparisonArtifact({
+    outputDir,
+    subject: buildOpenFheCkksRealLibraryAdapter(),
+    artifactId: "ckks-adapter-plan",
+    generatedAt: "2026-05-21T00:00:00.000Z",
+  });
+  const runArtifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+  const latestArtifact = JSON.parse(await readFile(published.paths.latest, "utf8"));
+
+  assert.equal(published.schema, "neurofhe.comparisonArtifact.publish.v1");
+  assert.equal(runArtifact.schema, "neurofhe.comparisonArtifact.v1");
+  assert.equal(runArtifact.artifactId, "ckks-adapter-plan");
+  assert.equal(runArtifact.subject.schema, "neurofhe.realLibraryAdapter.v1");
+  assert.equal(runArtifact.subject.adapterId, "openfhe-ckks-sparse-approx-linear-v1");
+  assert.equal(runArtifact.framingGuardrail.preferredFrame, "privacy-preserving event intelligence");
+  assert.deepEqual(latestArtifact, runArtifact);
+});
+
 test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {
   const source = await readFile(
     new URL("../openfhe/openfhe_linear_demo.cpp", import.meta.url),
@@ -1053,6 +1198,35 @@ test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {
   assert.match(source, /EvalMult/);
   assert.match(source, /EvalAdd/);
   assert.match(source, /Decrypt/);
+});
+
+test("native OpenFHE CKKS source uses real CKKS OpenFHE APIs", async () => {
+  const source = await readFile(
+    new URL("../openfhe-ckks/openfhe_ckks_linear_demo.cpp", import.meta.url),
+    "utf8",
+  );
+  const cmake = await readFile(
+    new URL("../openfhe-ckks/CMakeLists.txt", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(cmake, /openfhe_ckks_linear_demo/);
+  assert.match(source, /#include "openfhe\.h"/);
+  assert.match(source, /CryptoContextCKKSRNS/);
+  assert.match(source, /SetMultiplicativeDepth/);
+  assert.match(source, /SetScalingModSize/);
+  assert.match(source, /SetFirstModSize/);
+  assert.match(source, /SetSecurityLevel/);
+  assert.match(source, /SetScalingTechnique/);
+  assert.match(source, /FLEXIBLEAUTO/);
+  assert.match(source, /MakeCKKSPackedPlaintext/);
+  assert.match(source, /EvalMult/);
+  assert.match(source, /EvalAdd/);
+  assert.match(source, /Decrypt/);
+  assert.match(source, /SetLength/);
+  assert.match(source, /EvalBootstrapSetup/);
+  assert.match(source, /openfhe-ckks/);
+  assert.match(source, /approximate-real/);
 });
 
 test("native TFHE-rs source uses real TFHE-rs integer and Boolean APIs", async () => {

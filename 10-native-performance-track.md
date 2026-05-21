@@ -43,19 +43,22 @@ The real implementation should optimize for:
 
 1. Preserve the JavaScript contracts as reference tests.
 2. Keep `prototype/openfhe/openfhe_linear_demo.cpp` as the first native HE
-   target for the sparse `scores = W x + bias` contract.
-3. Move the spatial spike sorter into a native reference implementation with
+   target for exact sparse integer `scores = W x + bias`.
+3. Keep `prototype/openfhe-ckks/openfhe_ckks_linear_demo.cpp` as the CKKS
+   comparison target for approximate real-valued neural/ML features.
+4. Move the spatial spike sorter into a native reference implementation with
    fixed-width integer types and no heap allocation in the inner loop.
-4. Emit the same benchmark schema from native runs that the JavaScript harness
+5. Emit the same benchmark schema from native runs that the JavaScript harness
    emits today, so results remain comparable.
-5. Add energy and memory measurement fields once native binaries run on stable
+6. Add energy and memory measurement fields once native binaries run on stable
    host and edge targets.
-6. Treat Node scripts as wrappers only after the native binary becomes the
+7. Treat Node scripts as wrappers only after the native binary becomes the
    source of truth for performance numbers.
 
 ## Immediate Native Targets
 
 - `openfhe_linear_demo`: BFVrns integer sparse score accumulation.
+- `openfhe_ckks_linear_demo`: CKKS approximate real-valued sparse score accumulation with score-drift reporting.
 - `spatial_spike_sorter_native`: integer threshold, electrode lookup,
   refractory gate, and saturating count accumulation.
 - `native_benchmark_report`: JSON output matching `neurofhe.benchmark.v1`, with

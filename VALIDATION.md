@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 40
-pass 40
+tests 46
+pass 46
 fail 0
 ```
 
@@ -36,6 +36,7 @@ Covered behaviours:
 - Benchmark artifact publishing to timestamped run JSON and `latest.json`.
 - Comparison artifact publishing for adapter plans and future native library runs.
 - OpenFHE sorted-event contract validation, digest-bound real-library adapter manifest, native build-plan detection, and C++ API source markers.
+- OpenFHE CKKS approximate-real sorted-event contract validation, digest-bound real-library adapter manifest, CKKS parameter inventory, privacy boundary, native build-plan detection, comparison artifact publishing, and C++ CKKS API source markers.
 - TFHE-rs sorted-event contract validation, digest-bound real-library adapter manifest, Cargo build-plan detection, Rust source markers, encrypted threshold-gate metadata, TFHE-vs-OpenFHE comparison notes, and comparison artifact publishing.
 - N-MNIST 40-bit event parsing, feature extraction, and plaintext baseline evaluation.
 - Research assumptions with clean-room and naming guardrails.
@@ -250,6 +251,14 @@ Result summary:
     "defaultLane": "bfv-bgv-packed-integer",
     "lanes": ["bfv-bgv-packed-integer", "ckks-packed-approximate"]
   },
+  "nativeComparisonLanes": {
+    "schema": "neurofhe.nativeLaneComparison.v1",
+    "lanes": [
+      "openfhe-bfvrns-integer",
+      "openfhe-ckks-approximate",
+      "tfhe-rs-threshold"
+    ]
+  },
   "framingGuardrail": {
     "schema": "neurofhe.framingGuardrail.v1",
     "preferredFrame": "privacy-preserving event intelligence",
@@ -354,6 +363,88 @@ OpenFHEConfig.cmake not found
 
 The real BFVrns C++ target is present, but this machine does not currently
 have OpenFHE installed or discoverable by CMake.
+
+### OpenFHE CKKS Integration Plan
+
+Command:
+
+```sh
+npm run benchmark:openfhe-ckks -- --adapter
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.realLibraryAdapter.v1",
+  "adapterId": "openfhe-ckks-sparse-approx-linear-v1",
+  "library": {
+    "name": "OpenFHE",
+    "scheme": "CKKS"
+  },
+  "contract": {
+    "schema": "neurofhe.openfheCkks.contract.v1",
+    "scheme": "openfhe-ckks",
+    "scoreEquation": "scores = W x + bias",
+    "scoreDomain": "approximate-real",
+    "featureValueDomain": "approximate-real-neural-features",
+    "matrixShape": [2, 64],
+    "activeEventCount": 18,
+    "expectedPlaintextScores": {
+      "normal": 9,
+      "anomaly": 51
+    },
+    "ckksParameters": {
+      "multiplicativeDepth": 2,
+      "scalingModSize": 50,
+      "firstModSize": 60,
+      "batchSize": 64,
+      "securityLevel": "HEStd_128_classic",
+      "rescalingTechnique": "FLEXIBLEAUTO",
+      "defaultMode": "leveled-no-bootstrap"
+    },
+    "operationCounts": {
+      "encryptions": 20,
+      "plaintextMultiplies": 36,
+      "adds": 36,
+      "rescaleOrModReduceOps": 36,
+      "decryptions": 2
+    }
+  },
+  "contractValidation": {
+    "status": "valid",
+    "errors": []
+  }
+}
+```
+
+Local native execution status:
+
+```text
+OpenFHEConfig.cmake not found
+```
+
+The real CKKS C++ target is present, but this machine does not currently have
+OpenFHE installed or discoverable by CMake. The `--run` command therefore emits
+`neurofhe.openfheCkks.unavailable.v1` and exits with status `2`, as expected.
+
+### OpenFHE CKKS Comparison Artifact
+
+Command:
+
+```sh
+npm run benchmark:openfhe-ckks -- --artifact --artifact-id ckks-adapter-2026-05-21 --generated-at 2026-05-21T12:00:00.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/comparisons/openfhe-ckks/latest.json
+benchmark-artifacts/comparisons/openfhe-ckks/runs/ckks-adapter-2026-05-21.json
+```
+
+This records the adapter plan and local OpenFHE detection state. It is not a
+native CKKS performance result.
 
 ### OpenFHE Comparison Artifact
 
@@ -575,4 +666,4 @@ ascii scan complete
 
 ## Scope Note
 
-The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes digest-bound real-library adapter manifests plus a real OpenFHE BFVrns native integration target and a real TFHE-rs Rust integration target for the same sparse sorted-event score contract. OpenFHE remains gated on a local OpenFHE installation; TFHE-rs runs through Cargo with the `tfhe` crate. Bio-digital language remains scoped to privacy-preserving event intelligence, not medical diagnosis or treatment.
+The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes digest-bound real-library adapter manifests plus real OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs native integration targets for the same sparse sorted-event score contract. OpenFHE remains gated on a local OpenFHE installation; TFHE-rs runs through Cargo with the `tfhe` crate. Bio-digital language remains scoped to privacy-preserving event intelligence, not medical diagnosis or treatment.

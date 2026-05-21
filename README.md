@@ -75,7 +75,7 @@ The cryptographic design target is:
 - `patent/` - ENER provisional drafting materials, claim seeds, drawings, prior-art search plan, filing checklist, and briefing package.
 - `project-brief.json` - structured project metadata for agents.
 - `index.html` - self-contained briefing deck for browser presentation.
-- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, relay gateway scaffold, benchmark runner, real OpenFHE BFVrns and TFHE-rs integration lanes, tests, and research assumptions.
+- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, relay gateway scaffold, benchmark runner, real OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs integration lanes, tests, and research assumptions.
 - `package.json` - local command scripts. The package is marked private to prevent accidental npm publication; it does not change the repository's CC0 license.
 
 ## Recommended Framing
@@ -158,6 +158,19 @@ Persist an optional OpenFHE adapter comparison artifact:
 npm run benchmark:openfhe -- --artifact
 ```
 
+Print the OpenFHE CKKS approximate real-number comparison lane:
+
+```sh
+npm run benchmark:openfhe-ckks
+```
+
+Run the real OpenFHE CKKS C++ demo and optionally persist a comparison artifact:
+
+```sh
+npm run benchmark:openfhe-ckks -- --run
+npm run benchmark:openfhe-ckks -- --run --artifact
+```
+
 Print the TFHE-rs integer/Boolean threshold integration plan:
 
 ```sh
@@ -177,7 +190,7 @@ Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 ```
 
-The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The benchmark now compares dense/raw windows, unsorted spikes, and spatial-sorted events on that same task so representation cost and metadata leakage stay visible. Each spatial-sorted benchmark entry carries its own crypto inventory, sorted-event privacy boundary, reconstruction-resistance caveat, and explicit metadata-leakage list. The benchmark also emits `spatialClusterReadiness`: spatial-sorted events can feed a future SNN path after count-to-spike-train, neuron-index, timestep, and membrane/synapse adapters; the same representation can feed the current lightweight encrypted linear score path directly. The compute side can use the `public-active-neuron-positions-encrypted-features` mode: active neuron/time positions are public, feature values are encrypted, and raw samples remain local. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is included under `prototype/openfhe/` for the same sparse sorted-event scorer, and the JS adapter emits a digest-bound `neurofhe.realLibraryAdapter.v1` manifest around that exact contract. A real TFHE-rs Rust target is also included under `prototype/tfhe-rs/`; it evaluates the same sparse integer scores with `FheUint16` and adds an encrypted `FheBool` threshold/comparison gate for `anomaly_score > normal_score`. BFV/BGV remains the default packed-vector lane for integer linear algebra; TFHE-rs is the comparison lane to prefer when the model becomes threshold-heavy, Boolean, decision-tree-like, or LUT-style. CKKS remains a comparison lane for approximate features. SEAL/TenSEAL, Concrete, or an Octra/HFHE experiment remain candidate follow-on lanes.
+The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The benchmark now compares dense/raw windows, unsorted spikes, and spatial-sorted events on that same task so representation cost and metadata leakage stay visible. Each spatial-sorted benchmark entry carries its own crypto inventory, sorted-event privacy boundary, reconstruction-resistance caveat, and explicit metadata-leakage list. The benchmark also emits `spatialClusterReadiness`: spatial-sorted events can feed a future SNN path after count-to-spike-train, neuron-index, timestep, and membrane/synapse adapters; the same representation can feed the current lightweight encrypted linear score path directly. The compute side can use the `public-active-neuron-positions-encrypted-features` mode: active neuron/time positions are public, feature values are encrypted, and raw samples remain local. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is included under `prototype/openfhe/` for the same exact integer sparse scorer, and a real OpenFHE CKKS target is included under `prototype/openfhe-ckks/` for approximate neural/ML feature scoring with floating-point-style values and explicit score-drift reporting. A real TFHE-rs Rust target is also included under `prototype/tfhe-rs/`; it evaluates the same sparse integer scores with `FheUint16` and adds an encrypted `FheBool` threshold/comparison gate for `anomaly_score > normal_score`. BFV/BGV remains the default packed-vector lane for exact integer linear algebra; CKKS is the comparison lane for approximate real-valued neural/ML features; TFHE-rs is the comparison lane to prefer when the model becomes threshold-heavy, Boolean, decision-tree-like, or LUT-style. SEAL/TenSEAL, Concrete, or an Octra/HFHE experiment remain candidate follow-on lanes.
 
 ## Prototype Boundary
 

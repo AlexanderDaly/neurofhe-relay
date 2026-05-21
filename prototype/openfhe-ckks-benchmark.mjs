@@ -1,0 +1,126 @@
+// SPDX-License-Identifier: CC0-1.0
+
+import { spawnSync } from "node:child_process";
+
+import { publishComparisonArtifact } from "./lib/artifacts.mjs";
+import {
+  buildOpenFheCkksRealLibraryAdapter,
+  openFheCkksIntegrationPlan,
+} from "./lib/openfhe-ckks-adapter.mjs";
+import { detectOpenFhe } from "./lib/openfhe-adapter.mjs";
+
+const rawArgs = process.argv.slice(2);
+const args = new Set(rawArgs);
+const shouldPublishArtifact = args.has("--artifact") || args.has("--publish");
+const outputDir = readOption(rawArgs, "--out") ?? "benchmark-artifacts/comparisons/openfhe-ckks";
+const artifactId = readOption(rawArgs, "--artifact-id");
+const generatedAt = readOption(rawArgs, "--generated-at");
+
+if (args.has("--help")) {
+  console.log([
+    "Usage:",
+    "  npm run benchmark:openfhe-ckks -- --plan",
+    "  npm run benchmark:openfhe-ckks -- --adapter",
+    "  npm run benchmark:openfhe-ckks -- --artifact",
+    "  npm run benchmark:openfhe-ckks -- --run",
+    "  npm run benchmark:openfhe-ckks -- --run --artifact",
+    "",
+    "--plan prints the native OpenFHE CKKS build plan.",
+    "--adapter prints the digest-bound CKKS adapter contract.",
+    "--artifact writes the adapter plan or native run result as a comparison artifact.",
+    "--artifact-id <id> and --generated-at <iso> make artifact output reproducible.",
+    "--run configures, builds, and executes the CKKS demo when OpenFHE is installed.",
+  ].join("\n"));
+  process.exit(0);
+}
+
+if (!args.has("--run")) {
+  const subject = args.has("--adapter")
+    ? buildOpenFheCkksRealLibraryAdapter()
+    : openFheCkksIntegrationPlan();
+  if (shouldPublishArtifact) {
+    const published = await publishComparisonArtifact({
+      outputDir,
+      subject,
+      artifactId,
+      generatedAt,
+    });
+    console.log(JSON.stringify(published, null, 2));
+  } else {
+    console.log(JSON.stringify(subject, null, 2));
+  }
+  process.exit(0);
+}
+
+const detection = detectOpenFhe();
+if (!detection.available) {
+  const unavailable = {
+    schema: "neurofhe.openfheCkks.unavailable.v1",
+    detection,
+    adapter: buildOpenFheCkksRealLibraryAdapter(),
+    plan: openFheCkksIntegrationPlan(),
+    productionClaim: false,
+  };
+  if (shouldPublishArtifact) {
+    const published = await publishComparisonArtifact({
+      outputDir,
+      subject: unavailable,
+      artifactId,
+      generatedAt,
+    });
+    console.log(JSON.stringify(published, null, 2));
+  } else {
+    console.log(JSON.stringify(unavailable, null, 2));
+  }
+  process.exit(2);
+}
+
+const env = {
+  ...process.env,
+  OpenFHE_DIR: process.env.OpenFHE_DIR ?? process.env.OPENFHE_DIR ?? detection.cmakeConfigDir,
+};
+
+run("cmake", ["-S", "prototype/openfhe-ckks", "-B", "build/openfhe-ckks"], env);
+run("cmake", ["--build", "build/openfhe-ckks"], env);
+const nativeResult = run("build/openfhe-ckks/openfhe_ckks_linear_demo", [], env, {
+  capture: true,
+});
+const parsed = JSON.parse(nativeResult.stdout);
+const subject = {
+  schema: "neurofhe.openfheCkks.runComparison.v1",
+  adapter: buildOpenFheCkksRealLibraryAdapter(),
+  nativeResult: parsed,
+  productionClaim: false,
+};
+
+if (shouldPublishArtifact) {
+  process.stdout.write(nativeResult.stdout);
+  const published = await publishComparisonArtifact({
+    outputDir,
+    subject,
+    artifactId,
+    generatedAt,
+  });
+  console.log(JSON.stringify(published, null, 2));
+} else {
+  console.log(JSON.stringify(subject, null, 2));
+}
+
+function run(command, commandArgs, env, options = {}) {
+  const result = spawnSync(command, commandArgs, {
+    cwd: process.cwd(),
+    env,
+    encoding: options.capture ? "utf8" : undefined,
+    stdio: options.capture ? ["ignore", "pipe", "inherit"] : "inherit",
+  });
+  if (result.status !== 0) {
+    process.exit(result.status ?? 1);
+  }
+  return result;
+}
+
+function readOption(args, name) {
+  const index = args.indexOf(name);
+  if (index === -1) return undefined;
+  return args[index + 1];
+}
