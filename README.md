@@ -72,6 +72,7 @@ The cryptographic design target is:
 - `08-encrypted-thoughts-whitepaper.md` - whitepaper on encrypted-thoughts architecture for BCI and neural-data privacy.
 - `09-relay-gateway-pattern.md` - local-first gateway pattern for raw-signal intake, privacy filtering, model-facing events, recommendations, audit, replay, and failure handling.
 - `10-native-performance-track.md` - native-first implementation boundary for low-latency and energy-aware execution.
+- `RELEASE.md` - research-alpha release checklist and evidence gates.
 - `patent/` - ENER provisional drafting materials, claim seeds, drawings, prior-art search plan, filing checklist, and briefing package.
 - `project-brief.json` - structured project metadata for agents.
 - `index.html` - self-contained briefing deck for browser presentation.
@@ -164,6 +165,12 @@ Persist an optional OpenFHE adapter comparison artifact:
 npm run benchmark:openfhe -- --artifact
 ```
 
+Run the real OpenFHE BFVrns C++ demo with the embedded synthetic contract:
+
+```sh
+npm run benchmark:openfhe -- --run
+```
+
 Print the OpenFHE CKKS approximate real-number comparison lane:
 
 ```sh
@@ -204,6 +211,15 @@ npm run baseline:eeg-eye-state -- --artifact
 npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact
 ```
 
+Generate OpenFHE-ready single-window input contracts from that EEG baseline and
+run BFVrns/CKKS against the derived sparse inputs:
+
+```sh
+npm run contract:eeg-openfhe
+npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
+npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
+```
+
 The committed EEG artifact at
 `benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json` uses a
 chronological 70/30 split, 8-row by 8-channel sparse latent event windows, and
@@ -211,6 +227,13 @@ the same `scores = W x + bias` contract shape `[2, 64]`. It reports 301/561
 correct windows, accuracy `0.536542`, and a compression curve for active budgets
 of 8, 16, 32, and 64 values per window. This is real-data plaintext evidence,
 not encrypted-compute, medical, or generalization evidence.
+
+The committed native OpenFHE real-data artifacts consume one derived EEG sparse
+window from the generated input contract. BFVrns uses the fixed-point view and
+matches the expected quantized classification; CKKS uses approximate-real values
+and reports score drift against plaintext. These artifacts are local
+single-window integration evidence, not production cryptography or broad
+runtime claims.
 
 Run the deterministic N-MNIST-format smoke fixture and publish a compression
 curve artifact:

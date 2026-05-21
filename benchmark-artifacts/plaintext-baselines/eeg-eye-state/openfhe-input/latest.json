@@ -1,0 +1,49 @@
+{
+  "schema": "neurofhe.openfheInputContract.publish.v1",
+  "datasetKind": "public-uci-eeg-eye-state-arff",
+  "generatedAt": "2026-05-21T18:15:00.000Z",
+  "paths": {
+    "ckks": "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json",
+    "bfvrns": "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json"
+  },
+  "contractSummary": {
+    "schema": "neurofhe.openfhe.inputContract.v1",
+    "featureShape": [
+      8,
+      8
+    ],
+    "matrixShape": [
+      2,
+      64
+    ],
+    "activeEventCount": 32,
+    "classes": [
+      "eye-closed",
+      "eye-open"
+    ],
+    "expectedClassification": "eye-closed",
+    "quantizedExpectedClassification": "eye-closed",
+    "fixedPointScale": 10,
+    "scoreFitsCenteredPlaintextModulus": true
+  },
+  "source": {
+    "schema": "neurofhe.datasetProvenance.v1",
+    "datasetId": "eeg-eye-state",
+    "datasetKind": "public-uci-eeg-eye-state-arff",
+    "isRealDataset": true,
+    "publicDatasetReference": {
+      "name": "EEG Eye State",
+      "url": "https://archive.ics.uci.edu/dataset/264/eeg+eye+state",
+      "directDataUrl": "https://archive.ics.uci.edu/ml/machine-learning-databases/00264/EEG%20Eye%20State.arff",
+      "doi": "10.24432/C57G7J",
+      "citation": "Roesler, O. (2013). EEG Eye State [Dataset]. UCI Machine Learning Repository.",
+      "license": "CC BY 4.0"
+    },
+    "caveat": "Single-subject sequential EEG eye-state data. This baseline is for feature-contract validation, not medical, diagnostic, or generalization evidence.",
+    "datasetRoot": ".cache/neurofhe/eeg-eye-state/EEG Eye State.arff",
+    "loadMode": "downloaded-cache",
+    "cacheDir": ".cache/neurofhe/eeg-eye-state",
+    "rows": 14980
+  },
+  "productionClaim": false
+}

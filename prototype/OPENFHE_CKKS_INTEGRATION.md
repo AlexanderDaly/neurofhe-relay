@@ -23,7 +23,11 @@ values. It is not production cryptography.
 - `openfhe-ckks/CMakeLists.txt` - CMake target using `find_package(OpenFHE REQUIRED)`.
 - `openfhe-ckks/openfhe_ckks_linear_demo.cpp` - CKKS sparse sorted-event demo
   using `MakeCKKSPackedPlaintext`, `Encrypt`, `EvalMult`, `EvalAdd`, and
-  `Decrypt`.
+  `Decrypt`; accepts optional `--input <json>` generated sparse contracts.
+- `openfhe_contract_loader.hpp` - shared C++ loader for the generated sparse
+  linear input contract.
+- `openfhe-realdata-contract.mjs` - UCI EEG Eye State to OpenFHE BFVrns/CKKS
+  input-contract publisher.
 - `openfhe-ckks-benchmark.mjs` - CLI runner for plan, adapter, native run, and
   optional comparison artifacts.
 
@@ -90,12 +94,21 @@ Build, run, and persist the native result:
 npm run benchmark:openfhe-ckks -- --run --artifact
 ```
 
+Generate the EEG-derived single-window OpenFHE input contract and run CKKS on
+the approximate-real view:
+
+```sh
+npm run contract:eeg-openfhe
+npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
+```
+
 Equivalent native commands:
 
 ```sh
 cmake -S prototype/openfhe-ckks -B build/openfhe-ckks
 cmake --build build/openfhe-ckks
 build/openfhe-ckks/openfhe_ckks_linear_demo
+build/openfhe-ckks/openfhe_ckks_linear_demo --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json
 ```
 
 If OpenFHE is installed in a non-standard location, set `OpenFHE_DIR` to the
@@ -103,7 +116,8 @@ directory containing `OpenFHEConfig.cmake`.
 
 ## Expected Synthetic Result
 
-The native executable emits `neurofhe.openfheCkks.result.v1` JSON with:
+Without `--input`, the native executable emits `neurofhe.openfheCkks.result.v1`
+JSON for the embedded synthetic contract with:
 
 - scheme: `openfhe-ckks`
 - score domain: `approximate-real`
@@ -119,6 +133,31 @@ The native executable emits `neurofhe.openfheCkks.result.v1` JSON with:
 - precision report: max absolute score error, tolerance, and classification
   agreement
 - production claim: `false`
+
+## Real-Data-Derived Input Result
+
+With the EEG-derived `--input` contract, the committed local artifact reports:
+
+- input source: `external-contract`
+- dataset kind: `public-uci-eeg-eye-state-arff`
+- feature shape: `[8, 8]`
+- matrix shape: `[2, 64]`
+- active event count: `32`
+- scores: `{ "eye-closed": 0.0739801034416, "eye-open": -0.52407347656 }`
+- classification: `eye-closed`
+- max absolute score error: `9.69524460714E-12`
+- tolerance: `0.001`
+- classification agreement: `true`
+- local latency: `131.586833 ms` encryption, `32.918083 ms` linear scoring,
+  `9.701 ms` decryption
+- operation counts: `34` encryptions, `64` plaintext/scalar multiplies,
+  `64` adds, `64` rescale-or-mod-reduce operations, `2` decryptions
+- parameters: CKKS, `HEStd_128_classic`, multiplicative depth `2`,
+  scaling modulus size `50`, first modulus size `60`, batch size `64`,
+  `FLEXIBLEAUTO`, leveled/no bootstrap
+
+These are one-window local laptop timings for integration validation, not a
+stable performance benchmark or production cryptography claim.
 
 ## Privacy Boundary Example
 
@@ -208,23 +247,24 @@ Prefer TFHE-rs for Boolean or LUT-style logic:
 
 ## Limitations
 
-- Uses one synthetic 8 by 8 event window.
+- Uses one embedded synthetic 8 by 8 event window and one generated
+  real-data-derived EEG sparse window.
 - Keeps active positions public.
 - Uses public model weights and bias.
 - Does not implement encrypted argmax or encrypted CKKS comparison.
 - Reports ciphertext count portably; exact serialized ciphertext bytes require
   OpenFHE serialization measurement in the target environment.
-- Does not benchmark N-MNIST under CKKS yet.
+- Does not run a multi-window N-MNIST or EEG sweep under CKKS yet.
 - Does not claim production security, clinical validity, medical utility,
   side-channel resistance, or post-quantum deployment readiness.
 
 ## Recommended Next Steps
 
-1. Run BFVrns, CKKS, and TFHE-rs native artifacts on the same OpenFHE/TFHE host.
+1. Run multi-window BFVrns, CKKS, and TFHE-rs native artifacts on the same OpenFHE/TFHE host.
 2. Add padded sparse batches to hide exact active-event count.
 3. Add a dense CKKS packed-vector variant for normalized real-valued features.
 4. Add OpenFHE serialization-based ciphertext byte measurements.
-5. Compare CKKS score drift on an N-MNIST-derived synthetic subset.
+5. Compare CKKS score drift on an N-MNIST-derived or EEG-derived sweep.
 6. Explore a hybrid pipeline: CKKS for approximate feature scoring, TFHE-rs for
    encrypted threshold or decision gates.
 

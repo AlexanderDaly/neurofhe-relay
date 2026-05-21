@@ -1,0 +1,767 @@
+{
+  "schema": "neurofhe.openfhe.inputContract.v1",
+  "sourceId": "uci-eeg-eye-state-sparse-window",
+  "datasetKind": "public-uci-eeg-eye-state-arff",
+  "source": {
+    "name": "EEG Eye State",
+    "url": "https://archive.ics.uci.edu/dataset/264/eeg+eye+state",
+    "directDataUrl": "https://archive.ics.uci.edu/ml/machine-learning-databases/00264/EEG%20Eye%20State.arff",
+    "doi": "10.24432/C57G7J",
+    "citation": "Roesler, O. (2013). EEG Eye State [Dataset]. UCI Machine Learning Repository.",
+    "license": "CC BY 4.0"
+  },
+  "scoreEquation": "scores = W x + bias",
+  "scoreDomain": "approximate-real",
+  "boundaryDomain": "bio-digital-event-intelligence",
+  "eventRepresentation": "public active positions plus signed z-score active values derived from chronological EEG windows",
+  "featureShape": [
+    8,
+    8
+  ],
+  "featureCount": 64,
+  "classes": [
+    "eye-closed",
+    "eye-open"
+  ],
+  "matrixShape": [
+    2,
+    64
+  ],
+  "activeEventCount": 32,
+  "activeEvents": [
+    {
+      "index": 0,
+      "timeBin": 0,
+      "neuronId": 0,
+      "value": 0.079335
+    },
+    {
+      "index": 1,
+      "timeBin": 0,
+      "neuronId": 1,
+      "value": 0.189354
+    },
+    {
+      "index": 2,
+      "timeBin": 0,
+      "neuronId": 2,
+      "value": 0.144825
+    },
+    {
+      "index": 4,
+      "timeBin": 0,
+      "neuronId": 4,
+      "value": 0.37481
+    },
+    {
+      "index": 9,
+      "timeBin": 1,
+      "neuronId": 1,
+      "value": 0.171901
+    },
+    {
+      "index": 10,
+      "timeBin": 1,
+      "neuronId": 2,
+      "value": 0.118385
+    },
+    {
+      "index": 12,
+      "timeBin": 1,
+      "neuronId": 4,
+      "value": 0.356795
+    },
+    {
+      "index": 15,
+      "timeBin": 1,
+      "neuronId": 7,
+      "value": 0.435249
+    },
+    {
+      "index": 17,
+      "timeBin": 2,
+      "neuronId": 1,
+      "value": 0.242057
+    },
+    {
+      "index": 18,
+      "timeBin": 2,
+      "neuronId": 2,
+      "value": 0.315788
+    },
+    {
+      "index": 20,
+      "timeBin": 2,
+      "neuronId": 4,
+      "value": 0.37481
+    },
+    {
+      "index": 23,
+      "timeBin": 2,
+      "neuronId": 7,
+      "value": 0.533169
+    },
+    {
+      "index": 25,
+      "timeBin": 3,
+      "neuronId": 1,
+      "value": 0.171901
+    },
+    {
+      "index": 26,
+      "timeBin": 3,
+      "neuronId": 2,
+      "value": 0.329137
+    },
+    {
+      "index": 28,
+      "timeBin": 3,
+      "neuronId": 4,
+      "value": 0.338428
+    },
+    {
+      "index": 31,
+      "timeBin": 3,
+      "neuronId": 7,
+      "value": 0.370392
+    },
+    {
+      "index": 33,
+      "timeBin": 4,
+      "neuronId": 1,
+      "value": 0.189354
+    },
+    {
+      "index": 34,
+      "timeBin": 4,
+      "neuronId": 2,
+      "value": 0.144825
+    },
+    {
+      "index": 36,
+      "timeBin": 4,
+      "neuronId": 4,
+      "value": 0.320414
+    },
+    {
+      "index": 39,
+      "timeBin": 4,
+      "neuronId": 7,
+      "value": 0.598662
+    },
+    {
+      "index": 41,
+      "timeBin": 5,
+      "neuronId": 1,
+      "value": 0.452528
+    },
+    {
+      "index": 42,
+      "timeBin": 5,
+      "neuronId": 2,
+      "value": 0.131733
+    },
+    {
+      "index": 44,
+      "timeBin": 5,
+      "neuronId": 4,
+      "value": 0.338428
+    },
+    {
+      "index": 47,
+      "timeBin": 5,
+      "neuronId": 7,
+      "value": 0.435249
+    },
+    {
+      "index": 48,
+      "timeBin": 6,
+      "neuronId": 0,
+      "value": 0.013312
+    },
+    {
+      "index": 49,
+      "timeBin": 6,
+      "neuronId": 1,
+      "value": 0.522684
+    },
+    {
+      "index": 50,
+      "timeBin": 6,
+      "neuronId": 2,
+      "value": 0.184357
+    },
+    {
+      "index": 52,
+      "timeBin": 6,
+      "neuronId": 4,
+      "value": 0.429206
+    },
+    {
+      "index": 57,
+      "timeBin": 7,
+      "neuronId": 1,
+      "value": 0.364917
+    },
+    {
+      "index": 58,
+      "timeBin": 7,
+      "neuronId": 2,
+      "value": 0.065761
+    },
+    {
+      "index": 60,
+      "timeBin": 7,
+      "neuronId": 4,
+      "value": 0.37481
+    },
+    {
+      "index": 63,
+      "timeBin": 7,
+      "neuronId": 7,
+      "value": -0.086147
+    }
+  ],
+  "weights": {
+    "eye-closed": [
+      0.10415415873015878,
+      -0.09945951226551235,
+      0.07883424531024527,
+      0,
+      -0.016812871572871563,
+      -0.00002858874458874459,
+      -0.00007547763347763348,
+      0.16856840692640676,
+      0.09998856277056277,
+      -0.12921909668109682,
+      0.07925479076479079,
+      0,
+      -0.012730354978354959,
+      0,
+      -0.00014853102453102451,
+      0.17887144588744602,
+      0.09377976334776346,
+      -0.12644511976911996,
+      0.0691869090909091,
+      0,
+      -0.009423264069264081,
+      -0.00004637229437229437,
+      -0.00008032323232323233,
+      0.15508202308802319,
+      0.08542521500721474,
+      -0.10573420202020219,
+      0.05878114285714282,
+      -0.000027829725829725832,
+      -0.015057113997114,
+      0,
+      -0.00008435786435786435,
+      0.1251922943722943,
+      0.07716393362193366,
+      -0.11656895815295823,
+      0.05821808946608943,
+      0,
+      -0.023256060606060613,
+      0,
+      -0.00015929581529581531,
+      0.15359478787878772,
+      0.07968787878787868,
+      -0.1255826955266957,
+      0.08765288311688307,
+      0,
+      -0.008254109668109643,
+      -0.00007877056277056277,
+      -0.00006928715728715729,
+      0.17615544877344866,
+      0.08268756132756135,
+      -0.11538550649350678,
+      0.08526150360750366,
+      0,
+      0.007406796536796533,
+      -0.00003790187590187591,
+      -0.00007736219336219336,
+      0.1501378932178933,
+      0.0714973564213561,
+      -0.10696107647907681,
+      0.07985928138528135,
+      -0.00002165945165945166,
+      -0.01071782683982682,
+      0,
+      -0.00011981240981240982,
+      0.13955942568542537
+    ],
+    "eye-open": [
+      -0.16487059967585083,
+      0.14449603241491069,
+      -0.06327818152350083,
+      0,
+      -0.025727293354943316,
+      0,
+      0,
+      -0.2166754294975691,
+      -0.14632670340356574,
+      0.16314441491085882,
+      -0.05422099837925451,
+      0,
+      -0.024348836304700132,
+      -0.00013817504051863859,
+      0,
+      -0.2262802074554298,
+      0.2290781847649919,
+      0.16848595786061582,
+      -0.3094503079416526,
+      0.3319154813614263,
+      0.4199749627228525,
+      0.331805471636953,
+      0.33191212965964345,
+      -0.1815647682333872,
+      -0.13515132576985409,
+      0.15463243111831407,
+      -0.03523984116693686,
+      0,
+      -0.01817591896272286,
+      -0.00006349108589951377,
+      -0.00004767909238249595,
+      -0.1583792674230146,
+      -0.12669974716369528,
+      0.14252634359805494,
+      -0.04113365640194488,
+      0,
+      -0.03892784116693676,
+      0,
+      -0.00003921231766612642,
+      -0.18396718314424632,
+      -0.11787000972447331,
+      0.14087178930307934,
+      -0.04979047001620744,
+      0,
+      -0.0496581393841167,
+      -0.00007300486223662885,
+      -0.000038606158833063214,
+      -0.21277222366288526,
+      -0.12283415883306327,
+      0.13112702106969223,
+      -0.041809474878444094,
+      -0.0000659773095623987,
+      -0.04321105024311182,
+      -0.00014578930307941653,
+      -0.00011945867098865477,
+      -0.2169878541329013,
+      -0.11573910534846027,
+      0.14023428525121542,
+      -0.04135152998379255,
+      0,
+      -0.03765939059967584,
+      -0.00010844732576985413,
+      -0.0000820583468395462,
+      -0.21175277795786085
+    ]
+  },
+  "bias": {
+    "eye-closed": -0.10320849290808484,
+    "eye-open": -0.3272630861749729
+  },
+  "expectedPlaintextScores": {
+    "eye-closed": 0.07398,
+    "eye-open": -0.524073
+  },
+  "expectedClassification": "eye-closed",
+  "sample": {
+    "label": "eye-open",
+    "rowStart": 10486,
+    "rowEnd": 10493,
+    "sampleIndex": 0,
+    "split": "chronological-test"
+  },
+  "preprocessing": {
+    "schema": "neurofhe.eegEyeState.preprocessing.v1",
+    "rowCount": 14980,
+    "trainRows": 10486,
+    "testRows": 4494,
+    "trainFraction": 0.7,
+    "windowSize": 8,
+    "stride": 8,
+    "selectedChannels": [
+      "AF3",
+      "F7",
+      "F3",
+      "FC5",
+      "T7",
+      "P7",
+      "O1",
+      "O2"
+    ],
+    "activePerTimestep": 4,
+    "normalization": "z-score using training split only"
+  },
+  "approximationTolerance": {
+    "maxAbsScoreError": 0.001,
+    "classificationAgreementRequired": true
+  },
+  "quantized": {
+    "schema": "neurofhe.openfhe.bfvrnsFixedPointView.v1",
+    "scoreDomain": "signed-fixed-point-integers",
+    "fixedPointScale": 10,
+    "plaintextModulus": 65537,
+    "activeEvents": [
+      {
+        "index": 0,
+        "timeBin": 0,
+        "neuronId": 0,
+        "value": 1
+      },
+      {
+        "index": 1,
+        "timeBin": 0,
+        "neuronId": 1,
+        "value": 2
+      },
+      {
+        "index": 2,
+        "timeBin": 0,
+        "neuronId": 2,
+        "value": 1
+      },
+      {
+        "index": 4,
+        "timeBin": 0,
+        "neuronId": 4,
+        "value": 4
+      },
+      {
+        "index": 9,
+        "timeBin": 1,
+        "neuronId": 1,
+        "value": 2
+      },
+      {
+        "index": 10,
+        "timeBin": 1,
+        "neuronId": 2,
+        "value": 1
+      },
+      {
+        "index": 12,
+        "timeBin": 1,
+        "neuronId": 4,
+        "value": 4
+      },
+      {
+        "index": 15,
+        "timeBin": 1,
+        "neuronId": 7,
+        "value": 4
+      },
+      {
+        "index": 17,
+        "timeBin": 2,
+        "neuronId": 1,
+        "value": 2
+      },
+      {
+        "index": 18,
+        "timeBin": 2,
+        "neuronId": 2,
+        "value": 3
+      },
+      {
+        "index": 20,
+        "timeBin": 2,
+        "neuronId": 4,
+        "value": 4
+      },
+      {
+        "index": 23,
+        "timeBin": 2,
+        "neuronId": 7,
+        "value": 5
+      },
+      {
+        "index": 25,
+        "timeBin": 3,
+        "neuronId": 1,
+        "value": 2
+      },
+      {
+        "index": 26,
+        "timeBin": 3,
+        "neuronId": 2,
+        "value": 3
+      },
+      {
+        "index": 28,
+        "timeBin": 3,
+        "neuronId": 4,
+        "value": 3
+      },
+      {
+        "index": 31,
+        "timeBin": 3,
+        "neuronId": 7,
+        "value": 4
+      },
+      {
+        "index": 33,
+        "timeBin": 4,
+        "neuronId": 1,
+        "value": 2
+      },
+      {
+        "index": 34,
+        "timeBin": 4,
+        "neuronId": 2,
+        "value": 1
+      },
+      {
+        "index": 36,
+        "timeBin": 4,
+        "neuronId": 4,
+        "value": 3
+      },
+      {
+        "index": 39,
+        "timeBin": 4,
+        "neuronId": 7,
+        "value": 6
+      },
+      {
+        "index": 41,
+        "timeBin": 5,
+        "neuronId": 1,
+        "value": 5
+      },
+      {
+        "index": 42,
+        "timeBin": 5,
+        "neuronId": 2,
+        "value": 1
+      },
+      {
+        "index": 44,
+        "timeBin": 5,
+        "neuronId": 4,
+        "value": 3
+      },
+      {
+        "index": 47,
+        "timeBin": 5,
+        "neuronId": 7,
+        "value": 4
+      },
+      {
+        "index": 48,
+        "timeBin": 6,
+        "neuronId": 0,
+        "value": 0
+      },
+      {
+        "index": 49,
+        "timeBin": 6,
+        "neuronId": 1,
+        "value": 5
+      },
+      {
+        "index": 50,
+        "timeBin": 6,
+        "neuronId": 2,
+        "value": 2
+      },
+      {
+        "index": 52,
+        "timeBin": 6,
+        "neuronId": 4,
+        "value": 4
+      },
+      {
+        "index": 57,
+        "timeBin": 7,
+        "neuronId": 1,
+        "value": 4
+      },
+      {
+        "index": 58,
+        "timeBin": 7,
+        "neuronId": 2,
+        "value": 1
+      },
+      {
+        "index": 60,
+        "timeBin": 7,
+        "neuronId": 4,
+        "value": 4
+      },
+      {
+        "index": 63,
+        "timeBin": 7,
+        "neuronId": 7,
+        "value": -1
+      }
+    ],
+    "weights": {
+      "eye-closed": [
+        1,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "eye-open": [
+        -2,
+        1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        -2,
+        -1,
+        2,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        -2,
+        2,
+        2,
+        -3,
+        3,
+        4,
+        3,
+        3,
+        -2,
+        -1,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -2,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -2,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -2,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -2,
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -2
+      ]
+    },
+    "bias": {
+      "eye-closed": -10,
+      "eye-open": -33
+    },
+    "expectedPlaintextScores": {
+      "eye-closed": 21,
+      "eye-open": -44
+    },
+    "expectedClassification": "eye-closed",
+    "maxAbsScore": 44,
+    "scoreFitsCenteredPlaintextModulus": true,
+    "caveat": "BFVrns uses this fixed-point integer view for integration evidence; CKKS consumes the approximate-real values directly."
+  },
+  "privacyBoundary": {
+    "schema": "neurofhe.realDataOpenFheInputPrivacyBoundary.v1",
+    "publicFields": [
+      "featureShape",
+      "classes",
+      "public model weights",
+      "public model bias",
+      "public active positions"
+    ],
+    "encryptedFieldsAtNativeRuntime": [
+      "active feature values",
+      "class scores"
+    ],
+    "withheldFromContract": [
+      "raw EEG rows",
+      "per-sample raw channel values"
+    ],
+    "caveat": "This contract is a derived single-window research input. It is not raw-data redistribution, production cryptography, or medical validation.",
+    "productionClaim": false
+  },
+  "productionClaim": false
+}

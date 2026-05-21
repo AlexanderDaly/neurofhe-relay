@@ -19,6 +19,7 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `08-encrypted-thoughts-whitepaper.md` - whitepaper arguing for encrypted-thoughts architecture in BCI and neural-data systems.
 - `09-relay-gateway-pattern.md` - local-first relay gateway pattern covering raw-signal intake, trust boundary, normalization, privacy/safety filtering, model-facing event schemas, command recommendations, audit/replay, and failure handling.
 - `10-native-performance-track.md` - native-first boundary for low-level performance, energy measurement, and hot-path implementation choices.
+- `RELEASE.md` - research-alpha release checklist and evidence gates.
 - `patent/` - ENER provisional drafting package, revised claim seeds, drawings, prior-art search plan, submission checklist, and policy/commercial briefing materials.
 - `project-brief.json` - agent-readable structured project summary.
 - `index.html` - self-contained browser briefing deck.
@@ -70,6 +71,15 @@ Print the OpenFHE CKKS approximate-real comparison lane:
 npm run benchmark:openfhe-ckks
 ```
 
+Generate OpenFHE-ready EEG input contracts and run the native BFVrns/CKKS lanes
+against one derived sparse window:
+
+```sh
+npm run contract:eeg-openfhe
+npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
+npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
+```
+
 Run the plaintext real-data baseline against a local N-MNIST directory:
 
 ```sh
@@ -78,7 +88,7 @@ npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 
 ## Caveat
 
-The included JavaScript prototype demonstrates the privacy boundary with toy additive homomorphic encryption. It is not production cryptography, not full FHE, and not the low-level runtime target. It uses public active neuron positions plus encrypted active feature values for the sorted-event path, so sparse metadata is visible to the compute layer. The native OpenFHE BFVrns path carries the same sparse sorted-event score contract for exact integer packed arithmetic comparison once OpenFHE is installed and reviewed. The native OpenFHE CKKS path carries the same sparse contract for approximate real-valued neural/ML feature scoring with score-drift reporting. The native TFHE-rs path carries the same sparse score contract plus an encrypted Boolean threshold bit for threshold/LUT-style comparison. None of the native lanes is production cryptography.
+The included JavaScript prototype demonstrates the privacy boundary with toy additive homomorphic encryption. It is not production cryptography, not full FHE, and not the low-level runtime target. It uses public active neuron positions plus encrypted active feature values for the sorted-event path, so sparse metadata is visible to the compute layer. The native OpenFHE BFVrns path carries the same sparse sorted-event score contract for exact integer packed arithmetic comparison and now accepts generated fixed-point real-data input contracts once OpenFHE is installed and reviewed. The native OpenFHE CKKS path carries the same sparse contract for approximate real-valued neural/ML feature scoring with score-drift reporting and generated approximate-real real-data input contracts. The native TFHE-rs path carries the same sparse score contract plus an encrypted Boolean threshold bit for threshold/LUT-style comparison. None of the native lanes is production cryptography.
 
 ## Proprietary Track Note
 

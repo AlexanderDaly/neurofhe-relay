@@ -70,6 +70,7 @@ import {
   trainCentroidLinearClassifier,
 } from "../lib/nmnist.mjs";
 import {
+  buildEegEyeStateOpenFheInputContract,
   buildEegEyeStateSmokeFixtureRows,
   parseEegEyeStateArff,
   runEegEyeStatePlaintextBaseline,
@@ -1470,4 +1471,32 @@ test("EEG Eye State ARFF parser and sparse baseline preserve real-data caveats",
   ]);
   assert.equal(report.compressionCurve.levels[0].activeBudgetCompressionVsDense, 4);
   assert.equal(report.compressionCurve.levels[1].activeBudgetCompressionVsDense, 2);
+});
+
+test("EEG Eye State can emit an OpenFHE-ready sparse input contract", () => {
+  const fixture = buildEegEyeStateSmokeFixtureRows();
+  const contract = buildEegEyeStateOpenFheInputContract({
+    rows: fixture.rows,
+    sampleIndex: 0,
+    fixedPointScale: 10,
+    options: {
+      trainFraction: 0.7,
+      windowSize: 2,
+      stride: 2,
+      channelCount: 4,
+      activePerTimestep: 2,
+    },
+  });
+
+  assert.equal(contract.schema, "neurofhe.openfhe.inputContract.v1");
+  assert.equal(contract.scoreEquation, "scores = W x + bias");
+  assert.equal(contract.scoreDomain, "approximate-real");
+  assert.deepEqual(contract.featureShape, [2, 4]);
+  assert.deepEqual(contract.matrixShape, [2, 8]);
+  assert.equal(contract.activeEventCount, 4);
+  assert.equal(contract.quantized.schema, "neurofhe.openfhe.bfvrnsFixedPointView.v1");
+  assert.equal(contract.quantized.fixedPointScale, 10);
+  assert.equal(contract.quantized.activeEvents.length, contract.activeEvents.length);
+  assert.equal(contract.privacyBoundary.productionClaim, false);
+  assert.equal(contract.productionClaim, false);
 });

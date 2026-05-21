@@ -291,6 +291,107 @@ export function runEegEyeStatePlaintextBaseline({
   return report;
 }
 
+export function buildEegEyeStateOpenFheInputContract({
+  rows,
+  options = {},
+  sampleIndex = 0,
+  fixedPointScale = 10,
+  plaintextModulus = 65537,
+} = {}) {
+  const trainFraction = options.trainFraction ?? 0.7;
+  const split = splitChronological(rows, trainFraction);
+  const selectedChannelIndices = selectedChannels(options);
+  const normalizer = fitEegNormalizer(split.trainRows, selectedChannelIndices);
+  const trainWindows = rowsToSparseWindows(split.trainRows, normalizer, options);
+  const testWindows = rowsToSparseWindows(split.testRows, normalizer, options);
+  if (!testWindows.length) {
+    throw new Error("cannot build OpenFHE input contract without test windows");
+  }
+  const model = trainCentroidSparseLinearClassifier(trainWindows);
+  const sample = testWindows[Math.min(sampleIndex, testWindows.length - 1)];
+  const expectedScores = scoreSparseWindow(model, sample);
+  const expectedClassification = argmax(expectedScores);
+  const quantized = quantizeSparseLinearContract({
+    model,
+    sample,
+    fixedPointScale,
+    plaintextModulus,
+  });
+
+  return {
+    schema: "neurofhe.openfhe.inputContract.v1",
+    sourceId: "uci-eeg-eye-state-sparse-window",
+    datasetKind: "public-uci-eeg-eye-state-arff",
+    source: EEG_EYE_STATE_PROVENANCE.publicDatasetReference,
+    scoreEquation: "scores = W x + bias",
+    scoreDomain: "approximate-real",
+    boundaryDomain: "bio-digital-event-intelligence",
+    eventRepresentation:
+      "public active positions plus signed z-score active values derived from chronological EEG windows",
+    featureShape: model.featureShape,
+    featureCount: model.matrixShape[1],
+    classes: model.classes,
+    matrixShape: model.matrixShape,
+    activeEventCount: sample.activeEvents.length,
+    activeEvents: sample.activeEvents.map(({ index, timeBin, neuronId, value }) => ({
+      index,
+      timeBin,
+      neuronId,
+      value,
+    })),
+    weights: model.weights,
+    bias: model.bias,
+    expectedPlaintextScores: roundScoreObject(expectedScores),
+    expectedClassification,
+    sample: {
+      label: sample.label,
+      rowStart: sample.rowStart,
+      rowEnd: sample.rowEnd,
+      sampleIndex: Math.min(sampleIndex, testWindows.length - 1),
+      split: "chronological-test",
+    },
+    preprocessing: {
+      schema: "neurofhe.eegEyeState.preprocessing.v1",
+      rowCount: rows.length,
+      trainRows: split.trainRows.length,
+      testRows: split.testRows.length,
+      trainFraction,
+      windowSize: options.windowSize ?? 8,
+      stride: options.stride ?? (options.windowSize ?? 8),
+      selectedChannels: selectedChannelIndices.map((index) => EEG_EYE_STATE_CHANNELS[index]),
+      activePerTimestep: activePerTimestepFor(options),
+      normalization: "z-score using training split only",
+    },
+    approximationTolerance: {
+      maxAbsScoreError: options.maxAbsScoreError ?? 0.001,
+      classificationAgreementRequired: true,
+    },
+    quantized,
+    privacyBoundary: {
+      schema: "neurofhe.realDataOpenFheInputPrivacyBoundary.v1",
+      publicFields: [
+        "featureShape",
+        "classes",
+        "public model weights",
+        "public model bias",
+        "public active positions",
+      ],
+      encryptedFieldsAtNativeRuntime: [
+        "active feature values",
+        "class scores",
+      ],
+      withheldFromContract: [
+        "raw EEG rows",
+        "per-sample raw channel values",
+      ],
+      caveat:
+        "This contract is a derived single-window research input. It is not raw-data redistribution, production cryptography, or medical validation.",
+      productionClaim: false,
+    },
+    productionClaim: false,
+  };
+}
+
 export function runEegEyeStateCompressionSweep({
   rows,
   levels,
@@ -341,6 +442,58 @@ export function runEegEyeStateCompressionSweep({
     caveat:
       "Compression changes the sparse active-value budget before encryption. This curve is not encrypted-compute evidence.",
     productionClaim: false,
+  };
+}
+
+function quantizeSparseLinearContract({
+  model,
+  sample,
+  fixedPointScale,
+  plaintextModulus,
+}) {
+  const quantizedEvents = sample.activeEvents.map(({ index, timeBin, neuronId, value }) => ({
+    index,
+    timeBin,
+    neuronId,
+    value: Math.round(value * fixedPointScale),
+  }));
+  const quantizedWeights = Object.fromEntries(
+    model.classes.map((label) => [
+      label,
+      model.weights[label].map((value) => Math.round(value * fixedPointScale)),
+    ]),
+  );
+  const quantizedBias = Object.fromEntries(
+    model.classes.map((label) => [
+      label,
+      Math.round(model.bias[label] * fixedPointScale * fixedPointScale),
+    ]),
+  );
+  const expectedScores = Object.fromEntries(
+    model.classes.map((label) => {
+      let score = quantizedBias[label];
+      for (const event of quantizedEvents) {
+        score += event.value * quantizedWeights[label][event.index];
+      }
+      return [label, score];
+    }),
+  );
+  const maxAbsScore = Math.max(...Object.values(expectedScores).map((value) => Math.abs(value)));
+
+  return {
+    schema: "neurofhe.openfhe.bfvrnsFixedPointView.v1",
+    scoreDomain: "signed-fixed-point-integers",
+    fixedPointScale,
+    plaintextModulus,
+    activeEvents: quantizedEvents,
+    weights: quantizedWeights,
+    bias: quantizedBias,
+    expectedPlaintextScores: expectedScores,
+    expectedClassification: argmax(expectedScores),
+    maxAbsScore,
+    scoreFitsCenteredPlaintextModulus: maxAbsScore < plaintextModulus / 2,
+    caveat:
+      "BFVrns uses this fixed-point integer view for integration evidence; CKKS consumes the approximate-real values directly.",
   };
 }
 
@@ -454,12 +607,7 @@ function trainCentroidSparseLinearClassifier(windows) {
 function evaluateSparseLinearClassifier(model, windows) {
   let correct = 0;
   const predictions = windows.map((window) => {
-    const scores = Object.fromEntries(
-      model.classes.map((label) => [
-        label,
-        model.bias[label] + dot(window.vector, model.weights[label]),
-      ]),
-    );
+    const scores = scoreSparseWindow(model, window);
     const predicted = argmax(scores);
     if (predicted === window.label) correct += 1;
     return {
@@ -482,6 +630,15 @@ function evaluateSparseLinearClassifier(model, windows) {
     averageActiveEvents: average(predictions.map((prediction) => prediction.activeEventCount)),
     averageNonZeroFeatures: average(predictions.map((prediction) => prediction.nonZeroFeatures)),
   };
+}
+
+function scoreSparseWindow(model, window) {
+  return Object.fromEntries(
+    model.classes.map((label) => [
+      label,
+      model.bias[label] + dot(window.vector, model.weights[label]),
+    ]),
+  );
 }
 
 function splitChronological(rows, trainFraction) {
@@ -625,6 +782,12 @@ function range(values) {
     min: round(Math.min(...values), 6),
     max: round(Math.max(...values), 6),
   };
+}
+
+function roundScoreObject(scores) {
+  return Object.fromEntries(
+    Object.entries(scores).map(([label, value]) => [label, round(value, 6)]),
+  );
 }
 
 function round(value, places = 6) {

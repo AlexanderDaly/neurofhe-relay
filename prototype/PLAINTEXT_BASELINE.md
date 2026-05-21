@@ -147,9 +147,11 @@ Meaning:
 - the signed z-score is the active feature value
 
 This preserves the same two-class, 64-feature `scores = W x + bias` shape used
-by the OpenFHE BFVrns and CKKS demos, but the committed EEG run is still a
-plaintext baseline. BFVrns needs explicit fixed-point quantization before native
-encrypted execution; CKKS is the more natural approximate-real lane.
+by the OpenFHE BFVrns and CKKS demos. The committed EEG baseline is plaintext
+model/preprocessing evidence. A separate generated OpenFHE input contract now
+feeds one derived sparse window into the native BFVrns and CKKS lanes. BFVrns
+uses an explicit fixed-point view; CKKS consumes the approximate-real values
+directly.
 
 ## Output Metrics
 
@@ -172,6 +174,24 @@ Published artifacts use:
 benchmark-artifacts/plaintext-baselines/<dataset-id>/latest.json
 benchmark-artifacts/plaintext-baselines/<dataset-id>/runs/<artifact-id>.json
 ```
+
+Generate OpenFHE-ready EEG input contracts:
+
+```sh
+npm run contract:eeg-openfhe -- --generated-at 2026-05-21T18:15:00.000Z
+```
+
+The contract publisher writes:
+
+```text
+benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/latest.json
+benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json
+benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json
+```
+
+The BFVrns contract includes a signed fixed-point view with plaintext modulus
+65537 and scale 10. The CKKS contract keeps the approximate-real sparse values.
+Both are derived single-window inputs, not raw EEG redistribution.
 
 Current committed examples:
 
@@ -211,8 +231,10 @@ After N-MNIST:
 - DVS Gesture for richer event-camera motion.
 - Wearable or industrial telemetry for a stronger pilot, once a rights-clean
   dataset or partner source is available.
-- Native OpenFHE dynamic input loading for the EEG-derived `[2, 64]` model and
+- Multi-window native OpenFHE sweeps over the EEG-derived `[2, 64]` model and
   sparse active event contract.
+- Native padded-sparse real-data runs to quantify leakage reduction versus FHE
+  overhead on public biosignal-derived windows.
 
 ## Scope Guardrail
 

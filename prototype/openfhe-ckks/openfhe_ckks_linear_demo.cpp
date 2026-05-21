@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: CC0-1.0
 
 #include "openfhe.h"
+#include "../openfhe_contract_loader.hpp"
 
 #include <algorithm>
 #include <chrono>
@@ -34,6 +35,22 @@ struct PublicActiveNeuronPosition {
 
 struct RunConfig {
     bool bootstrapSetup = false;
+    std::string inputPath;
+};
+
+struct RunInput {
+    std::string inputSource = "embedded-synthetic";
+    std::string inputPath;
+    std::string datasetKind = "synthetic-events-v0";
+    std::string eventRepresentation = "spatial-sorted-events";
+    std::vector<std::size_t> featureShape = {8, 8};
+    std::vector<std::size_t> spatialBins = {4, 2};
+    std::vector<ActiveEvent> events;
+    std::vector<PublicActiveNeuronPosition> activeNeuronPositions;
+    std::vector<std::string> classes;
+    std::map<std::string, std::vector<double>> weights;
+    std::map<std::string, double> bias;
+    double approximationTolerance = 0.001;
 };
 
 struct Timings {
@@ -59,6 +76,11 @@ RunConfig ParseArgs(int argc, char** argv) {
         const std::string arg(argv[i]);
         if (arg == "--bootstrap") {
             config.bootstrapSetup = true;
+        } else if (arg == "--input") {
+            if (i + 1 >= argc) {
+                throw std::invalid_argument("--input requires a JSON contract path");
+            }
+            config.inputPath = argv[++i];
         } else {
             throw std::invalid_argument("unknown argument: " + arg);
         }
@@ -136,6 +158,50 @@ std::vector<double> MakeAnomalyWeights() {
         weights.push_back(pattern[index % pattern.size()] + timeBonus);
     }
     return weights;
+}
+
+RunInput EmbeddedSyntheticInput() {
+    const auto values = SortedSpatialEventWindow();
+    const auto events = ActiveEvents(values);
+    RunInput input;
+    input.inputSource = "embedded-synthetic";
+    input.datasetKind = "synthetic-events-v0";
+    input.eventRepresentation = "spatial-sorted-events";
+    input.featureShape = {8, 8};
+    input.spatialBins = {4, 2};
+    input.events = events;
+    input.activeNeuronPositions = PublicActiveNeuronPositions(events, 4);
+    input.classes = {"normal", "anomaly"};
+    input.weights = {
+        {"normal", MakeNormalWeights()},
+        {"anomaly", MakeAnomalyWeights()},
+    };
+    input.bias = {{"normal", 0.0}, {"anomaly", 0.0}};
+    input.approximationTolerance = 0.001;
+    return input;
+}
+
+RunInput ExternalContractInput(const std::string& path) {
+    const auto contract = neurofhe::LoadSparseLinearContract<double>(
+        path,
+        false);
+    RunInput input;
+    input.inputSource = "external-contract";
+    input.inputPath = path;
+    input.datasetKind = contract.datasetKind;
+    input.eventRepresentation = contract.eventRepresentation;
+    input.featureShape = contract.featureShape;
+    input.classes = contract.classes;
+    input.weights = contract.weights;
+    input.bias = contract.bias;
+    input.approximationTolerance = contract.approximationTolerance;
+    const std::size_t channels = input.featureShape.size() > 1 ? input.featureShape[1] : 1;
+    input.spatialBins = {channels, 1};
+    for (const auto& event : contract.activeEvents) {
+        input.events.push_back({event.index, event.timeBin, event.neuronId, event.value});
+    }
+    input.activeNeuronPositions = PublicActiveNeuronPositions(input.events, channels);
+    return input;
 }
 
 std::map<std::string, double> PlaintextScores(
@@ -231,6 +297,17 @@ void PrintStringArray(const std::vector<std::string>& values) {
     std::cout << "]";
 }
 
+void PrintSizeArray(const std::vector<std::size_t>& values) {
+    std::cout << "[";
+    for (std::size_t index = 0; index < values.size(); ++index) {
+        if (index > 0) {
+            std::cout << ",";
+        }
+        std::cout << values[index];
+    }
+    std::cout << "]";
+}
+
 void PrintActiveNeuronPositions(const std::vector<PublicActiveNeuronPosition>& positions) {
     std::cout << "[";
     for (std::size_t index = 0; index < positions.size(); ++index) {
@@ -254,15 +331,14 @@ void PrintActiveNeuronPositions(const std::vector<PublicActiveNeuronPosition>& p
 int main(int argc, char** argv) {
     try {
         const auto config = ParseArgs(argc, argv);
-        const auto values = SortedSpatialEventWindow();
-        const auto events = ActiveEvents(values);
-        const auto activeNeuronPositions = PublicActiveNeuronPositions(events, 4);
-        const std::vector<std::string> classes = {"normal", "anomaly"};
-        const std::map<std::string, std::vector<double>> weights = {
-            {"normal", MakeNormalWeights()},
-            {"anomaly", MakeAnomalyWeights()},
-        };
-        const std::map<std::string, double> bias = {{"normal", 0.0}, {"anomaly", 0.0}};
+        const auto input = config.inputPath.empty()
+            ? EmbeddedSyntheticInput()
+            : ExternalContractInput(config.inputPath);
+        const auto& events = input.events;
+        const auto& activeNeuronPositions = input.activeNeuronPositions;
+        const auto& classes = input.classes;
+        const auto& weights = input.weights;
+        const auto& bias = input.bias;
         const auto expectedScores = PlaintextScores(events, weights, bias);
 
         CCParams<CryptoContextCKKSRNS> parameters;
@@ -330,7 +406,10 @@ int main(int argc, char** argv) {
 
         const double maxAbsError = MaxAbsScoreError(decryptedScores, expectedScores);
         const bool classificationMatches = Classify(decryptedScores) == Classify(expectedScores);
-        const bool withinTolerance = maxAbsError <= 0.001 && classificationMatches;
+        const bool withinTolerance = maxAbsError <= input.approximationTolerance && classificationMatches;
+        const bool classOneGreaterThanClassZero = classes.size() >= 2
+            ? expectedScores.at(classes[1]) > expectedScores.at(classes[0])
+            : false;
 
         std::cout << "{";
         std::cout << "\"schema\":\"neurofhe.openfheCkks.result.v1\",";
@@ -338,8 +417,11 @@ int main(int argc, char** argv) {
         std::cout << "\"scoreEquation\":\"scores = W x + bias\",";
         std::cout << "\"scoreDomain\":\"approximate-real\",";
         std::cout << "\"featureValueDomain\":\"approximate-real-neural-features\",";
+        std::cout << "\"inputSource\":\"" << input.inputSource << "\",";
+        std::cout << "\"inputContractPath\":\"" << input.inputPath << "\",";
+        std::cout << "\"datasetKind\":\"" << input.datasetKind << "\",";
         std::cout << "\"boundaryDomain\":\"bio-digital-event-intelligence\",";
-        std::cout << "\"eventRepresentation\":\"spatial-sorted-events\",";
+        std::cout << "\"eventRepresentation\":\"" << input.eventRepresentation << "\",";
         std::cout << "\"encoder\":{";
         std::cout << "\"id\":\"canonical-spatial-aware-spike-sorter-v1\",";
         std::cout << "\"schema\":\"neurofhe.encoder.spatialSpikeSorter.v1\",";
@@ -379,9 +461,15 @@ int main(int argc, char** argv) {
         std::cout << "},";
         std::cout << "\"eventSchema\":\"neurofhe.events.v1.spatial-sorter\",";
         std::cout << "\"encoding\":\"spatial-binned-spike-count\",";
-        std::cout << "\"featureShape\":[8,8],";
-        std::cout << "\"matrixShape\":[2,64],";
-        std::cout << "\"spatialBins\":[4,2],";
+        std::cout << "\"featureShape\":";
+        PrintSizeArray(input.featureShape);
+        std::cout << ",";
+        std::cout << "\"matrixShape\":[" << classes.size() << ",";
+        std::cout << (input.featureShape.empty() ? 0 : input.featureShape[0] * (input.featureShape.size() > 1 ? input.featureShape[1] : 1));
+        std::cout << "],";
+        std::cout << "\"spatialBins\":";
+        PrintSizeArray(input.spatialBins);
+        std::cout << ",";
         std::cout << "\"activeEventCount\":" << events.size() << ",";
         std::cout << "\"activeNeuronPositions\":";
         PrintActiveNeuronPositions(activeNeuronPositions);
@@ -397,14 +485,18 @@ int main(int argc, char** argv) {
         std::cout << "\"precision\":{";
         std::cout << "\"maxAbsScoreError\":";
         PrintNumber(maxAbsError);
-        std::cout << ",\"tolerance\":0.001,";
+        std::cout << ",\"tolerance\":";
+        PrintNumber(input.approximationTolerance);
+        std::cout << ",";
         std::cout << "\"withinTolerance\":" << (withinTolerance ? "true" : "false") << ",";
         std::cout << "\"classificationAgreement\":" << (classificationMatches ? "true" : "false");
         std::cout << "},";
         std::cout << "\"thresholdDecision\":{";
         std::cout << "\"mode\":\"client-side-after-decrypt\",";
-        std::cout << "\"gate\":\"anomaly_score_gt_normal_score\",";
-        std::cout << "\"expectedPlaintext\":" << (expectedScores.at("anomaly") > expectedScores.at("normal") ? "true" : "false") << ",";
+        std::cout << "\"gate\":\"class_1_score_gt_class_0_score\",";
+        std::cout << "\"class0\":\"" << (classes.empty() ? "" : classes[0]) << "\",";
+        std::cout << "\"class1\":\"" << (classes.size() > 1 ? classes[1] : "") << "\",";
+        std::cout << "\"expectedPlaintext\":" << (classOneGreaterThanClassZero ? "true" : "false") << ",";
         std::cout << "\"encryptedComparisonImplemented\":false";
         std::cout << "},";
         std::cout << "\"latencyMs\":{";
