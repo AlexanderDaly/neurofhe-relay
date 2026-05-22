@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -1251,6 +1252,82 @@ test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {
   assert.match(source, /Decrypt/);
 });
 
+test("OpenFHE contract loader resolves duplicate keys only in the current object", async () => {
+  const compiler = spawnSync("c++", ["--version"], { encoding: "utf8" });
+  if (compiler.status !== 0) {
+    return;
+  }
+
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-openfhe-loader-"));
+  const contractPath = join(outputDir, "contract.json");
+  const sourcePath = join(outputDir, "loader_probe.cpp");
+  const binaryPath = join(outputDir, "loader_probe");
+  await writeFile(
+    contractPath,
+    `${JSON.stringify({
+      schema: "neurofhe.openfhe.inputContract.v1",
+      sourceId: "scope-regression",
+      datasetKind: "scope-regression",
+      scoreEquation: "scores = W x + bias",
+      scoreDomain: "approximate-real",
+      boundaryDomain: "bio-digital-event-intelligence",
+      eventRepresentation: "scope regression",
+      featureShape: [1, 2],
+      classes: ["a", "b"],
+      matrixShape: [2, 2],
+      activeEventCount: 1,
+      activeEvents: [{ index: 0, timeBin: 0, neuronId: 0, value: 0.25 }],
+      quantized: {
+        schema: "neurofhe.openfhe.bfvrnsFixedPointView.v1",
+        scoreDomain: "signed-fixed-point-integers",
+        fixedPointScale: 10,
+        plaintextModulus: 65537,
+        activeEvents: [{ index: 0, timeBin: 0, neuronId: 0, value: 3 }],
+        weights: { a: [10, 20], b: [30, 40] },
+        bias: { a: 50, b: 60 },
+      },
+      weights: { a: [0.1, 0.2], b: [0.3, 0.4] },
+      bias: { a: 0.5, b: 0.6 },
+      approximationTolerance: {
+        maxAbsScoreError: 0.001,
+        classificationAgreementRequired: true,
+      },
+      productionClaim: false,
+    }, null, 2)}\n`,
+    "utf8",
+  );
+  await writeFile(
+    sourcePath,
+    [
+      '#include "prototype/openfhe_contract_loader.hpp"',
+      "#include <iostream>",
+      "int main(int argc, char** argv) {",
+      "  const auto ckks = neurofhe::LoadSparseLinearContract<double>(argv[1], false);",
+      "  const auto bfv = neurofhe::LoadSparseLinearContract<int64_t>(argv[1], true);",
+      '  std::cout << ckks.weights.at("a").at(0) << " "',
+      '            << ckks.bias.at("a") << " "',
+      '            << ckks.activeEvents.at(0).value << " "',
+      '            << bfv.weights.at("a").at(0) << " "',
+      '            << bfv.bias.at("a") << " "',
+      "            << bfv.activeEvents.at(0).value << \"\\n\";",
+      "}",
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const build = spawnSync(
+    "c++",
+    ["-std=c++17", "-I", ".", sourcePath, "-o", binaryPath],
+    { cwd: process.cwd(), encoding: "utf8" },
+  );
+  assert.equal(build.status, 0, build.stderr);
+
+  const run = spawnSync(binaryPath, [contractPath], { encoding: "utf8" });
+  assert.equal(run.status, 0, run.stderr);
+  assert.equal(run.stdout.trim(), "0.1 0.5 0.25 10 50 3");
+});
+
 test("native OpenFHE CKKS source uses real CKKS OpenFHE APIs", async () => {
   const source = await readFile(
     new URL("../openfhe-ckks/openfhe_ckks_linear_demo.cpp", import.meta.url),
@@ -1471,6 +1548,43 @@ test("EEG Eye State ARFF parser and sparse baseline preserve real-data caveats",
   ]);
   assert.equal(report.compressionCurve.levels[0].activeBudgetCompressionVsDense, 4);
   assert.equal(report.compressionCurve.levels[1].activeBudgetCompressionVsDense, 2);
+});
+
+test("EEG plaintext CLI emits blocker artifacts for invalid baseline options", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-eeg-baseline-blocker-"));
+  const result = spawnSync(
+    process.execPath,
+    [
+      "prototype/plaintext-baseline.mjs",
+      "--source",
+      "eeg-eye-state",
+      "--fixture",
+      "eeg-eye-state-smoke",
+      "--train-fraction",
+      "0.01",
+      "--window-size",
+      "8",
+      "--artifact",
+      "--out",
+      outputDir,
+      "--artifact-id",
+      "eeg-invalid-options",
+      "--generated-at",
+      "2026-05-21T00:00:00.000Z",
+    ],
+    { cwd: process.cwd(), encoding: "utf8" },
+  );
+  const published = JSON.parse(result.stdout);
+  const artifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+
+  assert.equal(result.status, 2);
+  assert.equal(result.stderr, "");
+  assert.equal(published.schema, "neurofhe.plaintextBaselineArtifact.publish.v1");
+  assert.equal(artifact.subject.schema, "neurofhe.plaintextBaseline.unavailable.v1");
+  assert.equal(artifact.subject.blocker.reason, "cannot train EEG baseline without windows");
+  assert.equal(artifact.subject.blocker.trainFraction, 0.01);
+  assert.match(artifact.subject.attemptedCommand, /--fixture eeg-eye-state-smoke/);
+  assert.match(artifact.subject.smallestNextStep, /larger --train-fraction/);
 });
 
 test("EEG Eye State can emit an OpenFHE-ready sparse input contract", () => {

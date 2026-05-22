@@ -70,13 +70,25 @@ if (sourceKind === "eeg-eye-state") {
     channelCount: Number(args["channel-count"] ?? 8),
     activePerTimestep: Number(args["active-per-timestep"] ?? 4),
   };
-  const compressionLevels = parseEegCompressionLevels(
-    args["compression-levels"] ?? "active1,active2,active4,active8",
-  );
-
   let loaded;
+  let subject;
   try {
     loaded = await loadEegBaselineRows(args);
+    const compressionLevels = parseEegCompressionLevels(
+      args["compression-levels"] ?? "active1,active2,active4,active8",
+    );
+    const report = runEegEyeStatePlaintextBaseline({
+      rows: loaded.rows,
+      options: eegOptions,
+      compressionLevels,
+    });
+    subject = {
+      ...report,
+      source: {
+        ...loaded.source,
+        rows: loaded.rows.length,
+      },
+    };
   } catch (error) {
     const unavailable = buildEegBaselineUnavailableReport(args, error);
     if (shouldPublishArtifact) {
@@ -93,19 +105,6 @@ if (sourceKind === "eeg-eye-state") {
     }
     process.exit(2);
   }
-
-  const report = runEegEyeStatePlaintextBaseline({
-    rows: loaded.rows,
-    options: eegOptions,
-    compressionLevels,
-  });
-  const subject = {
-    ...report,
-    source: {
-      ...loaded.source,
-      rows: loaded.rows.length,
-    },
-  };
 
   if (shouldPublishArtifact) {
     const published = await publishPlaintextBaselineArtifact(subject, {
@@ -220,20 +219,39 @@ function buildEegBaselineUnavailableReport(parsedArgs, error) {
       reason: error.message,
       datasetPath: parsedArgs.dataset,
       fetchRequested: parsedArgs.fetch === "true",
+      trainFraction: Number(parsedArgs["train-fraction"] ?? 0.7),
+      windowSize: Number(parsedArgs["window-size"] ?? 8),
+      stride: Number(parsedArgs.stride ?? parsedArgs["window-size"] ?? 8),
+      channelCount: Number(parsedArgs["channel-count"] ?? 8),
+      activePerTimestep: Number(parsedArgs["active-per-timestep"] ?? 4),
     },
     attemptedCommand: [
       "npm run baseline:plaintext --",
       "--source eeg-eye-state",
-      parsedArgs.dataset ? `--dataset ${parsedArgs.dataset}` : "--fetch",
+      eegInputSourceArg(parsedArgs),
+      `--train-fraction ${parsedArgs["train-fraction"] ?? 0.7}`,
       `--window-size ${parsedArgs["window-size"] ?? 8}`,
+      `--stride ${parsedArgs.stride ?? parsedArgs["window-size"] ?? 8}`,
       `--channel-count ${parsedArgs["channel-count"] ?? 8}`,
       `--active-per-timestep ${parsedArgs["active-per-timestep"] ?? 4}`,
     ].join(" "),
     publicDatasetReference: EEG_EYE_STATE_PROVENANCE.publicDatasetReference,
-    smallestNextStep:
-      "Rerun with --fetch on a networked machine or download the public ARFF outside git and pass --dataset '/path/to/EEG Eye State.arff'.",
+    smallestNextStep: eegSmallestNextStep(error.message),
     productionClaim: false,
   };
+}
+
+function eegInputSourceArg(parsedArgs) {
+  if (parsedArgs.fixture) return `--fixture ${parsedArgs.fixture}`;
+  if (parsedArgs.dataset) return `--dataset ${parsedArgs.dataset}`;
+  return "--fetch";
+}
+
+function eegSmallestNextStep(reason) {
+  if (reason.includes("without windows")) {
+    return "Use a larger --train-fraction, smaller --window-size, or smaller --stride so the training split produces at least one sparse window.";
+  }
+  return "Rerun with --fetch on a networked machine or download the public ARFF outside git and pass --dataset '/path/to/EEG Eye State.arff'.";
 }
 
 async function loadEegBaselineRows(parsedArgs) {

@@ -1110,8 +1110,8 @@
         }
       ],
       "scores": {
-        "eye-closed": 0.0739801034416,
-        "eye-open": -0.52407347656
+        "eye-closed": 0.0739801034395,
+        "eye-open": -0.524073476558
       },
       "classification": "eye-closed",
       "expectedScores": {
@@ -1120,7 +1120,7 @@
       },
       "expectedClassification": "eye-closed",
       "precision": {
-        "maxAbsScoreError": 9.69524460714e-12,
+        "maxAbsScoreError": 7.21256387948e-12,
         "tolerance": 0.001,
         "withinTolerance": true,
         "classificationAgreement": true
@@ -1134,9 +1134,9 @@
         "encryptedComparisonImplemented": false
       },
       "latencyMs": {
-        "encryption": 131.586833,
-        "linearScoring": 32.918083,
-        "decryption": 9.701
+        "encryption": 134.964292,
+        "linearScoring": 36.952333,
+        "decryption": 11.744583
       },
       "memoryUsage": {
         "ciphertextCount": 34,

@@ -59,6 +59,9 @@ inline std::size_t MatchingDelimiter(
     std::size_t offset,
     char open,
     char close) {
+    if (offset >= text.size() || text[offset] != open) {
+        throw std::runtime_error("expected JSON delimiter");
+    }
     std::size_t depth = 0;
     bool inString = false;
     bool escaped = false;
@@ -90,57 +93,96 @@ inline std::size_t MatchingDelimiter(
     throw std::runtime_error("unterminated JSON value");
 }
 
+inline std::size_t JsonStringEnd(const std::string& text, std::size_t offset) {
+    if (offset >= text.size() || text[offset] != '"') {
+        throw std::runtime_error("expected JSON string");
+    }
+    bool escaped = false;
+    for (std::size_t index = offset + 1; index < text.size(); ++index) {
+        const char ch = text[index];
+        if (escaped) {
+            escaped = false;
+        } else if (ch == '\\') {
+            escaped = true;
+        } else if (ch == '"') {
+            return index;
+        }
+    }
+    throw std::runtime_error("unterminated JSON string");
+}
+
+inline std::size_t JsonValueEnd(const std::string& text, std::size_t offset) {
+    const auto start = SkipWhitespace(text, offset);
+    if (start >= text.size()) {
+        throw std::runtime_error("empty JSON value");
+    }
+
+    const char first = text[start];
+    if (first == '{') {
+        return MatchingDelimiter(text, start, '{', '}');
+    }
+    if (first == '[') {
+        return MatchingDelimiter(text, start, '[', ']');
+    }
+    if (first == '"') {
+        return JsonStringEnd(text, start);
+    }
+
+    std::size_t end = start;
+    while (end < text.size() && text[end] != ',' && text[end] != '}' && text[end] != ']') {
+        ++end;
+    }
+    if (end == start) {
+        throw std::runtime_error("empty JSON scalar");
+    }
+    return end - 1;
+}
+
+inline std::string ParseJsonString(const std::string& value);
+
 inline std::string FindJsonValue(
     const std::string& object,
     const std::string& key,
     bool required = true) {
-    const std::string needle = "\"" + key + "\"";
-    const std::size_t keyOffset = object.find(needle);
-    if (keyOffset == std::string::npos) {
-        if (required) {
-            throw std::runtime_error("missing JSON key: " + key);
+    std::size_t cursor = SkipWhitespace(object, 0);
+    std::size_t stop = object.size();
+    if (cursor < object.size() && object[cursor] == '{') {
+        stop = MatchingDelimiter(object, cursor, '{', '}');
+        ++cursor;
+    }
+
+    while (cursor < stop) {
+        cursor = SkipWhitespace(object, cursor);
+        if (cursor >= stop) {
+            break;
         }
-        return "";
-    }
-
-    const std::size_t colon = object.find(':', keyOffset + needle.size());
-    if (colon == std::string::npos) {
-        throw std::runtime_error("missing ':' after JSON key: " + key);
-    }
-    const std::size_t start = SkipWhitespace(object, colon + 1);
-    if (start >= object.size()) {
-        throw std::runtime_error("empty JSON value for key: " + key);
-    }
-
-    const char first = object[start];
-    if (first == '{') {
-        const auto end = MatchingDelimiter(object, start, '{', '}');
-        return object.substr(start, end - start + 1);
-    }
-    if (first == '[') {
-        const auto end = MatchingDelimiter(object, start, '[', ']');
-        return object.substr(start, end - start + 1);
-    }
-    if (first == '"') {
-        bool escaped = false;
-        for (std::size_t index = start + 1; index < object.size(); ++index) {
-            const char ch = object[index];
-            if (escaped) {
-                escaped = false;
-            } else if (ch == '\\') {
-                escaped = true;
-            } else if (ch == '"') {
-                return object.substr(start, index - start + 1);
-            }
+        if (object[cursor] == ',') {
+            ++cursor;
+            continue;
         }
-        throw std::runtime_error("unterminated JSON string for key: " + key);
+        if (object[cursor] != '"') {
+            throw std::runtime_error("expected JSON object key");
+        }
+
+        const auto keyEnd = JsonStringEnd(object, cursor);
+        const auto currentKey = ParseJsonString(object.substr(cursor, keyEnd - cursor + 1));
+        const auto colon = SkipWhitespace(object, keyEnd + 1);
+        if (colon >= object.size() || object[colon] != ':') {
+            throw std::runtime_error("missing ':' after JSON key: " + currentKey);
+        }
+
+        const auto valueStart = SkipWhitespace(object, colon + 1);
+        const auto valueEnd = JsonValueEnd(object, valueStart);
+        if (currentKey == key) {
+            return object.substr(valueStart, valueEnd - valueStart + 1);
+        }
+        cursor = valueEnd + 1;
     }
 
-    std::size_t end = start;
-    while (end < object.size() && object[end] != ',' && object[end] != '}' && object[end] != ']') {
-        ++end;
+    if (required) {
+        throw std::runtime_error("missing JSON key: " + key);
     }
-    return object.substr(start, end - start);
+    return "";
 }
 
 inline std::string ParseJsonString(const std::string& value) {

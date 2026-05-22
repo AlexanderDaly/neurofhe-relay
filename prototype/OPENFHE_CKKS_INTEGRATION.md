@@ -143,13 +143,13 @@ With the EEG-derived `--input` contract, the committed local artifact reports:
 - feature shape: `[8, 8]`
 - matrix shape: `[2, 64]`
 - active event count: `32`
-- scores: `{ "eye-closed": 0.0739801034416, "eye-open": -0.52407347656 }`
+- scores: `{ "eye-closed": 0.0739801034395, "eye-open": -0.524073476558 }`
 - classification: `eye-closed`
-- max absolute score error: `9.69524460714E-12`
+- max absolute score error: `7.21256387948E-12`
 - tolerance: `0.001`
 - classification agreement: `true`
-- local latency: `131.586833 ms` encryption, `32.918083 ms` linear scoring,
-  `9.701 ms` decryption
+- local latency: `134.964292 ms` encryption, `36.952333 ms` linear scoring,
+  `11.744583 ms` decryption
 - operation counts: `34` encryptions, `64` plaintext/scalar multiplies,
   `64` adds, `64` rescale-or-mod-reduce operations, `2` decryptions
 - parameters: CKKS, `HEStd_128_classic`, multiplicative depth `2`,
