@@ -961,8 +961,8 @@ Observed metadata:
 
 ```json
 {
-  "runId": 26277031249,
-  "jobId": 77343685817,
+  "runId": 26293465330,
+  "jobId": 77399634587,
   "checkName": "Portable validation",
   "conclusion": "failure",
   "steps": [],
@@ -973,13 +973,13 @@ Observed metadata:
 Log fetch command:
 
 ```sh
-gh run view 26277031249 --log-failed
+gh run view 26293465330 --log-failed
 ```
 
 Result:
 
 ```text
-log not found: 77343685817
+log not found: 77399634587
 ```
 
 Committed blocker artifact:

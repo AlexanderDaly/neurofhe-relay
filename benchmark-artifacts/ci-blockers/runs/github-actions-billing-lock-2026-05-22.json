@@ -1,25 +1,25 @@
 {
   "schema": "neurofhe.ciBlocker.v1",
   "artifactId": "github-actions-billing-lock-2026-05-22",
-  "generatedAt": "2026-05-22T14:23:35Z",
+  "generatedAt": "2026-05-22T20:23:09Z",
   "scope": "portable-github-actions-validation",
   "pullRequest": {
     "number": 6,
     "title": "Add portable CI and release polish docs",
     "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/6",
     "headRef": "codex/ci-release-polish",
-    "headSha": "644235ea06095a35723af25e97135ee2495894a4"
+    "headSha": "c1d3efef39f3413c221a08653fd8c07d80ff7150"
   },
   "run": {
-    "id": 26277031249,
-    "jobId": 77343685817,
+    "id": 26293465330,
+    "jobId": 77399634587,
     "workflowName": "CI",
     "checkName": "Portable validation",
     "status": "completed",
     "conclusion": "failure",
-    "startedAt": "2026-05-22T08:26:07Z",
-    "completedAt": "2026-05-22T08:26:09Z",
-    "detailsUrl": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26277031249/job/77343685817"
+    "startedAt": "2026-05-22T14:24:47Z",
+    "completedAt": "2026-05-22T14:24:49Z",
+    "detailsUrl": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26293465330/job/77399634587"
   },
   "blocker": {
     "category": "github-actions-account-billing",
@@ -28,11 +28,12 @@
     "evidence": {
       "checkRunSteps": [],
       "runnerName": "",
-      "logFetchCommand": "gh run view 26277031249 --log-failed",
-      "logFetchResult": "log not found: 77343685817"
+      "logFetchCommand": "gh run view 26293465330 --log-failed",
+      "logFetchResult": "log not found: 77399634587"
     }
   },
   "localParityValidation": {
+    "observedAt": "2026-05-22T20:23:09Z",
     "commandsRun": [
       "npm run ci",
       "npm run benchmark:artifact -- --out <tmp>/benchmark-artifacts --artifact-id ci-synthetic-smoke --generated-at 2026-05-21T00:00:00.000Z",
