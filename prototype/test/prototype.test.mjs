@@ -1,11 +1,13 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
 import {
   buildBenchmarkArtifact,
+  buildPaddingOverheadAblation,
   buildPackedVectorPlanningNotes,
   buildPrivacyModeDecision,
   buildPrivacyModeComparison,
@@ -41,6 +43,7 @@ import {
 import {
   buildOpenFheDemoContract,
   buildOpenFheRealLibraryAdapter,
+  buildOpenFheUnavailableReport,
   detectOpenFhe,
   openFheIntegrationPlan,
   validateOpenFheContract,
@@ -58,13 +61,21 @@ import {
   validateTfheRsContract,
 } from "../lib/tfhe-rs-adapter.mjs";
 import {
+  buildNmnistSmokeFixtureRecords,
   encodeNmnistEvent,
   eventsToFeatureVector,
   evaluateLinearClassifier,
   parseNmnistEvents,
+  runPlaintextCompressionSweep,
   runPlaintextEventBaseline,
   trainCentroidLinearClassifier,
 } from "../lib/nmnist.mjs";
+import {
+  buildEegEyeStateOpenFheInputContract,
+  buildEegEyeStateSmokeFixtureRows,
+  parseEegEyeStateArff,
+  runEegEyeStatePlaintextBaseline,
+} from "../lib/eeg-eye-state.mjs";
 import {
   buildSimulatedRawNeuralFrame,
   sortSpatialSpikes,
@@ -781,6 +792,29 @@ test("privacy mode benchmark compares speed against sparsity metadata protection
   assert.ok(dense.hides.includes("active positions"));
 });
 
+test("padding ablation quantifies leakage masking and operation overhead", () => {
+  const ablation = buildPaddingOverheadAblation(buildSparseEventWindow(), 2, {
+    paddedSlotCount: 32,
+  });
+  const [sparse, padded, dense] = ablation.modes;
+
+  assert.equal(ablation.schema, "neurofhe.metadataPaddingAblation.v1");
+  assert.equal(ablation.measurementBasis, "synthetic-events-v0 operation-count model");
+  assert.equal(ablation.activeEventCount, 18);
+  assert.equal(sparse.id, "public-active-neuron-positions-encrypted-features");
+  assert.equal(sparse.encryptedFeatureSlots, 18);
+  assert.equal(padded.id, "padded-sparse-batches");
+  assert.equal(padded.encryptedFeatureSlots, 32);
+  assert.equal(padded.dummySlotCount, 14);
+  assert.equal(padded.relativeScalarMultiplies, 1.78);
+  assert.equal(padded.payloadSlotIncrease, 1.78);
+  assert.ok(padded.leakageMasked.includes("exact active event count"));
+  assert.ok(padded.leakageRemaining.includes("padding bucket size"));
+  assert.equal(dense.id, "dense-encrypted-windows");
+  assert.equal(dense.relativeScalarMultiplies, 3.56);
+  assert.equal(ablation.toyRuntimeCaveat.includes("not native FHE"), true);
+});
+
 test("privacy mode decision picks one explicit comparison mode", () => {
   const eventWindow = buildSparseEventWindow();
   const defaultDecision = buildPrivacyModeDecision(eventWindow, 2);
@@ -938,6 +972,24 @@ test("OpenFHE integration plan reports build commands and local detection state"
   ]);
   assert.equal(detection.available, false);
   assert.equal(detection.reason, "OpenFHEConfig.cmake not found");
+});
+
+test("OpenFHE unavailable report records attempted commands and parameter evidence target", () => {
+  const report = buildOpenFheUnavailableReport({
+    detection: detectOpenFhe({ env: {}, roots: [] }),
+  });
+
+  assert.equal(report.schema, "neurofhe.openfhe.unavailable.v1");
+  assert.equal(report.blocker.reason, "OpenFHEConfig.cmake not found");
+  assert.deepEqual(report.attemptedCommands, [
+    "cmake -S prototype/openfhe -B build/openfhe",
+    "cmake --build build/openfhe",
+    "build/openfhe/openfhe_linear_demo",
+  ]);
+  assert.equal(report.parameterEvidence.scheme, "BFVrns");
+  assert.equal(report.parameterEvidence.securityLevelTarget, "HEStd_128_classic");
+  assert.equal(report.parameterEvidence.toyPaillierIsSecurityEvidence, false);
+  assert.ok(report.smallestNextStep.includes("Install OpenFHE"));
 });
 
 test("OpenFHE CKKS demo contract preserves approximate sparse linear scoring", () => {
@@ -1200,6 +1252,82 @@ test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {
   assert.match(source, /Decrypt/);
 });
 
+test("OpenFHE contract loader resolves duplicate keys only in the current object", async () => {
+  const compiler = spawnSync("c++", ["--version"], { encoding: "utf8" });
+  if (compiler.status !== 0) {
+    return;
+  }
+
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-openfhe-loader-"));
+  const contractPath = join(outputDir, "contract.json");
+  const sourcePath = join(outputDir, "loader_probe.cpp");
+  const binaryPath = join(outputDir, "loader_probe");
+  await writeFile(
+    contractPath,
+    `${JSON.stringify({
+      schema: "neurofhe.openfhe.inputContract.v1",
+      sourceId: "scope-regression",
+      datasetKind: "scope-regression",
+      scoreEquation: "scores = W x + bias",
+      scoreDomain: "approximate-real",
+      boundaryDomain: "bio-digital-event-intelligence",
+      eventRepresentation: "scope regression",
+      featureShape: [1, 2],
+      classes: ["a", "b"],
+      matrixShape: [2, 2],
+      activeEventCount: 1,
+      activeEvents: [{ index: 0, timeBin: 0, neuronId: 0, value: 0.25 }],
+      quantized: {
+        schema: "neurofhe.openfhe.bfvrnsFixedPointView.v1",
+        scoreDomain: "signed-fixed-point-integers",
+        fixedPointScale: 10,
+        plaintextModulus: 65537,
+        activeEvents: [{ index: 0, timeBin: 0, neuronId: 0, value: 3 }],
+        weights: { a: [10, 20], b: [30, 40] },
+        bias: { a: 50, b: 60 },
+      },
+      weights: { a: [0.1, 0.2], b: [0.3, 0.4] },
+      bias: { a: 0.5, b: 0.6 },
+      approximationTolerance: {
+        maxAbsScoreError: 0.001,
+        classificationAgreementRequired: true,
+      },
+      productionClaim: false,
+    }, null, 2)}\n`,
+    "utf8",
+  );
+  await writeFile(
+    sourcePath,
+    [
+      '#include "prototype/openfhe_contract_loader.hpp"',
+      "#include <iostream>",
+      "int main(int argc, char** argv) {",
+      "  const auto ckks = neurofhe::LoadSparseLinearContract<double>(argv[1], false);",
+      "  const auto bfv = neurofhe::LoadSparseLinearContract<int64_t>(argv[1], true);",
+      '  std::cout << ckks.weights.at("a").at(0) << " "',
+      '            << ckks.bias.at("a") << " "',
+      '            << ckks.activeEvents.at(0).value << " "',
+      '            << bfv.weights.at("a").at(0) << " "',
+      '            << bfv.bias.at("a") << " "',
+      "            << bfv.activeEvents.at(0).value << \"\\n\";",
+      "}",
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const build = spawnSync(
+    "c++",
+    ["-std=c++17", "-I", ".", sourcePath, "-o", binaryPath],
+    { cwd: process.cwd(), encoding: "utf8" },
+  );
+  assert.equal(build.status, 0, build.stderr);
+
+  const run = spawnSync(binaryPath, [contractPath], { encoding: "utf8" });
+  assert.equal(run.status, 0, run.stderr);
+  assert.equal(run.stdout.trim(), "0.1 0.5 0.25 10 50 3");
+});
+
 test("native OpenFHE CKKS source uses real CKKS OpenFHE APIs", async () => {
   const source = await readFile(
     new URL("../openfhe-ckks/openfhe_ckks_linear_demo.cpp", import.meta.url),
@@ -1327,4 +1455,182 @@ test("plaintext event baseline trains and evaluates a small linear classifier", 
   assert.deepEqual(report.featureShape, [2, 4, 4, 2]);
   assert.equal(report.metrics.accuracy, 1);
   assert.equal(report.metrics.averageActiveEvents, 1);
+});
+
+test("plaintext N-MNIST fixture baseline emits an accuracy versus compression curve", () => {
+  const fixture = buildNmnistSmokeFixtureRecords();
+  const compressionLevels = [
+    { id: "grid-1-time-1", gridSize: 1, timeBins: 1 },
+    { id: "grid-2-time-2", gridSize: 2, timeBins: 2 },
+    { id: "grid-8-time-4", gridSize: 8, timeBins: 4 },
+  ];
+  const report = runPlaintextEventBaseline({
+    trainRecords: fixture.trainRecords,
+    testRecords: fixture.testRecords,
+    options: { gridSize: 8, timeBins: 4 },
+    compressionLevels,
+  });
+  const sweep = runPlaintextCompressionSweep({
+    trainRecords: fixture.trainRecords,
+    testRecords: fixture.testRecords,
+    levels: compressionLevels,
+    referenceOptions: { gridSize: 8, timeBins: 4 },
+  });
+
+  assert.equal(fixture.source.datasetKind, "nmnist-format-smoke-fixture");
+  assert.equal(fixture.source.isRealDataset, false);
+  assert.equal(report.compressionCurve.schema, "neurofhe.plaintextCompressionCurve.v1");
+  assert.deepEqual(report.compressionCurve.levels.map((level) => level.id), [
+    "grid-1-time-1",
+    "grid-2-time-2",
+    "grid-8-time-4",
+  ]);
+  assert.equal(report.compressionCurve.levels[0].featureCount, 2);
+  assert.equal(report.compressionCurve.levels[2].featureCount, 512);
+  assert.equal(report.compressionCurve.levels[0].compressionFactorVsReference, 256);
+  assert.equal(report.compressionCurve.levels[0].accuracy, 0.5);
+  assert.equal(report.compressionCurve.levels[2].accuracy, 1);
+  assert.deepEqual(sweep.levels, report.compressionCurve.levels);
+});
+
+test("EEG Eye State ARFF parser and sparse baseline preserve real-data caveats", () => {
+  const fixture = buildEegEyeStateSmokeFixtureRows();
+  const parsed = parseEegEyeStateArff([
+    "@relation eeg-eye-state-mini",
+    "@attribute AF3 numeric",
+    "@attribute F7 numeric",
+    "@attribute F3 numeric",
+    "@attribute FC5 numeric",
+    "@attribute T7 numeric",
+    "@attribute P7 numeric",
+    "@attribute O1 numeric",
+    "@attribute O2 numeric",
+    "@attribute P8 numeric",
+    "@attribute T8 numeric",
+    "@attribute FC6 numeric",
+    "@attribute F4 numeric",
+    "@attribute F8 numeric",
+    "@attribute AF4 numeric",
+    "@attribute eyeDetection {0,1}",
+    "@data",
+    "1,2,3,4,5,6,7,8,9,10,11,12,13,14,0",
+    "2,3,4,5,6,7,8,9,10,11,12,13,14,15,1",
+  ].join("\n"));
+  const report = runEegEyeStatePlaintextBaseline({
+    rows: fixture.rows,
+    options: {
+      trainFraction: 0.7,
+      windowSize: 2,
+      stride: 2,
+      channelCount: 4,
+      activePerTimestep: 2,
+    },
+    compressionLevels: [
+      { id: "active-1-per-timestep", activePerTimestep: 1 },
+      { id: "active-2-per-timestep", activePerTimestep: 2 },
+    ],
+  });
+
+  assert.equal(parsed.length, 2);
+  assert.equal(parsed[0].label, "eye-open");
+  assert.equal(parsed[1].label, "eye-closed");
+  assert.equal(fixture.source.isRealDataset, false);
+  assert.equal(fixture.source.datasetKind, "eeg-eye-state-format-smoke-fixture");
+  assert.equal(report.schema, "neurofhe.plaintextBaseline.v1");
+  assert.equal(report.datasetKind, "public-uci-eeg-eye-state-arff");
+  assert.deepEqual(report.matrixShape, [2, 8]);
+  assert.equal(report.scoreEquation, "scores = W x + bias");
+  assert.equal(report.openFheCompatibility.ckksPath.includes("CKKS-friendly"), true);
+  assert.equal(report.privacyBoundary.productionClaim, false);
+  assert.deepEqual(report.compressionCurve.levels.map((level) => level.id), [
+    "active-1-per-timestep",
+    "active-2-per-timestep",
+  ]);
+  assert.equal(report.compressionCurve.levels[0].activeBudgetCompressionVsDense, 4);
+  assert.equal(report.compressionCurve.levels[1].activeBudgetCompressionVsDense, 2);
+});
+
+test("EEG plaintext CLI emits blocker artifacts for invalid baseline options", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-eeg-baseline-blocker-"));
+  const result = spawnSync(
+    process.execPath,
+    [
+      "prototype/plaintext-baseline.mjs",
+      "--source",
+      "eeg-eye-state",
+      "--fixture",
+      "eeg-eye-state-smoke",
+      "--train-fraction",
+      "0.01",
+      "--window-size",
+      "8",
+      "--artifact",
+      "--out",
+      outputDir,
+      "--artifact-id",
+      "eeg-invalid-options",
+      "--generated-at",
+      "2026-05-21T00:00:00.000Z",
+    ],
+    { cwd: process.cwd(), encoding: "utf8" },
+  );
+  const published = JSON.parse(result.stdout);
+  const artifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+
+  assert.equal(result.status, 2);
+  assert.equal(result.stderr, "");
+  assert.equal(published.schema, "neurofhe.plaintextBaselineArtifact.publish.v1");
+  assert.equal(artifact.subject.schema, "neurofhe.plaintextBaseline.unavailable.v1");
+  assert.equal(artifact.subject.blocker.reason, "cannot train EEG baseline without windows");
+  assert.equal(artifact.subject.blocker.trainFraction, 0.01);
+  assert.match(artifact.subject.attemptedCommand, /--fixture eeg-eye-state-smoke/);
+  assert.match(artifact.subject.smallestNextStep, /larger --train-fraction/);
+});
+
+test("EEG Eye State can emit an OpenFHE-ready sparse input contract", () => {
+  const fixture = buildEegEyeStateSmokeFixtureRows();
+  const contract = buildEegEyeStateOpenFheInputContract({
+    rows: fixture.rows,
+    sampleIndex: 0,
+    fixedPointScale: 10,
+    options: {
+      trainFraction: 0.7,
+      windowSize: 2,
+      stride: 2,
+      channelCount: 4,
+      activePerTimestep: 2,
+    },
+  });
+
+  assert.equal(contract.schema, "neurofhe.openfhe.inputContract.v1");
+  assert.equal(contract.scoreEquation, "scores = W x + bias");
+  assert.equal(contract.scoreDomain, "approximate-real");
+  assert.deepEqual(contract.featureShape, [2, 4]);
+  assert.deepEqual(contract.matrixShape, [2, 8]);
+  assert.equal(contract.activeEventCount, 4);
+  assert.equal(contract.quantized.schema, "neurofhe.openfhe.bfvrnsFixedPointView.v1");
+  assert.equal(contract.quantized.fixedPointScale, 10);
+  assert.equal(contract.quantized.activeEvents.length, contract.activeEvents.length);
+  assert.equal(contract.privacyBoundary.productionClaim, false);
+  assert.equal(contract.productionClaim, false);
+});
+
+test("EEG Eye State OpenFHE contract clamps negative sample index", () => {
+  const fixture = buildEegEyeStateSmokeFixtureRows();
+  const contract = buildEegEyeStateOpenFheInputContract({
+    rows: fixture.rows,
+    sampleIndex: -1,
+    fixedPointScale: 10,
+    options: {
+      trainFraction: 0.7,
+      windowSize: 2,
+      stride: 2,
+      channelCount: 4,
+      activePerTimestep: 2,
+    },
+  });
+
+  assert.equal(contract.sample.sampleIndex, 0);
+  assert.equal(contract.sample.split, "chronological-test");
+  assert.equal(contract.activeEventCount, 4);
 });

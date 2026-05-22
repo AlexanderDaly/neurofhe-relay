@@ -18,7 +18,9 @@ integration target, not a production security claim.
 
 - `lib/openfhe-adapter.mjs` - JS-side contract builder, validation, contract-bound real-library adapter manifest, local OpenFHE detection, and build-plan output.
 - `openfhe/CMakeLists.txt` - CMake target using `find_package(OpenFHE CONFIG REQUIRED)`.
-- `openfhe/openfhe_linear_demo.cpp` - BFVrns integer sorted-event demo using OpenFHE `Encrypt`, `EvalMult`, `EvalAdd`, and `Decrypt`.
+- `openfhe/openfhe_linear_demo.cpp` - BFVrns integer sorted-event demo using OpenFHE `Encrypt`, `EvalMult`, `EvalAdd`, and `Decrypt`; accepts optional `--input <json>` generated sparse contracts.
+- `openfhe_contract_loader.hpp` - shared C++ loader for the generated sparse linear input contract.
+- `openfhe-realdata-contract.mjs` - UCI EEG Eye State to OpenFHE BFVrns/CKKS input-contract publisher.
 - `openfhe-benchmark.mjs` - CLI runner for printing the plan, writing adapter comparison artifacts, or building/running the native target.
 
 ## Adapter Contract
@@ -63,12 +65,21 @@ installed:
 npm run benchmark:openfhe -- --run --artifact
 ```
 
+Generate the EEG-derived single-window OpenFHE input contract and run BFVrns on
+the fixed-point view:
+
+```sh
+npm run contract:eeg-openfhe
+npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
+```
+
 Equivalent native commands:
 
 ```sh
 cmake -S prototype/openfhe -B build/openfhe
 cmake --build build/openfhe
 build/openfhe/openfhe_linear_demo
+build/openfhe/openfhe_linear_demo --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json
 ```
 
 If OpenFHE is installed in a non-standard location, set `OpenFHE_DIR` to the
@@ -96,7 +107,8 @@ sparsity metadata must be hidden and the higher encrypted workload is acceptable
 
 ## Expected Native Output
 
-The native executable emits `neurofhe.openfhe.result.v1` JSON with:
+Without `--input`, the native executable emits `neurofhe.openfhe.result.v1` JSON
+for the embedded synthetic contract with:
 
 - scheme: `openfhe-bfvrns`
 - event representation: `spatial-sorted-events`
@@ -108,11 +120,27 @@ The native executable emits `neurofhe.openfhe.result.v1` JSON with:
 - operation counts: `20` encryptions, `36` scalar/plaintext multiplies, `36` adds, `2` decryptions
 - production claim: `false`
 
+With the EEG-derived `--input` contract, the committed local artifact reports:
+
+- input source: `external-contract`
+- dataset kind: `public-uci-eeg-eye-state-arff`
+- feature shape: `[8, 8]`
+- matrix shape: `[2, 64]`
+- active event count: `32`
+- fixed-point scale: `10`
+- scores: `{ "eye-closed": 21, "eye-open": -44 }`
+- classification: `eye-closed`
+- plaintext match: `true`
+- operation counts: `34` encryptions, `64` scalar/plaintext multiplies, `64` adds, `2` decryptions
+- parameters: BFVrns, `HEStd_128_classic`, plaintext modulus `65537`, multiplicative depth `1`, batch size `1`
+
 ## Local Status
 
 This repository can validate the OpenFHE contract and native source markers
 without bundling OpenFHE. Actual BFVrns execution requires a local OpenFHE
-install discoverable by CMake.
+install discoverable by CMake. The committed real-data-derived BFVrns artifact
+was produced on this laptop with local OpenFHE available; reproduce it with the
+commands above.
 
 Primary implementation references:
 

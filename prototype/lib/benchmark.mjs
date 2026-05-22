@@ -457,6 +457,88 @@ export function buildPrivacyModeComparison(eventWindow, classCount, options = {}
   };
 }
 
+export function buildPaddingOverheadAblation(
+  source = buildSparseEventWindow(),
+  classCount = 2,
+  options = {},
+) {
+  const metrics = planningMetricsFromSource(source);
+  const activeEventCount = metrics.activeEventCount;
+  const featureCount = metrics.featureCount;
+  const paddedSlotCount = Math.max(
+    activeEventCount,
+    options.paddedSlotCount ?? nextPowerOfTwo(Math.max(activeEventCount, 1)),
+  );
+  const sparseOps = operationCountsForSlots(activeEventCount, classCount);
+  const paddedOps = operationCountsForSlots(paddedSlotCount, classCount);
+  const denseOps = operationCountsForSlots(featureCount, classCount);
+
+  return {
+    schema: "neurofhe.metadataPaddingAblation.v1",
+    measurementBasis: "synthetic-events-v0 operation-count model",
+    scoreEquation: "scores = W x + bias",
+    featureCount,
+    activeEventCount,
+    classCount,
+    modes: [
+      {
+        id: "public-active-neuron-positions-encrypted-features",
+        encryptedFeatureSlots: activeEventCount,
+        dummySlotCount: 0,
+        operationCounts: sparseOps,
+        relativeScalarMultiplies: 1,
+        payloadSlotIncrease: 1,
+        leakageMasked: ["active feature values", "final class scores until client decrypts"],
+        leakageRemaining: [
+          "exact active event count",
+          "active neuron identity and time-bin pattern",
+          "coarse spatial activity",
+          "timing/sparsity metadata",
+        ],
+      },
+      {
+        id: "padded-sparse-batches",
+        encryptedFeatureSlots: paddedSlotCount,
+        dummySlotCount: paddedSlotCount - activeEventCount,
+        operationCounts: paddedOps,
+        relativeScalarMultiplies: relative(paddedOps.scalarMultiplies, sparseOps.scalarMultiplies),
+        payloadSlotIncrease: relative(paddedSlotCount, activeEventCount),
+        leakageMasked: [
+          "exact active event count",
+          "which padded slots are dummy zeros",
+          "exact sparse workload size inside the padding bucket",
+        ],
+        leakageRemaining: [
+          "padding bucket size",
+          "public or cover active-position policy",
+          "coarse timing/sparsity metadata",
+          "public model shape",
+        ],
+      },
+      {
+        id: "dense-encrypted-windows",
+        encryptedFeatureSlots: featureCount,
+        dummySlotCount: featureCount - activeEventCount,
+        operationCounts: denseOps,
+        relativeScalarMultiplies: relative(denseOps.scalarMultiplies, sparseOps.scalarMultiplies),
+        payloadSlotIncrease: relative(featureCount, activeEventCount),
+        leakageMasked: [
+          "active event count",
+          "active positions",
+          "dummy-versus-real slots",
+          "event-count sparsity",
+        ],
+        leakageRemaining: ["fixed window shape", "public model shape"],
+      },
+    ],
+    interpretation:
+      "Padding reduces exact sparse workload leakage by spending extra encrypted slots and multiplies. It does not make the toy arithmetic secure and it does not hide all metadata.",
+    toyRuntimeCaveat:
+      "Any JavaScript runtime attached to this report is not native FHE performance; use OpenFHE or TFHE-rs run artifacts for cryptographic-library timing.",
+    productionClaim: false,
+  };
+}
+
 export function buildPublicActiveNeuronPrivacyMode(activeEventCount, classCount) {
   return {
     id: "public-active-neuron-positions-encrypted-features",
@@ -855,6 +937,10 @@ function nextPowerOfTwo(value) {
   let power = 1;
   while (power < value) power *= 2;
   return power;
+}
+
+function relative(numerator, denominator) {
+  return Number((numerator / (denominator || 1)).toFixed(2));
 }
 
 function now() {

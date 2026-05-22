@@ -1,33 +1,34 @@
 {
   "schema": "neurofhe.comparisonArtifact.v1",
-  "artifactId": "openfhe-bfvrns-eeg-eye-state-2026-05-21",
-  "generatedAt": "2026-05-21T18:22:00.000Z",
-  "subjectSchema": "neurofhe.openfhe.runComparison.v1",
+  "artifactId": "openfhe-ckks-native-2026-05-21",
+  "generatedAt": "2026-05-21T16:46:00.000Z",
+  "subjectSchema": "neurofhe.openfheCkks.runComparison.v1",
   "subject": {
-    "schema": "neurofhe.openfhe.runComparison.v1",
+    "schema": "neurofhe.openfheCkks.runComparison.v1",
     "adapter": {
       "schema": "neurofhe.realLibraryAdapter.v1",
-      "adapterId": "openfhe-bfvrns-sparse-linear-v1",
+      "adapterId": "openfhe-ckks-sparse-approx-linear-v1",
       "library": {
         "name": "OpenFHE",
-        "scheme": "BFVrns",
-        "role": "real-library encrypted integer scoring adapter",
+        "scheme": "CKKS",
+        "role": "real-library encrypted approximate-real scoring adapter",
         "requiredForNativeRun": true
       },
-      "nativeTarget": "openfhe_linear_demo",
+      "nativeTarget": "openfhe_ckks_linear_demo",
       "contractDigest": {
         "algorithm": "sha256",
-        "value": "590326522ae1f7afa1e8911c1ac6d51e84f69d62b676e621aa6d1b30a6a25bfe"
+        "value": "fea40538cf767e7e954dd7be31c0dfef902e996be5e551f9b03832d25edaf561"
       },
       "contractValidation": {
         "status": "valid",
         "errors": []
       },
       "contract": {
-        "schema": "neurofhe.openfhe.contract.v1",
-        "scheme": "openfhe-bfvrns",
+        "schema": "neurofhe.openfheCkks.contract.v1",
+        "scheme": "openfhe-ckks",
         "scoreEquation": "scores = W x + bias",
-        "scoreDomain": "non-negative-integers",
+        "scoreDomain": "approximate-real",
+        "featureValueDomain": "approximate-real-neural-features",
         "boundaryDomain": "bio-digital-event-intelligence",
         "eventRepresentation": "spatial-sorted-events",
         "encoder": {
@@ -66,7 +67,9 @@
           "operationCounts": {
             "encryptions": 20,
             "scalarMultiplies": 36,
+            "plaintextMultiplies": 36,
             "adds": 36,
+            "rescaleOrModReduceOps": 36,
             "decryptions": 2
           },
           "metadataLeakage": [
@@ -82,7 +85,7 @@
             "final class scores until client decrypts"
           ],
           "reconstructionResistance": "prevents raw sample replay or value inspection by the compute provider, but does not hide public position metadata",
-          "notes": "OpenFHE BFVrns target mode for sparse sorted-event scoring; use only where public active neuron metadata is acceptable."
+          "notes": "OpenFHE CKKS target mode for sparse approximate neural/ML feature scoring; use only where public active neuron metadata is acceptable."
         },
         "featureShape": [
           8,
@@ -443,11 +446,138 @@
           "anomaly": 51
         },
         "expectedClassification": "anomaly",
+        "approximationTolerance": {
+          "maxAbsScoreError": 0.001,
+          "classificationAgreementRequired": true,
+          "note": "CKKS scores are approximate; classification claims require the score margin to exceed measured drift."
+        },
+        "ckksParameters": {
+          "schema": "neurofhe.openfheCkks.parameters.v1",
+          "multiplicativeDepth": 2,
+          "scalingModSize": 50,
+          "firstModSize": 60,
+          "batchSize": 64,
+          "securityLevel": "HEStd_128_classic",
+          "rescalingTechnique": "FLEXIBLEAUTO",
+          "scalingTechnique": "FLEXIBLEAUTO",
+          "defaultMode": "leveled-no-bootstrap",
+          "bootstrapping": {
+            "supported": true,
+            "enabledByDefault": false,
+            "intendedUse": "deeper approximate feature pipelines after W x + b; the included demo stays shallow and leveled",
+            "setupCalls": [
+              "EvalBootstrapSetup",
+              "EvalBootstrapKeyGen"
+            ]
+          }
+        },
+        "operationCounts": {
+          "encryptions": 20,
+          "scalarMultiplies": 36,
+          "plaintextMultiplies": 36,
+          "adds": 36,
+          "rescaleOrModReduceOps": 36,
+          "decryptions": 2
+        },
+        "ciphertextBytes": {
+          "measurement": "reported by native OpenFHE CKKS run when OpenFHE serialization is enabled",
+          "expectedFields": [
+            "activeValueCiphertexts",
+            "classScoreCiphertexts"
+          ]
+        },
+        "securityParameters": {
+          "schema": "neurofhe.securityParameters.v1",
+          "scheme": "openfhe-ckks",
+          "library": "OpenFHE",
+          "securityLevel": "HEStd_128_classic",
+          "multiplicativeDepth": 2,
+          "scalingModSize": 50,
+          "firstModSize": 60,
+          "batchSize": 64,
+          "securityModel": "Targets OpenFHE HEStd_128_classic parameters for a shallow approximate scoring demo; no independent security review or side-channel hardening.",
+          "reproducibility": "Synthetic event/model data are deterministic. Cryptographic key generation uses runtime randomness and is intentionally not fixed by the demo seed.",
+          "productionClaim": false
+        },
+        "cryptoInventory": {
+          "schema": "neurofhe.crypto.inventory.v1",
+          "keyEstablishment": [
+            "ML-KEM-768-design-target"
+          ],
+          "signatures": [
+            "ML-DSA-65-design-target",
+            "SLH-DSA-design-target"
+          ],
+          "encryptedComputation": [
+            "openfhe-ckks-approximate-real-research-only",
+            "openfhe-bfvrns-integer-default-lane",
+            "tfhe-rs-threshold-comparison-lane"
+          ],
+          "hashes": [
+            "SHA3-256-design-target",
+            "BLAKE3-design-target"
+          ],
+          "classicalFallbacks": [
+            "X25519-design-target",
+            "Ed25519-design-target"
+          ],
+          "openFheCkks": {
+            "library": "OpenFHE",
+            "scheme": "CKKS",
+            "role": "approximate real-number encrypted sparse scoring for neural/ML feature values",
+            "securityLevel": "HEStd_128_classic",
+            "scalingTechnique": "FLEXIBLEAUTO",
+            "defaultMode": "leveled-no-bootstrap",
+            "bootstrappingMode": "supported as an optional OpenFHE CKKS configuration path, but not needed for the shallow W x + b demo"
+          },
+          "hybridMode": true,
+          "productionClaim": false,
+          "notes": "Inventory names research roles and comparison lanes. The CKKS path is approximate and has not had implementation or side-channel review."
+        },
+        "privacyBoundary": {
+          "schema": "neurofhe.openfheCkks.privacyBoundary.v1",
+          "gatewaySees": [
+            "raw neural-like samples before export",
+            "sorted event window",
+            "active approximate feature values before encryption",
+            "active event positions",
+            "sorter configuration summary"
+          ],
+          "computeSees": [
+            "approved active event positions",
+            "public model weights",
+            "public model bias",
+            "encrypted CKKS active feature values",
+            "encrypted CKKS approximate class scores"
+          ],
+          "clientSees": [
+            "decrypted approximate class scores",
+            "score error report against plaintext baseline for synthetic demos",
+            "final classification"
+          ],
+          "withheld": [
+            "raw neural samples",
+            "raw electrode identifiers",
+            "raw sample timestamp order",
+            "device identifiers",
+            "local subject or session references",
+            "operator notes"
+          ],
+          "residualRisks": [
+            "public active positions leak spatial and timing metadata",
+            "event-count sparsity leaks workload size unless padded",
+            "model weights and bias are public in this prototype",
+            "CKKS approximate arithmetic introduces score drift",
+            "encrypted comparison or argmax is not included in the shallow CKKS demo",
+            "side-channel and deployment hardening are out of scope"
+          ],
+          "productionClaim": false
+        },
         "productionClaim": false
       },
       "exactContractAssertions": {
         "scoreEquation": "scores = W x + bias",
-        "scoreDomain": "non-negative-integers",
+        "scoreDomain": "approximate-real",
         "featureShape": [
           8,
           8
@@ -464,7 +594,57 @@
           "normal": 9,
           "anomaly": 51
         },
-        "expectedClassification": "anomaly"
+        "expectedClassification": "anomaly",
+        "approximationTolerance": {
+          "maxAbsScoreError": 0.001,
+          "classificationAgreementRequired": true,
+          "note": "CKKS scores are approximate; classification claims require the score margin to exceed measured drift."
+        }
+      },
+      "ckksVsBfvTfheComparison": {
+        "schema": "neurofhe.cryptoLaneComparison.v1",
+        "sameTask": true,
+        "scoreEquation": "scores = W x + bias",
+        "eventRepresentation": "spatial-sorted-events",
+        "featureShape": [
+          8,
+          8
+        ],
+        "activeEventCount": 18,
+        "expectedPlaintextScores": {
+          "normal": 9,
+          "anomaly": 51
+        },
+        "expectedClassification": "anomaly",
+        "bfvBestFor": [
+          "exact integer spike counts",
+          "packed finite-field-style arithmetic",
+          "default reproducible sparse linear scorer"
+        ],
+        "ckksBestFor": [
+          "approximate neural or ML feature scoring",
+          "real-valued amplitudes, normalized features, or centroids",
+          "shallow arithmetic where small score drift is acceptable"
+        ],
+        "tfheBestFor": [
+          "threshold gates",
+          "Boolean or decision-tree-style sparse logic",
+          "LUT-heavy post-processing after spike sorting"
+        ],
+        "measurementFields": [
+          "encryptionLatencyMs",
+          "linearScoringLatencyMs",
+          "decryptionLatencyMs",
+          "ciphertextBytes",
+          "maxAbsScoreError",
+          "classificationAgreement"
+        ],
+        "caveats": [
+          "CKKS is approximate and should be judged by score drift plus classification margin",
+          "the included CKKS demo does not implement encrypted argmax",
+          "native OpenFHE measurements should replace JS planning estimates before performance claims"
+        ],
+        "productionClaim": false
       },
       "privacyModeDecision": {
         "schema": "neurofhe.privacyModeDecision.v1",
@@ -604,51 +784,20 @@
         "available": true,
         "cmakeConfigDir": "/opt/homebrew/lib/cmake/OpenFHE"
       },
-      "sourcePath": "prototype/openfhe/openfhe_linear_demo.cpp",
-      "cmakePath": "prototype/openfhe/CMakeLists.txt",
-      "buildDirectory": "build/openfhe",
-      "runContract": "The native target must preserve this generated contract: public model metadata, public or padded active-position policy, encrypted active feature values, and client-side score decryption.",
-      "productionClaim": false
-    },
-    "inputContractPath": "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json",
-    "inputContract": {
-      "schema": "neurofhe.openfheInputContract.summary.v1",
-      "path": "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json",
-      "view": "bfvrns",
-      "digest": {
-        "algorithm": "sha256",
-        "value": "e36c2a35cf86e7c90ca2a3e261fbcbeea77f7b7b99abdfec66f512c64649ce59"
-      },
-      "contractSchema": "neurofhe.openfhe.inputContract.v1",
-      "datasetKind": "public-uci-eeg-eye-state-arff",
-      "scoreEquation": "scores = W x + bias",
-      "scoreDomain": "signed-fixed-point-integers",
-      "featureShape": [
-        8,
-        8
-      ],
-      "matrixShape": [
-        2,
-        64
-      ],
-      "activeEventCount": 32,
-      "classes": [
-        "eye-closed",
-        "eye-open"
-      ],
-      "expectedClassification": "eye-closed",
+      "sourcePath": "prototype/openfhe-ckks/openfhe_ckks_linear_demo.cpp",
+      "cmakePath": "prototype/openfhe-ckks/CMakeLists.txt",
+      "buildDirectory": "build/openfhe-ckks",
+      "runContract": "The native target must preserve public model metadata, public or padded active-position policy, encrypted approximate active feature values, CKKS class-score ciphertexts, and client-side score decryption with tolerance reporting.",
       "productionClaim": false
     },
     "nativeResult": {
-      "schema": "neurofhe.openfhe.result.v1",
-      "scheme": "openfhe-bfvrns",
+      "schema": "neurofhe.openfheCkks.result.v1",
+      "scheme": "openfhe-ckks",
       "scoreEquation": "scores = W x + bias",
-      "inputSource": "external-contract",
-      "inputContractPath": "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json",
-      "datasetKind": "public-uci-eeg-eye-state-arff",
-      "fixedPointScale": 10,
+      "scoreDomain": "approximate-real",
+      "featureValueDomain": "approximate-real-neural-features",
       "boundaryDomain": "bio-digital-event-intelligence",
-      "eventRepresentation": "public active positions plus signed z-score active values derived from chronological EEG windows",
+      "eventRepresentation": "spatial-sorted-events",
       "encoder": {
         "id": "canonical-spatial-aware-spike-sorter-v1",
         "schema": "neurofhe.encoder.spatialSpikeSorter.v1",
@@ -674,6 +823,19 @@
           "coarse spatial activity"
         ]
       },
+      "ckksParameters": {
+        "multiplicativeDepth": 2,
+        "scalingModSize": 50,
+        "firstModSize": 60,
+        "batchSize": 64,
+        "securityLevel": "HEStd_128_classic",
+        "rescalingTechnique": "FLEXIBLEAUTO",
+        "defaultMode": "leveled-no-bootstrap",
+        "bootstrapping": {
+          "supported": true,
+          "enabled": false
+        }
+      },
       "eventSchema": "neurofhe.events.v1.spatial-sorter",
       "encoding": "spatial-binned-spike-count",
       "featureShape": [
@@ -685,18 +847,11 @@
         64
       ],
       "spatialBins": [
-        8,
-        1
+        4,
+        2
       ],
-      "activeEventCount": 32,
+      "activeEventCount": 18,
       "activeNeuronPositions": [
-        {
-          "index": 0,
-          "timeBin": 0,
-          "neuronId": 0,
-          "unitX": 0,
-          "unitY": 0
-        },
         {
           "index": 1,
           "timeBin": 0,
@@ -705,18 +860,11 @@
           "unitY": 0
         },
         {
-          "index": 2,
-          "timeBin": 0,
-          "neuronId": 2,
-          "unitX": 2,
-          "unitY": 0
-        },
-        {
           "index": 4,
           "timeBin": 0,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
           "index": 9,
@@ -726,60 +874,32 @@
           "unitY": 0
         },
         {
-          "index": 10,
+          "index": 11,
           "timeBin": 1,
-          "neuronId": 2,
-          "unitX": 2,
+          "neuronId": 3,
+          "unitX": 3,
           "unitY": 0
         },
         {
           "index": 12,
           "timeBin": 1,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
-          "index": 15,
-          "timeBin": 1,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
-        },
-        {
-          "index": 17,
+          "index": 19,
           "timeBin": 2,
-          "neuronId": 1,
-          "unitX": 1,
-          "unitY": 0
-        },
-        {
-          "index": 18,
-          "timeBin": 2,
-          "neuronId": 2,
-          "unitX": 2,
+          "neuronId": 3,
+          "unitX": 3,
           "unitY": 0
         },
         {
           "index": 20,
           "timeBin": 2,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
-        },
-        {
-          "index": 23,
-          "timeBin": 2,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
-        },
-        {
-          "index": 25,
-          "timeBin": 3,
-          "neuronId": 1,
-          "unitX": 1,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
           "index": 26,
@@ -789,25 +909,18 @@
           "unitY": 0
         },
         {
+          "index": 27,
+          "timeBin": 3,
+          "neuronId": 3,
+          "unitX": 3,
+          "unitY": 0
+        },
+        {
           "index": 28,
           "timeBin": 3,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
-        },
-        {
-          "index": 31,
-          "timeBin": 3,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
-        },
-        {
-          "index": 33,
-          "timeBin": 4,
-          "neuronId": 1,
-          "unitX": 1,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
           "index": 34,
@@ -820,131 +933,94 @@
           "index": 36,
           "timeBin": 4,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
-          "index": 39,
+          "index": 37,
           "timeBin": 4,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
-        },
-        {
-          "index": 41,
-          "timeBin": 5,
-          "neuronId": 1,
+          "neuronId": 5,
           "unitX": 1,
-          "unitY": 0
-        },
-        {
-          "index": 42,
-          "timeBin": 5,
-          "neuronId": 2,
-          "unitX": 2,
-          "unitY": 0
+          "unitY": 1
         },
         {
           "index": 44,
           "timeBin": 5,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
-        },
-        {
-          "index": 47,
-          "timeBin": 5,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
-        },
-        {
-          "index": 48,
-          "timeBin": 6,
-          "neuronId": 0,
           "unitX": 0,
-          "unitY": 0
+          "unitY": 1
         },
         {
-          "index": 49,
-          "timeBin": 6,
-          "neuronId": 1,
+          "index": 45,
+          "timeBin": 5,
+          "neuronId": 5,
           "unitX": 1,
-          "unitY": 0
-        },
-        {
-          "index": 50,
-          "timeBin": 6,
-          "neuronId": 2,
-          "unitX": 2,
-          "unitY": 0
+          "unitY": 1
         },
         {
           "index": 52,
           "timeBin": 6,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
-          "index": 57,
-          "timeBin": 7,
-          "neuronId": 1,
-          "unitX": 1,
-          "unitY": 0
-        },
-        {
-          "index": 58,
-          "timeBin": 7,
-          "neuronId": 2,
+          "index": 54,
+          "timeBin": 6,
+          "neuronId": 6,
           "unitX": 2,
-          "unitY": 0
+          "unitY": 1
         },
         {
-          "index": 60,
+          "index": 62,
           "timeBin": 7,
-          "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
-        },
-        {
-          "index": 63,
-          "timeBin": 7,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
+          "neuronId": 6,
+          "unitX": 2,
+          "unitY": 1
         }
       ],
       "scores": {
-        "eye-closed": 21,
-        "eye-open": -44
+        "anomaly": 50.9999999999,
+        "normal": 8.99999999999
       },
-      "classification": "eye-closed",
+      "classification": "anomaly",
       "expectedScores": {
-        "eye-closed": 21,
-        "eye-open": -44
+        "anomaly": 51,
+        "normal": 9
       },
-      "expectedClassification": "eye-closed",
-      "plaintextMatchesExpected": true,
-      "parameterEvidence": {
-        "scheme": "BFVrns",
-        "securityLevelTarget": "HEStd_128_classic",
-        "plaintextModulus": 65537,
-        "multiplicativeDepth": 1,
-        "batchSize": 1,
-        "evalMultKeyGenerated": true,
-        "ciphertextCiphertextMultiplications": 0,
-        "relinearizationRequired": false,
-        "noiseBudget": "not reported by this portable demo"
+      "expectedClassification": "anomaly",
+      "precision": {
+        "maxAbsScoreError": 5.35607114216e-11,
+        "tolerance": 0.001,
+        "withinTolerance": true,
+        "classificationAgreement": true
+      },
+      "thresholdDecision": {
+        "mode": "client-side-after-decrypt",
+        "gate": "anomaly_score_gt_normal_score",
+        "expectedPlaintext": true,
+        "encryptedComparisonImplemented": false
+      },
+      "latencyMs": {
+        "encryption": 72.845167,
+        "linearScoring": 22.277708,
+        "decryption": 10.348916
+      },
+      "memoryUsage": {
+        "ciphertextCount": 20,
+        "serializedCiphertextBytes": null,
+        "measurement": "portable demo reports ciphertext count; enable OpenFHE serialization for exact byte sizes"
       },
       "operationCounts": {
-        "encryptions": 34,
-        "scalarMultiplies": 64,
-        "adds": 64,
+        "encryptions": 20,
+        "scalarMultiplies": 36,
+        "plaintextMultiplies": 36,
+        "adds": 36,
+        "rescaleOrModReduceOps": 36,
         "decryptions": 2
       },
       "productionClaim": false,
-      "caveat": "Prototype BFVrns integer demo; parameters are for integration validation, not a production security claim."
+      "caveat": "Prototype OpenFHE CKKS approximate-real demo; parameters are for integration validation, not a production security claim."
     },
     "productionClaim": false
   },

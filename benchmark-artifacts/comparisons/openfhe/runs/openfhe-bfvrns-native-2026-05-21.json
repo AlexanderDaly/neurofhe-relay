@@ -1,7 +1,7 @@
 {
   "schema": "neurofhe.comparisonArtifact.v1",
-  "artifactId": "openfhe-bfvrns-eeg-eye-state-2026-05-21",
-  "generatedAt": "2026-05-21T18:22:00.000Z",
+  "artifactId": "openfhe-bfvrns-native-2026-05-21",
+  "generatedAt": "2026-05-21T16:45:00.000Z",
   "subjectSchema": "neurofhe.openfhe.runComparison.v1",
   "subject": {
     "schema": "neurofhe.openfhe.runComparison.v1",
@@ -610,45 +610,12 @@
       "runContract": "The native target must preserve this generated contract: public model metadata, public or padded active-position policy, encrypted active feature values, and client-side score decryption.",
       "productionClaim": false
     },
-    "inputContractPath": "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json",
-    "inputContract": {
-      "schema": "neurofhe.openfheInputContract.summary.v1",
-      "path": "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json",
-      "view": "bfvrns",
-      "digest": {
-        "algorithm": "sha256",
-        "value": "e36c2a35cf86e7c90ca2a3e261fbcbeea77f7b7b99abdfec66f512c64649ce59"
-      },
-      "contractSchema": "neurofhe.openfhe.inputContract.v1",
-      "datasetKind": "public-uci-eeg-eye-state-arff",
-      "scoreEquation": "scores = W x + bias",
-      "scoreDomain": "signed-fixed-point-integers",
-      "featureShape": [
-        8,
-        8
-      ],
-      "matrixShape": [
-        2,
-        64
-      ],
-      "activeEventCount": 32,
-      "classes": [
-        "eye-closed",
-        "eye-open"
-      ],
-      "expectedClassification": "eye-closed",
-      "productionClaim": false
-    },
     "nativeResult": {
       "schema": "neurofhe.openfhe.result.v1",
       "scheme": "openfhe-bfvrns",
       "scoreEquation": "scores = W x + bias",
-      "inputSource": "external-contract",
-      "inputContractPath": "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json",
-      "datasetKind": "public-uci-eeg-eye-state-arff",
-      "fixedPointScale": 10,
       "boundaryDomain": "bio-digital-event-intelligence",
-      "eventRepresentation": "public active positions plus signed z-score active values derived from chronological EEG windows",
+      "eventRepresentation": "spatial-sorted-events",
       "encoder": {
         "id": "canonical-spatial-aware-spike-sorter-v1",
         "schema": "neurofhe.encoder.spatialSpikeSorter.v1",
@@ -680,23 +647,12 @@
         8,
         8
       ],
-      "matrixShape": [
-        2,
-        64
-      ],
       "spatialBins": [
-        8,
-        1
+        4,
+        2
       ],
-      "activeEventCount": 32,
+      "activeEventCount": 18,
       "activeNeuronPositions": [
-        {
-          "index": 0,
-          "timeBin": 0,
-          "neuronId": 0,
-          "unitX": 0,
-          "unitY": 0
-        },
         {
           "index": 1,
           "timeBin": 0,
@@ -705,18 +661,11 @@
           "unitY": 0
         },
         {
-          "index": 2,
-          "timeBin": 0,
-          "neuronId": 2,
-          "unitX": 2,
-          "unitY": 0
-        },
-        {
           "index": 4,
           "timeBin": 0,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
           "index": 9,
@@ -726,60 +675,32 @@
           "unitY": 0
         },
         {
-          "index": 10,
+          "index": 11,
           "timeBin": 1,
-          "neuronId": 2,
-          "unitX": 2,
+          "neuronId": 3,
+          "unitX": 3,
           "unitY": 0
         },
         {
           "index": 12,
           "timeBin": 1,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
-          "index": 15,
-          "timeBin": 1,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
-        },
-        {
-          "index": 17,
+          "index": 19,
           "timeBin": 2,
-          "neuronId": 1,
-          "unitX": 1,
-          "unitY": 0
-        },
-        {
-          "index": 18,
-          "timeBin": 2,
-          "neuronId": 2,
-          "unitX": 2,
+          "neuronId": 3,
+          "unitX": 3,
           "unitY": 0
         },
         {
           "index": 20,
           "timeBin": 2,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
-        },
-        {
-          "index": 23,
-          "timeBin": 2,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
-        },
-        {
-          "index": 25,
-          "timeBin": 3,
-          "neuronId": 1,
-          "unitX": 1,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
           "index": 26,
@@ -789,25 +710,18 @@
           "unitY": 0
         },
         {
+          "index": 27,
+          "timeBin": 3,
+          "neuronId": 3,
+          "unitX": 3,
+          "unitY": 0
+        },
+        {
           "index": 28,
           "timeBin": 3,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
-        },
-        {
-          "index": 31,
-          "timeBin": 3,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
-        },
-        {
-          "index": 33,
-          "timeBin": 4,
-          "neuronId": 1,
-          "unitX": 1,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
           "index": 34,
@@ -820,111 +734,62 @@
           "index": 36,
           "timeBin": 4,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
-          "index": 39,
+          "index": 37,
           "timeBin": 4,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
-        },
-        {
-          "index": 41,
-          "timeBin": 5,
-          "neuronId": 1,
+          "neuronId": 5,
           "unitX": 1,
-          "unitY": 0
-        },
-        {
-          "index": 42,
-          "timeBin": 5,
-          "neuronId": 2,
-          "unitX": 2,
-          "unitY": 0
+          "unitY": 1
         },
         {
           "index": 44,
           "timeBin": 5,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
-        },
-        {
-          "index": 47,
-          "timeBin": 5,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
-        },
-        {
-          "index": 48,
-          "timeBin": 6,
-          "neuronId": 0,
           "unitX": 0,
-          "unitY": 0
+          "unitY": 1
         },
         {
-          "index": 49,
-          "timeBin": 6,
-          "neuronId": 1,
+          "index": 45,
+          "timeBin": 5,
+          "neuronId": 5,
           "unitX": 1,
-          "unitY": 0
-        },
-        {
-          "index": 50,
-          "timeBin": 6,
-          "neuronId": 2,
-          "unitX": 2,
-          "unitY": 0
+          "unitY": 1
         },
         {
           "index": 52,
           "timeBin": 6,
           "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
+          "unitX": 0,
+          "unitY": 1
         },
         {
-          "index": 57,
-          "timeBin": 7,
-          "neuronId": 1,
-          "unitX": 1,
-          "unitY": 0
-        },
-        {
-          "index": 58,
-          "timeBin": 7,
-          "neuronId": 2,
+          "index": 54,
+          "timeBin": 6,
+          "neuronId": 6,
           "unitX": 2,
-          "unitY": 0
+          "unitY": 1
         },
         {
-          "index": 60,
+          "index": 62,
           "timeBin": 7,
-          "neuronId": 4,
-          "unitX": 4,
-          "unitY": 0
-        },
-        {
-          "index": 63,
-          "timeBin": 7,
-          "neuronId": 7,
-          "unitX": 7,
-          "unitY": 0
+          "neuronId": 6,
+          "unitX": 2,
+          "unitY": 1
         }
       ],
       "scores": {
-        "eye-closed": 21,
-        "eye-open": -44
+        "anomaly": 51,
+        "normal": 9
       },
-      "classification": "eye-closed",
+      "classification": "anomaly",
       "expectedScores": {
-        "eye-closed": 21,
-        "eye-open": -44
+        "anomaly": 51,
+        "normal": 9
       },
-      "expectedClassification": "eye-closed",
+      "expectedClassification": "anomaly",
       "plaintextMatchesExpected": true,
       "parameterEvidence": {
         "scheme": "BFVrns",
@@ -938,9 +803,9 @@
         "noiseBudget": "not reported by this portable demo"
       },
       "operationCounts": {
-        "encryptions": 34,
-        "scalarMultiplies": 64,
-        "adds": 64,
+        "encryptions": 20,
+        "scalarMultiplies": 36,
+        "adds": 36,
         "decryptions": 2
       },
       "productionClaim": false,

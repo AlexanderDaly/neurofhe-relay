@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: CC0-1.0
 
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 
 import { publishComparisonArtifact } from "./lib/artifacts.mjs";
 import {
@@ -15,6 +17,7 @@ const shouldPublishArtifact = args.has("--artifact") || args.has("--publish");
 const outputDir = readOption(rawArgs, "--out") ?? "benchmark-artifacts/comparisons/openfhe-ckks";
 const artifactId = readOption(rawArgs, "--artifact-id");
 const generatedAt = readOption(rawArgs, "--generated-at");
+const inputPath = readOption(rawArgs, "--input");
 
 if (args.has("--help")) {
   console.log([
@@ -23,12 +26,14 @@ if (args.has("--help")) {
     "  npm run benchmark:openfhe-ckks -- --adapter",
     "  npm run benchmark:openfhe-ckks -- --artifact",
     "  npm run benchmark:openfhe-ckks -- --run",
+    "  npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json",
     "  npm run benchmark:openfhe-ckks -- --run --artifact",
     "",
     "--plan prints the native OpenFHE CKKS build plan.",
     "--adapter prints the digest-bound CKKS adapter contract.",
-    "--artifact writes the adapter plan or native run result as a comparison artifact.",
+    "--artifact writes the adapter plan, blocker report, or native run result as a comparison artifact.",
     "--artifact-id <id> and --generated-at <iso> make artifact output reproducible.",
+    "--input <json> passes a generated sparse linear input contract to the native demo.",
     "--run configures, builds, and executes the CKKS demo when OpenFHE is installed.",
   ].join("\n"));
   process.exit(0);
@@ -57,6 +62,32 @@ if (!detection.available) {
   const unavailable = {
     schema: "neurofhe.openfheCkks.unavailable.v1",
     detection,
+    blocker: {
+      reason: detection.reason ?? "OpenFHE unavailable",
+      checked: detection.checked ?? [],
+    },
+    attemptedCommands: [
+      "cmake -S prototype/openfhe-ckks -B build/openfhe-ckks",
+      "cmake --build build/openfhe-ckks",
+      "build/openfhe-ckks/openfhe_ckks_linear_demo",
+    ],
+    parameterEvidence: {
+      scheme: "CKKS",
+      library: "OpenFHE",
+      securityLevelTarget: "HEStd_128_classic",
+      multiplicativeDepth: 2,
+      scalingModSize: 50,
+      firstModSize: 60,
+      batchSize: 64,
+      scalingTechnique: "FLEXIBLEAUTO",
+      toyPaillierIsSecurityEvidence: false,
+      noiseBudget:
+        "not reported until OpenFHE builds and the native executable can run",
+      ciphertextDimensions:
+        "not reported until OpenFHE builds and the native executable can run",
+    },
+    smallestNextStep:
+      "Install OpenFHE, set OpenFHE_DIR to the directory containing OpenFHEConfig.cmake if needed, then rerun npm run benchmark:openfhe-ckks -- --run --artifact.",
     adapter: buildOpenFheCkksRealLibraryAdapter(),
     plan: openFheCkksIntegrationPlan(),
     productionClaim: false,
@@ -82,13 +113,16 @@ const env = {
 
 run("cmake", ["-S", "prototype/openfhe-ckks", "-B", "build/openfhe-ckks"], env);
 run("cmake", ["--build", "build/openfhe-ckks"], env);
-const nativeResult = run("build/openfhe-ckks/openfhe_ckks_linear_demo", [], env, {
+const nativeArgs = inputPath ? ["--input", inputPath] : [];
+const nativeResult = run("build/openfhe-ckks/openfhe_ckks_linear_demo", nativeArgs, env, {
   capture: true,
 });
 const parsed = JSON.parse(nativeResult.stdout);
 const subject = {
   schema: "neurofhe.openfheCkks.runComparison.v1",
   adapter: buildOpenFheCkksRealLibraryAdapter(),
+  inputContractPath: inputPath,
+  inputContract: inputPath ? readInputContractSummary(inputPath, "ckks") : null,
   nativeResult: parsed,
   productionClaim: false,
 };
@@ -123,4 +157,32 @@ function readOption(args, name) {
   const index = args.indexOf(name);
   if (index === -1) return undefined;
   return args[index + 1];
+}
+
+function readInputContractSummary(path, view) {
+  const text = readFileSync(path, "utf8");
+  const contract = JSON.parse(text);
+  return {
+    schema: "neurofhe.openfheInputContract.summary.v1",
+    path,
+    view,
+    digest: {
+      algorithm: "sha256",
+      value: createHash("sha256").update(text).digest("hex"),
+    },
+    contractSchema: contract.schema,
+    datasetKind: contract.datasetKind,
+    scoreEquation: contract.scoreEquation,
+    scoreDomain: view === "bfvrns"
+      ? contract.quantized?.scoreDomain
+      : contract.scoreDomain,
+    featureShape: contract.featureShape,
+    matrixShape: contract.matrixShape,
+    activeEventCount: contract.activeEventCount,
+    classes: contract.classes,
+    expectedClassification: view === "bfvrns"
+      ? contract.quantized?.expectedClassification
+      : contract.expectedClassification,
+    productionClaim: false,
+  };
 }

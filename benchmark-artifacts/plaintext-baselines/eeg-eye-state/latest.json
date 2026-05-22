@@ -1,0 +1,228 @@
+{
+  "schema": "neurofhe.plaintextBaselineArtifact.v1",
+  "artifactId": "eeg-eye-state-real-2026-05-21",
+  "generatedAt": "2026-05-21T17:30:00.000Z",
+  "subjectSchema": "neurofhe.plaintextBaseline.v1",
+  "evidenceClass": "real-public-dataset-plaintext-baseline",
+  "subject": {
+    "schema": "neurofhe.plaintextBaseline.v1",
+    "dataset": "UCI EEG Eye State sparse latent event windows",
+    "datasetKind": "public-uci-eeg-eye-state-arff",
+    "classifier": "nearest-centroid-linear",
+    "featureShape": [
+      8,
+      8
+    ],
+    "flatteningOrder": "time-major-selected-eeg-channel-minor",
+    "matrixShape": [
+      2,
+      64
+    ],
+    "scoreEquation": "scores = W x + bias",
+    "eventRepresentation": "public active positions plus signed z-score active values derived from chronological EEG windows",
+    "metrics": {
+      "accuracy": 0.536542,
+      "correct": 301,
+      "total": 561,
+      "averageActiveEvents": 32,
+      "averageNonZeroFeatures": 32,
+      "latencyMs": 36
+    },
+    "confusion": {
+      "eye-closed": {
+        "eye-closed": 108,
+        "eye-open": 35
+      },
+      "eye-open": {
+        "eye-closed": 225,
+        "eye-open": 193
+      }
+    },
+    "operationCounts": {
+      "plaintextDotProducts": 1122,
+      "sparseScalarMultiplies": 35904,
+      "sparseAdds": 34782,
+      "denseScalarMultiplies": 71808,
+      "denseAdds": 70686,
+      "sparseMultiplyReductionVsDense": 0.5
+    },
+    "preprocessing": {
+      "schema": "neurofhe.eegEyeState.preprocessing.v1",
+      "rowCount": 14980,
+      "trainRows": 10486,
+      "testRows": 4494,
+      "split": "chronological",
+      "trainFraction": 0.7,
+      "windowSize": 8,
+      "stride": 8,
+      "selectedChannels": [
+        "AF3",
+        "F7",
+        "F3",
+        "FC5",
+        "T7",
+        "P7",
+        "O1",
+        "O2"
+      ],
+      "channelSelection": "first N UCI EEG channels by ARFF order; tune this before any model-quality claim",
+      "normalization": "z-score using training split only",
+      "normalizerDigest": {
+        "meanRange": {
+          "min": 4003.69701,
+          "max": 4649.497898
+        },
+        "stddevRange": {
+          "min": 15.727028,
+          "max": 6234.480659
+        }
+      },
+      "activeEventSelection": "top absolute z-score channels per timestep, preserving signed z-score as active value"
+    },
+    "openFheCompatibility": {
+      "contract": "scores = W x + bias",
+      "matrixShape": [
+        2,
+        64
+      ],
+      "featureShape": [
+        8,
+        8
+      ],
+      "currentNativeOpenFheTargets": "BFVrns and CKKS demos are installed comparison lanes, but still consume embedded synthetic inputs unless a dynamic input/model loader is added.",
+      "ckksPath": "signed z-score active values are CKKS-friendly approximate real inputs",
+      "bfvPath": "BFVrns can use the same public positions after explicit fixed-point quantization of active values and model weights",
+      "nextStep": "Add a native JSON/CSV input loader so the OpenFHE BFVrns/CKKS binaries can consume this emitted event/model contract directly.",
+      "productionClaim": false
+    },
+    "privacyBoundary": {
+      "schema": "neurofhe.realDataPlaintextPrivacyBoundary.v1",
+      "localDeviceSees": [
+        "raw downloaded EEG Eye State ARFF rows",
+        "per-channel normalization statistics",
+        "plaintext sparse feature windows"
+      ],
+      "computeSees": [
+        "plaintext baseline only",
+        "public active latent positions",
+        "plaintext signed active values for validation"
+      ],
+      "withheldFromCommittedArtifacts": [
+        "raw EEG rows",
+        "per-sample raw channel values"
+      ],
+      "caveat": "This is a plaintext baseline used to validate feature shape and accuracy/compression tradeoffs before encrypted execution.",
+      "productionClaim": false
+    },
+    "productionClaim": false,
+    "compressionCurve": {
+      "schema": "neurofhe.plaintextCompressionCurve.v1",
+      "metric": "accuracy-versus-latent-active-event-budget",
+      "referenceFeatureShape": [
+        8,
+        8
+      ],
+      "referenceFeatureCount": 64,
+      "levels": [
+        {
+          "id": "active-1-per-timestep",
+          "requestedActivePerTimestep": 1,
+          "activePerTimestep": 1,
+          "featureShape": [
+            8,
+            8
+          ],
+          "featureCount": 64,
+          "activeBudgetPerWindow": 8,
+          "activeBudgetCompressionVsDense": 8,
+          "activeBudgetVsReference": 4,
+          "accuracy": 0.536542,
+          "correct": 301,
+          "total": 561,
+          "averageActiveEvents": 8,
+          "averageNonZeroFeatures": 8,
+          "sparseScalarMultiplies": 8976
+        },
+        {
+          "id": "active-2-per-timestep",
+          "requestedActivePerTimestep": 2,
+          "activePerTimestep": 2,
+          "featureShape": [
+            8,
+            8
+          ],
+          "featureCount": 64,
+          "activeBudgetPerWindow": 16,
+          "activeBudgetCompressionVsDense": 4,
+          "activeBudgetVsReference": 2,
+          "accuracy": 0.543672,
+          "correct": 305,
+          "total": 561,
+          "averageActiveEvents": 16,
+          "averageNonZeroFeatures": 16,
+          "sparseScalarMultiplies": 17952
+        },
+        {
+          "id": "active-4-per-timestep",
+          "requestedActivePerTimestep": 4,
+          "activePerTimestep": 4,
+          "featureShape": [
+            8,
+            8
+          ],
+          "featureCount": 64,
+          "activeBudgetPerWindow": 32,
+          "activeBudgetCompressionVsDense": 2,
+          "activeBudgetVsReference": 1,
+          "accuracy": 0.536542,
+          "correct": 301,
+          "total": 561,
+          "averageActiveEvents": 32,
+          "averageNonZeroFeatures": 32,
+          "sparseScalarMultiplies": 35904
+        },
+        {
+          "id": "active-8-per-timestep",
+          "requestedActivePerTimestep": 8,
+          "activePerTimestep": 8,
+          "featureShape": [
+            8,
+            8
+          ],
+          "featureCount": 64,
+          "activeBudgetPerWindow": 64,
+          "activeBudgetCompressionVsDense": 1,
+          "activeBudgetVsReference": 0.5,
+          "accuracy": 0.538324,
+          "correct": 302,
+          "total": 561,
+          "averageActiveEvents": 64,
+          "averageNonZeroFeatures": 64,
+          "sparseScalarMultiplies": 71808
+        }
+      ],
+      "caveat": "Compression changes the sparse active-value budget before encryption. This curve is not encrypted-compute evidence.",
+      "productionClaim": false
+    },
+    "source": {
+      "schema": "neurofhe.datasetProvenance.v1",
+      "datasetId": "eeg-eye-state",
+      "datasetKind": "public-uci-eeg-eye-state-arff",
+      "isRealDataset": true,
+      "publicDatasetReference": {
+        "name": "EEG Eye State",
+        "url": "https://archive.ics.uci.edu/dataset/264/eeg+eye+state",
+        "directDataUrl": "https://archive.ics.uci.edu/ml/machine-learning-databases/00264/EEG%20Eye%20State.arff",
+        "doi": "10.24432/C57G7J",
+        "citation": "Roesler, O. (2013). EEG Eye State [Dataset]. UCI Machine Learning Repository.",
+        "license": "CC BY 4.0"
+      },
+      "caveat": "Single-subject sequential EEG eye-state data. This baseline is for feature-contract validation, not medical, diagnostic, or generalization evidence.",
+      "datasetRoot": ".cache/neurofhe/eeg-eye-state/EEG Eye State.arff",
+      "loadMode": "downloaded-cache",
+      "cacheDir": ".cache/neurofhe/eeg-eye-state",
+      "rows": 14980
+    }
+  },
+  "productionClaim": false
+}

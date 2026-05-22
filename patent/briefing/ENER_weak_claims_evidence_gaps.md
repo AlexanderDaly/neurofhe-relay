@@ -15,6 +15,102 @@ This file identifies claims or statements that need evidence before publication,
 | Standards positioning | Standards opportunities are plausible but not yet anchored to a working group. | Mapping to NIST, IEEE, ISO/IEC, HL7, FIDO, or neurotechnology standards forums. |
 | Commercial defensibility | FTO extraction suggests the blockchain lane is crowded, but ENER-specific FTO remains incomplete. | Targeted prior-art review on encrypted latent neural inference and adaptive FHE-oriented compression. |
 
+## Validation Update May 21, 2026
+
+This update narrows three evidence gaps without upgrading the project beyond a
+research prototype.
+
+### Real Neural/Event Modality Baseline
+
+Implemented a plaintext N-MNIST-format baseline path with a compression curve
+and artifact publisher:
+
+```sh
+npm run baseline:plaintext -- --fixture nmnist-smoke --artifact
+npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10 --artifact
+```
+
+Current committed evidence includes a deterministic format smoke fixture, not
+real N-MNIST accuracy:
+
+- `benchmark-artifacts/plaintext-baselines/nmnist-smoke/latest.json`
+- schema: `neurofhe.plaintextBaseline.v1`
+- evidence class: `format-fixture-smoke-test`
+- compression curve: feature compression versus plaintext accuracy across
+  1x1, 2x2, 4x2, and 8x4 feature settings.
+
+The fixture proves the parser, feature extractor, classifier, and artifact
+shape. It is not sampled from public N-MNIST recordings. A separate blocker
+artifact records the attempted real public dataset command and the missing local
+`Train/` directory:
+
+- `benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json`
+- schema: `neurofhe.plaintextBaseline.unavailable.v1`
+- smallest next step: download and extract the public N-MNIST `Train` and
+  `Test` directories outside git, then rerun the documented command.
+
+Dataset provenance to cite when the local dataset is used:
+
+- Garrick Orchard, "N-MNIST" dataset page:
+  `https://www.garrickorchard.com/datasets/n-mnist`
+- Mendeley Data DOI: `10.17632/468j46mzdv.1`
+
+### Metadata Leakage Versus Padding Overhead
+
+Implemented a padding ablation artifact for the current 18-event synthetic
+window:
+
+```sh
+npm run benchmark:privacy-modes -- --iterations 25 --padded-slot-count 32 --artifact
+```
+
+Current committed evidence:
+
+- `benchmark-artifacts/privacy-modes/padding-ablation/latest.json`
+- schema: `neurofhe.metadataPaddingAblation.v1`
+- unpadded sparse mode: 18 encrypted feature slots, 36 scalar multiplies.
+- padded sparse mode: 32 encrypted feature slots, 64 scalar multiplies.
+- dense encrypted window mode: 64 encrypted feature slots, 128 scalar
+  multiplies.
+
+For this synthetic window, padding from 18 to 32 slots records a 1.78x scalar
+multiply and payload-slot increase. It masks the exact active-event count inside
+the padding bucket, but still leaks the padding bucket size, the public or cover
+position policy, coarse timing/sparsity metadata, and public model shape. The
+attached local runtime timings are JavaScript toy-arithmetic measurements only,
+not native FHE performance evidence.
+
+### Real FHE Parameter Evidence
+
+The repo now produces explicit blocker artifacts for missing OpenFHE native
+runs instead of implying that toy Paillier timing is cryptographic evidence:
+
+```sh
+npm run benchmark:openfhe -- --run --artifact
+npm run benchmark:openfhe-ckks -- --run --artifact
+```
+
+Current local blocker:
+
+```text
+OpenFHEConfig.cmake not found
+```
+
+Committed blocker artifacts:
+
+- `benchmark-artifacts/comparisons/openfhe/latest.json`
+- `benchmark-artifacts/comparisons/openfhe-ckks/latest.json`
+
+The BFVrns blocker records the target `HEStd_128_classic` parameter posture,
+plaintext modulus 65537, multiplicative depth 1, and the exact native commands
+that should run once OpenFHE is installed. The CKKS blocker records
+`HEStd_128_classic`, multiplicative depth 2, scaling modulus size 50, first
+modulus size 60, batch size 64, and `FLEXIBLEAUTO`.
+
+TFHE-rs remains the currently runnable real-library lane on this machine. Its
+artifacts are synthetic 8x8 event-window runs only and should not be used as
+real-data or production performance claims.
+
 ## Examiner-Risk Notes Added May 21, 2026
 
 The highest-risk broad claim posture is "local neural compression plus encrypted inference" without a concrete implementation limit. The stronger near-term claim posture is the spatial sparse-event relay:

@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: CC0-1.0
 
 #include "openfhe.h"
+#include "../openfhe_contract_loader.hpp"
 
 #include <cstdint>
 #include <iostream>
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -26,6 +28,42 @@ struct PublicActiveNeuronPosition {
     std::size_t unitX;
     std::size_t unitY;
 };
+
+struct RunConfig {
+    std::string inputPath;
+};
+
+struct RunInput {
+    std::string inputSource = "embedded-synthetic";
+    std::string inputPath;
+    std::string datasetKind = "synthetic-events-v0";
+    std::string eventRepresentation = "spatial-sorted-events";
+    std::vector<std::size_t> featureShape = {8, 8};
+    std::vector<std::size_t> spatialBins = {4, 2};
+    std::vector<ActiveEvent> events;
+    std::vector<PublicActiveNeuronPosition> activeNeuronPositions;
+    std::vector<std::string> classes;
+    std::map<std::string, std::vector<int64_t>> weights;
+    std::map<std::string, int64_t> bias;
+    uint64_t plaintextModulus = 65537;
+    double fixedPointScale = 1.0;
+};
+
+RunConfig ParseArgs(int argc, char** argv) {
+    RunConfig config;
+    for (int index = 1; index < argc; ++index) {
+        const std::string arg(argv[index]);
+        if (arg == "--input") {
+            if (index + 1 >= argc) {
+                throw std::invalid_argument("--input requires a JSON contract path");
+            }
+            config.inputPath = argv[++index];
+        } else {
+            throw std::invalid_argument("unknown argument: " + arg);
+        }
+    }
+    return config;
+}
 
 std::vector<std::vector<int64_t>> SortedSpatialEventWindow() {
     return {
@@ -54,6 +92,9 @@ std::vector<ActiveEvent> ActiveEvents(const std::vector<std::vector<int64_t>>& v
     return events;
 }
 
+std::vector<int64_t> MakeNormalWeights();
+std::vector<int64_t> MakeAnomalyWeights();
+
 std::vector<PublicActiveNeuronPosition> PublicActiveNeuronPositions(
     const std::vector<ActiveEvent>& events,
     std::size_t spatialWidth) {
@@ -71,6 +112,52 @@ std::vector<PublicActiveNeuronPosition> PublicActiveNeuronPositions(
     }
 
     return positions;
+}
+
+RunInput EmbeddedSyntheticInput() {
+    const auto values = SortedSpatialEventWindow();
+    const auto events = ActiveEvents(values);
+    RunInput input;
+    input.inputSource = "embedded-synthetic";
+    input.datasetKind = "synthetic-events-v0";
+    input.eventRepresentation = "spatial-sorted-events";
+    input.featureShape = {8, 8};
+    input.spatialBins = {4, 2};
+    input.events = events;
+    input.activeNeuronPositions = PublicActiveNeuronPositions(events, 4);
+    input.classes = {"normal", "anomaly"};
+    input.weights = {
+        {"normal", MakeNormalWeights()},
+        {"anomaly", MakeAnomalyWeights()},
+    };
+    input.bias = {{"normal", 0}, {"anomaly", 0}};
+    input.plaintextModulus = 65537;
+    input.fixedPointScale = 1.0;
+    return input;
+}
+
+RunInput ExternalContractInput(const std::string& path) {
+    const auto contract = neurofhe::LoadSparseLinearContract<int64_t>(
+        path,
+        true);
+    RunInput input;
+    input.inputSource = "external-contract";
+    input.inputPath = path;
+    input.datasetKind = contract.datasetKind;
+    input.eventRepresentation = contract.eventRepresentation;
+    input.featureShape = contract.featureShape;
+    input.classes = contract.classes;
+    input.weights = contract.weights;
+    input.bias = contract.bias;
+    input.plaintextModulus = contract.plaintextModulus;
+    input.fixedPointScale = contract.fixedPointScale;
+    const std::size_t channels = input.featureShape.size() > 1 ? input.featureShape[1] : 1;
+    input.spatialBins = {channels, 1};
+    for (const auto& event : contract.activeEvents) {
+        input.events.push_back({event.index, event.timeBin, event.neuronId, event.value});
+    }
+    input.activeNeuronPositions = PublicActiveNeuronPositions(input.events, channels);
+    return input;
 }
 
 std::vector<int64_t> MakeNormalWeights() {
@@ -148,6 +235,17 @@ void PrintStringArray(const std::vector<std::string>& values) {
     std::cout << "]";
 }
 
+void PrintSizeArray(const std::vector<std::size_t>& values) {
+    std::cout << "[";
+    for (std::size_t index = 0; index < values.size(); ++index) {
+        if (index > 0) {
+            std::cout << ",";
+        }
+        std::cout << values[index];
+    }
+    std::cout << "]";
+}
+
 void PrintActiveNeuronPositions(const std::vector<PublicActiveNeuronPosition>& positions) {
     std::cout << "[";
     for (std::size_t index = 0; index < positions.size(); ++index) {
@@ -168,22 +266,24 @@ void PrintActiveNeuronPositions(const std::vector<PublicActiveNeuronPosition>& p
 
 }  // namespace
 
-int main() {
-    const auto values = SortedSpatialEventWindow();
-    const auto events = ActiveEvents(values);
-    const auto activeNeuronPositions = PublicActiveNeuronPositions(events, 4);
-    const std::vector<std::string> classes = {"normal", "anomaly"};
-    const std::map<std::string, std::vector<int64_t>> weights = {
-        {"normal", MakeNormalWeights()},
-        {"anomaly", MakeAnomalyWeights()},
-    };
-    const std::map<std::string, int64_t> bias = {{"normal", 0}, {"anomaly", 0}};
+int main(int argc, char** argv) {
+    try {
+    const auto config = ParseArgs(argc, argv);
+    const auto input = config.inputPath.empty()
+        ? EmbeddedSyntheticInput()
+        : ExternalContractInput(config.inputPath);
+    const auto& events = input.events;
+    const auto& activeNeuronPositions = input.activeNeuronPositions;
+    const auto& classes = input.classes;
+    const auto& weights = input.weights;
+    const auto& bias = input.bias;
     const auto expectedScores = PlaintextScores(events, weights, bias);
 
     CCParams<CryptoContextBFVRNS> parameters;
-    parameters.SetPlaintextModulus(65537);
+    parameters.SetPlaintextModulus(input.plaintextModulus);
     parameters.SetMultiplicativeDepth(1);
     parameters.SetBatchSize(1);
+    parameters.SetSecurityLevel(HEStd_128_classic);
 
     CryptoContext<DCRTPoly> cryptoContext = GenCryptoContext(parameters);
     cryptoContext->Enable(PKE);
@@ -238,8 +338,12 @@ int main() {
     std::cout << "\"schema\":\"neurofhe.openfhe.result.v1\",";
     std::cout << "\"scheme\":\"openfhe-bfvrns\",";
     std::cout << "\"scoreEquation\":\"scores = W x + bias\",";
+    std::cout << "\"inputSource\":\"" << input.inputSource << "\",";
+    std::cout << "\"inputContractPath\":\"" << input.inputPath << "\",";
+    std::cout << "\"datasetKind\":\"" << input.datasetKind << "\",";
+    std::cout << "\"fixedPointScale\":" << input.fixedPointScale << ",";
     std::cout << "\"boundaryDomain\":\"bio-digital-event-intelligence\",";
-    std::cout << "\"eventRepresentation\":\"spatial-sorted-events\",";
+    std::cout << "\"eventRepresentation\":\"" << input.eventRepresentation << "\",";
     std::cout << "\"encoder\":{";
     std::cout << "\"id\":\"canonical-spatial-aware-spike-sorter-v1\",";
     std::cout << "\"schema\":\"neurofhe.encoder.spatialSpikeSorter.v1\",";
@@ -269,8 +373,15 @@ int main() {
     std::cout << "},";
     std::cout << "\"eventSchema\":\"neurofhe.events.v1.spatial-sorter\",";
     std::cout << "\"encoding\":\"spatial-binned-spike-count\",";
-    std::cout << "\"featureShape\":[8,8],";
-    std::cout << "\"spatialBins\":[4,2],";
+    std::cout << "\"featureShape\":";
+    PrintSizeArray(input.featureShape);
+    std::cout << ",";
+    std::cout << "\"matrixShape\":[" << classes.size() << ",";
+    std::cout << (input.featureShape.empty() ? 0 : input.featureShape[0] * (input.featureShape.size() > 1 ? input.featureShape[1] : 1));
+    std::cout << "],";
+    std::cout << "\"spatialBins\":";
+    PrintSizeArray(input.spatialBins);
+    std::cout << ",";
     std::cout << "\"activeEventCount\":" << events.size() << ",";
     std::cout << "\"activeNeuronPositions\":";
     PrintActiveNeuronPositions(activeNeuronPositions);
@@ -284,6 +395,17 @@ int main() {
     std::cout << ",";
     std::cout << "\"expectedClassification\":\"" << Classify(expectedScores) << "\",";
     std::cout << "\"plaintextMatchesExpected\":" << (scoresMatch ? "true" : "false") << ",";
+    std::cout << "\"parameterEvidence\":{";
+    std::cout << "\"scheme\":\"BFVrns\",";
+    std::cout << "\"securityLevelTarget\":\"HEStd_128_classic\",";
+    std::cout << "\"plaintextModulus\":" << input.plaintextModulus << ",";
+    std::cout << "\"multiplicativeDepth\":1,";
+    std::cout << "\"batchSize\":1,";
+    std::cout << "\"evalMultKeyGenerated\":true,";
+    std::cout << "\"ciphertextCiphertextMultiplications\":0,";
+    std::cout << "\"relinearizationRequired\":false,";
+    std::cout << "\"noiseBudget\":\"not reported by this portable demo\"";
+    std::cout << "},";
     std::cout << "\"operationCounts\":{";
     std::cout << "\"encryptions\":" << encryptions << ",";
     std::cout << "\"scalarMultiplies\":" << scalarMultiplies << ",";
@@ -295,4 +417,8 @@ int main() {
     std::cout << "}" << std::endl;
 
     return scoresMatch ? 0 : 1;
+    } catch (const std::exception& error) {
+        std::cerr << "openfhe_linear_demo failed: " << error.what() << std::endl;
+        return 1;
+    }
 }

@@ -72,6 +72,7 @@ The cryptographic design target is:
 - `08-encrypted-thoughts-whitepaper.md` - whitepaper on encrypted-thoughts architecture for BCI and neural-data privacy.
 - `09-relay-gateway-pattern.md` - local-first gateway pattern for raw-signal intake, privacy filtering, model-facing events, recommendations, audit, replay, and failure handling.
 - `10-native-performance-track.md` - native-first implementation boundary for low-latency and energy-aware execution.
+- `RELEASE.md` - research-alpha release checklist and evidence gates.
 - `patent/` - ENER provisional drafting materials, claim seeds, drawings, prior-art search plan, filing checklist, and briefing package.
 - `project-brief.json` - structured project metadata for agents.
 - `index.html` - self-contained briefing deck for browser presentation.
@@ -140,6 +141,12 @@ between public active positions, padded sparse batches, and dense encrypted
 windows, and a framing guardrail that keeps bio-digital language scoped to
 privacy-preserving event intelligence rather than diagnosis or treatment.
 
+Publish a padding ablation for sparse metadata leakage versus overhead:
+
+```sh
+npm run benchmark:privacy-modes -- --artifact
+```
+
 Run the local-first relay gateway scaffold:
 
 ```sh
@@ -156,6 +163,12 @@ Persist an optional OpenFHE adapter comparison artifact:
 
 ```sh
 npm run benchmark:openfhe -- --artifact
+```
+
+Run the real OpenFHE BFVrns C++ demo with the embedded synthetic contract:
+
+```sh
+npm run benchmark:openfhe -- --run
 ```
 
 Print the OpenFHE CKKS approximate real-number comparison lane:
@@ -188,6 +201,45 @@ Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
 
 ```sh
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
+```
+
+Run the real public UCI EEG Eye State baseline. The raw ARFF is downloaded into
+`.cache/` and is not committed; only the derived artifact is published:
+
+```sh
+npm run baseline:eeg-eye-state -- --artifact
+npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact
+```
+
+Generate OpenFHE-ready single-window input contracts from that EEG baseline and
+run BFVrns/CKKS against the derived sparse inputs:
+
+```sh
+npm run contract:eeg-openfhe
+npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
+npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
+```
+
+The committed EEG artifact at
+`benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json` uses a
+chronological 70/30 split, 8-row by 8-channel sparse latent event windows, and
+the same `scores = W x + bias` contract shape `[2, 64]`. It reports 301/561
+correct windows, accuracy `0.536542`, and a compression curve for active budgets
+of 8, 16, 32, and 64 values per window. This is real-data plaintext evidence,
+not encrypted-compute, medical, or generalization evidence.
+
+The committed native OpenFHE real-data artifacts consume one derived EEG sparse
+window from the generated input contract. BFVrns uses the fixed-point view and
+matches the expected quantized classification; CKKS uses approximate-real values
+and reports score drift against plaintext. These artifacts are local
+single-window integration evidence, not production cryptography or broad
+runtime claims.
+
+Run the deterministic N-MNIST-format smoke fixture and publish a compression
+curve artifact:
+
+```sh
+npm run baseline:plaintext -- --fixture nmnist-smoke --artifact
 ```
 
 The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The benchmark now compares dense/raw windows, unsorted spikes, and spatial-sorted events on that same task so representation cost and metadata leakage stay visible. Each spatial-sorted benchmark entry carries its own crypto inventory, sorted-event privacy boundary, reconstruction-resistance caveat, and explicit metadata-leakage list. The benchmark also emits `spatialClusterReadiness`: spatial-sorted events can feed a future SNN path after count-to-spike-train, neuron-index, timestep, and membrane/synapse adapters; the same representation can feed the current lightweight encrypted linear score path directly. The compute side can use the `public-active-neuron-positions-encrypted-features` mode: active neuron/time positions are public, feature values are encrypted, and raw samples remain local. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is included under `prototype/openfhe/` for the same exact integer sparse scorer, and a real OpenFHE CKKS target is included under `prototype/openfhe-ckks/` for approximate neural/ML feature scoring with floating-point-style values and explicit score-drift reporting. A real TFHE-rs Rust target is also included under `prototype/tfhe-rs/`; it evaluates the same sparse integer scores with `FheUint16` and adds an encrypted `FheBool` threshold/comparison gate for `anomaly_score > normal_score`. BFV/BGV remains the default packed-vector lane for exact integer linear algebra; CKKS is the comparison lane for approximate real-valued neural/ML features; TFHE-rs is the comparison lane to prefer when the model becomes threshold-heavy, Boolean, decision-tree-like, or LUT-style. SEAL/TenSEAL, Concrete, or an Octra/HFHE experiment remain candidate follow-on lanes.

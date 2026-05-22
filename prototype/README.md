@@ -54,6 +54,12 @@ contract:
 - Padded sparse batches: 32 encrypted feature slots, middle ground, hides exact active count inside a bucket.
 - Dense encrypted windows: 64 encrypted feature slots, slowest, hides sparsity better by encrypting zero and non-zero positions alike.
 
+Publish the current padding ablation:
+
+```sh
+npm run benchmark:privacy-modes -- --artifact
+```
+
 It also compares three input representations on the same task:
 
 - Dense/raw window: 64 encrypted feature slots, complete dense reference path.
@@ -77,6 +83,12 @@ Write an optional OpenFHE comparison artifact:
 
 ```sh
 npm run benchmark:openfhe -- --artifact
+```
+
+Run the native OpenFHE BFVrns demo:
+
+```sh
+npm run benchmark:openfhe -- --run
 ```
 
 Print the OpenFHE CKKS approximate real-number integration plan:
@@ -127,6 +139,40 @@ Run the plaintext real-data baseline against a local N-MNIST directory:
 npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
 ```
 
+Run the real public UCI EEG Eye State baseline:
+
+```sh
+npm run baseline:eeg-eye-state -- --artifact
+npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact
+```
+
+The EEG path downloads the ARFF into `.cache/`, converts chronological EEG rows
+into sparse latent event windows with public active positions and signed
+z-score active values, trains the same nearest-centroid linear `scores = W x +
+bias` contract, and writes the derived artifact under
+`benchmark-artifacts/plaintext-baselines/eeg-eye-state/`.
+
+Generate the OpenFHE-ready single-window contract and run both OpenFHE lanes on
+that derived real-data input:
+
+```sh
+npm run contract:eeg-openfhe
+npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
+npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
+```
+
+This is native encrypted execution on one derived public-data sparse window,
+not a replacement for a multi-window dataset sweep.
+
+Run the deterministic N-MNIST-format smoke fixture:
+
+```sh
+npm run baseline:plaintext -- --fixture nmnist-smoke --artifact
+```
+
+The fixture validates parsing, feature extraction, compression-curve reporting,
+and artifact publishing. It is not real N-MNIST accuracy.
+
 Current modules:
 
 - `lib/math.mjs` - BigInt modular arithmetic helpers.
@@ -135,16 +181,20 @@ Current modules:
 - `lib/spike-sorter.mjs` - canonical spatial-aware spike sorter for raw neural-like intake, designed around FPGA- or edge-friendly integer operations.
 - `lib/linear-algebra.mjs` - model metadata, dense matrix-vector scoring, sparse event scoring, and model validation.
 - `lib/nmnist.mjs` - N-MNIST event parsing, feature extraction, and plaintext baseline evaluation.
+- `lib/eeg-eye-state.mjs` - UCI EEG Eye State ARFF loading, sparse latent event projection, accuracy/compression baseline, and OpenFHE contract-readiness notes.
 - `lib/openfhe-adapter.mjs` - OpenFHE contract builder, validation, contract-bound real-library adapter manifest, local detection, and build-plan output.
 - `lib/openfhe-ckks-adapter.mjs` - OpenFHE CKKS approximate-real contract builder, validation, privacy boundary, crypto inventory, BFV/TFHE comparison guidance, and build-plan output.
 - `lib/tfhe-rs-adapter.mjs` - TFHE-rs contract builder, validation, crypto inventory, privacy boundary, OpenFHE comparison table, local Cargo detection, and build-plan output.
 - `lib/classifier.mjs` - plaintext and encrypted linear spike-count classifiers.
 - `lib/benchmark.mjs` - benchmark schema, accuracy summary, security parameters, crypto inventory, dense baseline comparison, packed-vector planning, explicit privacy-mode decision, four-mode privacy comparison, spatial-cluster readiness, and privacy boundary.
 - `lib/artifacts.mjs` - benchmark and comparison artifact publisher.
-- `openfhe/` - real OpenFHE BFVrns C++ demo and CMake target for the sparse score contract.
-- `openfhe-benchmark.mjs` - OpenFHE plan/run CLI.
+- `openfhe/` - real OpenFHE BFVrns C++ demo and CMake target for the sparse score contract, including optional `--input <json>` loading for generated contracts.
+- `openfhe-benchmark.mjs` - OpenFHE plan/run CLI with optional input-contract artifact summaries.
+- `openfhe_contract_loader.hpp` - shared minimal C++ loader for generated sparse linear input contracts.
+- `openfhe-realdata-contract.mjs` - EEG Eye State to OpenFHE BFVrns/CKKS input-contract publisher.
 - `openfhe-ckks/` - real OpenFHE CKKS C++ demo and CMake target for approximate real-valued sparse scoring.
-- `openfhe-ckks-benchmark.mjs` - OpenFHE CKKS plan/run CLI and comparison-artifact publisher.
+- `openfhe-ckks-benchmark.mjs` - OpenFHE CKKS plan/run CLI and comparison-artifact publisher with optional input-contract artifact summaries.
+- `privacy-mode-ablation.mjs` - metadata leakage versus padding overhead artifact publisher.
 - `tfhe-rs/` - real TFHE-rs Rust crate using `FheUint16` sparse scoring and an encrypted `FheBool` threshold/comparison gate.
 - `tfhe-rs-benchmark.mjs` - TFHE-rs plan/run CLI and comparison-artifact publisher.
 - `LINEAR_ALGEBRA_NEXT.md` - handoff for the next matrix/vector cleanup pass.
