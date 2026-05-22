@@ -72,7 +72,13 @@ The cryptographic design target is:
 - `08-encrypted-thoughts-whitepaper.md` - whitepaper on encrypted-thoughts architecture for BCI and neural-data privacy.
 - `09-relay-gateway-pattern.md` - local-first gateway pattern for raw-signal intake, privacy filtering, model-facing events, recommendations, audit, replay, and failure handling.
 - `10-native-performance-track.md` - native-first implementation boundary for low-latency and energy-aware execution.
+- `CONTRIBUTING.md` - evidence-first contribution rules and local validation expectations.
+- `DEVELOPMENT.md` - local setup, portable checks, native OpenFHE/TFHE-rs commands, and artifact policy.
 - `RELEASE.md` - research-alpha release checklist and evidence gates.
+- `SECURITY.md` - research-prototype security policy and reporting guidance.
+- `VALIDATION.md` - local validation commands, outputs, artifacts, and caveats.
+- `.github/workflows/ci.yml` - portable CI for tests, schema checks, placeholder scan, and smoke artifact generation/upload.
+- `benchmark-artifacts/` - intentionally committed derived benchmark evidence and blocker reports.
 - `patent/` - ENER provisional drafting materials, claim seeds, drawings, prior-art search plan, filing checklist, and briefing package.
 - `project-brief.json` - structured project metadata for agents.
 - `index.html` - self-contained briefing deck for browser presentation.
@@ -104,6 +110,22 @@ Avoid saying:
 > We run Octra directly on neuromorphic chips.
 
 That is not defensible today. The defensible near-term claim is a hybrid architecture: neuromorphic preprocessing plus FHE-protected inference/verification.
+
+## Development And CI
+
+For the portable local gate, run:
+
+```sh
+npm run ci
+git diff --check
+```
+
+`npm run ci` currently aliases `npm run validate`. GitHub Actions runs the same
+portable validation plus smoke artifact generation and upload for synthetic
+benchmarks, padded-sparse privacy modes, and the deterministic N-MNIST-format
+fixture. Native OpenFHE and TFHE-rs checks remain local/release gate commands
+because they require external libraries and heavier host setup.
+See `DEVELOPMENT.md` and `RELEASE.md` before making or tagging release claims.
 
 ## Relay Gateway Pattern
 

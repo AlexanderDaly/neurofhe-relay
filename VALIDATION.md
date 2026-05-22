@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 53
-pass 53
+tests 55
+pass 55
 fail 0
 ```
 
@@ -40,7 +40,7 @@ Covered behaviours:
 - OpenFHE CKKS approximate-real sorted-event contract validation, digest-bound real-library adapter manifest, CKKS parameter inventory, privacy boundary, native build-plan detection, real-data-derived input-contract loading, comparison artifact publishing, and C++ CKKS API source markers.
 - TFHE-rs sorted-event contract validation, digest-bound real-library adapter manifest, Cargo build-plan detection, Rust source markers, encrypted threshold-gate metadata, TFHE-vs-OpenFHE comparison notes, and comparison artifact publishing.
 - N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
-- UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, real-data privacy caveats, and active-budget compression-curve output.
+- UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
 - Research assumptions with clean-room and naming guardrails.
 
 ### Desk Demo
@@ -945,6 +945,53 @@ Result:
 ```text
 ascii scan complete
 ```
+
+### GitHub Actions CI Blocker
+
+PR #6 adds portable GitHub Actions validation for the same local gate and smoke
+artifact generation. The latest remote check did not reach any runner steps.
+
+GitHub check-run annotation:
+
+```text
+The job was not started because your account is locked due to a billing issue.
+```
+
+Observed metadata:
+
+```json
+{
+  "runId": 26293465330,
+  "jobId": 77399634587,
+  "checkName": "Portable validation",
+  "conclusion": "failure",
+  "steps": [],
+  "runnerName": ""
+}
+```
+
+Log fetch command:
+
+```sh
+gh run view 26293465330 --log-failed
+```
+
+Result:
+
+```text
+log not found: 77399634587
+```
+
+Committed blocker artifact:
+
+```text
+benchmark-artifacts/ci-blockers/latest.json
+benchmark-artifacts/ci-blockers/runs/github-actions-billing-lock-2026-05-22.json
+```
+
+This is an account/billing blocker, not evidence of a test or workflow-step
+failure. Local parity validation on the PR branch passed with `npm run ci`,
+smoke artifact generation into a temporary directory, and `git diff --check`.
 
 ## Scope Note
 

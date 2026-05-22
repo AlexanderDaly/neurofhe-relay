@@ -51,6 +51,7 @@ command, error, and smallest next step.
 - Confirm every crypto lane keeps `productionClaim: false`.
 - Confirm README caveats avoid medical, surveillance, valuation, or deployment
   claims.
+- Confirm the portable GitHub Actions CI workflow is green on the release PR.
 - Confirm `git diff --check` and `npm run validate` pass.
 - Tag only after the validation PR is merged.
 

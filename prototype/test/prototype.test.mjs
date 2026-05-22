@@ -740,6 +740,32 @@ test("benchmark artifacts publish a run JSON and latest JSON with required field
   ]);
 });
 
+test("benchmark artifact CLI honors deterministic artifact options", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-benchmark-cli-"));
+  const result = spawnSync(
+    process.execPath,
+    [
+      "prototype/benchmark.mjs",
+      "--artifact",
+      "--out",
+      outputDir,
+      "--artifact-id",
+      "ci-synthetic-smoke",
+      "--generated-at",
+      "2026-05-21T00:00:00.000Z",
+    ],
+    { cwd: process.cwd(), encoding: "utf8" },
+  );
+  const published = JSON.parse(result.stdout);
+  const artifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+
+  assert.equal(result.status, 0);
+  assert.equal(result.stderr, "");
+  assert.equal(published.artifactId, "ci-synthetic-smoke");
+  assert.equal(artifact.artifactId, "ci-synthetic-smoke");
+  assert.equal(artifact.generatedAt, "2026-05-21T00:00:00.000Z");
+});
+
 test("privacy mode benchmark compares speed against sparsity metadata protection", () => {
   const comparison = buildPrivacyModeComparison(buildSparseEventWindow(), 2);
   const [publicSparse, publicNeurons, paddedSparse, dense] = comparison.modes;

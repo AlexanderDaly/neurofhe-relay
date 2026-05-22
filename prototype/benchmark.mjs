@@ -8,9 +8,16 @@ const args = process.argv.slice(2);
 const shouldPublishArtifact = args.includes("--artifact") || args.includes("--publish");
 const outputDir = readOption(args, "--out") ?? "benchmark-artifacts";
 const seed = Number(readOption(args, "--seed") ?? 91);
+const artifactId = readOption(args, "--artifact-id");
+const generatedAt = readOption(args, "--generated-at");
 
 if (shouldPublishArtifact) {
-  const published = await publishBenchmarkArtifact({ outputDir, seed });
+  const published = await publishBenchmarkArtifact({
+    outputDir,
+    seed,
+    artifactId,
+    generatedAt,
+  });
   console.log(JSON.stringify(published, null, 2));
 } else {
   console.log(JSON.stringify(runPrototypeBenchmark({ seed }), null, 2));

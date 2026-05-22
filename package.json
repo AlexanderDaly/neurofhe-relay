@@ -1,9 +1,31 @@
 {
   "name": "neurofhe-relay",
   "version": "0.1.0",
+  "description": "CC0 research prototype for privacy-preserving sparse event inference with homomorphic-encryption comparison lanes.",
   "private": true,
   "type": "module",
   "license": "CC0-1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexanderDaly/neurofhe-relay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AlexanderDaly/neurofhe-relay/issues"
+  },
+  "homepage": "https://github.com/AlexanderDaly/neurofhe-relay#readme",
+  "keywords": [
+    "homomorphic-encryption",
+    "neuromorphic",
+    "privacy-preserving-ml",
+    "openfhe",
+    "tfhe-rs",
+    "ckks",
+    "bfv",
+    "sparse-events"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "demo": "node prototype/toy-neurohe-demo.mjs",
     "gateway:demo": "node prototype/gateway-demo.mjs",
@@ -17,6 +39,7 @@
     "baseline:plaintext": "node prototype/plaintext-baseline.mjs",
     "contract:eeg-openfhe": "node prototype/openfhe-realdata-contract.mjs --fetch",
     "test": "node --test prototype/test/*.test.mjs",
+    "ci": "npm run validate",
     "validate": "npm test && node -e \"JSON.parse(require('fs').readFileSync('project-brief.json','utf8')); JSON.parse(require('fs').readFileSync('prototype/research-assumptions.json','utf8')); console.log('json ok')\" && node prototype/scripts/placeholder-scan.mjs"
   }
 }

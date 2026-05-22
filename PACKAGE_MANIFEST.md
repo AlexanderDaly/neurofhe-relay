@@ -19,13 +19,17 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `08-encrypted-thoughts-whitepaper.md` - whitepaper arguing for encrypted-thoughts architecture in BCI and neural-data systems.
 - `09-relay-gateway-pattern.md` - local-first relay gateway pattern covering raw-signal intake, trust boundary, normalization, privacy/safety filtering, model-facing event schemas, command recommendations, audit/replay, and failure handling.
 - `10-native-performance-track.md` - native-first boundary for low-level performance, energy measurement, and hot-path implementation choices.
+- `CONTRIBUTING.md` - evidence-first contribution expectations and validation commands.
+- `DEVELOPMENT.md` - setup notes, CI parity checks, native FHE commands, and artifact policy.
 - `RELEASE.md` - research-alpha release checklist and evidence gates.
+- `SECURITY.md` - research-prototype security policy and reporting scope.
 - `patent/` - ENER provisional drafting package, revised claim seeds, drawings, prior-art search plan, submission checklist, and policy/commercial briefing materials.
 - `project-brief.json` - agent-readable structured project summary.
 - `index.html` - self-contained browser briefing deck.
 - `prototype/` - dependency-free educational sparse encrypted spike-count prototype, spatial spike sorter, local relay gateway scaffold, benchmark runner, plaintext baseline, OpenFHE BFVrns lane, OpenFHE CKKS approximate-real lane, TFHE-rs integer/Boolean lane, tests, handoffs, and research assumptions.
 - `package.json` - local demo, benchmark, test, and validation commands. `private: true` prevents accidental npm publication; it is not a proprietary-license declaration.
 - `VALIDATION.md` - local validation commands and results.
+- `.github/workflows/ci.yml` - portable CI for tests, metadata parsing, placeholder scanning, and smoke artifact generation/upload.
 
 ## Validation
 

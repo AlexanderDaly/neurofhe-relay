@@ -1,0 +1,49 @@
+{
+  "schema": "neurofhe.ciBlocker.v1",
+  "artifactId": "github-actions-billing-lock-2026-05-22",
+  "generatedAt": "2026-05-22T20:23:09Z",
+  "scope": "portable-github-actions-validation",
+  "pullRequest": {
+    "number": 6,
+    "title": "Add portable CI and release polish docs",
+    "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/6",
+    "headRef": "codex/ci-release-polish",
+    "headSha": "c1d3efef39f3413c221a08653fd8c07d80ff7150"
+  },
+  "run": {
+    "id": 26293465330,
+    "jobId": 77399634587,
+    "workflowName": "CI",
+    "checkName": "Portable validation",
+    "status": "completed",
+    "conclusion": "failure",
+    "startedAt": "2026-05-22T14:24:47Z",
+    "completedAt": "2026-05-22T14:24:49Z",
+    "detailsUrl": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26293465330/job/77399634587"
+  },
+  "blocker": {
+    "category": "github-actions-account-billing",
+    "isCodeFailure": false,
+    "githubAnnotation": "The job was not started because your account is locked due to a billing issue.",
+    "evidence": {
+      "checkRunSteps": [],
+      "runnerName": "",
+      "logFetchCommand": "gh run view 26293465330 --log-failed",
+      "logFetchResult": "log not found: 77399634587"
+    }
+  },
+  "localParityValidation": {
+    "observedAt": "2026-05-22T20:23:09Z",
+    "commandsRun": [
+      "npm run ci",
+      "npm run benchmark:artifact -- --out <tmp>/benchmark-artifacts --artifact-id ci-synthetic-smoke --generated-at 2026-05-21T00:00:00.000Z",
+      "npm run benchmark:privacy-modes -- --artifact --out <tmp>/privacy-modes --artifact-id ci-padding-smoke --generated-at 2026-05-21T00:00:00.000Z",
+      "npm run baseline:plaintext -- --fixture nmnist-smoke --artifact --out <tmp>/nmnist-smoke --artifact-id ci-nmnist-smoke --generated-at 2026-05-21T00:00:00.000Z",
+      "git diff --check"
+    ],
+    "result": "pass",
+    "productionClaim": false
+  },
+  "smallestNextStep": "Resolve the GitHub Actions billing/account lock, then rerun PR #6 CI without changing release evidence claims.",
+  "productionClaim": false
+}
