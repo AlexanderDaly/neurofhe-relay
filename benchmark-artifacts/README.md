@@ -64,6 +64,12 @@ synthetic event window. Runtime measurements in that artifact are local
 JavaScript toy-arithmetic timings only; use native OpenFHE or TFHE-rs artifacts
 for cryptographic-library timing.
 
+CI blocker artifacts are written under `benchmark-artifacts/ci-blockers/` when
+GitHub Actions cannot start or complete for account or host reasons outside the
+portable validation commands. The current blocker records PR #6 failing before
+runner steps because the GitHub account is locked due to a billing issue; local
+parity validation and smoke artifact generation pass.
+
 Every `neurofhe.benchmarkArtifact.v1` file must include:
 
 - accuracy
@@ -84,6 +90,8 @@ Current artifacts also include:
 - framing guardrail for privacy-preserving event intelligence, not diagnosis or treatment
 - optional OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs adapter/native comparison artifacts for the same synthetic 8x8 sparse score contract
 - native OpenFHE BFVrns and CKKS comparison artifacts for one generated UCI EEG Eye State sparse input contract
+- CI/account blocker artifacts that separate GitHub Actions availability from
+  code or workflow-step failures
 
 The current top-level benchmark accuracy field is synthetic contract agreement
 against the plaintext classifier, not real dataset accuracy. Use the

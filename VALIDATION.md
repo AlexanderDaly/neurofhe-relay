@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 54
-pass 54
+tests 55
+pass 55
 fail 0
 ```
 
@@ -945,6 +945,53 @@ Result:
 ```text
 ascii scan complete
 ```
+
+### GitHub Actions CI Blocker
+
+PR #6 adds portable GitHub Actions validation for the same local gate and smoke
+artifact generation. The latest remote check did not reach any runner steps.
+
+GitHub check-run annotation:
+
+```text
+The job was not started because your account is locked due to a billing issue.
+```
+
+Observed metadata:
+
+```json
+{
+  "runId": 26277031249,
+  "jobId": 77343685817,
+  "checkName": "Portable validation",
+  "conclusion": "failure",
+  "steps": [],
+  "runnerName": ""
+}
+```
+
+Log fetch command:
+
+```sh
+gh run view 26277031249 --log-failed
+```
+
+Result:
+
+```text
+log not found: 77343685817
+```
+
+Committed blocker artifact:
+
+```text
+benchmark-artifacts/ci-blockers/latest.json
+benchmark-artifacts/ci-blockers/runs/github-actions-billing-lock-2026-05-22.json
+```
+
+This is an account/billing blocker, not evidence of a test or workflow-step
+failure. Local parity validation on the PR branch passed with `npm run ci`,
+smoke artifact generation into a temporary directory, and `git diff --check`.
 
 ## Scope Note
 
