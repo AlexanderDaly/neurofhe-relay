@@ -91,6 +91,36 @@ import {
   runGatewayDemo,
 } from "../lib/gateway.mjs";
 
+function eegEyeStateSmokeArff() {
+  return [
+    "@relation eeg-eye-state-smoke",
+    "@attribute AF3 numeric",
+    "@attribute F7 numeric",
+    "@attribute F3 numeric",
+    "@attribute FC5 numeric",
+    "@attribute T7 numeric",
+    "@attribute P7 numeric",
+    "@attribute O1 numeric",
+    "@attribute O2 numeric",
+    "@attribute P8 numeric",
+    "@attribute T8 numeric",
+    "@attribute FC6 numeric",
+    "@attribute F4 numeric",
+    "@attribute F8 numeric",
+    "@attribute AF4 numeric",
+    "@attribute eyeDetection {0,1}",
+    "@data",
+    "4100,4080,4090,4070,4105,4095,4088,4092,4100,4080,4090,4070,4105,4095,0",
+    "4102,4082,4091,4071,4106,4094,4089,4091,4102,4082,4091,4071,4106,4094,0",
+    "4200,4180,4195,4175,4210,4205,4190,4188,4200,4180,4195,4175,4210,4205,1",
+    "4202,4181,4196,4177,4212,4206,4191,4189,4202,4181,4196,4177,4212,4206,1",
+    "4101,4081,4092,4072,4104,4096,4087,4093,4101,4081,4092,4072,4104,4096,0",
+    "4103,4081,4091,4071,4107,4095,4089,4092,4103,4081,4091,4071,4107,4095,0",
+    "4201,4182,4197,4176,4211,4204,4192,4187,4201,4182,4197,4176,4211,4204,1",
+    "4203,4183,4198,4178,4213,4207,4193,4190,4203,4183,4198,4178,4213,4207,1",
+  ].join("\n");
+}
+
 test("toy additive cipher preserves addition and public scalar multiplication", () => {
   const { publicKey, privateKey } = createToyKeypair();
   const cipher = createToyCipher(publicKey, { seed: 37 });
@@ -1613,6 +1643,82 @@ test("EEG plaintext CLI emits blocker artifacts for invalid baseline options", a
   assert.match(artifact.subject.smallestNextStep, /larger --train-fraction/);
 });
 
+test("EEG plaintext CLI boundary matrix returns structured unavailable artifacts", async (t) => {
+  const boundaryCases = [
+    {
+      flag: "--train-fraction",
+      value: "0",
+      reason: /--train-fraction must be a finite number greater than 0 and less than 1/,
+    },
+    {
+      flag: "--train-fraction",
+      value: "1",
+      reason: /--train-fraction must be a finite number greater than 0 and less than 1/,
+    },
+    {
+      flag: "--window-size",
+      value: "0",
+      reason: /--window-size must be a positive integer/,
+    },
+    {
+      flag: "--window-size",
+      value: "2.5",
+      reason: /--window-size must be a positive integer/,
+    },
+    {
+      flag: "--stride",
+      value: "0",
+      reason: /--stride must be a positive integer/,
+    },
+    {
+      flag: "--stride",
+      value: "not-a-number",
+      reason: /--stride must be a positive integer/,
+    },
+  ];
+
+  for (const boundaryCase of boundaryCases) {
+    await t.test(`${boundaryCase.flag} ${boundaryCase.value}`, async () => {
+      const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-eeg-boundary-"));
+      const result = spawnSync(
+        process.execPath,
+        [
+          "prototype/plaintext-baseline.mjs",
+          "--source",
+          "eeg-eye-state",
+          "--fixture",
+          "eeg-eye-state-smoke",
+          "--train-fraction",
+          "0.7",
+          "--window-size",
+          "2",
+          "--stride",
+          "2",
+          boundaryCase.flag,
+          boundaryCase.value,
+          "--artifact",
+          "--out",
+          outputDir,
+          "--artifact-id",
+          `eeg-boundary-${boundaryCase.flag.slice(2)}-${boundaryCase.value}`,
+          "--generated-at",
+          "2026-05-21T00:00:00.000Z",
+        ],
+        { cwd: process.cwd(), encoding: "utf8", timeout: 1500 },
+      );
+      const published = JSON.parse(result.stdout);
+      const artifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+
+      assert.equal(result.status, 2);
+      assert.equal(result.stderr, "");
+      assert.equal(published.schema, "neurofhe.plaintextBaselineArtifact.publish.v1");
+      assert.equal(artifact.subject.schema, "neurofhe.plaintextBaseline.unavailable.v1");
+      assert.match(artifact.subject.blocker.reason, boundaryCase.reason);
+      assert.match(artifact.subject.attemptedCommand, new RegExp(`${boundaryCase.flag} ${boundaryCase.value}`));
+    });
+  }
+});
+
 test("EEG Eye State can emit an OpenFHE-ready sparse input contract", () => {
   const fixture = buildEegEyeStateSmokeFixtureRows();
   const contract = buildEegEyeStateOpenFheInputContract({
@@ -1641,22 +1747,86 @@ test("EEG Eye State can emit an OpenFHE-ready sparse input contract", () => {
   assert.equal(contract.productionClaim, false);
 });
 
-test("EEG Eye State OpenFHE contract clamps negative sample index", () => {
-  const fixture = buildEegEyeStateSmokeFixtureRows();
-  const contract = buildEegEyeStateOpenFheInputContract({
-    rows: fixture.rows,
-    sampleIndex: -1,
-    fixedPointScale: 10,
-    options: {
-      trainFraction: 0.7,
-      windowSize: 2,
-      stride: 2,
-      channelCount: 4,
-      activePerTimestep: 2,
+test("EEG OpenFHE input contract CLI boundary matrix returns clear validation errors", async (t) => {
+  const datasetPath = join(
+    await mkdtemp(join(tmpdir(), "neurofhe-eeg-contract-boundary-")),
+    "EEG Eye State.arff",
+  );
+  await writeFile(datasetPath, eegEyeStateSmokeArff(), "utf8");
+  const boundaryCases = [
+    {
+      flag: "--train-fraction",
+      value: "0",
+      reason: /Validation error: --train-fraction must be a finite number greater than 0 and less than 1/,
     },
-  });
+    {
+      flag: "--window-size",
+      value: "0",
+      reason: /Validation error: --window-size must be a positive integer/,
+    },
+    {
+      flag: "--stride",
+      value: "0",
+      reason: /Validation error: --stride must be a positive integer/,
+    },
+    {
+      flag: "--sample-index",
+      value: "-1",
+      reason: /Validation error: --sample-index must be a non-negative integer/,
+    },
+    {
+      flag: "--sample-index",
+      value: "99",
+      reason: /Validation error: --sample-index 99 is outside available test windows 0-0/,
+    },
+  ];
 
-  assert.equal(contract.sample.sampleIndex, 0);
-  assert.equal(contract.sample.split, "chronological-test");
-  assert.equal(contract.activeEventCount, 4);
+  for (const boundaryCase of boundaryCases) {
+    await t.test(`${boundaryCase.flag} ${boundaryCase.value}`, () => {
+      const result = spawnSync(
+        process.execPath,
+        [
+          "prototype/openfhe-realdata-contract.mjs",
+          "--dataset",
+          datasetPath,
+          "--train-fraction",
+          "0.7",
+          "--window-size",
+          "2",
+          "--stride",
+          "2",
+          "--sample-index",
+          "0",
+          boundaryCase.flag,
+          boundaryCase.value,
+        ],
+        { cwd: process.cwd(), encoding: "utf8", timeout: 1500 },
+      );
+
+      assert.equal(result.status, 2);
+      assert.equal(result.stdout, "");
+      assert.match(result.stderr, boundaryCase.reason);
+      assert.doesNotMatch(result.stderr, /\n\s+at /);
+    });
+  }
+});
+
+test("EEG Eye State OpenFHE contract rejects negative sample index", () => {
+  const fixture = buildEegEyeStateSmokeFixtureRows();
+
+  assert.throws(
+    () => buildEegEyeStateOpenFheInputContract({
+      rows: fixture.rows,
+      sampleIndex: -1,
+      fixedPointScale: 10,
+      options: {
+        trainFraction: 0.7,
+        windowSize: 2,
+        stride: 2,
+        channelCount: 4,
+        activePerTimestep: 2,
+      },
+    }),
+    /--sample-index must be a non-negative integer/,
+  );
 });
