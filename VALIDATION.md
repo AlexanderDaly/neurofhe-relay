@@ -17,8 +17,8 @@ npm test
 Result summary:
 
 ```text
-tests 53
-pass 53
+tests 54
+pass 54
 fail 0
 ```
 
@@ -40,7 +40,7 @@ Covered behaviours:
 - OpenFHE CKKS approximate-real sorted-event contract validation, digest-bound real-library adapter manifest, CKKS parameter inventory, privacy boundary, native build-plan detection, real-data-derived input-contract loading, comparison artifact publishing, and C++ CKKS API source markers.
 - TFHE-rs sorted-event contract validation, digest-bound real-library adapter manifest, Cargo build-plan detection, Rust source markers, encrypted threshold-gate metadata, TFHE-vs-OpenFHE comparison notes, and comparison artifact publishing.
 - N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
-- UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, real-data privacy caveats, and active-budget compression-curve output.
+- UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
 - Research assumptions with clean-room and naming guardrails.
 
 ### Desk Demo

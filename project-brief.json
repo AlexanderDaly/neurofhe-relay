@@ -63,7 +63,13 @@
       "tfheRsRun": "npm run benchmark:tfhe -- --run",
       "tfheRsComparisonArtifact": "npm run benchmark:tfhe -- --run --artifact",
       "plaintextBaseline": "npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10",
+      "validate": "npm run validate",
       "test": "npm test"
+    },
+    "ci": {
+      "workflow": ".github/workflows/ci.yml",
+      "scope": "portable Node validation, JSON metadata parsing, placeholder scanning, and smoke artifact generation/upload",
+      "nativeFhePolicy": "OpenFHE and TFHE-rs native runs are release-gate/local checks unless a pinned heavy build environment is added."
     },
     "schema": "neurofhe.benchmark.v1",
     "boundaryDomain": "bio-digital-event-intelligence",

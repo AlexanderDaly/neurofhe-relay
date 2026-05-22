@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "codex/**"
+
+permissions:
+  contents: read
+
+jobs:
+  portable-validation:
+    name: Portable validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SMOKE_ARTIFACT_DIR: ${{ runner.temp }}/neurofhe-smoke-artifacts
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run unit and schema validation
+        run: npm run ci
+
+      - name: Generate smoke artifacts in a temporary directory
+        run: |
+          mkdir -p "$SMOKE_ARTIFACT_DIR"
+          npm run benchmark:artifact -- \
+            --out "$SMOKE_ARTIFACT_DIR/benchmark-artifacts" \
+            --artifact-id ci-synthetic-smoke \
+            --generated-at 2026-05-21T00:00:00.000Z
+          npm run benchmark:privacy-modes -- \
+            --artifact \
+            --out "$SMOKE_ARTIFACT_DIR/privacy-modes" \
+            --artifact-id ci-padding-smoke \
+            --generated-at 2026-05-21T00:00:00.000Z
+          npm run baseline:plaintext -- \
+            --fixture nmnist-smoke \
+            --artifact \
+            --out "$SMOKE_ARTIFACT_DIR/nmnist-smoke" \
+            --artifact-id ci-nmnist-smoke \
+            --generated-at 2026-05-21T00:00:00.000Z
+
+      - name: Check formatting-sensitive whitespace
+        run: git diff --check
+
+      - name: Upload smoke artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: neurofhe-smoke-artifacts
+          path: ${{ env.SMOKE_ARTIFACT_DIR }}
+          if-no-files-found: error
