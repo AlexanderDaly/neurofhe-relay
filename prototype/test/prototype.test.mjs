@@ -1614,3 +1614,23 @@ test("EEG Eye State can emit an OpenFHE-ready sparse input contract", () => {
   assert.equal(contract.privacyBoundary.productionClaim, false);
   assert.equal(contract.productionClaim, false);
 });
+
+test("EEG Eye State OpenFHE contract clamps negative sample index", () => {
+  const fixture = buildEegEyeStateSmokeFixtureRows();
+  const contract = buildEegEyeStateOpenFheInputContract({
+    rows: fixture.rows,
+    sampleIndex: -1,
+    fixedPointScale: 10,
+    options: {
+      trainFraction: 0.7,
+      windowSize: 2,
+      stride: 2,
+      channelCount: 4,
+      activePerTimestep: 2,
+    },
+  });
+
+  assert.equal(contract.sample.sampleIndex, 0);
+  assert.equal(contract.sample.split, "chronological-test");
+  assert.equal(contract.activeEventCount, 4);
+});

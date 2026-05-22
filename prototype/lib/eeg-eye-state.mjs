@@ -308,7 +308,8 @@ export function buildEegEyeStateOpenFheInputContract({
     throw new Error("cannot build OpenFHE input contract without test windows");
   }
   const model = trainCentroidSparseLinearClassifier(trainWindows);
-  const sample = testWindows[Math.min(sampleIndex, testWindows.length - 1)];
+  const boundedSampleIndex = clampSampleIndex(sampleIndex, testWindows.length);
+  const sample = testWindows[boundedSampleIndex];
   const expectedScores = scoreSparseWindow(model, sample);
   const expectedClassification = argmax(expectedScores);
   const quantized = quantizeSparseLinearContract({
@@ -347,7 +348,7 @@ export function buildEegEyeStateOpenFheInputContract({
       label: sample.label,
       rowStart: sample.rowStart,
       rowEnd: sample.rowEnd,
-      sampleIndex: Math.min(sampleIndex, testWindows.length - 1),
+      sampleIndex: boundedSampleIndex,
       split: "chronological-test",
     },
     preprocessing: {
@@ -443,6 +444,14 @@ export function runEegEyeStateCompressionSweep({
       "Compression changes the sparse active-value budget before encryption. This curve is not encrypted-compute evidence.",
     productionClaim: false,
   };
+}
+
+function clampSampleIndex(sampleIndex, sampleCount) {
+  const numericSampleIndex = Number(sampleIndex ?? 0);
+  if (!Number.isFinite(numericSampleIndex)) {
+    throw new Error("sampleIndex must be a finite number");
+  }
+  return Math.max(0, Math.min(Math.trunc(numericSampleIndex), sampleCount - 1));
 }
 
 function quantizeSparseLinearContract({
