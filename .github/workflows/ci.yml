@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      SMOKE_ARTIFACT_DIR: ${{ runner.temp }}/neurofhe-smoke-artifacts
+      SMOKE_ARTIFACT_DIR: /tmp/neurofhe-smoke-artifacts
 
     steps:
       - name: Check out repository
