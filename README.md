@@ -219,6 +219,14 @@ npm run benchmark:tfhe -- --run
 npm run benchmark:tfhe -- --run --artifact
 ```
 
+Summarize native evidence reproducibility across OpenFHE BFVrns, OpenFHE CKKS,
+and TFHE-rs without rerunning benchmarks:
+
+```sh
+npm run native:doctor
+npm run native:doctor -- --artifact
+```
+
 Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
 
 ```sh
@@ -255,7 +263,10 @@ window from the generated input contract. BFVrns uses the fixed-point view and
 matches the expected quantized classification; CKKS uses approximate-real values
 and reports score drift against plaintext. These artifacts are local
 single-window integration evidence, not production cryptography or broad
-runtime claims.
+runtime claims. The native evidence manifest under
+`benchmark-artifacts/native-evidence/` records the host/toolchain fingerprint,
+latest artifact classification, exact rerun commands, and remaining gaps for
+the OpenFHE and TFHE-rs lanes.
 
 Run the deterministic N-MNIST-format smoke fixture and publish a compression
 curve artifact:

@@ -84,6 +84,21 @@ npm run benchmark:tfhe -- --run --artifact
 TFHE-rs is the threshold/Boolean comparison lane. Treat timings as local-machine
 evidence only unless repeated on a pinned benchmark host.
 
+## Native Evidence Doctor
+
+Summarize the native-lane evidence state, host/toolchain fingerprint, latest
+artifact classification, exact rerun commands, and remaining gaps:
+
+```sh
+npm run native:doctor
+npm run native:doctor -- --artifact
+```
+
+The manifest does not rerun OpenFHE or TFHE-rs benchmarks. It indexes the
+latest committed artifacts and records whether each lane is a real native run,
+dependency blocker, adapter plan, or missing artifact. Use it before release
+review to make local native evidence easier to reproduce on another host.
+
 ## Real Data
 
 The EEG Eye State path fetches a public ARFF into `.cache/`, which is ignored by
@@ -113,4 +128,6 @@ when the dataset is absent.
 
 Use `RELEASE.md` for the research-alpha release gate. Before tagging, confirm
 the portable CI workflow is green and that any native FHE evidence is either a
-real local-library run or a structured blocker artifact.
+real local-library run or a structured blocker artifact. Refresh
+`npm run native:doctor -- --artifact` after native runs or blockers so reviewers
+can see the exact host and rerun commands behind the latest evidence.

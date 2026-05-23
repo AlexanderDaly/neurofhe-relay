@@ -20,6 +20,11 @@ import {
   publishComparisonArtifact,
 } from "../lib/artifacts.mjs";
 import {
+  buildNativeEvidenceManifest,
+  classifyNativeEvidenceArtifact,
+  publishNativeEvidenceArtifact,
+} from "../lib/native-evidence.mjs";
+import {
   runEncryptedLinearClassifier,
   runPlaintextLinearClassifier,
 } from "../lib/classifier.mjs";
@@ -1279,6 +1284,128 @@ test("comparison artifacts can persist OpenFHE CKKS adapter plans for later libr
   assert.equal(runArtifact.subject.schema, "neurofhe.realLibraryAdapter.v1");
   assert.equal(runArtifact.subject.adapterId, "openfhe-ckks-sparse-approx-linear-v1");
   assert.equal(runArtifact.framingGuardrail.preferredFrame, "privacy-preserving event intelligence");
+  assert.deepEqual(latestArtifact, runArtifact);
+});
+
+test("native evidence manifest classifies real runs and dependency blockers", () => {
+  const realOpenFheArtifact = {
+    schema: "neurofhe.comparisonArtifact.v1",
+    artifactId: "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+    generatedAt: "2026-05-21T18:22:00.000Z",
+    subjectSchema: "neurofhe.openfhe.runComparison.v1",
+    subject: {
+      schema: "neurofhe.openfhe.runComparison.v1",
+      inputContractPath: "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json",
+      nativeResult: {
+        schema: "neurofhe.openfhe.result.v1",
+        inputSource: "external-contract",
+        datasetKind: "public-uci-eeg-eye-state-arff",
+        activeEventCount: 32,
+        productionClaim: false,
+      },
+      productionClaim: false,
+    },
+    productionClaim: false,
+  };
+  const blockerArtifact = {
+    schema: "neurofhe.comparisonArtifact.v1",
+    artifactId: "openfhe-ckks-blocker",
+    generatedAt: "2026-05-21T00:00:00.000Z",
+    subjectSchema: "neurofhe.openfheCkks.unavailable.v1",
+    subject: {
+      schema: "neurofhe.openfheCkks.unavailable.v1",
+      blocker: { reason: "OpenFHEConfig.cmake not found" },
+      productionClaim: false,
+    },
+    productionClaim: false,
+  };
+  const adapterArtifact = {
+    schema: "neurofhe.comparisonArtifact.v1",
+    artifactId: "tfhe-adapter-plan",
+    generatedAt: "2026-05-21T00:00:00.000Z",
+    subjectSchema: "neurofhe.realLibraryAdapter.v1",
+    subject: {
+      schema: "neurofhe.realLibraryAdapter.v1",
+      adapterId: "tfhe-rs-sparse-integer-threshold-v1",
+      productionClaim: false,
+    },
+    productionClaim: false,
+  };
+
+  assert.equal(classifyNativeEvidenceArtifact(realOpenFheArtifact).status, "real-native-run");
+  assert.equal(classifyNativeEvidenceArtifact(blockerArtifact).status, "dependency-blocker");
+  assert.equal(classifyNativeEvidenceArtifact(adapterArtifact).status, "adapter-plan-only");
+
+  const manifest = buildNativeEvidenceManifest({
+    generatedAt: "2026-05-23T00:00:00.000Z",
+    hostFingerprint: {
+      schema: "neurofhe.nativeEvidence.hostFingerprint.v1",
+      platform: "test-platform",
+      arch: "test-arch",
+      node: "v22.0.0",
+      toolchain: {},
+    },
+    artifactReader: (path) => ({
+      "benchmark-artifacts/comparisons/openfhe/latest.json": realOpenFheArtifact,
+      "benchmark-artifacts/comparisons/openfhe-ckks/latest.json": blockerArtifact,
+      "benchmark-artifacts/comparisons/tfhe-rs/latest.json": adapterArtifact,
+    })[path],
+    openFheDetection: { available: true, cmakeConfigDir: "/opt/openfhe/lib/cmake/OpenFHE" },
+    tfheRsDetection: { available: true, manifestExists: true, cargo: "cargo 1.90.0" },
+  });
+
+  assert.equal(manifest.schema, "neurofhe.nativeEvidence.manifest.v1");
+  assert.equal(manifest.productionClaim, false);
+  assert.equal(manifest.summary.realNativeRunCount, 1);
+  assert.equal(manifest.summary.dependencyBlockerCount, 1);
+  assert.equal(manifest.summary.adapterPlanOnlyCount, 1);
+  assert.equal(manifest.summary.missingArtifactCount, 0);
+  assert.equal(manifest.releaseUse.releaseGateSatisfied, false);
+  assert.match(manifest.releaseUse.reason, /not sufficient/i);
+  assert.deepEqual(
+    manifest.lanes.map((lane) => [lane.id, lane.evidence.status]),
+    [
+      ["openfhe-bfvrns", "real-native-run"],
+      ["openfhe-ckks", "dependency-blocker"],
+      ["tfhe-rs", "adapter-plan-only"],
+    ],
+  );
+  assert.equal(manifest.lanes[0].evidence.datasetKind, "public-uci-eeg-eye-state-arff");
+  assert.equal(manifest.lanes[0].reproducibility.hostSpecific, true);
+  assert.ok(manifest.lanes[0].reproducibility.commands.some((command) => command.includes("--input")));
+  assert.equal(manifest.lanes[1].smallestNextStep, "OpenFHEConfig.cmake not found");
+});
+
+test("native evidence artifacts publish deterministic run and latest JSON", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-native-evidence-"));
+  const manifest = buildNativeEvidenceManifest({
+    generatedAt: "2026-05-23T00:00:00.000Z",
+    hostFingerprint: {
+      schema: "neurofhe.nativeEvidence.hostFingerprint.v1",
+      platform: "test-platform",
+      arch: "test-arch",
+      node: "v22.0.0",
+      toolchain: {},
+    },
+    artifactReader: () => undefined,
+    openFheDetection: { available: false, reason: "OpenFHEConfig.cmake not found" },
+    tfheRsDetection: { available: false, reason: "Cargo not found" },
+  });
+  const published = await publishNativeEvidenceArtifact({
+    outputDir,
+    manifest,
+    artifactId: "native-evidence-test",
+    generatedAt: "2026-05-23T00:00:00.000Z",
+  });
+  const runArtifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+  const latestArtifact = JSON.parse(await readFile(published.paths.latest, "utf8"));
+
+  assert.equal(published.schema, "neurofhe.nativeEvidenceArtifact.publish.v1");
+  assert.equal(runArtifact.schema, "neurofhe.nativeEvidenceArtifact.v1");
+  assert.equal(runArtifact.artifactId, "native-evidence-test");
+  assert.equal(runArtifact.subject.schema, "neurofhe.nativeEvidence.manifest.v1");
+  assert.equal(runArtifact.subject.summary.missingArtifactCount, 3);
+  assert.equal(runArtifact.productionClaim, false);
   assert.deepEqual(latestArtifact, runArtifact);
 });
 
