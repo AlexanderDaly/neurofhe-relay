@@ -1,0 +1,66 @@
+name: Validation or evidence gap
+description: Track a reproducible research-alpha evidence gap without upgrading claims.
+title: "[evidence]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for missing or incomplete validation evidence. Do not include secrets, raw neural/EEG rows, private datasets, proprietary weights, or screenshots with sensitive payloads.
+  - type: dropdown
+    id: evidence_class
+    attributes:
+      label: Evidence class
+      options:
+        - real-data plaintext baseline
+        - native OpenFHE BFVrns run
+        - native OpenFHE CKKS run
+        - TFHE-rs run
+        - padded-sparse overhead measurement
+        - ciphertext or RSS memory measurement
+        - reconstruction-resistance test
+        - metadata leakage metric
+        - secret or raw-data scan
+        - documentation or dashboard polish
+    validations:
+      required: true
+  - type: textarea
+    id: current_gap
+    attributes:
+      label: Current gap
+      description: What evidence is missing, stale, or too weak?
+      placeholder: The current artifact is a fixture/blocker only; it does not establish...
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command or artifact path
+      description: Include the exact command attempted, or the artifact that needs updating.
+      render: sh
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed result
+      description: Include exact errors, blocker text, or the measured artifact fields.
+    validations:
+      required: true
+  - type: textarea
+    id: smallest_next_step
+    attributes:
+      label: Smallest next step
+      description: What is the smallest reproducible action that would advance this evidence?
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Boundary checks
+      options:
+        - label: This does not claim production cryptography, clinical validity, medical utility, or deployment readiness.
+          required: true
+        - label: Raw datasets, raw signals, secrets, and private payloads are not attached or committed.
+          required: true
+        - label: The evidence keeps `productionClaim: false` where artifact metadata is involved.
+          required: true
