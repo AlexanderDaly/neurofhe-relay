@@ -948,21 +948,17 @@ ascii scan complete
 
 ### GitHub Actions CI Blocker
 
-PR #6 adds portable GitHub Actions validation for the same local gate and smoke
-artifact generation. The latest remote check did not reach any runner steps.
-
-GitHub check-run annotation:
-
-```text
-The job was not started because your account is locked due to a billing issue.
-```
+PR #7 is the current draft PR using portable GitHub Actions validation. The
+latest remote checks still do not reach any runner steps.
 
 Observed metadata:
 
 ```json
 {
-  "runId": 26293465330,
-  "jobId": 77399634587,
+  "pullRequestRunId": 26310492168,
+  "pullRequestJobId": 77457726901,
+  "pushRunId": 26310475037,
+  "pushJobId": 77457671493,
   "checkName": "Portable validation",
   "conclusion": "failure",
   "steps": [],
@@ -970,28 +966,33 @@ Observed metadata:
 }
 ```
 
-Log fetch command:
+Log fetch commands:
 
 ```sh
-gh run view 26293465330 --log-failed
+gh run view 26310492168 --log-failed
+gh run view 26310475037 --log-failed
 ```
 
-Result:
+Results:
 
 ```text
-log not found: 77399634587
+log not found: 77457726901
+log not found: 77457671493
 ```
 
-Committed blocker artifact:
+Committed blocker artifacts:
 
 ```text
 benchmark-artifacts/ci-blockers/latest.json
-benchmark-artifacts/ci-blockers/runs/github-actions-billing-lock-2026-05-22.json
+benchmark-artifacts/ci-blockers/runs/github-actions-runner-startup-block-2026-05-23-pr7.json
 ```
 
-This is an account/billing blocker, not evidence of a test or workflow-step
-failure. Local parity validation on the PR branch passed with `npm run ci`,
-smoke artifact generation into a temporary directory, and `git diff --check`.
+This is tracked as an account or runner-startup blocker, not evidence of a test
+or workflow-step failure. The PR #7 local parity validation passed with
+`npm run ci` (68/68 tests), smoke artifact generation into a temporary
+directory, and `git diff --check`. A prior matching PR #6 check exposed the
+GitHub annotation: "The job was not started because your account is locked due
+to a billing issue."
 
 ## Scope Note
 
