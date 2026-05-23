@@ -1,11 +1,10 @@
 name: CI
 
+# Temporarily manual-only while the repository's GitHub Actions account/billing
+# blocker is resolved. Re-enable push/pull_request triggers after hosted CI can
+# start runners again.
 on:
-  pull_request:
-  push:
-    branches:
-      - main
-      - "codex/**"
+  workflow_dispatch:
 
 permissions:
   contents: read
