@@ -88,8 +88,9 @@ export function runEncryptedLinearClassifier(eventWindow, options = {}) {
       firstSpikeCiphertext: encryptedEvents[0]
         ? summarizeCiphertext(encryptedEvents[0].ciphertext)
         : null,
-      normalScoreCiphertext: summarizeCiphertext(encryptedScores.normal),
-      anomalyScoreCiphertext: summarizeCiphertext(encryptedScores.anomaly),
+      scoreCiphertexts: Object.fromEntries(
+        model.classes.map((label) => [label, summarizeCiphertext(encryptedScores[label])]),
+      ),
     },
     ciphertextBytes: estimateCiphertextBytes(encryptedEvents, encryptedScores),
     operationCounts,

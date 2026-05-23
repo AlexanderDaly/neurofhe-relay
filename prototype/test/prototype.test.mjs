@@ -146,6 +146,29 @@ test("encrypted classifier matches plaintext classifier on the demo contract", (
   assert.equal(encrypted.operationCounts.decryptions, 2);
 });
 
+test("encrypted classifier preview uses model class labels", () => {
+  const eventWindow = buildSparseEventWindow();
+  const featureCount = flattenEventWindow(eventWindow).length;
+  const model = {
+    ...buildDemoLinearModel({ featureCount, channels: eventWindow.channels }),
+    classes: ["quiet", "alert"],
+    weights: {
+      quiet: Array(featureCount).fill(0),
+      alert: Array(featureCount).fill(1),
+    },
+    bias: { quiet: 0, alert: 0 },
+    matrixShape: [2, featureCount],
+  };
+
+  const encrypted = runEncryptedLinearClassifier(eventWindow, { model, seed: 91 });
+
+  assert.deepEqual(Object.keys(encrypted.encryptedPreview.scoreCiphertexts), ["quiet", "alert"]);
+  assert.equal(typeof encrypted.encryptedPreview.scoreCiphertexts.quiet, "string");
+  assert.equal(typeof encrypted.encryptedPreview.scoreCiphertexts.alert, "string");
+  assert.equal("normalScoreCiphertext" in encrypted.encryptedPreview, false);
+  assert.equal("anomalyScoreCiphertext" in encrypted.encryptedPreview, false);
+});
+
 test("linear model metadata fixes matrix orientation and supports public bias", () => {
   const model = buildDemoLinearModel({ featureCount: 64, channels: 8 });
 
