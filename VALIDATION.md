@@ -895,7 +895,7 @@ The raw ARFF is cached under `.cache/` and is not committed. This result is
 real-data plaintext preprocessing/model evidence only. It does not show
 encrypted runtime on the real dataset, medical validity, or generalization.
 
-### Placeholder Scan
+### Repository Hygiene Scan
 
 Command:
 
@@ -906,11 +906,15 @@ node prototype/scripts/placeholder-scan.mjs
 Result:
 
 ```text
-placeholder scan ok
+repository hygiene scan ok
 ```
 
-The scanner skips generated directories such as `target/`, `build/`, `dist/`,
-and `outputs/` so Cargo build products are not read as source text.
+The scanner blocks placeholder text, common token-shaped secrets, and committed
+raw dataset paths/extensions such as ARFF, AEDAT, EDF, MAT, NumPy, HDF5, CSV,
+and Parquet. It skips generated directories such as `.cache/`, `target/`,
+`build/`, `dist/`, and `outputs/` so cache and build products are not read as
+source text. Raw public datasets remain outside git; committed artifacts should
+stay derived, caveated, and provenance-bearing.
 
 ### ASCII Scan
 
