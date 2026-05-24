@@ -28,7 +28,8 @@ npm run ci
 ```
 
 That command runs the Node test suite, parses the core JSON metadata files, and
-scans for placeholder text. `npm run ci` currently aliases `npm run validate`.
+scans for placeholder text, common secret tokens, and committed raw dataset
+paths. `npm run ci` currently aliases `npm run validate`.
 
 Run smoke artifact generation without touching committed artifacts:
 
@@ -102,6 +103,9 @@ when the dataset is absent.
 - `.cache/`, `node_modules/`, `build/`, and Rust target directories are local
   build/cache outputs.
 - Raw neural, EEG, sensor, partner, or private datasets must not be committed.
+- The portable hygiene scan blocks common raw dataset file extensions and
+  token-shaped secrets; keep public source data outside git and commit only
+  derived artifacts or structured blocker reports.
 - Every new benchmark artifact should preserve `privacyBoundary`,
   `cryptoInventory`, `productionClaim: false`, commands, and provenance.
 

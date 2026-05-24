@@ -77,7 +77,7 @@ The cryptographic design target is:
 - `RELEASE.md` - research-alpha release checklist and evidence gates.
 - `SECURITY.md` - research-prototype security policy and reporting guidance.
 - `VALIDATION.md` - local validation commands, outputs, artifacts, and caveats.
-- `.github/workflows/ci.yml` - portable CI for tests, schema checks, placeholder scan, and smoke artifact generation/upload.
+- `.github/workflows/ci.yml` - portable CI for tests, schema checks, repository hygiene scan, and smoke artifact generation/upload.
 - `benchmark-artifacts/` - intentionally committed derived benchmark evidence and blocker reports.
 - `patent/` - ENER provisional drafting materials, claim seeds, drawings, prior-art search plan, filing checklist, and briefing package.
 - `project-brief.json` - structured project metadata for agents.
