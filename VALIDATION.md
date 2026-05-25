@@ -916,6 +916,38 @@ and Parquet. It skips generated directories such as `.cache/`, `target/`,
 source text. Raw public datasets remain outside git; committed artifacts should
 stay derived, caveated, and provenance-bearing.
 
+### Repository Hygiene Evidence Artifact
+
+Command:
+
+```sh
+npm run scan:hygiene -- --artifact --artifact-id repo-hygiene-2026-05-25 --generated-at 2026-05-25T22:54:00.000Z
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.repositoryHygieneScan.v1",
+  "artifactId": "repo-hygiene-2026-05-25",
+  "result": "pass",
+  "findingsCount": 0,
+  "productionClaim": false
+}
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/repo-hygiene/latest.json
+benchmark-artifacts/repo-hygiene/runs/repo-hygiene-2026-05-25.json
+```
+
+The artifact records only derived source-hygiene evidence: pass/fail status,
+scanned file count, scan policy, and redacted findings. It is not benchmark
+performance evidence, cryptographic assurance, or a substitute for keeping raw
+datasets and secrets out of git.
+
 ### ASCII Scan
 
 Command:

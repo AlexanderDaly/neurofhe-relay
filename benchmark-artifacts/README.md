@@ -32,6 +32,7 @@ npm run benchmark:openfhe-ckks -- --run --artifact
 npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
 npm run benchmark:tfhe -- --artifact
 npm run benchmark:tfhe -- --run --artifact
+npm run scan:hygiene -- --artifact
 ```
 
 By default, OpenFHE comparison artifacts are written under
@@ -70,6 +71,11 @@ portable validation commands. The current blocker records PR #6 failing before
 runner steps because the GitHub account is locked due to a billing issue; local
 parity validation and smoke artifact generation pass.
 
+Repository hygiene artifacts are written under
+`benchmark-artifacts/repo-hygiene/`. They record the source scan result,
+scanned file count, blocked raw-data patterns, and redacted findings only. They
+do not include raw dataset rows or secret values.
+
 Every `neurofhe.benchmarkArtifact.v1` file must include:
 
 - accuracy
@@ -92,6 +98,8 @@ Current artifacts also include:
 - native OpenFHE BFVrns and CKKS comparison artifacts for one generated UCI EEG Eye State sparse input contract
 - CI/account blocker artifacts that separate GitHub Actions availability from
   code or workflow-step failures
+- repository hygiene scan artifacts that separate source cleanliness evidence
+  from benchmark performance claims
 
 The current top-level benchmark accuracy field is synthetic contract agreement
 against the plaintext classifier, not real dataset accuracy. Use the
