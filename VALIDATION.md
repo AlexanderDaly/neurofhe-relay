@@ -997,6 +997,33 @@ This is an account/billing blocker, not evidence of a test or workflow-step
 failure. Local parity validation on the PR branch passed with `npm run ci`,
 smoke artifact generation into a temporary directory, and `git diff --check`.
 
+### GitHub Actions Open PR Refresh
+
+Observed on 2026-05-25 after PR #6 merged:
+
+```sh
+gh pr list --state open --json number,title,headRefName,baseRefName,isDraft,mergeStateStatus,reviewDecision,statusCheckRollup,updatedAt,url
+gh pr view 8 --json number,title,url,headRefName,mergeStateStatus,statusCheckRollup,isDraft,updatedAt
+gh pr view 9 --json number,title,url,headRefName,mergeStateStatus,statusCheckRollup,isDraft,updatedAt
+```
+
+Result:
+
+```text
+PR #8 Add evidence-first GitHub templates: mergeStateStatus BLOCKED, statusCheckRollup []
+PR #9 Add native evidence reproducibility manifest: mergeStateStatus BLOCKED, statusCheckRollup []
+```
+
+The workflow is currently `workflow_dispatch` only, following the earlier
+GitHub Actions billing/account lock. Empty check rollups on PR #8 and PR #9
+therefore remain hosted-CI availability and branch-protection evidence, not
+code-failure evidence. The current blocker artifact is:
+
+```text
+benchmark-artifacts/ci-blockers/latest.json
+benchmark-artifacts/ci-blockers/runs/github-actions-manual-only-open-prs-2026-05-25.json
+```
+
 ## Scope Note
 
 The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes digest-bound real-library adapter manifests plus real OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs native integration targets for the same sparse sorted-event score contract. The committed OpenFHE native artifacts were produced on a local machine with OpenFHE installed under the CMake search path; other reviewers need a local OpenFHE install to reproduce them. TFHE-rs runs through Cargo with the `tfhe` crate. Bio-digital language remains scoped to privacy-preserving event intelligence, not medical diagnosis or treatment.

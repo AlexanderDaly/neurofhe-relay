@@ -66,9 +66,11 @@ for cryptographic-library timing.
 
 CI blocker artifacts are written under `benchmark-artifacts/ci-blockers/` when
 GitHub Actions cannot start or complete for account or host reasons outside the
-portable validation commands. The current blocker records PR #6 failing before
-runner steps because the GitHub account is locked due to a billing issue; local
-parity validation and smoke artifact generation pass.
+portable validation commands. The May 25 blocker refresh records that PR #6 has
+merged, while open PRs #8 and #9 remain merge-blocked with empty hosted check
+rollups because the workflow is manual-only after the prior GitHub
+Actions account/billing lock. This remains an Actions availability and branch
+protection blocker, not evidence of a code or workflow-step failure.
 
 Every `neurofhe.benchmarkArtifact.v1` file must include:
 
