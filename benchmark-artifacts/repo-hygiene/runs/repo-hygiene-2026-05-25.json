@@ -1,0 +1,48 @@
+{
+  "schema": "neurofhe.repositoryHygieneScan.v1",
+  "artifactId": "repo-hygiene-2026-05-25",
+  "generatedAt": "2026-05-25T22:54:00.000Z",
+  "command": "node prototype/scripts/placeholder-scan.mjs --artifact --artifact-id repo-hygiene-2026-05-25 --generated-at 2026-05-25T22:54:00.000Z",
+  "scope": "portable-source-hygiene",
+  "result": "pass",
+  "scannedFileCount": 132,
+  "findingsCount": 0,
+  "findings": [],
+  "checks": [
+    "placeholder tokens",
+    "common token-shaped secrets",
+    "committed raw dataset paths and extensions"
+  ],
+  "ignored": {
+    "directories": [
+      ".cache",
+      ".git",
+      "node_modules",
+      "target",
+      "build",
+      "dist",
+      "outputs"
+    ],
+    "files": [
+      "VALIDATION.md"
+    ],
+    "binaryOrGeneratedExtensions": "\\.(a|dylib|gif|jpg|jpeg|o|pdf|png|pptx|rlib|rmeta|so)$"
+  },
+  "rawDataPolicy": {
+    "rawDatasetExtensions": "\\.(aedat|arff|bdf|csv|edf|feather|fif|h5|hdf5|mat|nii|nii\\.gz|npy|npz|parquet|tsv)$",
+    "blockedPathSegments": [
+      "N-MNIST",
+      "Train",
+      "Test"
+    ],
+    "rule": "Keep raw public/private datasets outside git; commit only derived artifacts or structured blocker reports."
+  },
+  "privacyBoundary": {
+    "schema": "neurofhe.repositoryHygiene.privacyBoundary.v1",
+    "rawData": "not scanned into artifacts",
+    "secrets": "redacted from artifacts",
+    "committedEvidence": "derived hygiene status only",
+    "productionClaim": false
+  },
+  "productionClaim": false
+}

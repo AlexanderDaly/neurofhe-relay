@@ -35,6 +35,7 @@ npm run benchmark:privacy-modes -- --artifact
 npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
 npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
 npm run benchmark:tfhe -- --run --artifact
+npm run scan:hygiene -- --artifact
 ```
 
 If OpenFHE or TFHE-rs cannot run on the release machine, publish the generated
@@ -44,6 +45,8 @@ command, error, and smallest next step.
 ## Release Checklist
 
 - Confirm `.cache/` and raw public datasets are not staged.
+- Confirm `benchmark-artifacts/repo-hygiene/latest.json` reports a passing
+  source-hygiene scan with redacted findings.
 - Confirm generated artifacts distinguish synthetic, plaintext real-data, toy
   cryptography, and native FHE results.
 - Confirm `VALIDATION.md` includes the commands that produced committed

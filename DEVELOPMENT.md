@@ -41,6 +41,15 @@ npm run baseline:plaintext -- --fixture nmnist-smoke --artifact --out "$tmpdir/n
 ```
 
 These are the same classes of checks used by `.github/workflows/ci.yml`.
+To publish a redacted repository hygiene scan as release evidence:
+
+```sh
+npm run scan:hygiene -- --artifact
+```
+
+The artifact records pass/fail status, scanned file count, blocked raw-data
+patterns, and redacted findings only. It must not include secret values or raw
+dataset rows.
 
 ## Native OpenFHE Checks
 
@@ -106,6 +115,9 @@ when the dataset is absent.
 - The portable hygiene scan blocks common raw dataset file extensions and
   token-shaped secrets; keep public source data outside git and commit only
   derived artifacts or structured blocker reports.
+- Repository hygiene artifacts under `benchmark-artifacts/repo-hygiene/` are
+  derived evidence only; findings are redacted and raw datasets remain outside
+  git.
 - Every new benchmark artifact should preserve `privacyBoundary`,
   `cryptoInventory`, `productionClaim: false`, commands, and provenance.
 
