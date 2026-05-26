@@ -38,6 +38,7 @@
     "baseline:eeg-eye-state": "node prototype/plaintext-baseline.mjs --source eeg-eye-state --fetch",
     "baseline:plaintext": "node prototype/plaintext-baseline.mjs",
     "contract:eeg-openfhe": "node prototype/openfhe-realdata-contract.mjs --fetch",
+    "native:doctor": "node prototype/native-evidence.mjs",
     "scan:hygiene": "node prototype/scripts/placeholder-scan.mjs",
     "test": "node --test prototype/test/*.test.mjs",
     "ci": "npm run validate",

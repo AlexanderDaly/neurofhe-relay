@@ -39,6 +39,7 @@ Covered behaviours:
 - OpenFHE sorted-event contract validation, digest-bound real-library adapter manifest, native build-plan detection, C++ API source markers, real-data-derived input-contract loading, and BFVrns native run artifact publishing.
 - OpenFHE CKKS approximate-real sorted-event contract validation, digest-bound real-library adapter manifest, CKKS parameter inventory, privacy boundary, native build-plan detection, real-data-derived input-contract loading, comparison artifact publishing, and C++ CKKS API source markers.
 - TFHE-rs sorted-event contract validation, digest-bound real-library adapter manifest, Cargo build-plan detection, Rust source markers, encrypted threshold-gate metadata, TFHE-vs-OpenFHE comparison notes, and comparison artifact publishing.
+- Native evidence manifest generation that fingerprints the current host/toolchain, classifies latest OpenFHE and TFHE-rs artifacts, records exact rerun commands, and preserves remaining native evidence gaps.
 - N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
 - UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
 - Research assumptions with clean-room and naming guardrails.
@@ -826,6 +827,87 @@ benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-validation-2026-05-21.json
 
 The TFHE-rs result is a single local synthetic 8x8 run. The latency is not a
 stable performance claim; use it only as a research-grade comparison record.
+
+### Native Evidence Manifest
+
+Command:
+
+```sh
+npm run native:doctor -- --artifact --artifact-id native-evidence-2026-05-23 --generated-at 2026-05-23T09:00:00.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/native-evidence/latest.json
+benchmark-artifacts/native-evidence/runs/native-evidence-2026-05-23.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.nativeEvidence.manifest.v1",
+  "hostFingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v25.2.0",
+    "toolchain": {
+      "npm": "11.6.2",
+      "cmake": "cmake version 4.1.2",
+      "cxx": "Apple clang version 21.0.0",
+      "cargo": "cargo 1.92.0",
+      "rustc": "rustc 1.92.0"
+    }
+  },
+  "summary": {
+    "laneCount": 3,
+    "realNativeRunCount": 3,
+    "dependencyBlockerCount": 0,
+    "adapterPlanOnlyCount": 0,
+    "missingArtifactCount": 0
+  },
+  "lanes": [
+    {
+      "id": "openfhe-bfvrns",
+      "latestArtifactId": "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+      "evidence": {
+        "status": "real-native-run",
+        "datasetKind": "public-uci-eeg-eye-state-arff",
+        "activeEventCount": 32
+      }
+    },
+    {
+      "id": "openfhe-ckks",
+      "latestArtifactId": "openfhe-ckks-eeg-eye-state-2026-05-21",
+      "evidence": {
+        "status": "real-native-run",
+        "datasetKind": "public-uci-eeg-eye-state-arff",
+        "activeEventCount": 32
+      }
+    },
+    {
+      "id": "tfhe-rs",
+      "latestArtifactId": "tfhe-validation-2026-05-21",
+      "evidence": {
+        "status": "real-native-run",
+        "activeEventCount": 18
+      }
+    }
+  ],
+  "releaseUse": {
+    "releaseGateSatisfied": false
+  },
+  "productionClaim": false
+}
+```
+
+This manifest does not make the native evidence machine-independent. It makes
+the machine dependence explicit by recording the host/toolchain fingerprint,
+latest committed native artifact per lane, exact rerun commands, and remaining
+gaps. The current gaps remain multi-window native sweeps, broader memory/RSS
+measurements, fuller ciphertext byte measurements for OpenFHE, and a
+real-data-derived TFHE-rs path or blocker.
 
 ### JSON Validation
 

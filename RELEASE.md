@@ -35,6 +35,7 @@ npm run benchmark:privacy-modes -- --artifact
 npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
 npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
 npm run benchmark:tfhe -- --run --artifact
+npm run native:doctor -- --artifact
 npm run scan:hygiene -- --artifact
 ```
 
@@ -49,6 +50,9 @@ command, error, and smallest next step.
   source-hygiene scan with redacted findings.
 - Confirm generated artifacts distinguish synthetic, plaintext real-data, toy
   cryptography, and native FHE results.
+- Confirm `benchmark-artifacts/native-evidence/latest.json` identifies the
+  host/toolchain, latest native lane artifacts, exact rerun commands, and
+  remaining gaps.
 - Confirm `VALIDATION.md` includes the commands that produced committed
   artifacts.
 - Confirm every crypto lane keeps `productionClaim: false`.
