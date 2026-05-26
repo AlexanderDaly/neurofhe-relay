@@ -72,13 +72,18 @@ Current committed evidence:
 - padded sparse mode: 32 encrypted feature slots, 64 scalar multiplies.
 - dense encrypted window mode: 64 encrypted feature slots, 128 scalar
   multiplies.
+- metadata-exposure proxy: 6 documented observable categories for public sparse
+  active positions, 4 for padded sparse batches, and 2 for dense encrypted
+  windows.
 
 For this synthetic window, padding from 18 to 32 slots records a 1.78x scalar
 multiply and payload-slot increase. It masks the exact active-event count inside
 the padding bucket, but still leaks the padding bucket size, the public or cover
 position policy, coarse timing/sparsity metadata, and public model shape. The
 attached local runtime timings are JavaScript toy-arithmetic measurements only,
-not native FHE performance evidence.
+not native FHE performance evidence. The metadata-exposure proxy is a taxonomy
+count only, not mutual information, anonymity, side-channel, or
+reconstruction-resistance proof.
 
 ### Real FHE Parameter Evidence
 

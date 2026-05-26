@@ -946,15 +946,30 @@ test("padding ablation quantifies leakage masking and operation overhead", () =>
   assert.equal(ablation.activeEventCount, 18);
   assert.equal(sparse.id, "public-active-neuron-positions-encrypted-features");
   assert.equal(sparse.encryptedFeatureSlots, 18);
+  assert.equal(sparse.metadataLeakageMetrics.schema, "neurofhe.metadataLeakageProxy.v1");
+  assert.equal(sparse.metadataLeakageMetrics.metric, "documented-observable-category-count");
+  assert.equal(sparse.metadataLeakageMetrics.exposureScore, 6);
+  assert.ok(
+    sparse.metadataLeakageMetrics.observableCategories.includes("active-position-pattern"),
+  );
   assert.equal(padded.id, "padded-sparse-batches");
   assert.equal(padded.encryptedFeatureSlots, 32);
   assert.equal(padded.dummySlotCount, 14);
   assert.equal(padded.relativeScalarMultiplies, 1.78);
   assert.equal(padded.payloadSlotIncrease, 1.78);
+  assert.equal(padded.metadataLeakageMetrics.exposureScore, 4);
   assert.ok(padded.leakageMasked.includes("exact active event count"));
   assert.ok(padded.leakageRemaining.includes("padding bucket size"));
   assert.equal(dense.id, "dense-encrypted-windows");
   assert.equal(dense.relativeScalarMultiplies, 3.56);
+  assert.equal(dense.metadataLeakageMetrics.exposureScore, 2);
+  assert.deepEqual(ablation.metadataLeakageSummary, {
+    metric: "documented-observable-category-count",
+    highestExposureMode: "public-active-neuron-positions-encrypted-features",
+    lowestExposureMode: "dense-encrypted-windows",
+    caveat:
+      "Taxonomy count only; not mutual information, anonymity, side-channel, or reconstruction-resistance proof.",
+  });
   assert.equal(ablation.toyRuntimeCaveat.includes("not native FHE"), true);
 });
 

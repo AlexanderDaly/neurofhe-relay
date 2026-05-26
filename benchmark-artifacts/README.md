@@ -69,9 +69,11 @@ native OpenFHE demos.
 Privacy-mode ablation artifacts are written under
 `benchmark-artifacts/privacy-modes/padding-ablation/`. These quantify unpadded
 sparse, padded sparse, and dense-window operation counts for the current
-synthetic event window. Runtime measurements in that artifact are local
-JavaScript toy-arithmetic timings only; use native OpenFHE or TFHE-rs artifacts
-for cryptographic-library timing.
+synthetic event window and include a caveated metadata-exposure proxy based on
+documented observable category counts. That proxy is not mutual information,
+anonymity, side-channel, or reconstruction-resistance proof. Runtime
+measurements in that artifact are local JavaScript toy-arithmetic timings only;
+use native OpenFHE or TFHE-rs artifacts for cryptographic-library timing.
 
 CI blocker artifacts are written under `benchmark-artifacts/ci-blockers/` when
 GitHub Actions cannot start or complete for account or host reasons outside the
@@ -104,7 +106,8 @@ Current artifacts also include:
 - packed-vector planning notes for BFV/BGV and CKKS
 - native comparison lane planning for BFVrns integer, CKKS approximate-real, and TFHE-rs threshold paths
 - privacy-mode decision for public active positions, padded sparse batches, or dense encrypted windows
-- metadata padding ablation output for leakage masking versus operation overhead
+- metadata padding ablation output for leakage masking, observable-category
+  exposure score, and operation overhead
 - plaintext N-MNIST-compatible fixture, real public UCI EEG Eye State baseline, and real public dataset blocker reports
 - framing guardrail for privacy-preserving event intelligence, not diagnosis or treatment
 - optional OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs adapter/native comparison artifacts for the same synthetic 8x8 sparse score contract

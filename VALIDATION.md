@@ -403,14 +403,14 @@ Dataset provenance for the intended real-data lane:
 Command:
 
 ```sh
-npm run benchmark:privacy-modes -- --iterations 25 --padded-slot-count 32 --artifact --artifact-id padding-ablation-2026-05-21 --generated-at 2026-05-21T12:12:00.000Z
+npm run benchmark:privacy-modes -- --iterations 25 --padded-slot-count 32 --artifact --artifact-id padding-ablation-metadata-leakage-2026-05-26 --generated-at 2026-05-26T20:24:21.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/privacy-modes/padding-ablation/latest.json
-benchmark-artifacts/privacy-modes/padding-ablation/runs/padding-ablation-2026-05-21.json
+benchmark-artifacts/privacy-modes/padding-ablation/runs/padding-ablation-metadata-leakage-2026-05-26.json
 ```
 
 Result summary:
@@ -420,10 +420,15 @@ Result summary:
   "schema": "neurofhe.metadataPaddingAblation.v1",
   "measurementBasis": "synthetic-events-v0 operation-count model plus local toy arithmetic timing",
   "modes": [
-    {"id": "public-active-neuron-positions-encrypted-features", "encryptedFeatureSlots": 18, "scalarMultiplies": 36, "relativeScalarMultiplies": 1},
-    {"id": "padded-sparse-batches", "encryptedFeatureSlots": 32, "scalarMultiplies": 64, "relativeScalarMultiplies": 1.78},
-    {"id": "dense-encrypted-windows", "encryptedFeatureSlots": 64, "scalarMultiplies": 128, "relativeScalarMultiplies": 3.56}
-  ]
+    {"id": "public-active-neuron-positions-encrypted-features", "encryptedFeatureSlots": 18, "scalarMultiplies": 36, "relativeScalarMultiplies": 1, "metadataExposureScore": 6},
+    {"id": "padded-sparse-batches", "encryptedFeatureSlots": 32, "scalarMultiplies": 64, "relativeScalarMultiplies": 1.78, "metadataExposureScore": 4},
+    {"id": "dense-encrypted-windows", "encryptedFeatureSlots": 64, "scalarMultiplies": 128, "relativeScalarMultiplies": 3.56, "metadataExposureScore": 2}
+  ],
+  "metadataLeakageSummary": {
+    "metric": "documented-observable-category-count",
+    "highestExposureMode": "public-active-neuron-positions-encrypted-features",
+    "lowestExposureMode": "dense-encrypted-windows"
+  }
 }
 ```
 
@@ -433,6 +438,10 @@ slots. It does not hide bucket size, public or cover position policy, coarse
 timing/sparsity metadata, or public model shape. The recorded local latency
 measurements are deterministic Node toy-arithmetic timings only, not native FHE
 performance evidence.
+
+The metadata exposure score is a documented observable-category count only. It
+is not mutual information, anonymity, side-channel, or reconstruction-resistance
+proof.
 
 ### OpenFHE Integration Plan
 

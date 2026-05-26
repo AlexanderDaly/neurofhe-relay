@@ -19,6 +19,21 @@ const REQUIRED_ARTIFACT_FIELDS = [
   "cryptoInventory",
 ];
 
+const METADATA_LEAKAGE_PROXY_CAVEAT =
+  "Taxonomy count only; not mutual information, anonymity, side-channel, or reconstruction-resistance proof.";
+
+const METADATA_LEAKAGE_TAXONOMY = [
+  "exact-active-event-count",
+  "active-position-pattern",
+  "coarse-spatial-activity",
+  "timing-sparsity-metadata",
+  "padding-bucket-size",
+  "fixed-window-shape",
+  "public-model-shape",
+  "active-feature-values",
+  "class-scores-before-client-decrypt",
+];
+
 export function runPrototypeBenchmark(options = {}) {
   const eventWindow = options.eventWindow ?? buildSparseEventWindow();
   const started = now();
@@ -472,6 +487,75 @@ export function buildPaddingOverheadAblation(
   const sparseOps = operationCountsForSlots(activeEventCount, classCount);
   const paddedOps = operationCountsForSlots(paddedSlotCount, classCount);
   const denseOps = operationCountsForSlots(featureCount, classCount);
+  const modes = [
+    {
+      id: "public-active-neuron-positions-encrypted-features",
+      encryptedFeatureSlots: activeEventCount,
+      dummySlotCount: 0,
+      operationCounts: sparseOps,
+      relativeScalarMultiplies: 1,
+      payloadSlotIncrease: 1,
+      leakageMasked: ["active feature values", "final class scores until client decrypts"],
+      leakageRemaining: [
+        "exact active event count",
+        "active neuron identity and time-bin pattern",
+        "coarse spatial activity",
+        "timing/sparsity metadata",
+      ],
+      metadataLeakageMetrics: buildMetadataLeakageMetrics([
+        "exact-active-event-count",
+        "active-position-pattern",
+        "coarse-spatial-activity",
+        "timing-sparsity-metadata",
+        "fixed-window-shape",
+        "public-model-shape",
+      ]),
+    },
+    {
+      id: "padded-sparse-batches",
+      encryptedFeatureSlots: paddedSlotCount,
+      dummySlotCount: paddedSlotCount - activeEventCount,
+      operationCounts: paddedOps,
+      relativeScalarMultiplies: relative(paddedOps.scalarMultiplies, sparseOps.scalarMultiplies),
+      payloadSlotIncrease: relative(paddedSlotCount, activeEventCount),
+      leakageMasked: [
+        "exact active event count",
+        "which padded slots are dummy zeros",
+        "exact sparse workload size inside the padding bucket",
+      ],
+      leakageRemaining: [
+        "padding bucket size",
+        "public or cover active-position policy",
+        "coarse timing/sparsity metadata",
+        "public model shape",
+      ],
+      metadataLeakageMetrics: buildMetadataLeakageMetrics([
+        "padding-bucket-size",
+        "active-position-pattern",
+        "timing-sparsity-metadata",
+        "public-model-shape",
+      ]),
+    },
+    {
+      id: "dense-encrypted-windows",
+      encryptedFeatureSlots: featureCount,
+      dummySlotCount: featureCount - activeEventCount,
+      operationCounts: denseOps,
+      relativeScalarMultiplies: relative(denseOps.scalarMultiplies, sparseOps.scalarMultiplies),
+      payloadSlotIncrease: relative(featureCount, activeEventCount),
+      leakageMasked: [
+        "active event count",
+        "active positions",
+        "dummy-versus-real slots",
+        "event-count sparsity",
+      ],
+      leakageRemaining: ["fixed window shape", "public model shape"],
+      metadataLeakageMetrics: buildMetadataLeakageMetrics([
+        "fixed-window-shape",
+        "public-model-shape",
+      ]),
+    },
+  ];
 
   return {
     schema: "neurofhe.metadataPaddingAblation.v1",
@@ -480,57 +564,8 @@ export function buildPaddingOverheadAblation(
     featureCount,
     activeEventCount,
     classCount,
-    modes: [
-      {
-        id: "public-active-neuron-positions-encrypted-features",
-        encryptedFeatureSlots: activeEventCount,
-        dummySlotCount: 0,
-        operationCounts: sparseOps,
-        relativeScalarMultiplies: 1,
-        payloadSlotIncrease: 1,
-        leakageMasked: ["active feature values", "final class scores until client decrypts"],
-        leakageRemaining: [
-          "exact active event count",
-          "active neuron identity and time-bin pattern",
-          "coarse spatial activity",
-          "timing/sparsity metadata",
-        ],
-      },
-      {
-        id: "padded-sparse-batches",
-        encryptedFeatureSlots: paddedSlotCount,
-        dummySlotCount: paddedSlotCount - activeEventCount,
-        operationCounts: paddedOps,
-        relativeScalarMultiplies: relative(paddedOps.scalarMultiplies, sparseOps.scalarMultiplies),
-        payloadSlotIncrease: relative(paddedSlotCount, activeEventCount),
-        leakageMasked: [
-          "exact active event count",
-          "which padded slots are dummy zeros",
-          "exact sparse workload size inside the padding bucket",
-        ],
-        leakageRemaining: [
-          "padding bucket size",
-          "public or cover active-position policy",
-          "coarse timing/sparsity metadata",
-          "public model shape",
-        ],
-      },
-      {
-        id: "dense-encrypted-windows",
-        encryptedFeatureSlots: featureCount,
-        dummySlotCount: featureCount - activeEventCount,
-        operationCounts: denseOps,
-        relativeScalarMultiplies: relative(denseOps.scalarMultiplies, sparseOps.scalarMultiplies),
-        payloadSlotIncrease: relative(featureCount, activeEventCount),
-        leakageMasked: [
-          "active event count",
-          "active positions",
-          "dummy-versus-real slots",
-          "event-count sparsity",
-        ],
-        leakageRemaining: ["fixed window shape", "public model shape"],
-      },
-    ],
+    modes,
+    metadataLeakageSummary: buildMetadataLeakageSummary(modes),
     interpretation:
       "Padding reduces exact sparse workload leakage by spending extra encrypted slots and multiplies. It does not make the toy arithmetic secure and it does not hide all metadata.",
     toyRuntimeCaveat:
@@ -931,6 +966,36 @@ function privacyModeRationale(mode) {
     return "Use dense encrypted windows when active-position and sparsity metadata must be hidden and the higher encrypted workload is acceptable.";
   }
   return "Use padded sparse batches as the default comparison lane: it reduces exact sparsity disclosure while staying cheaper than dense encrypted windows.";
+}
+
+function buildMetadataLeakageMetrics(observableCategories) {
+  const observable = [...new Set(observableCategories)];
+  return {
+    schema: "neurofhe.metadataLeakageProxy.v1",
+    metric: "documented-observable-category-count",
+    exposureScore: observable.length,
+    maxExposureScore: METADATA_LEAKAGE_TAXONOMY.length,
+    exposureFraction: relative(observable.length, METADATA_LEAKAGE_TAXONOMY.length),
+    observableCategories: observable,
+    maskedCategories: METADATA_LEAKAGE_TAXONOMY.filter(
+      (category) => !observable.includes(category),
+    ),
+    caveat: METADATA_LEAKAGE_PROXY_CAVEAT,
+  };
+}
+
+function buildMetadataLeakageSummary(modes) {
+  const byExposure = [...modes].sort(
+    (left, right) =>
+      left.metadataLeakageMetrics.exposureScore -
+      right.metadataLeakageMetrics.exposureScore,
+  );
+  return {
+    metric: "documented-observable-category-count",
+    highestExposureMode: byExposure.at(-1).id,
+    lowestExposureMode: byExposure[0].id,
+    caveat: METADATA_LEAKAGE_PROXY_CAVEAT,
+  };
 }
 
 function nextPowerOfTwo(value) {

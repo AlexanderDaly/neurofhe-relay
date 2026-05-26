@@ -50,6 +50,9 @@ command, error, and smallest next step.
   source-hygiene scan with redacted findings.
 - Confirm generated artifacts distinguish synthetic, plaintext real-data, toy
   cryptography, and native FHE results.
+- Confirm `benchmark-artifacts/privacy-modes/padding-ablation/latest.json`
+  keeps the metadata-exposure score caveated as a taxonomy proxy, not formal
+  leakage or reconstruction-resistance proof.
 - Confirm `benchmark-artifacts/native-evidence/latest.json` identifies the
   host/toolchain, latest native lane artifacts, exact rerun commands, and
   remaining gaps, including ciphertext-byte and RSS/peak-memory measurement
