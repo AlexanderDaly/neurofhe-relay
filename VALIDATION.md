@@ -1112,31 +1112,38 @@ directory, and `git diff --check`. A prior matching PR #6 check exposed the
 GitHub annotation: "The job was not started because your account is locked due
 to a billing issue."
 
-### GitHub Actions Open PR Refresh
+### GitHub Actions Post-Merge Refresh
 
-Observed on 2026-05-25 after PR #6 merged:
+Observed on 2026-05-26 after PRs #7, #8, #9, #11, and #12 merged:
 
 ```sh
 gh pr list --state open --json number,title,headRefName,baseRefName,isDraft,mergeStateStatus,reviewDecision,statusCheckRollup,updatedAt,url
-gh pr view 8 --json number,title,url,headRefName,mergeStateStatus,statusCheckRollup,isDraft,updatedAt
-gh pr view 9 --json number,title,url,headRefName,mergeStateStatus,statusCheckRollup,isDraft,updatedAt
+gh pr list --state all --limit 20 --json number,title,headRefName,baseRefName,state,isDraft,mergeStateStatus,mergedAt,updatedAt,url
+gh run list --limit 10 --json databaseId,workflowName,event,status,conclusion,headBranch,headSha,createdAt,url
+gh api repos/AlexanderDaly/neurofhe-relay/actions/workflows --jq '.workflows[] | select(.name=="CI") | {id,name,state,path,html_url}'
+gh api repos/AlexanderDaly/neurofhe-relay/branches/main/protection --jq '{required_status_checks:.required_status_checks, enforce_admins:.enforce_admins.enabled, required_pull_request_reviews:.required_pull_request_reviews}'
 ```
 
 Result:
 
 ```text
-PR #8 Add evidence-first GitHub templates: mergeStateStatus BLOCKED, statusCheckRollup []
-PR #9 Add native evidence reproducibility manifest: mergeStateStatus BLOCKED, statusCheckRollup []
+Open pull requests: []
+Recent completion-loop PRs #7, #8, #9, #11, and #12: MERGED
+CI workflow: active, workflow_dispatch only
+Latest hosted CI runs: stale failures from old branch heads
+Branch protection API: 404 Branch not protected
 ```
 
 The workflow is currently `workflow_dispatch` only, following the earlier
-GitHub Actions billing/account lock. Empty check rollups on PR #8 and PR #9
-therefore remain hosted-CI availability and branch-protection evidence, not
-code-failure evidence. The current blocker artifact is:
+GitHub Actions billing/account lock. There is no open release PR with a green
+portable hosted CI run, so the release checklist is still not satisfied even
+though local validation passes and the earlier completion-loop PRs have merged.
+This is release-gate availability evidence, not code-failure evidence. The
+current blocker artifact is:
 
 ```text
 benchmark-artifacts/ci-blockers/latest.json
-benchmark-artifacts/ci-blockers/runs/github-actions-manual-only-open-prs-2026-05-25.json
+benchmark-artifacts/ci-blockers/runs/github-actions-post-merge-no-open-prs-2026-05-26.json
 ```
 
 ## Scope Note

@@ -74,11 +74,14 @@ for cryptographic-library timing.
 
 CI blocker artifacts are written under `benchmark-artifacts/ci-blockers/` when
 GitHub Actions cannot start or complete for account or host reasons outside the
-portable validation commands. The May 25 blocker refresh records that PR #6 has
-merged, while open PRs #8 and #9 remain merge-blocked with empty hosted check
-rollups because the workflow is manual-only after the prior GitHub
-Actions account/billing lock. This remains an Actions availability and branch
-protection blocker, not evidence of a code or workflow-step failure.
+portable validation commands. The May 26 post-merge blocker refresh records
+that the completion-loop PRs are merged and `gh pr list --state open` is empty,
+while the CI workflow remains `workflow_dispatch` only after the prior GitHub
+Actions account/billing lock. This remains an Actions availability and release
+gate blocker, not evidence of a code or workflow-step failure. Before tagging,
+open a release-validation PR and obtain a green portable hosted CI run, either
+by re-enabling automatic `pull_request` triggers after the account issue is
+resolved or by manually dispatching the workflow on that PR.
 
 Repository hygiene artifacts are written under
 `benchmark-artifacts/repo-hygiene/`. They record the source scan result,
