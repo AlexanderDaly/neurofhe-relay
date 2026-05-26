@@ -78,7 +78,7 @@ The cryptographic design target is:
 - `SECURITY.md` - research-prototype security policy and reporting guidance.
 - `VALIDATION.md` - local validation commands, outputs, artifacts, and caveats.
 - `.github/workflows/ci.yml` - portable CI for tests, schema checks, repository hygiene scan, and smoke artifact generation/upload.
-- `benchmark-artifacts/` - intentionally committed derived benchmark evidence and blocker reports.
+- `benchmark-artifacts/` - intentionally committed derived benchmark evidence, repository hygiene scan evidence, and blocker reports.
 - `patent/` - ENER provisional drafting materials, claim seeds, drawings, prior-art search plan, filing checklist, and briefing package.
 - `project-brief.json` - structured project metadata for agents.
 - `index.html` - self-contained briefing deck for browser presentation.
@@ -126,6 +126,12 @@ benchmarks, padded-sparse privacy modes, and the deterministic N-MNIST-format
 fixture. Native OpenFHE and TFHE-rs checks remain local/release gate commands
 because they require external libraries and heavier host setup.
 See `DEVELOPMENT.md` and `RELEASE.md` before making or tagging release claims.
+To persist a redacted source-hygiene evidence artifact without reading raw
+datasets into git, run:
+
+```sh
+npm run scan:hygiene -- --artifact
+```
 
 ## Relay Gateway Pattern
 

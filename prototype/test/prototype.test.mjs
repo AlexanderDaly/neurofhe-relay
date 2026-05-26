@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -24,6 +24,10 @@ import {
   classifyNativeEvidenceArtifact,
   publishNativeEvidenceArtifact,
 } from "../lib/native-evidence.mjs";
+import {
+  buildRepositoryHygieneArtifact,
+  scanRepositoryHygiene,
+} from "../lib/repo-hygiene.mjs";
 import {
   runEncryptedLinearClassifier,
   runPlaintextLinearClassifier,
@@ -792,6 +796,61 @@ test("benchmark artifact CLI honors deterministic artifact options", async () =>
   assert.equal(published.artifactId, "ci-synthetic-smoke");
   assert.equal(artifact.artifactId, "ci-synthetic-smoke");
   assert.equal(artifact.generatedAt, "2026-05-21T00:00:00.000Z");
+});
+
+test("repository hygiene scan redacts secrets and blocks raw dataset files", async () => {
+  const root = await mkdtemp(join(tmpdir(), "neurofhe-hygiene-fixture-"));
+  await mkdir(join(root, "docs"), { recursive: true });
+  await writeFile(join(root, "docs", "ok.md"), "clean evidence note\n", "utf8");
+  await writeFile(join(root, "docs", "secret.txt"), `token=${"sk-" + "A".repeat(20)}\n`, "utf8");
+  await writeFile(join(root, "events.arff"), "@RELATION eeg\n", "utf8");
+
+  const result = scanRepositoryHygiene({ root });
+  const artifact = buildRepositoryHygieneArtifact(result, {
+    artifactId: "repo-hygiene-fixture",
+    generatedAt: "2026-05-25T00:00:00.000Z",
+  });
+
+  assert.equal(result.result, "fail");
+  assert.equal(result.findings.length, 2);
+  assert.deepEqual(result.findings.map((finding) => finding.category).sort(), [
+    "raw-dataset-path",
+    "secret",
+  ]);
+  assert.equal(artifact.schema, "neurofhe.repositoryHygieneScan.v1");
+  assert.equal(artifact.productionClaim, false);
+  assert.equal(artifact.findings.find((finding) => finding.category === "secret").redacted, true);
+  assert.equal("excerpt" in artifact.findings.find((finding) => finding.category === "secret"), false);
+  assert.equal(artifact.rawDataPolicy.rule.includes("Keep raw public/private datasets outside git"), true);
+});
+
+test("repository hygiene artifact CLI honors deterministic artifact options", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-hygiene-cli-"));
+  const result = spawnSync(
+    process.execPath,
+    [
+      "prototype/scripts/placeholder-scan.mjs",
+      "--artifact",
+      "--out",
+      outputDir,
+      "--artifact-id",
+      "repo-hygiene-smoke",
+      "--generated-at",
+      "2026-05-25T00:00:00.000Z",
+    ],
+    { cwd: process.cwd(), encoding: "utf8" },
+  );
+  const published = JSON.parse(result.stdout);
+  const artifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+
+  assert.equal(result.status, 0);
+  assert.equal(result.stderr, "");
+  assert.equal(published.schema, "neurofhe.repositoryHygieneScan.publish.v1");
+  assert.equal(artifact.artifactId, "repo-hygiene-smoke");
+  assert.equal(artifact.generatedAt, "2026-05-25T00:00:00.000Z");
+  assert.equal(artifact.result, "pass");
+  assert.equal(artifact.findingsCount, 0);
+  assert.equal(artifact.privacyBoundary.secrets, "redacted from artifacts");
 });
 
 test("privacy mode benchmark compares speed against sparsity metadata protection", () => {

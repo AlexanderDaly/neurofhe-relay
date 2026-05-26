@@ -998,6 +998,38 @@ and Parquet. It skips generated directories such as `.cache/`, `target/`,
 source text. Raw public datasets remain outside git; committed artifacts should
 stay derived, caveated, and provenance-bearing.
 
+### Repository Hygiene Evidence Artifact
+
+Command:
+
+```sh
+npm run scan:hygiene -- --artifact --artifact-id repo-hygiene-2026-05-25 --generated-at 2026-05-25T22:54:00.000Z
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.repositoryHygieneScan.v1",
+  "artifactId": "repo-hygiene-2026-05-25",
+  "result": "pass",
+  "findingsCount": 0,
+  "productionClaim": false
+}
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/repo-hygiene/latest.json
+benchmark-artifacts/repo-hygiene/runs/repo-hygiene-2026-05-25.json
+```
+
+The artifact records only derived source-hygiene evidence: pass/fail status,
+scanned file count, scan policy, and redacted findings. It is not benchmark
+performance evidence, cryptographic assurance, or a substitute for keeping raw
+datasets and secrets out of git.
+
 ### ASCII Scan
 
 Command:
@@ -1078,6 +1110,33 @@ benchmark-artifacts/ci-blockers/runs/github-actions-billing-lock-2026-05-22.json
 This is an account/billing blocker, not evidence of a test or workflow-step
 failure. Local parity validation on the PR branch passed with `npm run ci`,
 smoke artifact generation into a temporary directory, and `git diff --check`.
+
+### GitHub Actions Open PR Refresh
+
+Observed on 2026-05-25 after PR #6 merged:
+
+```sh
+gh pr list --state open --json number,title,headRefName,baseRefName,isDraft,mergeStateStatus,reviewDecision,statusCheckRollup,updatedAt,url
+gh pr view 8 --json number,title,url,headRefName,mergeStateStatus,statusCheckRollup,isDraft,updatedAt
+gh pr view 9 --json number,title,url,headRefName,mergeStateStatus,statusCheckRollup,isDraft,updatedAt
+```
+
+Result:
+
+```text
+PR #8 Add evidence-first GitHub templates: mergeStateStatus BLOCKED, statusCheckRollup []
+PR #9 Add native evidence reproducibility manifest: mergeStateStatus BLOCKED, statusCheckRollup []
+```
+
+The workflow is currently `workflow_dispatch` only, following the earlier
+GitHub Actions billing/account lock. Empty check rollups on PR #8 and PR #9
+therefore remain hosted-CI availability and branch-protection evidence, not
+code-failure evidence. The current blocker artifact is:
+
+```text
+benchmark-artifacts/ci-blockers/latest.json
+benchmark-artifacts/ci-blockers/runs/github-actions-manual-only-open-prs-2026-05-25.json
+```
 
 ## Scope Note
 
