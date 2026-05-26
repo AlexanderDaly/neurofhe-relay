@@ -89,6 +89,7 @@ export function buildNativeEvidenceManifest(options = {}) {
     });
   });
   const counts = countLaneStatuses(lanes);
+  const measurementCoverage = countMeasurementCoverage(lanes);
 
   return {
     schema: "neurofhe.nativeEvidence.manifest.v1",
@@ -103,6 +104,7 @@ export function buildNativeEvidenceManifest(options = {}) {
       adapterPlanOnlyCount: counts["adapter-plan-only"] ?? 0,
       missingArtifactCount: counts["missing-artifact"] ?? 0,
       otherEvidenceCount: counts["other-evidence"] ?? 0,
+      measurementCoverage,
     },
     lanes,
     releaseUse: {
@@ -199,7 +201,8 @@ function buildNativeEvidenceLane({ config, artifact, dependencyDetection }) {
   const nativeResult = subject?.nativeResult;
   const inputContractPath = subject?.inputContractPath;
   const commands = commandsForLane(config, inputContractPath);
-  const gaps = gapsForLane(evidence.status, config, nativeResult);
+  const measurements = buildNativeMeasurements(nativeResult);
+  const gaps = gapsForLane(evidence.status, config, measurements);
 
   return {
     schema: "neurofhe.nativeEvidence.lane.v1",
@@ -220,6 +223,7 @@ function buildNativeEvidenceLane({ config, artifact, dependencyDetection }) {
         nativeResult?.activeEventCount ?? subject?.inputContract?.activeEventCount ?? null,
       productionClaim: artifact?.productionClaim === true || subject?.productionClaim === true,
     },
+    measurements,
     reproducibility: {
       hostSpecific: true,
       requiresLocalDependency: true,
@@ -230,6 +234,14 @@ function buildNativeEvidenceLane({ config, artifact, dependencyDetection }) {
     gaps,
     smallestNextStep: smallestNextStepForLane(evidence, config),
     productionClaim: false,
+  };
+}
+
+function buildNativeMeasurements(nativeResult) {
+  return {
+    schema: "neurofhe.nativeEvidence.measurements.v1",
+    ciphertextBytes: describeCiphertextBytes(nativeResult),
+    rssOrPeakMemory: describeRssOrPeakMemory(nativeResult),
   };
 }
 
@@ -296,15 +308,15 @@ function commandsForLane(config, inputContractPath) {
   return [...config.defaultCommands];
 }
 
-function gapsForLane(status, config, nativeResult) {
+function gapsForLane(status, config, measurements) {
   const gaps = [config.nextMeasurement];
   if (status !== "real-native-run") {
     gaps.unshift("No current native run artifact for this lane.");
   }
-  if (nativeResult?.ciphertextBytes === undefined) {
+  if (measurements.ciphertextBytes.status !== "reported") {
     gaps.push("Ciphertext byte measurements are absent or only partially reported.");
   }
-  if (nativeResult?.rssBytes === undefined && nativeResult?.memory === undefined) {
+  if (measurements.rssOrPeakMemory.status !== "reported") {
     gaps.push("RSS or peak memory measurements are not reported.");
   }
   return gaps;
@@ -326,6 +338,141 @@ function countLaneStatuses(lanes) {
     counts[lane.evidence.status] = (counts[lane.evidence.status] ?? 0) + 1;
     return counts;
   }, {});
+}
+
+function countMeasurementCoverage(lanes) {
+  const counts = {
+    ciphertextBytesReportedCount: 0,
+    ciphertextBytesPartialCount: 0,
+    ciphertextBytesMissingCount: 0,
+    rssOrPeakMemoryReportedCount: 0,
+    rssOrPeakMemoryPartialCount: 0,
+    rssOrPeakMemoryMissingCount: 0,
+  };
+
+  for (const lane of lanes) {
+    incrementMeasurementCount(counts, "ciphertextBytes", lane.measurements.ciphertextBytes.status);
+    incrementMeasurementCount(counts, "rssOrPeakMemory", lane.measurements.rssOrPeakMemory.status);
+  }
+
+  return counts;
+}
+
+function incrementMeasurementCount(counts, prefix, status) {
+  const statusName = `${status[0].toUpperCase()}${status.slice(1)}`;
+  counts[`${prefix}${statusName}Count`] += 1;
+}
+
+function describeCiphertextBytes(nativeResult) {
+  if (!nativeResult) return missingMeasurement("no native result artifact");
+  if (nativeResult.ciphertextBytes !== undefined) {
+    return describeByteMeasurement(nativeResult.ciphertextBytes, "ciphertextBytes");
+  }
+  if (nativeResult.memoryUsage?.serializedCiphertextBytes !== undefined) {
+    return describeByteMeasurement(
+      nativeResult.memoryUsage.serializedCiphertextBytes,
+      "memoryUsage.serializedCiphertextBytes",
+      nativeResult.memoryUsage,
+    );
+  }
+  return missingMeasurement("ciphertext byte measurement not reported");
+}
+
+function describeByteMeasurement(value, sourceField, sourceObject = value) {
+  if (isFiniteNumber(value)) {
+    return {
+      status: "reported",
+      sourceField,
+      totalBytes: value,
+      measurement: null,
+    };
+  }
+  if (value && typeof value === "object") {
+    const total = firstFiniteNumber([
+      value.total,
+      value.totalBytes,
+      value.serializedCiphertextBytes,
+    ]);
+    const measurement = value.measurement ?? null;
+    if (total !== null) {
+      return {
+        status: "reported",
+        sourceField,
+        totalBytes: total,
+        measurement,
+      };
+    }
+    return {
+      status: "partial",
+      sourceField,
+      totalBytes: null,
+      measurement: measurement ?? "ciphertext-related metadata present without total bytes",
+      availableFields: Object.keys(value),
+    };
+  }
+  if (value === null) {
+    return {
+      status: "partial",
+      sourceField,
+      totalBytes: null,
+      measurement:
+        sourceObject?.measurement ?? "ciphertext byte field is present but not measured",
+      availableFields: sourceObject && typeof sourceObject === "object" ? Object.keys(sourceObject) : [],
+    };
+  }
+  return missingMeasurement(`unsupported ${sourceField} measurement`);
+}
+
+function describeRssOrPeakMemory(nativeResult) {
+  if (!nativeResult) return missingMeasurement("no native result artifact");
+  const direct = firstFiniteNumber([
+    nativeResult.rssBytes,
+    nativeResult.peakRssBytes,
+    nativeResult.residentSetBytes,
+    nativeResult.memory?.rssBytes,
+    nativeResult.memory?.peakRssBytes,
+    nativeResult.memoryUsage?.rssBytes,
+    nativeResult.memoryUsage?.peakRssBytes,
+    nativeResult.memoryUsage?.residentSetBytes,
+  ]);
+  if (direct !== null) {
+    return {
+      status: "reported",
+      sourceField: "rssBytes-or-peakRssBytes",
+      bytes: direct,
+      measurement: nativeResult.memory?.measurement ?? nativeResult.memoryUsage?.measurement ?? null,
+    };
+  }
+  if (nativeResult.memory || nativeResult.memoryUsage) {
+    const source = nativeResult.memory ?? nativeResult.memoryUsage;
+    return {
+      status: "partial",
+      sourceField: nativeResult.memory ? "memory" : "memoryUsage",
+      bytes: null,
+      measurement:
+        source.measurement ?? "memory metadata present without RSS or peak RSS bytes",
+      availableFields: Object.keys(source),
+    };
+  }
+  return missingMeasurement("RSS or peak memory measurement not reported");
+}
+
+function missingMeasurement(reason) {
+  return {
+    status: "missing",
+    reason,
+  };
+}
+
+function firstFiniteNumber(values) {
+  for (const value of values) {
+    if (isFiniteNumber(value)) return value;
+  }
+  return null;
+}
+
+function isFiniteNumber(value) {
+  return typeof value === "number" && Number.isFinite(value);
 }
 
 function readJsonIfExists(path) {

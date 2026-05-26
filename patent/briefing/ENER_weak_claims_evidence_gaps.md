@@ -111,6 +111,30 @@ TFHE-rs remains the currently runnable real-library lane on this machine. Its
 artifacts are synthetic 8x8 event-window runs only and should not be used as
 real-data or production performance claims.
 
+## Validation Update May 26, 2026
+
+The native evidence manifest now classifies measurement coverage without
+upgrading any performance claim:
+
+```sh
+npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-coverage-2026-05-26 --generated-at 2026-05-26T10:45:00.000Z
+```
+
+Current committed evidence:
+
+- `benchmark-artifacts/native-evidence/latest.json`
+- schema: `neurofhe.nativeEvidence.manifest.v1`
+- ciphertext-byte coverage: one reported lane, one partial lane, one missing
+  lane.
+- RSS or peak-memory coverage: zero reported lanes, one partial lane, two
+  missing lanes.
+
+This narrows diligence risk by making missing measurement classes explicit. It
+does not satisfy the remaining native-evidence gap: OpenFHE still needs fuller
+serialized ciphertext byte reporting and all native lanes still need RSS or
+peak-memory measurements before memory or stable performance claims are
+defensible.
+
 ## Examiner-Risk Notes Added May 21, 2026
 
 The highest-risk broad claim posture is "local neural compression plus encrypted inference" without a concrete implementation limit. The stronger near-term claim posture is the spatial sparse-event relay:

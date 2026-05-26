@@ -833,14 +833,14 @@ stable performance claim; use it only as a research-grade comparison record.
 Command:
 
 ```sh
-npm run native:doctor -- --artifact --artifact-id native-evidence-2026-05-23 --generated-at 2026-05-23T09:00:00.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-coverage-2026-05-26 --generated-at 2026-05-26T10:45:00.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/native-evidence/latest.json
-benchmark-artifacts/native-evidence/runs/native-evidence-2026-05-23.json
+benchmark-artifacts/native-evidence/runs/native-evidence-measurement-coverage-2026-05-26.json
 ```
 
 Result summary:
@@ -865,7 +865,15 @@ Result summary:
     "realNativeRunCount": 3,
     "dependencyBlockerCount": 0,
     "adapterPlanOnlyCount": 0,
-    "missingArtifactCount": 0
+    "missingArtifactCount": 0,
+    "measurementCoverage": {
+      "ciphertextBytesReportedCount": 1,
+      "ciphertextBytesPartialCount": 1,
+      "ciphertextBytesMissingCount": 1,
+      "rssOrPeakMemoryReportedCount": 0,
+      "rssOrPeakMemoryPartialCount": 1,
+      "rssOrPeakMemoryMissingCount": 2
+    }
   },
   "lanes": [
     {
@@ -875,6 +883,14 @@ Result summary:
         "status": "real-native-run",
         "datasetKind": "public-uci-eeg-eye-state-arff",
         "activeEventCount": 32
+      },
+      "measurements": {
+        "ciphertextBytes": {
+          "status": "missing"
+        },
+        "rssOrPeakMemory": {
+          "status": "missing"
+        }
       }
     },
     {
@@ -884,6 +900,14 @@ Result summary:
         "status": "real-native-run",
         "datasetKind": "public-uci-eeg-eye-state-arff",
         "activeEventCount": 32
+      },
+      "measurements": {
+        "ciphertextBytes": {
+          "status": "partial"
+        },
+        "rssOrPeakMemory": {
+          "status": "partial"
+        }
       }
     },
     {
@@ -892,6 +916,15 @@ Result summary:
       "evidence": {
         "status": "real-native-run",
         "activeEventCount": 18
+      },
+      "measurements": {
+        "ciphertextBytes": {
+          "status": "reported",
+          "totalBytes": 2658613
+        },
+        "rssOrPeakMemory": {
+          "status": "missing"
+        }
       }
     }
   ],
@@ -905,9 +938,12 @@ Result summary:
 This manifest does not make the native evidence machine-independent. It makes
 the machine dependence explicit by recording the host/toolchain fingerprint,
 latest committed native artifact per lane, exact rerun commands, and remaining
-gaps. The current gaps remain multi-window native sweeps, broader memory/RSS
-measurements, fuller ciphertext byte measurements for OpenFHE, and a
-real-data-derived TFHE-rs path or blocker.
+gaps. The May 26 manifest also classifies measurement coverage: TFHE-rs has
+reported serialized ciphertext bytes for the synthetic threshold run, OpenFHE
+CKKS has partial ciphertext-count metadata without serialized byte totals, and
+no lane yet reports RSS or peak memory bytes. The current gaps remain
+multi-window native sweeps, broader memory/RSS measurements, fuller ciphertext
+byte measurements for OpenFHE, and a real-data-derived TFHE-rs path or blocker.
 
 ### JSON Validation
 

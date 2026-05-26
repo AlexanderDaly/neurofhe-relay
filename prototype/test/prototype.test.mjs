@@ -1404,6 +1404,15 @@ test("native evidence manifest classifies real runs and dependency blockers", ()
     subject: {
       schema: "neurofhe.openfheCkks.unavailable.v1",
       blocker: { reason: "OpenFHEConfig.cmake not found" },
+      nativeResult: {
+        schema: "neurofhe.openfheCkks.result.v1",
+        memoryUsage: {
+          ciphertextCount: 34,
+          serializedCiphertextBytes: null,
+          measurement:
+            "portable demo reports ciphertext count; enable OpenFHE serialization for exact byte sizes",
+        },
+      },
       productionClaim: false,
     },
     productionClaim: false,
@@ -1416,6 +1425,16 @@ test("native evidence manifest classifies real runs and dependency blockers", ()
     subject: {
       schema: "neurofhe.realLibraryAdapter.v1",
       adapterId: "tfhe-rs-sparse-integer-threshold-v1",
+      nativeResult: {
+        schema: "neurofhe.tfheRs.result.v1",
+        ciphertextBytes: {
+          activeValueCiphertexts: 2377818,
+          classScoreCiphertexts: 264202,
+          thresholdDecisionBit: 16593,
+          total: 2658613,
+        },
+        productionClaim: false,
+      },
       productionClaim: false,
     },
     productionClaim: false,
@@ -1449,6 +1468,14 @@ test("native evidence manifest classifies real runs and dependency blockers", ()
   assert.equal(manifest.summary.dependencyBlockerCount, 1);
   assert.equal(manifest.summary.adapterPlanOnlyCount, 1);
   assert.equal(manifest.summary.missingArtifactCount, 0);
+  assert.deepEqual(manifest.summary.measurementCoverage, {
+    ciphertextBytesReportedCount: 1,
+    ciphertextBytesPartialCount: 1,
+    ciphertextBytesMissingCount: 1,
+    rssOrPeakMemoryReportedCount: 0,
+    rssOrPeakMemoryPartialCount: 1,
+    rssOrPeakMemoryMissingCount: 2,
+  });
   assert.equal(manifest.releaseUse.releaseGateSatisfied, false);
   assert.match(manifest.releaseUse.reason, /not sufficient/i);
   assert.deepEqual(
@@ -1460,6 +1487,11 @@ test("native evidence manifest classifies real runs and dependency blockers", ()
     ],
   );
   assert.equal(manifest.lanes[0].evidence.datasetKind, "public-uci-eeg-eye-state-arff");
+  assert.equal(manifest.lanes[0].measurements.ciphertextBytes.status, "missing");
+  assert.equal(manifest.lanes[1].measurements.ciphertextBytes.status, "partial");
+  assert.equal(manifest.lanes[1].measurements.rssOrPeakMemory.status, "partial");
+  assert.equal(manifest.lanes[2].measurements.ciphertextBytes.status, "reported");
+  assert.equal(manifest.lanes[2].measurements.ciphertextBytes.totalBytes, 2658613);
   assert.equal(manifest.lanes[0].reproducibility.hostSpecific, true);
   assert.ok(manifest.lanes[0].reproducibility.commands.some((command) => command.includes("--input")));
   assert.equal(manifest.lanes[1].smallestNextStep, "OpenFHEConfig.cmake not found");

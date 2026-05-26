@@ -52,7 +52,8 @@ command, error, and smallest next step.
   cryptography, and native FHE results.
 - Confirm `benchmark-artifacts/native-evidence/latest.json` identifies the
   host/toolchain, latest native lane artifacts, exact rerun commands, and
-  remaining gaps.
+  remaining gaps, including ciphertext-byte and RSS/peak-memory measurement
+  coverage.
 - Confirm `VALIDATION.md` includes the commands that produced committed
   artifacts.
 - Confirm every crypto lane keeps `productionClaim: false`.
