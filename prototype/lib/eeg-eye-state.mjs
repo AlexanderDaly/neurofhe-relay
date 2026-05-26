@@ -189,15 +189,16 @@ export function runEegEyeStatePlaintextBaseline({
   compressionLevels = [],
 }) {
   const startedAt = Date.now();
-  const trainFraction = options.trainFraction ?? 0.7;
+  const normalizedOptions = normalizeEegBaselineOptions(options);
+  const trainFraction = normalizedOptions.trainFraction;
   const split = splitChronological(rows, trainFraction);
-  const selectedChannelIndices = selectedChannels(options);
+  const selectedChannelIndices = selectedChannels(normalizedOptions);
   const normalizer = fitEegNormalizer(split.trainRows, selectedChannelIndices);
-  const trainWindows = rowsToSparseWindows(split.trainRows, normalizer, options);
-  const testWindows = rowsToSparseWindows(split.testRows, normalizer, options);
+  const trainWindows = rowsToSparseWindows(split.trainRows, normalizer, normalizedOptions);
+  const testWindows = rowsToSparseWindows(split.testRows, normalizer, normalizedOptions);
   const model = trainCentroidSparseLinearClassifier(trainWindows);
   const evaluation = evaluateSparseLinearClassifier(model, testWindows);
-  const featureCount = featureCountFor(options);
+  const featureCount = featureCountFor(normalizedOptions);
   const dotProducts = evaluation.total * model.classes.length;
   const sparseScalarMultiplies = evaluation.predictions.reduce(
     (sum, prediction) => sum + prediction.activeEventCount * model.classes.length,
@@ -240,7 +241,7 @@ export function runEegEyeStatePlaintextBaseline({
       rows,
       split,
       normalizer,
-      options,
+      options: normalizedOptions,
       selectedChannelIndices,
     }),
     openFheCompatibility: {
@@ -284,7 +285,7 @@ export function runEegEyeStatePlaintextBaseline({
     report.compressionCurve = runEegEyeStateCompressionSweep({
       rows,
       levels: compressionLevels,
-      referenceOptions: options,
+      referenceOptions: normalizedOptions,
     });
   }
 
@@ -298,17 +299,22 @@ export function buildEegEyeStateOpenFheInputContract({
   fixedPointScale = 10,
   plaintextModulus = 65537,
 } = {}) {
-  const trainFraction = options.trainFraction ?? 0.7;
+  const normalizedOptions = normalizeEegBaselineOptions(options);
+  const requestedSampleIndex = validateEegSampleIndex(sampleIndex);
+  const trainFraction = normalizedOptions.trainFraction;
   const split = splitChronological(rows, trainFraction);
-  const selectedChannelIndices = selectedChannels(options);
+  const selectedChannelIndices = selectedChannels(normalizedOptions);
   const normalizer = fitEegNormalizer(split.trainRows, selectedChannelIndices);
-  const trainWindows = rowsToSparseWindows(split.trainRows, normalizer, options);
-  const testWindows = rowsToSparseWindows(split.testRows, normalizer, options);
+  const trainWindows = rowsToSparseWindows(split.trainRows, normalizer, normalizedOptions);
+  const testWindows = rowsToSparseWindows(split.testRows, normalizer, normalizedOptions);
   if (!testWindows.length) {
     throw new Error("cannot build OpenFHE input contract without test windows");
   }
   const model = trainCentroidSparseLinearClassifier(trainWindows);
-  const boundedSampleIndex = clampSampleIndex(sampleIndex, testWindows.length);
+  const boundedSampleIndex = validateEegSampleIndex(
+    requestedSampleIndex,
+    testWindows.length,
+  );
   const sample = testWindows[boundedSampleIndex];
   const expectedScores = scoreSparseWindow(model, sample);
   const expectedClassification = argmax(expectedScores);
@@ -357,10 +363,10 @@ export function buildEegEyeStateOpenFheInputContract({
       trainRows: split.trainRows.length,
       testRows: split.testRows.length,
       trainFraction,
-      windowSize: options.windowSize ?? 8,
-      stride: options.stride ?? (options.windowSize ?? 8),
+      windowSize: normalizedOptions.windowSize,
+      stride: normalizedOptions.stride,
       selectedChannels: selectedChannelIndices.map((index) => EEG_EYE_STATE_CHANNELS[index]),
-      activePerTimestep: activePerTimestepFor(options),
+      activePerTimestep: activePerTimestepFor(normalizedOptions),
       normalization: "z-score using training split only",
     },
     approximationTolerance: {
@@ -401,27 +407,30 @@ export function runEegEyeStateCompressionSweep({
   if (!Array.isArray(levels) || levels.length === 0) {
     throw new Error("EEG compression sweep levels must be a non-empty array");
   }
-  const referenceFeatureCount = featureCountFor(referenceOptions);
+  const normalizedReferenceOptions = normalizeEegBaselineOptions(referenceOptions);
+  const referenceFeatureCount = featureCountFor(normalizedReferenceOptions);
   const referenceActivePerWindow =
-    activePerTimestepFor(referenceOptions) * (referenceOptions.windowSize ?? 8);
+    activePerTimestepFor(normalizedReferenceOptions) *
+    normalizedReferenceOptions.windowSize;
 
   return {
     schema: "neurofhe.plaintextCompressionCurve.v1",
     metric: "accuracy-versus-latent-active-event-budget",
-    referenceFeatureShape: featureShapeFor(referenceOptions),
+    referenceFeatureShape: featureShapeFor(normalizedReferenceOptions),
     referenceFeatureCount,
     levels: levels.map((level, index) => {
       const levelOptions = {
-        ...referenceOptions,
+        ...normalizedReferenceOptions,
         activePerTimestep: level.activePerTimestep,
       };
+      const normalizedLevelOptions = normalizeEegBaselineOptions(levelOptions);
       const report = runEegEyeStatePlaintextBaseline({
         rows,
-        options: levelOptions,
+        options: normalizedLevelOptions,
       });
-      const activePerTimestep = activePerTimestepFor(levelOptions);
+      const activePerTimestep = activePerTimestepFor(normalizedLevelOptions);
       const activePerWindow =
-        activePerTimestep * (levelOptions.windowSize ?? 8);
+        activePerTimestep * normalizedLevelOptions.windowSize;
 
       return {
         id: level.id ?? `active-${level.activePerTimestep}`,
@@ -446,12 +455,64 @@ export function runEegEyeStateCompressionSweep({
   };
 }
 
-function clampSampleIndex(sampleIndex, sampleCount) {
+export function normalizeEegBaselineOptions(options = {}) {
+  const trainFraction = requireTrainFraction(options.trainFraction ?? 0.7);
+  const windowSize = requirePositiveInteger(
+    "--window-size",
+    options.windowSize ?? 8,
+  );
+  const stride = requirePositiveInteger(
+    "--stride",
+    options.stride ?? windowSize,
+  );
+  const channelCount = requirePositiveInteger(
+    "--channel-count",
+    options.channelCount ?? 8,
+  );
+  const activePerTimestep = requirePositiveInteger(
+    "--active-per-timestep",
+    options.activePerTimestep ?? 4,
+  );
+
+  return {
+    ...options,
+    trainFraction,
+    windowSize,
+    stride,
+    channelCount,
+    activePerTimestep,
+  };
+}
+
+export function validateEegSampleIndex(sampleIndex, sampleCount) {
   const numericSampleIndex = Number(sampleIndex ?? 0);
-  if (!Number.isFinite(numericSampleIndex)) {
-    throw new Error("sampleIndex must be a finite number");
+  if (!Number.isInteger(numericSampleIndex) || numericSampleIndex < 0) {
+    throw new Error("--sample-index must be a non-negative integer");
   }
-  return Math.max(0, Math.min(Math.trunc(numericSampleIndex), sampleCount - 1));
+  if (sampleCount !== undefined && numericSampleIndex >= sampleCount) {
+    throw new Error(
+      `--sample-index ${numericSampleIndex} is outside available test windows 0-${sampleCount - 1}`,
+    );
+  }
+  return numericSampleIndex;
+}
+
+function requireTrainFraction(value) {
+  const numericValue = Number(value);
+  if (!(Number.isFinite(numericValue) && numericValue > 0 && numericValue < 1)) {
+    throw new Error(
+      "--train-fraction must be a finite number greater than 0 and less than 1",
+    );
+  }
+  return numericValue;
+}
+
+function requirePositiveInteger(flagName, value) {
+  const numericValue = Number(value);
+  if (!Number.isInteger(numericValue) || numericValue <= 0) {
+    throw new Error(`${flagName} must be a positive integer`);
+  }
+  return numericValue;
 }
 
 function quantizeSparseLinearContract({
@@ -655,7 +716,9 @@ function splitChronological(rows, trainFraction) {
     throw new Error("EEG Eye State baseline requires at least two rows");
   }
   if (!(trainFraction > 0 && trainFraction < 1)) {
-    throw new Error("trainFraction must be greater than 0 and less than 1");
+    throw new Error(
+      "--train-fraction must be a finite number greater than 0 and less than 1",
+    );
   }
   const splitIndex = Math.max(1, Math.min(rows.length - 1, Math.floor(rows.length * trainFraction)));
   return {

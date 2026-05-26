@@ -219,11 +219,14 @@ function buildEegBaselineUnavailableReport(parsedArgs, error) {
       reason: error.message,
       datasetPath: parsedArgs.dataset,
       fetchRequested: parsedArgs.fetch === "true",
-      trainFraction: Number(parsedArgs["train-fraction"] ?? 0.7),
-      windowSize: Number(parsedArgs["window-size"] ?? 8),
-      stride: Number(parsedArgs.stride ?? parsedArgs["window-size"] ?? 8),
-      channelCount: Number(parsedArgs["channel-count"] ?? 8),
-      activePerTimestep: Number(parsedArgs["active-per-timestep"] ?? 4),
+      trainFraction: optionValue(parsedArgs["train-fraction"], 0.7),
+      windowSize: optionValue(parsedArgs["window-size"], 8),
+      stride: optionValue(
+        parsedArgs.stride,
+        optionValue(parsedArgs["window-size"], 8),
+      ),
+      channelCount: optionValue(parsedArgs["channel-count"], 8),
+      activePerTimestep: optionValue(parsedArgs["active-per-timestep"], 4),
     },
     attemptedCommand: [
       "npm run baseline:plaintext --",
@@ -248,10 +251,19 @@ function eegInputSourceArg(parsedArgs) {
 }
 
 function eegSmallestNextStep(reason) {
+  if (reason.startsWith("--")) {
+    return "Correct the invalid CLI option and rerun the same dataset or fixture command.";
+  }
   if (reason.includes("without windows")) {
     return "Use a larger --train-fraction, smaller --window-size, or smaller --stride so the training split produces at least one sparse window.";
   }
   return "Rerun with --fetch on a networked machine or download the public ARFF outside git and pass --dataset '/path/to/EEG Eye State.arff'.";
+}
+
+function optionValue(rawValue, defaultValue) {
+  if (rawValue === undefined) return defaultValue;
+  const numericValue = Number(rawValue);
+  return Number.isFinite(numericValue) ? numericValue : rawValue;
 }
 
 async function loadEegBaselineRows(parsedArgs) {

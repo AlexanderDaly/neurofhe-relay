@@ -1,0 +1,76 @@
+{
+  "schema": "neurofhe.ciBlocker.v1",
+  "artifactId": "github-actions-runner-startup-block-2026-05-23-pr7",
+  "generatedAt": "2026-05-23T02:23:38Z",
+  "scope": "portable-github-actions-validation",
+  "pullRequest": {
+    "number": 7,
+    "title": "Add EEG boundary input validation",
+    "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/7",
+    "headRef": "codex/eeg-boundary-validation",
+    "headSha": "091947227ce01aa45c0910b762d980a574ac5aa7"
+  },
+  "run": {
+    "id": 26310492168,
+    "event": "pull_request",
+    "jobId": 77457726901,
+    "workflowName": "CI",
+    "checkName": "Portable validation",
+    "status": "completed",
+    "conclusion": "failure",
+    "startedAt": "2026-05-22T20:30:52Z",
+    "completedAt": "2026-05-22T20:30:54Z",
+    "detailsUrl": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26310492168/job/77457726901"
+  },
+  "relatedRuns": [
+    {
+      "id": 26310475037,
+      "event": "push",
+      "jobId": 77457671493,
+      "workflowName": "CI",
+      "checkName": "Portable validation",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-05-22T20:30:28Z",
+      "completedAt": "2026-05-22T20:30:31Z",
+      "detailsUrl": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26310475037/job/77457671493"
+    }
+  ],
+  "blocker": {
+    "category": "github-actions-account-or-runner-startup",
+    "isCodeFailure": false,
+    "currentGithubAnnotation": null,
+    "priorMatchingAnnotation": "The job was not started because your account is locked due to a billing issue.",
+    "evidence": {
+      "checkRunSteps": [],
+      "runnerName": "",
+      "jobLabels": [
+        "ubuntu-latest"
+      ],
+      "pullRequestLogFetchCommand": "gh run view 26310492168 --log-failed",
+      "pullRequestLogFetchResult": "log not found: 77457726901",
+      "pushLogFetchCommand": "gh run view 26310475037 --log-failed",
+      "pushLogFetchResult": "log not found: 77457671493"
+    },
+    "interpretation": "The failing PR #7 checks completed before any workflow step started and expose no failed-step logs. This matches the prior PR #6 account/billing lock signature, so it is tracked separately from code validation."
+  },
+  "localParityValidation": {
+    "observedAt": "2026-05-23T02:23:38Z",
+    "commandsRun": [
+      "npm run ci",
+      "npm run benchmark:artifact -- --out <tmp>/benchmark-artifacts --artifact-id ci-synthetic-smoke --generated-at 2026-05-21T00:00:00.000Z",
+      "npm run benchmark:privacy-modes -- --artifact --out <tmp>/privacy-modes --artifact-id ci-padding-smoke --generated-at 2026-05-21T00:00:00.000Z",
+      "npm run baseline:plaintext -- --fixture nmnist-smoke --artifact --out <tmp>/nmnist-smoke --artifact-id ci-nmnist-smoke --generated-at 2026-05-21T00:00:00.000Z",
+      "git diff --check"
+    ],
+    "result": "pass",
+    "testSummary": {
+      "tests": 68,
+      "pass": 68,
+      "fail": 0
+    },
+    "productionClaim": false
+  },
+  "smallestNextStep": "Resolve or unlock the GitHub Actions account/runner startup blocker, then rerun PR #7 CI before moving the draft toward review.",
+  "productionClaim": false
+}
