@@ -77,8 +77,8 @@ The cryptographic design target is:
 - `RELEASE.md` - research-alpha release checklist and evidence gates.
 - `SECURITY.md` - research-prototype security policy and reporting guidance.
 - `VALIDATION.md` - local validation commands, outputs, artifacts, and caveats.
-- `.github/workflows/ci.yml` - portable CI for tests, schema checks, placeholder scan, and smoke artifact generation/upload.
-- `benchmark-artifacts/` - intentionally committed derived benchmark evidence and blocker reports.
+- `.github/workflows/ci.yml` - portable CI for tests, schema checks, repository hygiene scan, and smoke artifact generation/upload.
+- `benchmark-artifacts/` - intentionally committed derived benchmark evidence, repository hygiene scan evidence, and blocker reports.
 - `patent/` - ENER provisional drafting materials, claim seeds, drawings, prior-art search plan, filing checklist, and briefing package.
 - `project-brief.json` - structured project metadata for agents.
 - `index.html` - self-contained briefing deck for browser presentation.
@@ -126,6 +126,12 @@ benchmarks, padded-sparse privacy modes, and the deterministic N-MNIST-format
 fixture. Native OpenFHE and TFHE-rs checks remain local/release gate commands
 because they require external libraries and heavier host setup.
 See `DEVELOPMENT.md` and `RELEASE.md` before making or tagging release claims.
+To persist a redacted source-hygiene evidence artifact without reading raw
+datasets into git, run:
+
+```sh
+npm run scan:hygiene -- --artifact
+```
 
 ## Relay Gateway Pattern
 
@@ -219,6 +225,14 @@ npm run benchmark:tfhe -- --run
 npm run benchmark:tfhe -- --run --artifact
 ```
 
+Summarize native evidence reproducibility across OpenFHE BFVrns, OpenFHE CKKS,
+and TFHE-rs without rerunning benchmarks:
+
+```sh
+npm run native:doctor
+npm run native:doctor -- --artifact
+```
+
 Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
 
 ```sh
@@ -255,7 +269,10 @@ window from the generated input contract. BFVrns uses the fixed-point view and
 matches the expected quantized classification; CKKS uses approximate-real values
 and reports score drift against plaintext. These artifacts are local
 single-window integration evidence, not production cryptography or broad
-runtime claims.
+runtime claims. The native evidence manifest under
+`benchmark-artifacts/native-evidence/` records the host/toolchain fingerprint,
+latest artifact classification, exact rerun commands, and remaining gaps for
+the OpenFHE and TFHE-rs lanes.
 
 Run the deterministic N-MNIST-format smoke fixture and publish a compression
 curve artifact:

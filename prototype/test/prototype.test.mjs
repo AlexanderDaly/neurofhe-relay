@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -19,6 +19,15 @@ import {
   publishBenchmarkArtifact,
   publishComparisonArtifact,
 } from "../lib/artifacts.mjs";
+import {
+  buildNativeEvidenceManifest,
+  classifyNativeEvidenceArtifact,
+  publishNativeEvidenceArtifact,
+} from "../lib/native-evidence.mjs";
+import {
+  buildRepositoryHygieneArtifact,
+  scanRepositoryHygiene,
+} from "../lib/repo-hygiene.mjs";
 import {
   runEncryptedLinearClassifier,
   runPlaintextLinearClassifier,
@@ -174,6 +183,29 @@ test("encrypted classifier matches plaintext classifier on the demo contract", (
   assert.equal(encrypted.operationCounts.scalarMultiplies, 36);
   assert.equal(encrypted.operationCounts.adds, 36);
   assert.equal(encrypted.operationCounts.decryptions, 2);
+});
+
+test("encrypted classifier preview uses model class labels", () => {
+  const eventWindow = buildSparseEventWindow();
+  const featureCount = flattenEventWindow(eventWindow).length;
+  const model = {
+    ...buildDemoLinearModel({ featureCount, channels: eventWindow.channels }),
+    classes: ["quiet", "alert"],
+    weights: {
+      quiet: Array(featureCount).fill(0),
+      alert: Array(featureCount).fill(1),
+    },
+    bias: { quiet: 0, alert: 0 },
+    matrixShape: [2, featureCount],
+  };
+
+  const encrypted = runEncryptedLinearClassifier(eventWindow, { model, seed: 91 });
+
+  assert.deepEqual(Object.keys(encrypted.encryptedPreview.scoreCiphertexts), ["quiet", "alert"]);
+  assert.equal(typeof encrypted.encryptedPreview.scoreCiphertexts.quiet, "string");
+  assert.equal(typeof encrypted.encryptedPreview.scoreCiphertexts.alert, "string");
+  assert.equal("normalScoreCiphertext" in encrypted.encryptedPreview, false);
+  assert.equal("anomalyScoreCiphertext" in encrypted.encryptedPreview, false);
 });
 
 test("linear model metadata fixes matrix orientation and supports public bias", () => {
@@ -796,6 +828,61 @@ test("benchmark artifact CLI honors deterministic artifact options", async () =>
   assert.equal(artifact.generatedAt, "2026-05-21T00:00:00.000Z");
 });
 
+test("repository hygiene scan redacts secrets and blocks raw dataset files", async () => {
+  const root = await mkdtemp(join(tmpdir(), "neurofhe-hygiene-fixture-"));
+  await mkdir(join(root, "docs"), { recursive: true });
+  await writeFile(join(root, "docs", "ok.md"), "clean evidence note\n", "utf8");
+  await writeFile(join(root, "docs", "secret.txt"), `token=${"sk-" + "A".repeat(20)}\n`, "utf8");
+  await writeFile(join(root, "events.arff"), "@RELATION eeg\n", "utf8");
+
+  const result = scanRepositoryHygiene({ root });
+  const artifact = buildRepositoryHygieneArtifact(result, {
+    artifactId: "repo-hygiene-fixture",
+    generatedAt: "2026-05-25T00:00:00.000Z",
+  });
+
+  assert.equal(result.result, "fail");
+  assert.equal(result.findings.length, 2);
+  assert.deepEqual(result.findings.map((finding) => finding.category).sort(), [
+    "raw-dataset-path",
+    "secret",
+  ]);
+  assert.equal(artifact.schema, "neurofhe.repositoryHygieneScan.v1");
+  assert.equal(artifact.productionClaim, false);
+  assert.equal(artifact.findings.find((finding) => finding.category === "secret").redacted, true);
+  assert.equal("excerpt" in artifact.findings.find((finding) => finding.category === "secret"), false);
+  assert.equal(artifact.rawDataPolicy.rule.includes("Keep raw public/private datasets outside git"), true);
+});
+
+test("repository hygiene artifact CLI honors deterministic artifact options", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-hygiene-cli-"));
+  const result = spawnSync(
+    process.execPath,
+    [
+      "prototype/scripts/placeholder-scan.mjs",
+      "--artifact",
+      "--out",
+      outputDir,
+      "--artifact-id",
+      "repo-hygiene-smoke",
+      "--generated-at",
+      "2026-05-25T00:00:00.000Z",
+    ],
+    { cwd: process.cwd(), encoding: "utf8" },
+  );
+  const published = JSON.parse(result.stdout);
+  const artifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+
+  assert.equal(result.status, 0);
+  assert.equal(result.stderr, "");
+  assert.equal(published.schema, "neurofhe.repositoryHygieneScan.publish.v1");
+  assert.equal(artifact.artifactId, "repo-hygiene-smoke");
+  assert.equal(artifact.generatedAt, "2026-05-25T00:00:00.000Z");
+  assert.equal(artifact.result, "pass");
+  assert.equal(artifact.findingsCount, 0);
+  assert.equal(artifact.privacyBoundary.secrets, "redacted from artifacts");
+});
+
 test("privacy mode benchmark compares speed against sparsity metadata protection", () => {
   const comparison = buildPrivacyModeComparison(buildSparseEventWindow(), 2);
   const [publicSparse, publicNeurons, paddedSparse, dense] = comparison.modes;
@@ -1286,6 +1373,128 @@ test("comparison artifacts can persist OpenFHE CKKS adapter plans for later libr
   assert.equal(runArtifact.subject.schema, "neurofhe.realLibraryAdapter.v1");
   assert.equal(runArtifact.subject.adapterId, "openfhe-ckks-sparse-approx-linear-v1");
   assert.equal(runArtifact.framingGuardrail.preferredFrame, "privacy-preserving event intelligence");
+  assert.deepEqual(latestArtifact, runArtifact);
+});
+
+test("native evidence manifest classifies real runs and dependency blockers", () => {
+  const realOpenFheArtifact = {
+    schema: "neurofhe.comparisonArtifact.v1",
+    artifactId: "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+    generatedAt: "2026-05-21T18:22:00.000Z",
+    subjectSchema: "neurofhe.openfhe.runComparison.v1",
+    subject: {
+      schema: "neurofhe.openfhe.runComparison.v1",
+      inputContractPath: "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json",
+      nativeResult: {
+        schema: "neurofhe.openfhe.result.v1",
+        inputSource: "external-contract",
+        datasetKind: "public-uci-eeg-eye-state-arff",
+        activeEventCount: 32,
+        productionClaim: false,
+      },
+      productionClaim: false,
+    },
+    productionClaim: false,
+  };
+  const blockerArtifact = {
+    schema: "neurofhe.comparisonArtifact.v1",
+    artifactId: "openfhe-ckks-blocker",
+    generatedAt: "2026-05-21T00:00:00.000Z",
+    subjectSchema: "neurofhe.openfheCkks.unavailable.v1",
+    subject: {
+      schema: "neurofhe.openfheCkks.unavailable.v1",
+      blocker: { reason: "OpenFHEConfig.cmake not found" },
+      productionClaim: false,
+    },
+    productionClaim: false,
+  };
+  const adapterArtifact = {
+    schema: "neurofhe.comparisonArtifact.v1",
+    artifactId: "tfhe-adapter-plan",
+    generatedAt: "2026-05-21T00:00:00.000Z",
+    subjectSchema: "neurofhe.realLibraryAdapter.v1",
+    subject: {
+      schema: "neurofhe.realLibraryAdapter.v1",
+      adapterId: "tfhe-rs-sparse-integer-threshold-v1",
+      productionClaim: false,
+    },
+    productionClaim: false,
+  };
+
+  assert.equal(classifyNativeEvidenceArtifact(realOpenFheArtifact).status, "real-native-run");
+  assert.equal(classifyNativeEvidenceArtifact(blockerArtifact).status, "dependency-blocker");
+  assert.equal(classifyNativeEvidenceArtifact(adapterArtifact).status, "adapter-plan-only");
+
+  const manifest = buildNativeEvidenceManifest({
+    generatedAt: "2026-05-23T00:00:00.000Z",
+    hostFingerprint: {
+      schema: "neurofhe.nativeEvidence.hostFingerprint.v1",
+      platform: "test-platform",
+      arch: "test-arch",
+      node: "v22.0.0",
+      toolchain: {},
+    },
+    artifactReader: (path) => ({
+      "benchmark-artifacts/comparisons/openfhe/latest.json": realOpenFheArtifact,
+      "benchmark-artifacts/comparisons/openfhe-ckks/latest.json": blockerArtifact,
+      "benchmark-artifacts/comparisons/tfhe-rs/latest.json": adapterArtifact,
+    })[path],
+    openFheDetection: { available: true, cmakeConfigDir: "/opt/openfhe/lib/cmake/OpenFHE" },
+    tfheRsDetection: { available: true, manifestExists: true, cargo: "cargo 1.90.0" },
+  });
+
+  assert.equal(manifest.schema, "neurofhe.nativeEvidence.manifest.v1");
+  assert.equal(manifest.productionClaim, false);
+  assert.equal(manifest.summary.realNativeRunCount, 1);
+  assert.equal(manifest.summary.dependencyBlockerCount, 1);
+  assert.equal(manifest.summary.adapterPlanOnlyCount, 1);
+  assert.equal(manifest.summary.missingArtifactCount, 0);
+  assert.equal(manifest.releaseUse.releaseGateSatisfied, false);
+  assert.match(manifest.releaseUse.reason, /not sufficient/i);
+  assert.deepEqual(
+    manifest.lanes.map((lane) => [lane.id, lane.evidence.status]),
+    [
+      ["openfhe-bfvrns", "real-native-run"],
+      ["openfhe-ckks", "dependency-blocker"],
+      ["tfhe-rs", "adapter-plan-only"],
+    ],
+  );
+  assert.equal(manifest.lanes[0].evidence.datasetKind, "public-uci-eeg-eye-state-arff");
+  assert.equal(manifest.lanes[0].reproducibility.hostSpecific, true);
+  assert.ok(manifest.lanes[0].reproducibility.commands.some((command) => command.includes("--input")));
+  assert.equal(manifest.lanes[1].smallestNextStep, "OpenFHEConfig.cmake not found");
+});
+
+test("native evidence artifacts publish deterministic run and latest JSON", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-native-evidence-"));
+  const manifest = buildNativeEvidenceManifest({
+    generatedAt: "2026-05-23T00:00:00.000Z",
+    hostFingerprint: {
+      schema: "neurofhe.nativeEvidence.hostFingerprint.v1",
+      platform: "test-platform",
+      arch: "test-arch",
+      node: "v22.0.0",
+      toolchain: {},
+    },
+    artifactReader: () => undefined,
+    openFheDetection: { available: false, reason: "OpenFHEConfig.cmake not found" },
+    tfheRsDetection: { available: false, reason: "Cargo not found" },
+  });
+  const published = await publishNativeEvidenceArtifact({
+    outputDir,
+    manifest,
+    artifactId: "native-evidence-test",
+    generatedAt: "2026-05-23T00:00:00.000Z",
+  });
+  const runArtifact = JSON.parse(await readFile(published.paths.run, "utf8"));
+  const latestArtifact = JSON.parse(await readFile(published.paths.latest, "utf8"));
+
+  assert.equal(published.schema, "neurofhe.nativeEvidenceArtifact.publish.v1");
+  assert.equal(runArtifact.schema, "neurofhe.nativeEvidenceArtifact.v1");
+  assert.equal(runArtifact.artifactId, "native-evidence-test");
+  assert.equal(runArtifact.subject.schema, "neurofhe.nativeEvidence.manifest.v1");
+  assert.equal(runArtifact.subject.summary.missingArtifactCount, 3);
+  assert.equal(runArtifact.productionClaim, false);
   assert.deepEqual(latestArtifact, runArtifact);
 });
 

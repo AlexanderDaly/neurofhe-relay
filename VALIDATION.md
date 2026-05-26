@@ -39,6 +39,7 @@ Covered behaviours:
 - OpenFHE sorted-event contract validation, digest-bound real-library adapter manifest, native build-plan detection, C++ API source markers, real-data-derived input-contract loading, and BFVrns native run artifact publishing.
 - OpenFHE CKKS approximate-real sorted-event contract validation, digest-bound real-library adapter manifest, CKKS parameter inventory, privacy boundary, native build-plan detection, real-data-derived input-contract loading, comparison artifact publishing, and C++ CKKS API source markers.
 - TFHE-rs sorted-event contract validation, digest-bound real-library adapter manifest, Cargo build-plan detection, Rust source markers, encrypted threshold-gate metadata, TFHE-vs-OpenFHE comparison notes, and comparison artifact publishing.
+- Native evidence manifest generation that fingerprints the current host/toolchain, classifies latest OpenFHE and TFHE-rs artifacts, records exact rerun commands, and preserves remaining native evidence gaps.
 - N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
 - UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
 - Research assumptions with clean-room and naming guardrails.
@@ -827,6 +828,87 @@ benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-validation-2026-05-21.json
 The TFHE-rs result is a single local synthetic 8x8 run. The latency is not a
 stable performance claim; use it only as a research-grade comparison record.
 
+### Native Evidence Manifest
+
+Command:
+
+```sh
+npm run native:doctor -- --artifact --artifact-id native-evidence-2026-05-23 --generated-at 2026-05-23T09:00:00.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/native-evidence/latest.json
+benchmark-artifacts/native-evidence/runs/native-evidence-2026-05-23.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.nativeEvidence.manifest.v1",
+  "hostFingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v25.2.0",
+    "toolchain": {
+      "npm": "11.6.2",
+      "cmake": "cmake version 4.1.2",
+      "cxx": "Apple clang version 21.0.0",
+      "cargo": "cargo 1.92.0",
+      "rustc": "rustc 1.92.0"
+    }
+  },
+  "summary": {
+    "laneCount": 3,
+    "realNativeRunCount": 3,
+    "dependencyBlockerCount": 0,
+    "adapterPlanOnlyCount": 0,
+    "missingArtifactCount": 0
+  },
+  "lanes": [
+    {
+      "id": "openfhe-bfvrns",
+      "latestArtifactId": "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+      "evidence": {
+        "status": "real-native-run",
+        "datasetKind": "public-uci-eeg-eye-state-arff",
+        "activeEventCount": 32
+      }
+    },
+    {
+      "id": "openfhe-ckks",
+      "latestArtifactId": "openfhe-ckks-eeg-eye-state-2026-05-21",
+      "evidence": {
+        "status": "real-native-run",
+        "datasetKind": "public-uci-eeg-eye-state-arff",
+        "activeEventCount": 32
+      }
+    },
+    {
+      "id": "tfhe-rs",
+      "latestArtifactId": "tfhe-validation-2026-05-21",
+      "evidence": {
+        "status": "real-native-run",
+        "activeEventCount": 18
+      }
+    }
+  ],
+  "releaseUse": {
+    "releaseGateSatisfied": false
+  },
+  "productionClaim": false
+}
+```
+
+This manifest does not make the native evidence machine-independent. It makes
+the machine dependence explicit by recording the host/toolchain fingerprint,
+latest committed native artifact per lane, exact rerun commands, and remaining
+gaps. The current gaps remain multi-window native sweeps, broader memory/RSS
+measurements, fuller ciphertext byte measurements for OpenFHE, and a
+real-data-derived TFHE-rs path or blocker.
+
 ### JSON Validation
 
 Command:
@@ -895,7 +977,7 @@ The raw ARFF is cached under `.cache/` and is not committed. This result is
 real-data plaintext preprocessing/model evidence only. It does not show
 encrypted runtime on the real dataset, medical validity, or generalization.
 
-### Placeholder Scan
+### Repository Hygiene Scan
 
 Command:
 
@@ -906,11 +988,47 @@ node prototype/scripts/placeholder-scan.mjs
 Result:
 
 ```text
-placeholder scan ok
+repository hygiene scan ok
 ```
 
-The scanner skips generated directories such as `target/`, `build/`, `dist/`,
-and `outputs/` so Cargo build products are not read as source text.
+The scanner blocks placeholder text, common token-shaped secrets, and committed
+raw dataset paths/extensions such as ARFF, AEDAT, EDF, MAT, NumPy, HDF5, CSV,
+and Parquet. It skips generated directories such as `.cache/`, `target/`,
+`build/`, `dist/`, and `outputs/` so cache and build products are not read as
+source text. Raw public datasets remain outside git; committed artifacts should
+stay derived, caveated, and provenance-bearing.
+
+### Repository Hygiene Evidence Artifact
+
+Command:
+
+```sh
+npm run scan:hygiene -- --artifact --artifact-id repo-hygiene-2026-05-25 --generated-at 2026-05-25T22:54:00.000Z
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.repositoryHygieneScan.v1",
+  "artifactId": "repo-hygiene-2026-05-25",
+  "result": "pass",
+  "findingsCount": 0,
+  "productionClaim": false
+}
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/repo-hygiene/latest.json
+benchmark-artifacts/repo-hygiene/runs/repo-hygiene-2026-05-25.json
+```
+
+The artifact records only derived source-hygiene evidence: pass/fail status,
+scanned file count, scan policy, and redacted findings. It is not benchmark
+performance evidence, cryptographic assurance, or a substitute for keeping raw
+datasets and secrets out of git.
 
 ### ASCII Scan
 
@@ -993,6 +1111,33 @@ or workflow-step failure. The PR #7 local parity validation passed with
 directory, and `git diff --check`. A prior matching PR #6 check exposed the
 GitHub annotation: "The job was not started because your account is locked due
 to a billing issue."
+
+### GitHub Actions Open PR Refresh
+
+Observed on 2026-05-25 after PR #6 merged:
+
+```sh
+gh pr list --state open --json number,title,headRefName,baseRefName,isDraft,mergeStateStatus,reviewDecision,statusCheckRollup,updatedAt,url
+gh pr view 8 --json number,title,url,headRefName,mergeStateStatus,statusCheckRollup,isDraft,updatedAt
+gh pr view 9 --json number,title,url,headRefName,mergeStateStatus,statusCheckRollup,isDraft,updatedAt
+```
+
+Result:
+
+```text
+PR #8 Add evidence-first GitHub templates: mergeStateStatus BLOCKED, statusCheckRollup []
+PR #9 Add native evidence reproducibility manifest: mergeStateStatus BLOCKED, statusCheckRollup []
+```
+
+The workflow is currently `workflow_dispatch` only, following the earlier
+GitHub Actions billing/account lock. Empty check rollups on PR #8 and PR #9
+therefore remain hosted-CI availability and branch-protection evidence, not
+code-failure evidence. The current blocker artifact is:
+
+```text
+benchmark-artifacts/ci-blockers/latest.json
+benchmark-artifacts/ci-blockers/runs/github-actions-manual-only-open-prs-2026-05-25.json
+```
 
 ## Scope Note
 
