@@ -296,7 +296,9 @@ single-window integration evidence, not production cryptography or broad
 runtime claims. The native evidence manifest under
 `benchmark-artifacts/native-evidence/` records the host/toolchain fingerprint,
 latest artifact classification, exact rerun commands, and remaining gaps for
-the OpenFHE and TFHE-rs lanes.
+the OpenFHE and TFHE-rs lanes. Its measurement gap index lists the exact
+ciphertext-byte and RSS/peak-memory gaps per lane; that index is a blocker map,
+not substitute performance or memory evidence.
 
 Run the deterministic N-MNIST-format smoke fixture and publish a compression
 curve artifact:

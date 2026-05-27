@@ -58,7 +58,7 @@ command, error, and smallest next step.
 - Confirm `benchmark-artifacts/native-evidence/latest.json` identifies the
   host/toolchain, latest native lane artifacts, exact rerun commands, and
   remaining gaps, including ciphertext-byte and RSS/peak-memory measurement
-  coverage.
+  coverage plus the per-lane measurement gap index.
 - Confirm `benchmark-artifacts/release-evidence/latest.json` indexes the
   current CI blocker, repository hygiene result, native measurement coverage,
   metadata-leakage caveat, reconstruction-risk probe caveat, and

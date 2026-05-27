@@ -116,13 +116,13 @@ TFHE-rs remains the currently runnable real-library lane on this machine. Its
 artifacts are synthetic 8x8 event-window runs only and should not be used as
 real-data or production performance claims.
 
-## Validation Update May 26, 2026
+## Validation Update May 27, 2026
 
-The native evidence manifest now classifies measurement coverage without
-upgrading any performance claim:
+The native evidence manifest now classifies measurement coverage and carries a
+per-lane measurement gap index without upgrading any performance claim:
 
 ```sh
-npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-coverage-2026-05-26 --generated-at 2026-05-26T10:45:00.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-gap-index-2026-05-27 --generated-at 2026-05-27T20:25:00.000Z
 ```
 
 Current committed evidence:
@@ -133,12 +133,14 @@ Current committed evidence:
   lane.
 - RSS or peak-memory coverage: zero reported lanes, one partial lane, two
   missing lanes.
+- measurement gap index: five missing or partial measurement classes across
+  BFVrns, CKKS, and TFHE-rs, with exact rerun commands.
 
-This narrows diligence risk by making missing measurement classes explicit. It
-does not satisfy the remaining native-evidence gap: OpenFHE still needs fuller
-serialized ciphertext byte reporting and all native lanes still need RSS or
-peak-memory measurements before memory or stable performance claims are
-defensible.
+This narrows diligence risk by making missing measurement classes explicit per
+lane. It does not satisfy the remaining native-evidence gap: OpenFHE still
+needs fuller serialized ciphertext byte reporting and all native lanes still
+need RSS or peak-memory measurements before memory or stable performance claims
+are defensible.
 
 The release-evidence index now summarizes the current CI blocker, repository
 hygiene result, native measurement coverage, metadata-leakage caveat, and

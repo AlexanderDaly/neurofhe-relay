@@ -967,6 +967,17 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
               rssOrPeakMemoryPartialCount: 1,
               rssOrPeakMemoryMissingCount: 2,
             },
+            measurementGaps: {
+              schema: "neurofhe.nativeEvidence.measurementGapIndex.v1",
+              gapCount: 5,
+              lanes: [
+                {
+                  laneId: "openfhe-bfvrns",
+                  missingMeasurements: ["ciphertextBytes", "rssOrPeakMemory"],
+                  partialMeasurements: [],
+                },
+              ],
+            },
           },
           releaseUse: {
             releaseGateSatisfied: false,
@@ -1028,6 +1039,7 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
   assert.equal(index.gateChecks.hostedPortableCi.status, "blocked");
   assert.equal(index.gateChecks.repositoryHygiene.status, "pass");
   assert.equal(index.gateChecks.nativeMeasurementCoverage.status, "incomplete");
+  assert.equal(index.gateChecks.nativeMeasurementCoverage.measurementGapCount, 5);
   assert.equal(index.gateChecks.metadataLeakage.status, "caveated");
   assert.equal(index.gateChecks.reconstructionRisk.status, "caveated");
   assert.deepEqual(
@@ -1652,6 +1664,25 @@ test("native evidence manifest classifies real runs and dependency blockers", ()
     rssOrPeakMemoryPartialCount: 1,
     rssOrPeakMemoryMissingCount: 2,
   });
+  assert.equal(manifest.summary.measurementGaps.schema, "neurofhe.nativeEvidence.measurementGapIndex.v1");
+  assert.equal(manifest.summary.measurementGaps.gapCount, 5);
+  assert.deepEqual(
+    manifest.summary.measurementGaps.lanes.map((lane) => [
+      lane.laneId,
+      lane.missingMeasurements,
+      lane.partialMeasurements,
+    ]),
+    [
+      ["openfhe-bfvrns", ["ciphertextBytes", "rssOrPeakMemory"], []],
+      ["openfhe-ckks", [], ["ciphertextBytes", "rssOrPeakMemory"]],
+      ["tfhe-rs", ["rssOrPeakMemory"], []],
+    ],
+  );
+  assert.ok(
+    manifest.summary.measurementGaps.lanes[0].exactCommands.some((command) =>
+      command.includes("benchmark:openfhe"),
+    ),
+  );
   assert.equal(manifest.releaseUse.releaseGateSatisfied, false);
   assert.match(manifest.releaseUse.reason, /not sufficient/i);
   assert.deepEqual(

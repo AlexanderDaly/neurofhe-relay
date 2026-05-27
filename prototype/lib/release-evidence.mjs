@@ -175,12 +175,15 @@ function summarizeRepositoryHygiene(artifact) {
 function summarizeNativeEvidence(artifact) {
   const summary = artifact?.subject?.summary;
   const coverage = summary?.measurementCoverage;
+  const gaps = summary?.measurementGaps;
   if (!artifact || !summary || !coverage) {
     return {
       status: "missing",
       reason: "Native evidence measurement coverage is missing.",
       artifactId: artifact?.artifactId ?? null,
       measurementCoverage: null,
+      measurementGapCount: null,
+      measurementGaps: null,
     };
   }
   const incomplete =
@@ -197,6 +200,8 @@ function summarizeNativeEvidence(artifact) {
     laneCount: summary.laneCount,
     realNativeRunCount: summary.realNativeRunCount,
     measurementCoverage: coverage,
+    measurementGapCount: gaps?.gapCount ?? null,
+    measurementGaps: gaps ?? null,
   };
 }
 

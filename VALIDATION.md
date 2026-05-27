@@ -403,14 +403,14 @@ Dataset provenance for the intended real-data lane:
 Command:
 
 ```sh
-npm run release:evidence -- --artifact --artifact-id release-evidence-with-reconstruction-risk-2026-05-27 --generated-at 2026-05-27T16:05:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-native-gap-index-2026-05-27 --generated-at 2026-05-27T20:26:00.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
-benchmark-artifacts/release-evidence/runs/release-evidence-with-reconstruction-risk-2026-05-27.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-native-gap-index-2026-05-27.json
 ```
 
 Result summary:
@@ -423,7 +423,10 @@ Result summary:
   "gateChecks": {
     "hostedPortableCi": {"status": "blocked"},
     "repositoryHygiene": {"status": "pass"},
-    "nativeMeasurementCoverage": {"status": "incomplete"},
+    "nativeMeasurementCoverage": {
+      "status": "incomplete",
+      "measurementGapCount": 5
+    },
     "metadataLeakage": {"status": "caveated"},
     "reconstructionRisk": {"status": "caveated"},
     "productionClaim": {"status": "pass"}
@@ -919,14 +922,14 @@ stable performance claim; use it only as a research-grade comparison record.
 Command:
 
 ```sh
-npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-coverage-2026-05-26 --generated-at 2026-05-26T10:45:00.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-gap-index-2026-05-27 --generated-at 2026-05-27T20:25:00.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/native-evidence/latest.json
-benchmark-artifacts/native-evidence/runs/native-evidence-measurement-coverage-2026-05-26.json
+benchmark-artifacts/native-evidence/runs/native-evidence-measurement-gap-index-2026-05-27.json
 ```
 
 Result summary:
@@ -959,6 +962,10 @@ Result summary:
       "rssOrPeakMemoryReportedCount": 0,
       "rssOrPeakMemoryPartialCount": 1,
       "rssOrPeakMemoryMissingCount": 2
+    },
+    "measurementGaps": {
+      "schema": "neurofhe.nativeEvidence.measurementGapIndex.v1",
+      "gapCount": 5
     }
   },
   "lanes": [
@@ -1024,12 +1031,13 @@ Result summary:
 This manifest does not make the native evidence machine-independent. It makes
 the machine dependence explicit by recording the host/toolchain fingerprint,
 latest committed native artifact per lane, exact rerun commands, and remaining
-gaps. The May 26 manifest also classifies measurement coverage: TFHE-rs has
-reported serialized ciphertext bytes for the synthetic threshold run, OpenFHE
-CKKS has partial ciphertext-count metadata without serialized byte totals, and
-no lane yet reports RSS or peak memory bytes. The current gaps remain
-multi-window native sweeps, broader memory/RSS measurements, fuller ciphertext
-byte measurements for OpenFHE, and a real-data-derived TFHE-rs path or blocker.
+gaps. The May 27 manifest also indexes five per-lane missing or partial
+measurement classes: BFVrns still lacks ciphertext-byte and RSS/peak-memory
+measurements, CKKS has partial ciphertext-count metadata without serialized byte
+or RSS totals, and TFHE-rs still lacks RSS or peak-memory bytes. The current gaps
+remain multi-window native sweeps, broader memory/RSS measurements, fuller
+ciphertext byte measurements for OpenFHE, and a real-data-derived TFHE-rs path
+or blocker.
 
 ### JSON Validation
 

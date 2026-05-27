@@ -49,7 +49,8 @@ Native evidence manifest artifacts are written under
 they fingerprint the current host/toolchain, classify the latest committed
 native artifacts, list exact rerun commands, classify ciphertext-byte and
 RSS/peak-memory measurement coverage, and preserve remaining native measurement
-gaps.
+gaps. The summary also includes a per-lane measurement gap index with the exact
+rerun commands for each missing or partial measurement class.
 
 Plaintext baseline artifacts are written under
 `benchmark-artifacts/plaintext-baselines/<dataset-id>/`. The committed
@@ -128,8 +129,8 @@ Current artifacts also include:
 - optional OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs adapter/native comparison artifacts for the same synthetic 8x8 sparse score contract
 - native OpenFHE BFVrns and CKKS comparison artifacts for one generated UCI EEG Eye State sparse input contract
 - native evidence manifest artifacts that fingerprint the host/toolchain and
-  index reproducibility and measurement-coverage gaps across OpenFHE and
-  TFHE-rs lanes
+  index reproducibility and per-lane measurement gaps across OpenFHE and TFHE-rs
+  lanes
 - CI/account blocker artifacts that separate GitHub Actions availability from
   code or workflow-step failures
 - repository hygiene scan artifacts that separate source cleanliness evidence
