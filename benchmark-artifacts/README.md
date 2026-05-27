@@ -34,6 +34,7 @@ npm run benchmark:tfhe -- --artifact
 npm run benchmark:tfhe -- --run --artifact
 npm run native:doctor -- --artifact
 npm run scan:hygiene -- --artifact
+npm run release:evidence -- --artifact
 ```
 
 By default, OpenFHE comparison artifacts are written under
@@ -91,6 +92,12 @@ Repository hygiene artifacts are written under
 scanned file count, blocked raw-data patterns, and redacted findings only. They
 do not include raw dataset rows or secret values.
 
+Release-evidence index artifacts are written under
+`benchmark-artifacts/release-evidence/`. They summarize the current committed CI
+blocker, repository hygiene, native evidence, and metadata-leakage artifacts so
+the release gate can be reviewed from one JSON surface. They are dashboard
+artifacts only and do not constitute new benchmark evidence or release approval.
+
 Every `neurofhe.benchmarkArtifact.v1` file must include:
 
 - accuracy
@@ -119,6 +126,8 @@ Current artifacts also include:
   code or workflow-step failures
 - repository hygiene scan artifacts that separate source cleanliness evidence
   from benchmark performance claims
+- release-evidence index artifacts that keep blocker, hygiene, native, privacy,
+  and `productionClaim: false` status visible in one caveated dashboard
 
 The current top-level benchmark accuracy field is synthetic contract agreement
 against the plaintext classifier, not real dataset accuracy. Use the

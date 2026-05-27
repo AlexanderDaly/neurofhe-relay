@@ -140,6 +140,27 @@ serialized ciphertext byte reporting and all native lanes still need RSS or
 peak-memory measurements before memory or stable performance claims are
 defensible.
 
+The release-evidence index now summarizes the current CI blocker, repository
+hygiene result, native measurement coverage, and metadata-leakage caveat in one
+dashboard artifact:
+
+```sh
+npm run release:evidence -- --artifact
+```
+
+Current committed evidence:
+
+- `benchmark-artifacts/release-evidence/latest.json`
+- schema: `neurofhe.releaseEvidenceIndex.v1`
+- release gate: not satisfied.
+- hosted portable CI: blocked until a release-validation PR has green hosted
+  CI.
+- native measurement coverage: incomplete.
+- metadata leakage: caveated taxonomy proxy only.
+
+This improves diligence navigation but is not new benchmark evidence, not a
+privacy proof, and not release approval.
+
 ## Examiner-Risk Notes Added May 21, 2026
 
 The highest-risk broad claim posture is "local neural compression plus encrypted inference" without a concrete implementation limit. The stronger near-term claim posture is the spatial sparse-event relay:
