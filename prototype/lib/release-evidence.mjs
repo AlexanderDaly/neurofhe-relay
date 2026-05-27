@@ -9,6 +9,7 @@ const SOURCE_ARTIFACT_PATHS = [
   "benchmark-artifacts/repo-hygiene/latest.json",
   "benchmark-artifacts/native-evidence/latest.json",
   "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+  "benchmark-artifacts/reconstruction-risk/latest.json",
 ];
 
 export function buildReleaseEvidenceIndex(options = {}) {
@@ -32,6 +33,9 @@ export function buildReleaseEvidenceIndex(options = {}) {
   const metadataLeakage = summarizeMetadataLeakage(
     byPath["benchmark-artifacts/privacy-modes/padding-ablation/latest.json"],
   );
+  const reconstructionRisk = summarizeReconstructionRisk(
+    byPath["benchmark-artifacts/reconstruction-risk/latest.json"],
+  );
   const productionClaim = sourceArtifacts.every(
     (artifact) => artifact.present && artifact.productionClaim === false,
   );
@@ -48,6 +52,7 @@ export function buildReleaseEvidenceIndex(options = {}) {
       repositoryHygiene,
       nativeMeasurementCoverage,
       metadataLeakage,
+      reconstructionRisk,
       productionClaim: {
         status: productionClaim ? "pass" : "blocked",
         reason: productionClaim
@@ -213,6 +218,34 @@ function summarizeMetadataLeakage(artifact) {
     metric: subject.metadataLeakageSummary.metric,
     highestExposureMode: subject.metadataLeakageSummary.highestExposureMode,
     lowestExposureMode: subject.metadataLeakageSummary.lowestExposureMode,
+  };
+}
+
+function summarizeReconstructionRisk(artifact) {
+  const subject = artifact?.subject;
+  const summary = subject?.summary;
+  if (!artifact || !summary) {
+    return {
+      status: "missing",
+      reason: "Reconstruction-risk probe artifact is missing.",
+      artifactId: artifact?.artifactId ?? null,
+      privacyProofClaim: null,
+    };
+  }
+  const residualRisk =
+    summary.publicPositionLinkage?.status === "residual-risk" ||
+    summary.rawPayloadReplay?.status !== "blocked" ||
+    summary.activeValueRecovery?.status !== "blocked";
+  return {
+    status: residualRisk ? "caveated" : "pass",
+    reason: residualRisk
+      ? "Synthetic probes block raw payload replay and active-value recovery while preserving public-position residual risk."
+      : "Synthetic probes report no residual reconstruction-risk finding.",
+    artifactId: artifact.artifactId,
+    privacyProofClaim: subject.privacyProofClaim === true,
+    rawPayloadReplay: summary.rawPayloadReplay?.status ?? null,
+    activeValueRecovery: summary.activeValueRecovery?.status ?? null,
+    publicPositionLinkage: summary.publicPositionLinkage?.status ?? null,
   };
 }
 

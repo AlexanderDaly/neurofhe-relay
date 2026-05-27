@@ -37,6 +37,7 @@ npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-ba
 npm run benchmark:tfhe -- --run --artifact
 npm run native:doctor -- --artifact
 npm run scan:hygiene -- --artifact
+npm run reconstruction:risk -- --artifact
 npm run release:evidence -- --artifact
 ```
 
@@ -60,8 +61,11 @@ command, error, and smallest next step.
   coverage.
 - Confirm `benchmark-artifacts/release-evidence/latest.json` indexes the
   current CI blocker, repository hygiene result, native measurement coverage,
-  metadata-leakage caveat, and `productionClaim: false` status without marking
-  the release gate satisfied.
+  metadata-leakage caveat, reconstruction-risk probe caveat, and
+  `productionClaim: false` status without marking the release gate satisfied.
+- Confirm `benchmark-artifacts/reconstruction-risk/latest.json` keeps
+  `privacyProofClaim: false`, blocks raw payload replay and active-value
+  recovery in the synthetic probe, and records public-position residual risk.
 - Confirm `VALIDATION.md` includes the commands that produced committed
   artifacts.
 - Confirm every crypto lane keeps `productionClaim: false`.
@@ -88,6 +92,7 @@ Included evidence:
 - educational toy additive encrypted sparse scorer
 - real public UCI EEG Eye State plaintext baseline
 - metadata leakage versus padded-sparse overhead ablation
+- synthetic reconstruction-risk probe report
 - OpenFHE BFVrns native single-window real-data-derived input run
 - OpenFHE CKKS native single-window real-data-derived input run
 - TFHE-rs synthetic threshold comparison lane

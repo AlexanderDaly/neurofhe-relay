@@ -32,6 +32,10 @@ import {
   buildReleaseEvidenceIndex,
 } from "../lib/release-evidence.mjs";
 import {
+  buildReconstructionRiskArtifact,
+  evaluateRepresentationReconstructionRisk,
+} from "../lib/reconstruction-risk.mjs";
+import {
   runEncryptedLinearClassifier,
   runPlaintextLinearClassifier,
 } from "../lib/classifier.mjs";
@@ -392,6 +396,41 @@ test("spatial clustering outputs evaluate SNN and encrypted model readiness", ()
   assert.equal(evaluation.lightweightEncryptedNonlinearPath.status, "research-only");
   assert.ok(evaluation.caveats.includes("not a trained SNN"));
   assert.ok(evaluation.caveats.includes("not clinical or biological validation"));
+});
+
+test("reconstruction-risk probes keep residual leakage explicit without privacy proof claims", () => {
+  const report = evaluateRepresentationReconstructionRisk({
+    generatedAt: "2026-05-27T16:00:00.000Z",
+  });
+  const artifact = buildReconstructionRiskArtifact(report, {
+    generatedAt: "2026-05-27T16:00:00.000Z",
+    artifactId: "reconstruction-risk-probes-2026-05-27",
+  });
+
+  assert.equal(report.schema, "neurofhe.reconstructionRiskProbes.v1");
+  assert.equal(report.productionClaim, false);
+  assert.equal(report.privacyProofClaim, false);
+  assert.equal(report.attackProbes.length, 3);
+  assert.deepEqual(
+    report.attackProbes.map((probe) => probe.id),
+    [
+      "raw-payload-replay",
+      "active-value-recovery",
+      "public-position-linkage",
+    ],
+  );
+  assert.equal(report.summary.rawPayloadReplay.status, "blocked");
+  assert.equal(report.summary.activeValueRecovery.status, "blocked");
+  assert.equal(report.summary.publicPositionLinkage.status, "residual-risk");
+  assert.ok(
+    report.summary.publicPositionLinkage.leakageSignals.includes(
+      "public active neuron positions",
+    ),
+  );
+  assert.equal(artifact.schema, "neurofhe.reconstructionRiskArtifact.v1");
+  assert.equal(artifact.subjectSchema, report.schema);
+  assert.equal(artifact.productionClaim, false);
+  assert.equal(artifact.subject.privacyProofClaim, false);
 });
 
 test("gateway demo exports a minimal model event without raw signal leakage", () => {
@@ -955,6 +994,26 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
         },
       },
     ],
+    [
+      "benchmark-artifacts/reconstruction-risk/latest.json",
+      {
+        schema: "neurofhe.reconstructionRiskArtifact.v1",
+        artifactId: "reconstruction-risk-test",
+        subjectSchema: "neurofhe.reconstructionRiskProbes.v1",
+        productionClaim: false,
+        subject: {
+          privacyProofClaim: false,
+          summary: {
+            rawPayloadReplay: { status: "blocked" },
+            activeValueRecovery: { status: "blocked" },
+            publicPositionLinkage: {
+              status: "residual-risk",
+              leakageSignals: ["public active neuron positions"],
+            },
+          },
+        },
+      },
+    ],
   ]);
 
   const index = buildReleaseEvidenceIndex({
@@ -970,6 +1029,7 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
   assert.equal(index.gateChecks.repositoryHygiene.status, "pass");
   assert.equal(index.gateChecks.nativeMeasurementCoverage.status, "incomplete");
   assert.equal(index.gateChecks.metadataLeakage.status, "caveated");
+  assert.equal(index.gateChecks.reconstructionRisk.status, "caveated");
   assert.deepEqual(
     index.sourceArtifacts.map((artifact) => artifact.path),
     [
@@ -977,6 +1037,7 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
       "benchmark-artifacts/repo-hygiene/latest.json",
       "benchmark-artifacts/native-evidence/latest.json",
       "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+      "benchmark-artifacts/reconstruction-risk/latest.json",
     ],
   );
   assert.equal(index.sourceArtifacts.every((artifact) => artifact.productionClaim === false), true);

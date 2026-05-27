@@ -136,7 +136,7 @@ npm run scan:hygiene -- --artifact
 ```
 
 To build a compact release-evidence index from the current committed blocker,
-hygiene, native-evidence, and privacy-mode artifacts, run:
+hygiene, native-evidence, privacy-mode, and reconstruction-risk artifacts, run:
 
 ```sh
 npm run release:evidence -- --artifact
@@ -145,6 +145,17 @@ npm run release:evidence -- --artifact
 The release-evidence index is a dashboard artifact only. It does not satisfy the
 release gate or upgrade any caveated benchmark, privacy, native-library, or
 security claim.
+
+To run the synthetic gateway reconstruction-risk probes and publish the current
+caveated artifact, run:
+
+```sh
+npm run reconstruction:risk -- --artifact
+```
+
+The reconstruction-risk artifact checks that raw sentinel payloads and active
+values are withheld from model-facing fields while keeping public-position
+residual risk explicit. It is not a formal privacy proof or attack benchmark.
 
 ## Relay Gateway Pattern
 

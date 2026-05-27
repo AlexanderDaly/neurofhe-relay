@@ -141,8 +141,8 @@ peak-memory measurements before memory or stable performance claims are
 defensible.
 
 The release-evidence index now summarizes the current CI blocker, repository
-hygiene result, native measurement coverage, and metadata-leakage caveat in one
-dashboard artifact:
+hygiene result, native measurement coverage, metadata-leakage caveat, and
+synthetic reconstruction-risk probe caveat in one dashboard artifact:
 
 ```sh
 npm run release:evidence -- --artifact
@@ -157,9 +157,31 @@ Current committed evidence:
   CI.
 - native measurement coverage: incomplete.
 - metadata leakage: caveated taxonomy proxy only.
+- reconstruction risk: synthetic probe only; public-position linkage remains a
+  residual risk.
 
 This improves diligence navigation but is not new benchmark evidence, not a
 privacy proof, and not release approval.
+
+The repository also now publishes a synthetic reconstruction-risk probe artifact:
+
+```sh
+npm run reconstruction:risk -- --artifact
+```
+
+Current committed evidence:
+
+- `benchmark-artifacts/reconstruction-risk/latest.json`
+- schema: `neurofhe.reconstructionRiskProbes.v1`
+- raw-payload replay: blocked in the synthetic gateway sentinel probe.
+- active-value recovery: blocked from plaintext model-facing active positions.
+- public-position linkage: residual risk remains visible.
+- `privacyProofClaim: false`.
+
+This narrows a documentation and diligence gap by making the raw-withholding
+probe reproducible. It does not prove reconstruction resistance, identity
+obfuscation, mutual-information bounds, side-channel resistance, or
+membership/linkage safety.
 
 ## Examiner-Risk Notes Added May 21, 2026
 

@@ -403,14 +403,14 @@ Dataset provenance for the intended real-data lane:
 Command:
 
 ```sh
-npm run release:evidence -- --artifact --artifact-id release-evidence-index-2026-05-27 --generated-at 2026-05-27T05:00:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-reconstruction-risk-2026-05-27 --generated-at 2026-05-27T16:05:00.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
-benchmark-artifacts/release-evidence/runs/release-evidence-index-2026-05-27.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-reconstruction-risk-2026-05-27.json
 ```
 
 Result summary:
@@ -425,6 +425,7 @@ Result summary:
     "repositoryHygiene": {"status": "pass"},
     "nativeMeasurementCoverage": {"status": "incomplete"},
     "metadataLeakage": {"status": "caveated"},
+    "reconstructionRisk": {"status": "caveated"},
     "productionClaim": {"status": "pass"}
   },
   "productionClaim": false
@@ -432,9 +433,47 @@ Result summary:
 ```
 
 The index is a dashboard artifact over already committed blocker, hygiene,
-native-evidence, and privacy-mode artifacts. It does not create new benchmark
-measurements, cryptographic/privacy proof, clinical evidence, or release
-approval.
+native-evidence, privacy-mode, and reconstruction-risk artifacts. It does not
+create new benchmark measurements, cryptographic/privacy proof, clinical
+evidence, or release approval.
+
+### Reconstruction-Risk Probe Artifact
+
+Command:
+
+```sh
+npm run reconstruction:risk -- --artifact --artifact-id reconstruction-risk-probes-2026-05-27 --generated-at 2026-05-27T16:00:00.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/reconstruction-risk/latest.json
+benchmark-artifacts/reconstruction-risk/runs/reconstruction-risk-probes-2026-05-27.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.reconstructionRiskProbes.v1",
+  "measurementBasis": "deterministic gateway policy probes over synthetic sorted-event input with raw sentinel payloads",
+  "summary": {
+    "rawPayloadReplay": {"status": "blocked"},
+    "activeValueRecovery": {"status": "blocked", "plaintextValueCount": 0},
+    "publicPositionLinkage": {"status": "residual-risk"}
+  },
+  "privacyProofClaim": false,
+  "productionClaim": false
+}
+```
+
+The probe verifies that raw sentinel payloads and active values do not appear in
+the synthetic model-facing event. It deliberately leaves public active neuron
+positions, coarse timestep buckets, active event count, density bucket, and
+encoder summary as residual metadata risk. It is not a formal reconstruction
+attack, identity-linkage test, mutual-information estimate, side-channel test,
+or privacy proof.
 
 ### Privacy-Mode Padding Ablation Artifact
 

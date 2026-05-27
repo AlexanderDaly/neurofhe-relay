@@ -28,7 +28,7 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `patent/` - ENER provisional drafting package, revised claim seeds, drawings, prior-art search plan, submission checklist, and policy/commercial briefing materials.
 - `project-brief.json` - agent-readable structured project summary.
 - `index.html` - self-contained browser briefing deck.
-- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, spatial spike sorter, local relay gateway scaffold, benchmark runner, plaintext baseline, OpenFHE BFVrns lane, OpenFHE CKKS approximate-real lane, TFHE-rs integer/Boolean lane, tests, handoffs, and research assumptions.
+- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, spatial spike sorter, local relay gateway scaffold, benchmark runner, plaintext baseline, synthetic reconstruction-risk probes, OpenFHE BFVrns lane, OpenFHE CKKS approximate-real lane, TFHE-rs integer/Boolean lane, tests, handoffs, and research assumptions.
 - `package.json` - local demo, benchmark, test, and validation commands. `private: true` prevents accidental npm publication; it is not a proprietary-license declaration.
 - `VALIDATION.md` - local validation commands and results.
 - `.github/workflows/ci.yml` - portable CI for tests, metadata parsing, placeholder scanning, and smoke artifact generation/upload.
@@ -58,6 +58,16 @@ npm run gateway:demo
 ```
 
 Expected result: JSON output with schema `neurofhe.gateway.demo.v1`, a simulated raw-intake summary, canonical spatial spike-sorter metadata, approved reconstruction-resistant model-facing event, accepted safe local recommendation, rejected unsafe command recommendation, audit log, and sanitized replay stream.
+
+Run the synthetic reconstruction-risk probes:
+
+```sh
+npm run reconstruction:risk
+```
+
+Expected result: JSON output with schema `neurofhe.reconstructionRiskProbes.v1`
+showing raw-payload replay and active-value recovery blocked in the synthetic
+gateway probe while public-position linkage remains a residual risk.
 
 Run tests:
 
