@@ -29,6 +29,9 @@ import {
   scanRepositoryHygiene,
 } from "../lib/repo-hygiene.mjs";
 import {
+  buildReleaseEvidenceIndex,
+} from "../lib/release-evidence.mjs";
+import {
   runEncryptedLinearClassifier,
   runPlaintextLinearClassifier,
 } from "../lib/classifier.mjs";
@@ -881,6 +884,103 @@ test("repository hygiene artifact CLI honors deterministic artifact options", as
   assert.equal(artifact.result, "pass");
   assert.equal(artifact.findingsCount, 0);
   assert.equal(artifact.privacyBoundary.secrets, "redacted from artifacts");
+});
+
+test("release evidence index summarizes blocker, hygiene, native, and privacy evidence without satisfying the gate", () => {
+  const artifacts = new Map([
+    [
+      "benchmark-artifacts/ci-blockers/latest.json",
+      {
+        schema: "neurofhe.ciBlocker.v1",
+        artifactId: "ci-blocker-test",
+        reason: "workflow remains manual-only",
+        releaseGateSatisfied: false,
+        smallestNextStep: "Open a release-validation PR and obtain green hosted CI.",
+        productionClaim: false,
+      },
+    ],
+    [
+      "benchmark-artifacts/repo-hygiene/latest.json",
+      {
+        schema: "neurofhe.repositoryHygieneScan.v1",
+        artifactId: "repo-hygiene-test",
+        result: "pass",
+        findingsCount: 0,
+        productionClaim: false,
+      },
+    ],
+    [
+      "benchmark-artifacts/native-evidence/latest.json",
+      {
+        schema: "neurofhe.nativeEvidenceArtifact.v1",
+        artifactId: "native-evidence-test",
+        subjectSchema: "neurofhe.nativeEvidence.manifest.v1",
+        productionClaim: false,
+        subject: {
+          summary: {
+            laneCount: 3,
+            realNativeRunCount: 3,
+            measurementCoverage: {
+              ciphertextBytesReportedCount: 1,
+              ciphertextBytesPartialCount: 1,
+              ciphertextBytesMissingCount: 1,
+              rssOrPeakMemoryReportedCount: 0,
+              rssOrPeakMemoryPartialCount: 1,
+              rssOrPeakMemoryMissingCount: 2,
+            },
+          },
+          releaseUse: {
+            releaseGateSatisfied: false,
+            reason: "Native evidence is indexed but not sufficient by itself.",
+          },
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+      {
+        schema: "neurofhe.privacyModeAblationArtifact.v1",
+        artifactId: "privacy-test",
+        subjectSchema: "neurofhe.metadataPaddingAblation.v1",
+        productionClaim: false,
+        subject: {
+          metadataLeakageSummary: {
+            metric: "documented-observable-category-count",
+            highestExposureMode: "public-active-neuron-positions-encrypted-features",
+            lowestExposureMode: "dense-encrypted-windows",
+          },
+          caveats: [
+            "Taxonomy count only; not mutual information, anonymity, side-channel, or reconstruction-resistance proof.",
+          ],
+        },
+      },
+    ],
+  ]);
+
+  const index = buildReleaseEvidenceIndex({
+    generatedAt: "2026-05-26T21:00:00.000Z",
+    artifactReader: (path) => artifacts.get(path),
+  });
+
+  assert.equal(index.schema, "neurofhe.releaseEvidenceIndex.v1");
+  assert.equal(index.releaseTarget, "v0.1.0-research-alpha");
+  assert.equal(index.releaseGateSatisfied, false);
+  assert.equal(index.productionClaim, false);
+  assert.equal(index.gateChecks.hostedPortableCi.status, "blocked");
+  assert.equal(index.gateChecks.repositoryHygiene.status, "pass");
+  assert.equal(index.gateChecks.nativeMeasurementCoverage.status, "incomplete");
+  assert.equal(index.gateChecks.metadataLeakage.status, "caveated");
+  assert.deepEqual(
+    index.sourceArtifacts.map((artifact) => artifact.path),
+    [
+      "benchmark-artifacts/ci-blockers/latest.json",
+      "benchmark-artifacts/repo-hygiene/latest.json",
+      "benchmark-artifacts/native-evidence/latest.json",
+      "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+    ],
+  );
+  assert.equal(index.sourceArtifacts.every((artifact) => artifact.productionClaim === false), true);
+  assert.match(index.nextReleaseStep, /release-validation PR/i);
 });
 
 test("privacy mode benchmark compares speed against sparsity metadata protection", () => {

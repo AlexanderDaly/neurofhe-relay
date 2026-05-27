@@ -133,6 +133,17 @@ datasets into git, run:
 npm run scan:hygiene -- --artifact
 ```
 
+To build a compact release-evidence index from the current committed blocker,
+hygiene, native-evidence, and privacy-mode artifacts, run:
+
+```sh
+npm run release:evidence -- --artifact
+```
+
+The release-evidence index is a dashboard artifact only. It does not satisfy the
+release gate or upgrade any caveated benchmark, privacy, native-library, or
+security claim.
+
 ## Relay Gateway Pattern
 
 The relay gateway is the local trust boundary for the project. It accepts raw or semi-structured local signals, routes raw neural-like intake through a spatial-aware spike sorter, normalizes the sorter output into structured events, applies privacy and safety policy, and exports only approved minimal event representations to downstream encrypted compute, model services, or agents.

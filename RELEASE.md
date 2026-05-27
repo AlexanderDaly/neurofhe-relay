@@ -37,6 +37,7 @@ npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-ba
 npm run benchmark:tfhe -- --run --artifact
 npm run native:doctor -- --artifact
 npm run scan:hygiene -- --artifact
+npm run release:evidence -- --artifact
 ```
 
 If OpenFHE or TFHE-rs cannot run on the release machine, publish the generated
@@ -57,6 +58,10 @@ command, error, and smallest next step.
   host/toolchain, latest native lane artifacts, exact rerun commands, and
   remaining gaps, including ciphertext-byte and RSS/peak-memory measurement
   coverage.
+- Confirm `benchmark-artifacts/release-evidence/latest.json` indexes the
+  current CI blocker, repository hygiene result, native measurement coverage,
+  metadata-leakage caveat, and `productionClaim: false` status without marking
+  the release gate satisfied.
 - Confirm `VALIDATION.md` includes the commands that produced committed
   artifacts.
 - Confirm every crypto lane keeps `productionClaim: false`.

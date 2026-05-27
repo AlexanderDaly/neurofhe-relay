@@ -398,6 +398,44 @@ Dataset provenance for the intended real-data lane:
 - N-MNIST dataset page: https://www.garrickorchard.com/datasets/n-mnist
 - Mendeley Data DOI: 10.17632/468j46mzdv.1
 
+### Release Evidence Index Artifact
+
+Command:
+
+```sh
+npm run release:evidence -- --artifact --artifact-id release-evidence-index-2026-05-27 --generated-at 2026-05-27T05:00:00.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-index-2026-05-27.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.releaseEvidenceIndex.v1",
+  "releaseTarget": "v0.1.0-research-alpha",
+  "releaseGateSatisfied": false,
+  "gateChecks": {
+    "hostedPortableCi": {"status": "blocked"},
+    "repositoryHygiene": {"status": "pass"},
+    "nativeMeasurementCoverage": {"status": "incomplete"},
+    "metadataLeakage": {"status": "caveated"},
+    "productionClaim": {"status": "pass"}
+  },
+  "productionClaim": false
+}
+```
+
+The index is a dashboard artifact over already committed blocker, hygiene,
+native-evidence, and privacy-mode artifacts. It does not create new benchmark
+measurements, cryptographic/privacy proof, clinical evidence, or release
+approval.
+
 ### Privacy-Mode Padding Ablation Artifact
 
 Command:
