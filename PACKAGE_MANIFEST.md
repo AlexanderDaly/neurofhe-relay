@@ -19,6 +19,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `08-encrypted-thoughts-whitepaper.md` - whitepaper arguing for encrypted-thoughts architecture in BCI and neural-data systems.
 - `09-relay-gateway-pattern.md` - local-first relay gateway pattern covering raw-signal intake, trust boundary, normalization, privacy/safety filtering, model-facing event schemas, command recommendations, audit/replay, and failure handling.
 - `10-native-performance-track.md` - native-first boundary for low-level performance, energy measurement, and hot-path implementation choices.
+- `11-architecture-visuals.md` - Mermaid architecture diagrams for pipeline, encrypted relay flow, latent embedding, and trust-boundary views.
+- `12-discreet-spike-sorting-proof.md` - proof gate for real-data-derived event sorting, raw-boundary evidence, leakage probes, encrypted handoff, and the Quiet Allocations shelf rule.
 - `CONTRIBUTING.md` - evidence-first contribution expectations and validation commands.
 - `DEVELOPMENT.md` - setup notes, CI parity checks, native FHE commands, and artifact policy.
 - `RELEASE.md` - research-alpha release checklist and evidence gates.

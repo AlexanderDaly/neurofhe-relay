@@ -72,6 +72,8 @@ The cryptographic design target is:
 - `08-encrypted-thoughts-whitepaper.md` - whitepaper on encrypted-thoughts architecture for BCI and neural-data privacy.
 - `09-relay-gateway-pattern.md` - local-first gateway pattern for raw-signal intake, privacy filtering, model-facing events, recommendations, audit, replay, and failure handling.
 - `10-native-performance-track.md` - native-first implementation boundary for low-latency and energy-aware execution.
+- `11-architecture-visuals.md` - Mermaid architecture diagrams for pipeline, encrypted relay flow, latent embedding, and trust-boundary views.
+- `12-discreet-spike-sorting-proof.md` - proof gate for real-data-derived event sorting, raw-boundary evidence, leakage probes, and the Quiet Allocations shelf rule.
 - `CONTRIBUTING.md` - evidence-first contribution rules and local validation expectations.
 - `DEVELOPMENT.md` - local setup, portable checks, native OpenFHE/TFHE-rs commands, and artifact policy.
 - `RELEASE.md` - research-alpha release checklist and evidence gates.
