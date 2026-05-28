@@ -1027,6 +1027,30 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
       },
     ],
     [
+      "benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json",
+      {
+        schema: "neurofhe.plaintextBaselineArtifact.v1",
+        artifactId: "nmnist-local-blocker-test",
+        subjectSchema: "neurofhe.plaintextBaseline.unavailable.v1",
+        evidenceClass: "real-public-dataset-blocker-report",
+        productionClaim: false,
+        subject: {
+          schema: "neurofhe.plaintextBaseline.unavailable.v1",
+          datasetKind: "public-nmnist-local-copy",
+          isRealDataset: true,
+          blocker: {
+            reason: "N-MNIST Train directory is missing.",
+            datasetRoot: "/tmp/N-MNIST",
+          },
+          attemptedCommand:
+            "npm run baseline:plaintext -- --dataset /tmp/N-MNIST --limit-per-class 10 --grid-size 8 --time-bins 4 --window-us 105000",
+          smallestNextStep:
+            "Download and extract the public N-MNIST Train and Test directories outside git, then rerun the attempted command with --artifact.",
+          productionClaim: false,
+        },
+      },
+    ],
+    [
       "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
       {
         schema: "neurofhe.comparisonArtifact.v1",
@@ -1066,6 +1090,9 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
   assert.equal(index.gateChecks.nativeMeasurementCoverage.measurementGapCount, 5);
   assert.equal(index.gateChecks.metadataLeakage.status, "caveated");
   assert.equal(index.gateChecks.reconstructionRisk.status, "caveated");
+  assert.equal(index.gateChecks.realNmnistBaseline.status, "blocked");
+  assert.equal(index.gateChecks.realNmnistBaseline.artifactId, "nmnist-local-blocker-test");
+  assert.match(index.gateChecks.realNmnistBaseline.smallestNextStep, /Download and extract/);
   assert.equal(index.gateChecks.tfheRealDataPath.status, "blocked");
   assert.equal(index.gateChecks.tfheRealDataPath.artifactId, "tfhe-realdata-blocker-test");
   assert.deepEqual(
@@ -1076,11 +1103,164 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
       "benchmark-artifacts/native-evidence/latest.json",
       "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
       "benchmark-artifacts/reconstruction-risk/latest.json",
+      "benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json",
       "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
     ],
   );
   assert.equal(index.sourceArtifacts.every((artifact) => artifact.productionClaim === false), true);
   assert.match(index.nextReleaseStep, /release-validation PR/i);
+});
+
+test("release evidence index prefers real N-MNIST baseline over stale blocker", () => {
+  const artifacts = new Map([
+    [
+      "benchmark-artifacts/ci-blockers/latest.json",
+      {
+        schema: "neurofhe.ciBlocker.v1",
+        artifactId: "ci-blocker-test",
+        reason: "workflow remains manual-only",
+        releaseGateSatisfied: false,
+        smallestNextStep: "Open a release-validation PR and obtain green hosted CI.",
+        productionClaim: false,
+      },
+    ],
+    [
+      "benchmark-artifacts/repo-hygiene/latest.json",
+      {
+        schema: "neurofhe.repositoryHygieneScan.v1",
+        artifactId: "repo-hygiene-test",
+        result: "pass",
+        findingsCount: 0,
+        productionClaim: false,
+      },
+    ],
+    [
+      "benchmark-artifacts/native-evidence/latest.json",
+      {
+        schema: "neurofhe.nativeEvidenceArtifact.v1",
+        artifactId: "native-evidence-test",
+        subjectSchema: "neurofhe.nativeEvidence.manifest.v1",
+        productionClaim: false,
+        subject: {
+          summary: {
+            laneCount: 3,
+            realNativeRunCount: 3,
+            measurementCoverage: {
+              ciphertextBytesReportedCount: 1,
+              ciphertextBytesPartialCount: 1,
+              ciphertextBytesMissingCount: 1,
+              rssOrPeakMemoryReportedCount: 1,
+              rssOrPeakMemoryPartialCount: 1,
+              rssOrPeakMemoryMissingCount: 1,
+            },
+          },
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+      {
+        schema: "neurofhe.privacyModeAblationArtifact.v1",
+        artifactId: "privacy-test",
+        subjectSchema: "neurofhe.metadataPaddingAblation.v1",
+        productionClaim: false,
+        subject: {
+          metadataLeakageSummary: {
+            metric: "documented-observable-category-count",
+            highestExposureMode: "public-active-neuron-positions-encrypted-features",
+            lowestExposureMode: "dense-encrypted-windows",
+          },
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/reconstruction-risk/latest.json",
+      {
+        schema: "neurofhe.reconstructionRiskArtifact.v1",
+        artifactId: "reconstruction-risk-test",
+        subjectSchema: "neurofhe.reconstructionRiskProbes.v1",
+        productionClaim: false,
+        subject: {
+          privacyProofClaim: false,
+          summary: {
+            rawPayloadReplay: { status: "blocked" },
+            activeValueRecovery: { status: "blocked" },
+            publicPositionLinkage: { status: "residual-risk" },
+          },
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+      {
+        schema: "neurofhe.plaintextBaselineArtifact.v1",
+        artifactId: "nmnist-real-test",
+        subjectSchema: "neurofhe.plaintextBaseline.v1",
+        evidenceClass: "real-public-dataset-plaintext-baseline",
+        productionClaim: false,
+        subject: {
+          schema: "neurofhe.plaintextBaseline.v1",
+          metrics: {
+            accuracy: 0.66,
+            total: 100,
+          },
+          source: {
+            datasetKind: "public-nmnist-local-copy",
+            isRealDataset: true,
+            limitPerClass: 10,
+          },
+          productionClaim: false,
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json",
+      {
+        schema: "neurofhe.plaintextBaselineArtifact.v1",
+        artifactId: "nmnist-local-blocker-test",
+        subjectSchema: "neurofhe.plaintextBaseline.unavailable.v1",
+        productionClaim: false,
+        subject: {
+          schema: "neurofhe.plaintextBaseline.unavailable.v1",
+          datasetKind: "public-nmnist-local-copy",
+          blocker: { reason: "stale blocker" },
+          productionClaim: false,
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+      {
+        schema: "neurofhe.comparisonArtifact.v1",
+        artifactId: "tfhe-realdata-blocker-test",
+        subjectSchema: "neurofhe.tfheRs.realDataUnavailable.v1",
+        productionClaim: false,
+        subject: {
+          schema: "neurofhe.tfheRs.realDataUnavailable.v1",
+          blocker: { reason: "TFHE-rs real-data adapter is not implemented." },
+          productionClaim: false,
+        },
+      },
+    ],
+  ]);
+
+  const index = buildReleaseEvidenceIndex({
+    generatedAt: "2026-05-28T18:20:00.000Z",
+    artifactReader: (path) => artifacts.get(path),
+  });
+
+  assert.equal(index.gateChecks.realNmnistBaseline.status, "pass");
+  assert.equal(index.gateChecks.realNmnistBaseline.artifactId, "nmnist-real-test");
+  assert.equal(index.gateChecks.realNmnistBaseline.accuracy, 0.66);
+  assert.equal(index.gateChecks.realNmnistBaseline.sampleCount, 100);
+  assert.equal(
+    index.sourceArtifacts.some(
+      (artifact) =>
+        artifact.path ===
+        "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    ),
+    true,
+  );
 });
 
 test("privacy mode benchmark compares speed against sparsity metadata protection", () => {

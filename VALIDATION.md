@@ -406,12 +406,16 @@ Command:
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-native-gap-index-2026-05-27 --generated-at 2026-05-27T20:26:00.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-tfhe-realdata-blocker-2026-05-28 --generated-at 2026-05-28T08:28:49.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-nmnist-blocker-2026-05-28 --generated-at 2026-05-28T16:36:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-real-nmnist-2026-05-28 --generated-at 2026-05-28T18:20:00.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-real-nmnist-2026-05-28.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-nmnist-blocker-2026-05-28.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-tfhe-realdata-blocker-2026-05-28.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-tfhe-rss-2026-05-28.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-native-gap-index-2026-05-27.json
@@ -433,6 +437,11 @@ Result summary:
     },
     "metadataLeakage": {"status": "caveated"},
     "reconstructionRisk": {"status": "caveated"},
+    "realNmnistBaseline": {
+      "status": "pass",
+      "accuracy": 0.66,
+      "sampleCount": 100
+    },
     "tfheRealDataPath": {"status": "blocked"},
     "productionClaim": {"status": "pass"}
   },
@@ -441,9 +450,52 @@ Result summary:
 ```
 
 The index is a dashboard artifact over already committed blocker, hygiene,
-native-evidence, privacy-mode, reconstruction-risk, and TFHE real-data blocker
-artifacts. It does not create new benchmark measurements, cryptographic/privacy
-proof, clinical evidence, or release approval.
+native-evidence, privacy-mode, reconstruction-risk, real N-MNIST baseline, and
+TFHE real-data blocker artifacts. It does not create encrypted benchmark
+measurements, cryptographic/privacy proof, clinical evidence, or release
+approval.
+
+### Public N-MNIST Real-Data Plaintext Baseline
+
+Command:
+
+```sh
+npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --artifact --artifact-id nmnist-local-real-2026-05-28 --generated-at 2026-05-28T18:15:00.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json
+benchmark-artifacts/plaintext-baselines/nmnist-local/runs/nmnist-local-real-2026-05-28.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.plaintextBaseline.v1",
+  "evidenceClass": "real-public-dataset-plaintext-baseline",
+  "source": {
+    "datasetKind": "public-nmnist-local-copy",
+    "isRealDataset": true,
+    "limitPerClass": 10
+  },
+  "metrics": {
+    "accuracy": 0.66,
+    "correct": 66,
+    "total": 100,
+    "averageActiveEvents": 1420.68,
+    "averageNonZeroFeatures": 137.86
+  }
+}
+```
+
+The raw public N-MNIST archives and extracted `Train/` and `Test/` directories
+remain outside git under `/Users/alexanderdaly/Downloads/N-MNIST`. This
+artifact is plaintext preprocessing/model evidence with a sampled nearest-
+centroid baseline and compression curve. It is not encrypted-compute,
+production, medical, or deployment evidence.
 
 ### Reconstruction-Risk Probe Artifact
 

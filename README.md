@@ -136,15 +136,16 @@ npm run scan:hygiene -- --artifact
 ```
 
 To build a compact release-evidence index from the current committed blocker,
-hygiene, native-evidence, privacy-mode, and reconstruction-risk artifacts, run:
+hygiene, native-evidence, privacy-mode, reconstruction-risk, real N-MNIST
+plaintext baseline, and TFHE-rs real-data blocker artifacts, run:
 
 ```sh
 npm run release:evidence -- --artifact
 ```
 
 The release-evidence index is a dashboard artifact only. It does not satisfy the
-release gate or upgrade any caveated benchmark, privacy, native-library, or
-security claim.
+release gate or upgrade any caveated benchmark, privacy, native-library,
+real-data baseline, or security claim.
 
 To run the synthetic gateway reconstruction-risk probes and publish the current
 caveated artifact, run:
@@ -316,6 +317,14 @@ native TFHE-rs target does not yet accept the EEG-derived OpenFHE input
 contract. It preserves the exact attempted command and smallest next step while
 leaving `benchmark-artifacts/comparisons/tfhe-rs/latest.json` as the latest
 runnable synthetic TFHE-rs evidence.
+
+The real N-MNIST plaintext baseline under
+`benchmark-artifacts/plaintext-baselines/nmnist-local/` uses the extracted
+public N-MNIST `Train/` and `Test/` directories outside git. The current
+sampled artifact evaluates 10 examples per class from each split and reports
+100 test examples, accuracy `0.66`, a compression curve, and
+`productionClaim: false`; it is plaintext preprocessing/model evidence, not
+encrypted-compute or deployment evidence.
 
 Run the deterministic N-MNIST-format smoke fixture and publish a compression
 curve artifact:

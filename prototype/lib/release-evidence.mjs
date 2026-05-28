@@ -12,16 +12,41 @@ const SOURCE_ARTIFACT_PATHS = [
   "benchmark-artifacts/reconstruction-risk/latest.json",
   "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
 ];
+const REAL_NMNIST_ARTIFACT_PATH =
+  "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json";
+const NMNIST_BLOCKER_ARTIFACT_PATH =
+  "benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json";
 
 export function buildReleaseEvidenceIndex(options = {}) {
   const generatedAt = options.generatedAt ?? new Date().toISOString();
   const artifactReader = options.artifactReader ?? readJsonIfExists;
-  const artifacts = SOURCE_ARTIFACT_PATHS.map((path) => ({
+  const requiredArtifacts = SOURCE_ARTIFACT_PATHS.map((path) => ({
     path,
     artifact: artifactReader(path),
   }));
+  const realNmnistArtifact = artifactReader(REAL_NMNIST_ARTIFACT_PATH);
+  const nmnistBlockerArtifact = artifactReader(NMNIST_BLOCKER_ARTIFACT_PATH);
+  const nmnistArtifact =
+    realNmnistArtifact?.subject?.schema === "neurofhe.plaintextBaseline.v1"
+      ? {
+          path: REAL_NMNIST_ARTIFACT_PATH,
+          artifact: realNmnistArtifact,
+        }
+      : {
+          path: NMNIST_BLOCKER_ARTIFACT_PATH,
+          artifact: nmnistBlockerArtifact,
+        };
+  const artifacts = [
+    ...requiredArtifacts.slice(0, 5),
+    nmnistArtifact,
+    ...requiredArtifacts.slice(5),
+  ];
   const sourceArtifacts = artifacts.map(({ path, artifact }) => summarizeSourceArtifact(path, artifact));
-  const byPath = Object.fromEntries(artifacts.map(({ path, artifact }) => [path, artifact]));
+  const byPath = {
+    ...Object.fromEntries(artifacts.map(({ path, artifact }) => [path, artifact])),
+    [REAL_NMNIST_ARTIFACT_PATH]: realNmnistArtifact,
+    [NMNIST_BLOCKER_ARTIFACT_PATH]: nmnistBlockerArtifact,
+  };
   const hostedPortableCi = summarizeHostedPortableCi(
     byPath["benchmark-artifacts/ci-blockers/latest.json"],
   );
@@ -36,6 +61,9 @@ export function buildReleaseEvidenceIndex(options = {}) {
   );
   const reconstructionRisk = summarizeReconstructionRisk(
     byPath["benchmark-artifacts/reconstruction-risk/latest.json"],
+  );
+  const realNmnistBaseline = summarizeRealNmnistBaseline(
+    byPath[REAL_NMNIST_ARTIFACT_PATH] ?? byPath[NMNIST_BLOCKER_ARTIFACT_PATH],
   );
   const tfheRealDataPath = summarizeTfheRealDataPath(
     byPath["benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json"],
@@ -57,6 +85,7 @@ export function buildReleaseEvidenceIndex(options = {}) {
       nativeMeasurementCoverage,
       metadataLeakage,
       reconstructionRisk,
+      realNmnistBaseline,
       tfheRealDataPath,
       productionClaim: {
         status: productionClaim ? "pass" : "blocked",
@@ -256,6 +285,55 @@ function summarizeReconstructionRisk(artifact) {
     rawPayloadReplay: summary.rawPayloadReplay?.status ?? null,
     activeValueRecovery: summary.activeValueRecovery?.status ?? null,
     publicPositionLinkage: summary.publicPositionLinkage?.status ?? null,
+  };
+}
+
+function summarizeRealNmnistBaseline(artifact) {
+  const subject = artifact?.subject;
+  if (!artifact || !subject) {
+    return {
+      status: "missing",
+      reason: "Real public N-MNIST baseline artifact or blocker is missing.",
+      artifactId: artifact?.artifactId ?? null,
+      datasetKind: null,
+      attemptedCommand: null,
+      smallestNextStep:
+        "Publish a real N-MNIST baseline artifact or refresh the local dataset blocker.",
+    };
+  }
+  if (subject.schema === "neurofhe.plaintextBaseline.unavailable.v1") {
+    return {
+      status: "blocked",
+      reason:
+        subject.blocker?.reason ??
+        "Real public N-MNIST baseline is blocked by unavailable local dataset files.",
+      artifactId: artifact.artifactId,
+      datasetKind: subject.datasetKind ?? null,
+      datasetRoot: subject.blocker?.datasetRoot ?? null,
+      attemptedCommand: subject.attemptedCommand ?? null,
+      smallestNextStep: subject.smallestNextStep ?? null,
+    };
+  }
+  if (subject.source?.datasetKind === "public-nmnist-local-copy") {
+    return {
+      status: "pass",
+      reason: "Real public N-MNIST plaintext baseline artifact is present.",
+      artifactId: artifact.artifactId,
+      datasetKind: subject.source.datasetKind,
+      accuracy: subject.metrics?.accuracy ?? subject.accuracy ?? null,
+      sampleCount:
+        subject.metrics?.total ?? subject.evaluation?.sampleCount ?? null,
+      smallestNextStep:
+        "Review the N-MNIST baseline caveats before using it in release evidence.",
+    };
+  }
+  return {
+    status: "caveated",
+    reason: "N-MNIST artifact is present but not recognized as real public baseline evidence.",
+    artifactId: artifact.artifactId,
+    datasetKind: subject.datasetKind ?? subject.source?.datasetKind ?? null,
+    attemptedCommand: subject.attemptedCommand ?? null,
+    smallestNextStep: "Review the N-MNIST artifact before using it in release evidence.",
   };
 }
 

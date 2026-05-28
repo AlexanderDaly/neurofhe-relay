@@ -63,14 +63,19 @@ command, error, and smallest next step.
 - Confirm `benchmark-artifacts/release-evidence/latest.json` indexes the
   current CI blocker, repository hygiene result, native measurement coverage,
   metadata-leakage caveat, reconstruction-risk probe caveat, and
-  TFHE-rs real-data input blocker, plus `productionClaim: false` status without
-  marking the release gate satisfied.
+  real N-MNIST plaintext baseline plus the TFHE-rs real-data input blocker,
+  with `productionClaim: false` status without marking the release gate
+  satisfied.
 - Confirm `benchmark-artifacts/reconstruction-risk/latest.json` keeps
   `privacyProofClaim: false`, blocks raw payload replay and active-value
   recovery in the synthetic probe, and records public-position residual risk.
 - Confirm `benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`
   records the exact unsupported EEG-derived input command and smallest next
   step until a real-data TFHE-rs adapter exists.
+- Confirm `benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json`
+  records the real public N-MNIST sampled plaintext baseline, including
+  provenance, compression curve, and caveat that it is not encrypted-compute or
+  deployment evidence.
 - Confirm `VALIDATION.md` includes the commands that produced committed
   artifacts.
 - Confirm every crypto lane keeps `productionClaim: false`.

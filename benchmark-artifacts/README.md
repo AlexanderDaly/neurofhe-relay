@@ -64,10 +64,11 @@ dataset-scale, side-channel, or stable performance evidence.
 Plaintext baseline artifacts are written under
 `benchmark-artifacts/plaintext-baselines/<dataset-id>/`. The committed
 `nmnist-smoke` artifact is a deterministic format fixture, not real N-MNIST
-accuracy. The committed `nmnist-local-blocker` artifact records the missing
-local public dataset directory and the exact command to rerun after extracting
-N-MNIST outside git. The committed `eeg-eye-state` artifact is a real public
-UCI EEG Eye State plaintext baseline; it stores only derived metrics and
+accuracy. The committed `nmnist-local` artifact is a sampled real public
+N-MNIST plaintext baseline from local `Train/` and `Test/` directories kept
+outside git; it stores derived metrics, provenance, and compression curves, not
+raw event files. The committed `eeg-eye-state` artifact is a real public UCI
+EEG Eye State plaintext baseline; it stores only derived metrics and
 provenance, not raw EEG rows.
 
 The EEG OpenFHE input-contract publisher writes derived single-window sparse
@@ -112,9 +113,10 @@ identity-leakage, mutual-information, side-channel, or privacy-proof evidence.
 Release-evidence index artifacts are written under
 `benchmark-artifacts/release-evidence/`. They summarize the current committed CI
 blocker, repository hygiene, native evidence, metadata-leakage, and
-reconstruction-risk artifacts, plus the TFHE-rs real-data input blocker, so the
-release gate can be reviewed from one JSON surface. They are dashboard artifacts
-only and do not constitute new benchmark evidence or release approval.
+reconstruction-risk artifacts, plus the real N-MNIST dataset blocker and
+TFHE-rs real-data input blocker, so the release gate can be reviewed from one
+JSON surface. They are dashboard artifacts only and do not constitute new
+benchmark evidence or release approval.
 
 Every `neurofhe.benchmarkArtifact.v1` file must include:
 
@@ -142,6 +144,8 @@ Current artifacts also include:
   lanes
 - TFHE-rs native current-RSS evidence for the synthetic sparse contract, with a
   caveat that it is not peak-memory or dataset-scale memory evidence
+- real N-MNIST local plaintext baseline evidence with derived sampled accuracy
+  and compression-curve metrics, not raw event files
 - TFHE-rs real-data input blocker artifacts that keep the unsupported
   EEG-derived input path explicit without replacing synthetic native evidence
 - CI/account blocker artifacts that separate GitHub Actions availability from
@@ -151,8 +155,8 @@ Current artifacts also include:
 - reconstruction-risk probe artifacts that keep raw-payload and active-value
   withholding separate from formal privacy-proof claims
 - release-evidence index artifacts that keep blocker, hygiene, native, privacy,
-  TFHE real-data blocker, and `productionClaim: false` status visible in one
-  caveated dashboard
+  real N-MNIST baseline, TFHE real-data blocker, and `productionClaim: false`
+  status visible in one caveated dashboard
 
 The current top-level benchmark accuracy field is synthetic contract agreement
 against the plaintext classifier, not real dataset accuracy. Use the

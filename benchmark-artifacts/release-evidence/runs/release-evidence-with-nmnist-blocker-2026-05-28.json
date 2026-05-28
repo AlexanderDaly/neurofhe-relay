@@ -1,11 +1,11 @@
 {
   "schema": "neurofhe.releaseEvidenceArtifact.v1",
-  "artifactId": "release-evidence-with-real-nmnist-2026-05-28",
-  "generatedAt": "2026-05-28T18:20:00.000Z",
+  "artifactId": "release-evidence-with-nmnist-blocker-2026-05-28",
+  "generatedAt": "2026-05-28T16:36:00.000Z",
   "subjectSchema": "neurofhe.releaseEvidenceIndex.v1",
   "subject": {
     "schema": "neurofhe.releaseEvidenceIndex.v1",
-    "generatedAt": "2026-05-28T18:20:00.000Z",
+    "generatedAt": "2026-05-28T16:36:00.000Z",
     "releaseTarget": "v0.1.0-research-alpha",
     "purpose": "Provide a compact index of the current release-gate evidence without upgrading caveated research artifacts into release approval.",
     "releaseGateSatisfied": false,
@@ -104,13 +104,13 @@
         "publicPositionLinkage": "residual-risk"
       },
       "realNmnistBaseline": {
-        "status": "pass",
-        "reason": "Real public N-MNIST plaintext baseline artifact is present.",
-        "artifactId": "nmnist-local-real-2026-05-28",
+        "status": "blocked",
+        "reason": "ENOENT: no such file or directory, scandir '/Users/alexanderdaly/Downloads/N-MNIST/Train'",
+        "artifactId": "nmnist-local-blocker-2026-05-28",
         "datasetKind": "public-nmnist-local-copy",
-        "accuracy": 0.66,
-        "sampleCount": 100,
-        "smallestNextStep": "Review the N-MNIST baseline caveats before using it in release evidence."
+        "datasetRoot": "/Users/alexanderdaly/Downloads/N-MNIST",
+        "attemptedCommand": "npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --grid-size 8 --time-bins 4 --window-us 105000",
+        "smallestNextStep": "Download and extract the public N-MNIST Train and Test directories outside git, then rerun the attempted command with --artifact."
       },
       "tfheRealDataPath": {
         "status": "blocked",
@@ -168,11 +168,11 @@
         "productionClaim": false
       },
       {
-        "path": "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+        "path": "benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json",
         "present": true,
         "schema": "neurofhe.plaintextBaselineArtifact.v1",
-        "artifactId": "nmnist-local-real-2026-05-28",
-        "subjectSchema": "neurofhe.plaintextBaseline.v1",
+        "artifactId": "nmnist-local-blocker-2026-05-28",
+        "subjectSchema": "neurofhe.plaintextBaseline.unavailable.v1",
         "productionClaim": false
       },
       {

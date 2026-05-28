@@ -126,6 +126,8 @@ npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-ga
 npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-memory-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
 npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact --artifact-id tfhe-rs-realdata-blocker-2026-05-28 --generated-at 2026-05-28T08:28:49.000Z
 npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --artifact --artifact-id nmnist-local-blocker-2026-05-28 --generated-at 2026-05-28T16:35:00.000Z
+npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --artifact --artifact-id nmnist-local-real-2026-05-28 --generated-at 2026-05-28T18:15:00.000Z
 ```
 
 Current committed evidence:
@@ -146,6 +148,13 @@ Current committed evidence:
   OpenFHE input contract. The smallest next step is an integer/Boolean TFHE-rs
   adapter or a validated transformer from the EEG contract into the TFHE-rs
   score domain.
+- Public N-MNIST real-data plaintext baseline:
+  `benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json` records a
+  sampled nearest-centroid baseline over 10 examples per class from the local
+  public N-MNIST `Train/` and `Test/` directories. It reports 66/100 correct
+  examples, accuracy `0.66`, and a compression curve. This is plaintext
+  preprocessing/model evidence, not encrypted-compute, production, medical, or
+  deployment evidence.
 
 This narrows diligence risk by making missing measurement classes explicit per
 lane. It does not satisfy the remaining native-evidence gap: OpenFHE still
@@ -153,8 +162,9 @@ needs fuller serialized ciphertext byte reporting and RSS or peak-memory
 measurements before memory or stable performance claims are defensible.
 
 The release-evidence index now summarizes the current CI blocker, repository
-hygiene result, native measurement coverage, metadata-leakage caveat, and
-synthetic reconstruction-risk probe caveat in one dashboard artifact:
+hygiene result, native measurement coverage, metadata-leakage caveat, synthetic
+reconstruction-risk probe caveat, real N-MNIST plaintext baseline, and TFHE-rs
+real-data blocker in one dashboard artifact:
 
 ```sh
 npm run release:evidence -- --artifact
@@ -171,6 +181,8 @@ Current committed evidence:
 - metadata leakage: caveated taxonomy proxy only.
 - reconstruction risk: synthetic probe only; public-position linkage remains a
   residual risk.
+- real N-MNIST baseline: present as sampled plaintext evidence, accuracy
+  `0.66` over 100 test examples, not encrypted-compute evidence.
 - TFHE-rs real-data path: blocked with an explicit artifact and smallest next
   step.
 
