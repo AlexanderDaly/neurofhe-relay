@@ -2,6 +2,7 @@
 
 use std::collections::BTreeMap;
 use std::error::Error;
+use std::process::{self, Command};
 use std::time::Instant;
 
 use serde_json::{json, Value};
@@ -184,6 +185,7 @@ pub fn run_tfhe_sparse_classifier_json() -> DemoResult<Value> {
     let classification = classify(&decrypted_scores);
     let ciphertext_bytes =
         measure_ciphertext_bytes(&encrypted_events, &encrypted_scores, &encrypted_decision)?;
+    let memory_usage = measure_memory_usage_json();
 
     Ok(json!({
         "schema": "neurofhe.tfheRs.result.v1",
@@ -299,6 +301,7 @@ pub fn run_tfhe_sparse_classifier_json() -> DemoResult<Value> {
             "productionClaim": false
         },
         "latencyMs": elapsed_ms(started),
+        "memoryUsage": memory_usage,
         "productionClaim": false,
         "caveat": "TFHE-rs research prototype path only; not production cryptography, not clinical validation, and not side-channel reviewed."
     }))
@@ -375,6 +378,31 @@ fn measure_ciphertext_bytes(
     }))
 }
 
+fn measure_memory_usage_json() -> Value {
+    let rss_bytes = current_process_rss_bytes();
+    json!({
+        "rssBytes": rss_bytes,
+        "measurement": "current process RSS via ps -o rss= -p <pid>; KiB converted to bytes",
+        "source": "operating-system process table",
+        "caveat": "Single end-of-run RSS sample on the local host; not peak RSS, dataset-scale memory, side-channel evidence, or stable performance evidence."
+    })
+}
+
+fn current_process_rss_bytes() -> Option<u64> {
+    let output = Command::new("ps")
+        .args(["-o", "rss=", "-p", &process::id().to_string()])
+        .output()
+        .ok()?;
+    if !output.status.success() {
+        return None;
+    }
+    rss_bytes_from_ps_kib(String::from_utf8_lossy(&output.stdout).as_ref())
+}
+
+fn rss_bytes_from_ps_kib(output: &str) -> Option<u64> {
+    output.trim().parse::<u64>().ok()?.checked_mul(1024)
+}
+
 fn position_json(position: &PublicActiveNeuronPosition) -> Value {
     json!({
         "index": position.index,
@@ -446,5 +474,11 @@ mod tests {
         assert_eq!(scores["normal"], 9);
         assert_eq!(scores["anomaly"], 51);
         assert_eq!(classify(&scores), "anomaly");
+    }
+
+    #[test]
+    fn rss_parser_converts_ps_kib_output_to_bytes() {
+        assert_eq!(rss_bytes_from_ps_kib(" 2048\n"), Some(2_097_152));
+        assert_eq!(rss_bytes_from_ps_kib("not-a-number\n"), None);
     }
 }

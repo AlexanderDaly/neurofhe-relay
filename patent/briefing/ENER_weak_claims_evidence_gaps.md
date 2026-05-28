@@ -123,6 +123,8 @@ per-lane measurement gap index without upgrading any performance claim:
 
 ```sh
 npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-gap-index-2026-05-27 --generated-at 2026-05-27T20:25:00.000Z
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-memory-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
 ```
 
 Current committed evidence:
@@ -131,16 +133,18 @@ Current committed evidence:
 - schema: `neurofhe.nativeEvidence.manifest.v1`
 - ciphertext-byte coverage: one reported lane, one partial lane, one missing
   lane.
-- RSS or peak-memory coverage: zero reported lanes, one partial lane, two
-  missing lanes.
-- measurement gap index: five missing or partial measurement classes across
-  BFVrns, CKKS, and TFHE-rs, with exact rerun commands.
+- RSS or peak-memory coverage: one reported lane, one partial lane, one
+  missing lane.
+- measurement gap index: four missing or partial measurement classes across
+  BFVrns and CKKS, with exact rerun commands.
+- TFHE-rs reports a single end-of-run current RSS sample for the synthetic
+  native run, measured from the process table. It is not peak-memory,
+  dataset-scale, side-channel, or stable performance evidence.
 
 This narrows diligence risk by making missing measurement classes explicit per
 lane. It does not satisfy the remaining native-evidence gap: OpenFHE still
-needs fuller serialized ciphertext byte reporting and all native lanes still
-need RSS or peak-memory measurements before memory or stable performance claims
-are defensible.
+needs fuller serialized ciphertext byte reporting and RSS or peak-memory
+measurements before memory or stable performance claims are defensible.
 
 The release-evidence index now summarizes the current CI blocker, repository
 hygiene result, native measurement coverage, metadata-leakage caveat, and

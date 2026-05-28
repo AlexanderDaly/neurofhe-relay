@@ -404,12 +404,14 @@ Command:
 
 ```sh
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-native-gap-index-2026-05-27 --generated-at 2026-05-27T20:26:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-tfhe-rss-2026-05-28.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-native-gap-index-2026-05-27.json
 ```
 
@@ -425,7 +427,7 @@ Result summary:
     "repositoryHygiene": {"status": "pass"},
     "nativeMeasurementCoverage": {
       "status": "incomplete",
-      "measurementGapCount": 5
+      "measurementGapCount": 4
     },
     "metadataLeakage": {"status": "caveated"},
     "reconstructionRisk": {"status": "caveated"},
@@ -871,6 +873,7 @@ Command:
 
 ```sh
 npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-validation-2026-05-21 --generated-at 2026-05-21T12:15:00.000Z
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-memory-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
 ```
 
 Result summary:
@@ -902,7 +905,11 @@ Result summary:
     "thresholdDecisionBit": 16593,
     "total": 2658613
   },
-  "latencyMs": 7200.658,
+  "memoryUsage": {
+    "rssBytes": 259309568,
+    "measurement": "current process RSS via ps -o rss= -p <pid>; KiB converted to bytes"
+  },
+  "latencyMs": 5948.059,
   "productionClaim": false
 }
 ```
@@ -911,11 +918,15 @@ Published artifact:
 
 ```text
 benchmark-artifacts/comparisons/tfhe-rs/latest.json
+benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-memory-rss-2026-05-28.json
 benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-validation-2026-05-21.json
 ```
 
 The TFHE-rs result is a single local synthetic 8x8 run. The latency is not a
 stable performance claim; use it only as a research-grade comparison record.
+The RSS value is a single end-of-run current process RSS sample from the local
+process table, not peak RSS, dataset-scale memory, side-channel evidence, or
+stable memory evidence.
 
 ### Native Evidence Manifest
 
@@ -923,12 +934,14 @@ Command:
 
 ```sh
 npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-gap-index-2026-05-27 --generated-at 2026-05-27T20:25:00.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/native-evidence/latest.json
+benchmark-artifacts/native-evidence/runs/native-evidence-tfhe-rss-2026-05-28.json
 benchmark-artifacts/native-evidence/runs/native-evidence-measurement-gap-index-2026-05-27.json
 ```
 
@@ -959,13 +972,13 @@ Result summary:
       "ciphertextBytesReportedCount": 1,
       "ciphertextBytesPartialCount": 1,
       "ciphertextBytesMissingCount": 1,
-      "rssOrPeakMemoryReportedCount": 0,
+      "rssOrPeakMemoryReportedCount": 1,
       "rssOrPeakMemoryPartialCount": 1,
-      "rssOrPeakMemoryMissingCount": 2
+      "rssOrPeakMemoryMissingCount": 1
     },
     "measurementGaps": {
       "schema": "neurofhe.nativeEvidence.measurementGapIndex.v1",
-      "gapCount": 5
+      "gapCount": 4
     }
   },
   "lanes": [
@@ -1005,7 +1018,7 @@ Result summary:
     },
     {
       "id": "tfhe-rs",
-      "latestArtifactId": "tfhe-validation-2026-05-21",
+      "latestArtifactId": "tfhe-rs-memory-rss-2026-05-28",
       "evidence": {
         "status": "real-native-run",
         "activeEventCount": 18
@@ -1016,7 +1029,8 @@ Result summary:
           "totalBytes": 2658613
         },
         "rssOrPeakMemory": {
-          "status": "missing"
+          "status": "reported",
+          "bytes": 259309568
         }
       }
     }
@@ -1031,13 +1045,13 @@ Result summary:
 This manifest does not make the native evidence machine-independent. It makes
 the machine dependence explicit by recording the host/toolchain fingerprint,
 latest committed native artifact per lane, exact rerun commands, and remaining
-gaps. The May 27 manifest also indexes five per-lane missing or partial
+gaps. The May 28 manifest indexes four per-lane missing or partial
 measurement classes: BFVrns still lacks ciphertext-byte and RSS/peak-memory
-measurements, CKKS has partial ciphertext-count metadata without serialized byte
-or RSS totals, and TFHE-rs still lacks RSS or peak-memory bytes. The current gaps
-remain multi-window native sweeps, broader memory/RSS measurements, fuller
-ciphertext byte measurements for OpenFHE, and a real-data-derived TFHE-rs path
-or blocker.
+measurements, and CKKS has partial ciphertext-count metadata without serialized
+byte or RSS totals. TFHE-rs now reports ciphertext bytes and a single current
+RSS sample for the synthetic native run. The current gaps remain multi-window
+native sweeps, fuller ciphertext byte and RSS/peak-memory measurements for
+OpenFHE, and a real-data-derived TFHE-rs path or blocker.
 
 ### JSON Validation
 

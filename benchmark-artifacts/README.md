@@ -50,7 +50,10 @@ they fingerprint the current host/toolchain, classify the latest committed
 native artifacts, list exact rerun commands, classify ciphertext-byte and
 RSS/peak-memory measurement coverage, and preserve remaining native measurement
 gaps. The summary also includes a per-lane measurement gap index with the exact
-rerun commands for each missing or partial measurement class.
+rerun commands for each missing or partial measurement class. The TFHE-rs
+native artifact now includes a single end-of-run current RSS sample from the
+local process table; that is host-specific current-RSS evidence, not peak-memory,
+dataset-scale, side-channel, or stable performance evidence.
 
 Plaintext baseline artifacts are written under
 `benchmark-artifacts/plaintext-baselines/<dataset-id>/`. The committed
@@ -131,6 +134,8 @@ Current artifacts also include:
 - native evidence manifest artifacts that fingerprint the host/toolchain and
   index reproducibility and per-lane measurement gaps across OpenFHE and TFHE-rs
   lanes
+- TFHE-rs native current-RSS evidence for the synthetic sparse contract, with a
+  caveat that it is not peak-memory or dataset-scale memory evidence
 - CI/account blocker artifacts that separate GitHub Actions availability from
   code or workflow-step failures
 - repository hygiene scan artifacts that separate source cleanliness evidence
