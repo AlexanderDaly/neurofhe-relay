@@ -73,6 +73,7 @@ import {
 import {
   buildTfheRsDemoContract,
   buildTfheRsRealLibraryAdapter,
+  buildTfheRsRealDataUnavailableReport,
   tfheRsIntegrationPlan,
   validateTfheRsContract,
 } from "../lib/tfhe-rs-adapter.mjs";
@@ -1025,6 +1026,29 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
         },
       },
     ],
+    [
+      "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+      {
+        schema: "neurofhe.comparisonArtifact.v1",
+        artifactId: "tfhe-realdata-blocker-test",
+        subjectSchema: "neurofhe.tfheRs.realDataUnavailable.v1",
+        productionClaim: false,
+        subject: {
+          schema: "neurofhe.tfheRs.realDataUnavailable.v1",
+          inputContract: {
+            datasetKind: "public-uci-eeg-eye-state-arff",
+            scoreDomain: "approximate-real",
+          },
+          blocker: {
+            category: "unsupported-real-data-input-contract",
+            reason: "TFHE-rs real-data adapter is not implemented.",
+          },
+          smallestNextStep:
+            "Add an integer/Boolean TFHE-rs adapter for EEG-derived sparse contracts.",
+          productionClaim: false,
+        },
+      },
+    ],
   ]);
 
   const index = buildReleaseEvidenceIndex({
@@ -1042,6 +1066,8 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
   assert.equal(index.gateChecks.nativeMeasurementCoverage.measurementGapCount, 5);
   assert.equal(index.gateChecks.metadataLeakage.status, "caveated");
   assert.equal(index.gateChecks.reconstructionRisk.status, "caveated");
+  assert.equal(index.gateChecks.tfheRealDataPath.status, "blocked");
+  assert.equal(index.gateChecks.tfheRealDataPath.artifactId, "tfhe-realdata-blocker-test");
   assert.deepEqual(
     index.sourceArtifacts.map((artifact) => artifact.path),
     [
@@ -1050,6 +1076,7 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
       "benchmark-artifacts/native-evidence/latest.json",
       "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
       "benchmark-artifacts/reconstruction-risk/latest.json",
+      "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
     ],
   );
   assert.equal(index.sourceArtifacts.every((artifact) => artifact.productionClaim === false), true);
@@ -1502,6 +1529,31 @@ test("TFHE-rs integration plan reports cargo commands and native source paths", 
     "cargo run --release --manifest-path prototype/tfhe-rs/Cargo.toml --bin neurofhe-tfhe-demo",
     "node prototype/tfhe-rs-benchmark.mjs --artifact",
   ]);
+});
+
+test("TFHE-rs real-data blocker records the unsupported input path without replacing synthetic run evidence", () => {
+  const inputPath =
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json";
+  const blocker = buildTfheRsRealDataUnavailableReport({
+    inputPath,
+    inputContract: {
+      schema: "neurofhe.openfhe.inputContract.v1",
+      datasetKind: "public-uci-eeg-eye-state-arff",
+      scoreDomain: "approximate-real",
+      activeEventCount: 32,
+      productionClaim: false,
+    },
+  });
+
+  assert.equal(blocker.schema, "neurofhe.tfheRs.realDataUnavailable.v1");
+  assert.equal(blocker.blocker.category, "unsupported-real-data-input-contract");
+  assert.equal(blocker.inputContract.path, inputPath);
+  assert.equal(blocker.inputContract.datasetKind, "public-uci-eeg-eye-state-arff");
+  assert.equal(blocker.inputContract.scoreDomain, "approximate-real");
+  assert.ok(blocker.attemptedCommand.includes("benchmark:tfhe -- --run --input"));
+  assert.match(blocker.error, /does not yet accept EEG-derived OpenFHE input contracts/);
+  assert.match(blocker.smallestNextStep, /integer\/Boolean TFHE-rs adapter/);
+  assert.equal(blocker.productionClaim, false);
 });
 
 test("comparison artifacts can persist adapter plans for later library runs", async () => {

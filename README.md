@@ -249,6 +249,13 @@ npm run benchmark:tfhe -- --run
 npm run benchmark:tfhe -- --run --artifact
 ```
 
+Record the current TFHE-rs real-data input blocker without overwriting the
+latest runnable synthetic TFHE-rs artifact:
+
+```sh
+npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
+```
+
 Summarize native evidence reproducibility across OpenFHE BFVrns, OpenFHE CKKS,
 and TFHE-rs without rerunning benchmarks:
 
@@ -302,6 +309,13 @@ single end-of-run current RSS sample for the synthetic native run; that remains
 host-specific memory evidence, not peak-memory, dataset-scale, side-channel, or
 stable performance evidence. The index is a blocker map, not substitute
 performance or memory evidence.
+
+The TFHE-rs real-data blocker under
+`benchmark-artifacts/comparisons/tfhe-rs-realdata/` records that the current
+native TFHE-rs target does not yet accept the EEG-derived OpenFHE input
+contract. It preserves the exact attempted command and smallest next step while
+leaving `benchmark-artifacts/comparisons/tfhe-rs/latest.json` as the latest
+runnable synthetic TFHE-rs evidence.
 
 Run the deterministic N-MNIST-format smoke fixture and publish a compression
 curve artifact:

@@ -35,6 +35,7 @@ npm run benchmark:privacy-modes -- --artifact
 npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
 npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
 npm run benchmark:tfhe -- --run --artifact
+npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
 npm run native:doctor -- --artifact
 npm run scan:hygiene -- --artifact
 npm run reconstruction:risk -- --artifact
@@ -62,10 +63,14 @@ command, error, and smallest next step.
 - Confirm `benchmark-artifacts/release-evidence/latest.json` indexes the
   current CI blocker, repository hygiene result, native measurement coverage,
   metadata-leakage caveat, reconstruction-risk probe caveat, and
-  `productionClaim: false` status without marking the release gate satisfied.
+  TFHE-rs real-data input blocker, plus `productionClaim: false` status without
+  marking the release gate satisfied.
 - Confirm `benchmark-artifacts/reconstruction-risk/latest.json` keeps
   `privacyProofClaim: false`, blocks raw payload replay and active-value
   recovery in the synthetic probe, and records public-position residual risk.
+- Confirm `benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`
+  records the exact unsupported EEG-derived input command and smallest next
+  step until a real-data TFHE-rs adapter exists.
 - Confirm `VALIDATION.md` includes the commands that produced committed
   artifacts.
 - Confirm every crypto lane keeps `productionClaim: false`.

@@ -124,6 +124,7 @@ per-lane measurement gap index without upgrading any performance claim:
 ```sh
 npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-gap-index-2026-05-27 --generated-at 2026-05-27T20:25:00.000Z
 npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-memory-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact --artifact-id tfhe-rs-realdata-blocker-2026-05-28 --generated-at 2026-05-28T08:28:49.000Z
 npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
 ```
 
@@ -140,6 +141,11 @@ Current committed evidence:
 - TFHE-rs reports a single end-of-run current RSS sample for the synthetic
   native run, measured from the process table. It is not peak-memory,
   dataset-scale, side-channel, or stable performance evidence.
+- TFHE-rs real-data input blocker: `benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`
+  records that the native TFHE-rs target does not yet accept the EEG-derived
+  OpenFHE input contract. The smallest next step is an integer/Boolean TFHE-rs
+  adapter or a validated transformer from the EEG contract into the TFHE-rs
+  score domain.
 
 This narrows diligence risk by making missing measurement classes explicit per
 lane. It does not satisfy the remaining native-evidence gap: OpenFHE still
@@ -165,6 +171,8 @@ Current committed evidence:
 - metadata leakage: caveated taxonomy proxy only.
 - reconstruction risk: synthetic probe only; public-position linkage remains a
   residual risk.
+- TFHE-rs real-data path: blocked with an explicit artifact and smallest next
+  step.
 
 This improves diligence navigation but is not new benchmark evidence, not a
 privacy proof, and not release approval.

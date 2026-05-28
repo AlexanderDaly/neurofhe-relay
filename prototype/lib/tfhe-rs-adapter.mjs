@@ -2,7 +2,7 @@
 
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { delimiter, join, resolve } from "node:path";
 
 import { classifyScores } from "./classifier.mjs";
@@ -22,6 +22,8 @@ import {
 const TFHE_RS_VERSION = "1.6.1";
 const DEFAULT_CARGO_MANIFEST = "prototype/tfhe-rs/Cargo.toml";
 const DEFAULT_TFHE_SOURCE = "prototype/tfhe-rs/src/lib.rs";
+const DEFAULT_REAL_DATA_INPUT =
+  "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json";
 
 export function buildTfheRsDemoContract(options = {}) {
   const sourceEventWindow = options.eventWindow ?? buildSparseEventWindow();
@@ -223,6 +225,34 @@ export function buildTfheRsRealLibraryAdapter(options = {}) {
   };
 }
 
+export function buildTfheRsRealDataUnavailableReport(options = {}) {
+  const inputPath = options.inputPath ?? DEFAULT_REAL_DATA_INPUT;
+  const inputContract = options.inputContract ?? readJsonIfExists(inputPath);
+  const inputContractSummary = summarizeTfheRealDataInput(inputPath, inputContract);
+  const attemptedCommand =
+    options.attemptedCommand ??
+    `npm run benchmark:tfhe -- --run --input ${inputPath} --artifact --out benchmark-artifacts/comparisons/tfhe-rs-realdata`;
+
+  return {
+    schema: "neurofhe.tfheRs.realDataUnavailable.v1",
+    inputContract: inputContractSummary,
+    attemptedCommand,
+    error:
+      "The TFHE-rs native demo does not yet accept EEG-derived OpenFHE input contracts; it currently runs the synthetic integer-threshold sparse contract only.",
+    blocker: {
+      category: "unsupported-real-data-input-contract",
+      reason:
+        "The committed EEG-derived OpenFHE input contract uses approximate or quantized linear-score fields, while the TFHE-rs native target currently accepts only its built-in non-negative integer threshold contract.",
+    },
+    smallestNextStep:
+      "Add an integer/Boolean TFHE-rs adapter for EEG-derived sparse contracts, or publish a narrower transformer from the EEG OpenFHE contract into a validated TFHE-rs score-domain contract.",
+    preservedEvidence:
+      "This blocker is intended for benchmark-artifacts/comparisons/tfhe-rs-realdata/ so benchmark-artifacts/comparisons/tfhe-rs/latest.json can continue to hold the latest runnable synthetic TFHE-rs native evidence.",
+    adapter: buildTfheRsRealLibraryAdapter(),
+    productionClaim: false,
+  };
+}
+
 export function tfheRsIntegrationPlan(options = {}) {
   const adapter = buildTfheRsRealLibraryAdapter(options);
   return {
@@ -309,6 +339,52 @@ export function buildTfheRsPrivacyBoundary() {
     ],
     productionClaim: false,
   };
+}
+
+function summarizeTfheRealDataInput(path, contract) {
+  if (!contract) {
+    return {
+      schema: "neurofhe.tfheRs.realDataInput.summary.v1",
+      path,
+      present: false,
+      digest: null,
+      contractSchema: null,
+      datasetKind: null,
+      scoreDomain: null,
+      activeEventCount: null,
+      productionClaim: false,
+    };
+  }
+  const json = JSON.stringify(contract);
+  return {
+    schema: "neurofhe.tfheRs.realDataInput.summary.v1",
+    path,
+    present: true,
+    digest: {
+      algorithm: "sha256",
+      value: createHash("sha256").update(json).digest("hex"),
+    },
+    contractSchema: contract.schema,
+    datasetKind: contract.datasetKind,
+    scoreEquation: contract.scoreEquation ?? null,
+    scoreDomain: contract.scoreDomain ?? contract.quantized?.scoreDomain ?? null,
+    featureShape: contract.featureShape ?? null,
+    matrixShape: contract.matrixShape ?? null,
+    activeEventCount: contract.activeEventCount ?? null,
+    classes: contract.classes ?? null,
+    expectedClassification:
+      contract.expectedClassification ?? contract.quantized?.expectedClassification ?? null,
+    productionClaim: false,
+  };
+}
+
+function readJsonIfExists(path) {
+  try {
+    return JSON.parse(readFileSync(path, "utf8"));
+  } catch (error) {
+    if (error.code === "ENOENT") return undefined;
+    throw error;
+  }
 }
 
 function buildTfheBooleanDecision(scores) {

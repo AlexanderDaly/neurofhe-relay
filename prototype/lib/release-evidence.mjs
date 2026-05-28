@@ -10,6 +10,7 @@ const SOURCE_ARTIFACT_PATHS = [
   "benchmark-artifacts/native-evidence/latest.json",
   "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
   "benchmark-artifacts/reconstruction-risk/latest.json",
+  "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
 ];
 
 export function buildReleaseEvidenceIndex(options = {}) {
@@ -36,6 +37,9 @@ export function buildReleaseEvidenceIndex(options = {}) {
   const reconstructionRisk = summarizeReconstructionRisk(
     byPath["benchmark-artifacts/reconstruction-risk/latest.json"],
   );
+  const tfheRealDataPath = summarizeTfheRealDataPath(
+    byPath["benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json"],
+  );
   const productionClaim = sourceArtifacts.every(
     (artifact) => artifact.present && artifact.productionClaim === false,
   );
@@ -53,6 +57,7 @@ export function buildReleaseEvidenceIndex(options = {}) {
       nativeMeasurementCoverage,
       metadataLeakage,
       reconstructionRisk,
+      tfheRealDataPath,
       productionClaim: {
         status: productionClaim ? "pass" : "blocked",
         reason: productionClaim
@@ -251,6 +256,40 @@ function summarizeReconstructionRisk(artifact) {
     rawPayloadReplay: summary.rawPayloadReplay?.status ?? null,
     activeValueRecovery: summary.activeValueRecovery?.status ?? null,
     publicPositionLinkage: summary.publicPositionLinkage?.status ?? null,
+  };
+}
+
+function summarizeTfheRealDataPath(artifact) {
+  const subject = artifact?.subject;
+  if (!artifact || !subject) {
+    return {
+      status: "missing",
+      reason: "TFHE-rs real-data input blocker artifact is missing.",
+      artifactId: artifact?.artifactId ?? null,
+      inputDatasetKind: null,
+      scoreDomain: null,
+      smallestNextStep:
+        "Publish a TFHE-rs real-data blocker or implement the EEG-derived TFHE-rs input path.",
+    };
+  }
+  if (subject.schema === "neurofhe.tfheRs.realDataUnavailable.v1") {
+    return {
+      status: "blocked",
+      reason: subject.blocker?.reason ?? "TFHE-rs real-data input path is blocked.",
+      artifactId: artifact.artifactId,
+      inputDatasetKind: subject.inputContract?.datasetKind ?? null,
+      scoreDomain: subject.inputContract?.scoreDomain ?? null,
+      attemptedCommand: subject.attemptedCommand ?? null,
+      smallestNextStep: subject.smallestNextStep ?? null,
+    };
+  }
+  return {
+    status: "caveated",
+    reason: "TFHE-rs real-data input artifact is present but not recognized as release-gate evidence.",
+    artifactId: artifact.artifactId,
+    inputDatasetKind: subject.inputContract?.datasetKind ?? null,
+    scoreDomain: subject.inputContract?.scoreDomain ?? null,
+    smallestNextStep: "Review the TFHE-rs real-data artifact before using it in release evidence.",
   };
 }
 

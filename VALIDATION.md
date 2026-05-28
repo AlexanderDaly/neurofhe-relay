@@ -405,12 +405,14 @@ Command:
 ```sh
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-native-gap-index-2026-05-27 --generated-at 2026-05-27T20:26:00.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-tfhe-realdata-blocker-2026-05-28 --generated-at 2026-05-28T08:28:49.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-tfhe-realdata-blocker-2026-05-28.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-tfhe-rss-2026-05-28.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-native-gap-index-2026-05-27.json
 ```
@@ -431,6 +433,7 @@ Result summary:
     },
     "metadataLeakage": {"status": "caveated"},
     "reconstructionRisk": {"status": "caveated"},
+    "tfheRealDataPath": {"status": "blocked"},
     "productionClaim": {"status": "pass"}
   },
   "productionClaim": false
@@ -438,9 +441,9 @@ Result summary:
 ```
 
 The index is a dashboard artifact over already committed blocker, hygiene,
-native-evidence, privacy-mode, and reconstruction-risk artifacts. It does not
-create new benchmark measurements, cryptographic/privacy proof, clinical
-evidence, or release approval.
+native-evidence, privacy-mode, reconstruction-risk, and TFHE real-data blocker
+artifacts. It does not create new benchmark measurements, cryptographic/privacy
+proof, clinical evidence, or release approval.
 
 ### Reconstruction-Risk Probe Artifact
 
@@ -927,6 +930,45 @@ stable performance claim; use it only as a research-grade comparison record.
 The RSS value is a single end-of-run current process RSS sample from the local
 process table, not peak RSS, dataset-scale memory, side-channel evidence, or
 stable memory evidence.
+
+### TFHE-rs Real-Data Input Blocker
+
+Command:
+
+```sh
+npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact --artifact-id tfhe-rs-realdata-blocker-2026-05-28 --generated-at 2026-05-28T08:28:49.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json
+benchmark-artifacts/comparisons/tfhe-rs-realdata/runs/tfhe-rs-realdata-blocker-2026-05-28.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.tfheRs.realDataUnavailable.v1",
+  "inputContract": {
+    "datasetKind": "public-uci-eeg-eye-state-arff",
+    "scoreDomain": "approximate-real",
+    "activeEventCount": 32
+  },
+  "blocker": {
+    "category": "unsupported-real-data-input-contract"
+  },
+  "smallestNextStep": "Add an integer/Boolean TFHE-rs adapter for EEG-derived sparse contracts, or publish a narrower transformer from the EEG OpenFHE contract into a validated TFHE-rs score-domain contract.",
+  "productionClaim": false
+}
+```
+
+This is a blocker artifact, not a failed silent benchmark and not replacement
+evidence for the synthetic TFHE-rs native run. It records that the current
+native TFHE-rs target does not yet accept the EEG-derived OpenFHE input
+contract, and it keeps the exact unsupported command visible for the release
+evidence index.
 
 ### Native Evidence Manifest
 

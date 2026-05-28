@@ -32,6 +32,7 @@ npm run benchmark:openfhe-ckks -- --run --artifact
 npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
 npm run benchmark:tfhe -- --artifact
 npm run benchmark:tfhe -- --run --artifact
+npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
 npm run native:doctor -- --artifact
 npm run scan:hygiene -- --artifact
 npm run reconstruction:risk -- --artifact
@@ -41,8 +42,13 @@ npm run release:evidence -- --artifact
 By default, OpenFHE comparison artifacts are written under
 `benchmark-artifacts/comparisons/openfhe/`. OpenFHE CKKS comparison artifacts
 are written under `benchmark-artifacts/comparisons/openfhe-ckks/`. TFHE-rs
-comparison artifacts are written under `benchmark-artifacts/comparisons/tfhe-rs/`. Use
-`--out <directory>` to place a comparison run elsewhere.
+comparison artifacts are written under
+`benchmark-artifacts/comparisons/tfhe-rs/`. TFHE-rs real-data input blocker
+artifacts are written under
+`benchmark-artifacts/comparisons/tfhe-rs-realdata/`; they preserve the attempted
+EEG-derived input command, error, and smallest next step without overwriting the
+latest runnable synthetic TFHE-rs artifact. Use `--out <directory>` to place a
+comparison run elsewhere.
 
 Native evidence manifest artifacts are written under
 `benchmark-artifacts/native-evidence/`. They do not rerun OpenFHE or TFHE-rs;
@@ -106,9 +112,9 @@ identity-leakage, mutual-information, side-channel, or privacy-proof evidence.
 Release-evidence index artifacts are written under
 `benchmark-artifacts/release-evidence/`. They summarize the current committed CI
 blocker, repository hygiene, native evidence, metadata-leakage, and
-reconstruction-risk artifacts so the release gate can be reviewed from one JSON
-surface. They are dashboard artifacts only and do not constitute new benchmark
-evidence or release approval.
+reconstruction-risk artifacts, plus the TFHE-rs real-data input blocker, so the
+release gate can be reviewed from one JSON surface. They are dashboard artifacts
+only and do not constitute new benchmark evidence or release approval.
 
 Every `neurofhe.benchmarkArtifact.v1` file must include:
 
@@ -136,6 +142,8 @@ Current artifacts also include:
   lanes
 - TFHE-rs native current-RSS evidence for the synthetic sparse contract, with a
   caveat that it is not peak-memory or dataset-scale memory evidence
+- TFHE-rs real-data input blocker artifacts that keep the unsupported
+  EEG-derived input path explicit without replacing synthetic native evidence
 - CI/account blocker artifacts that separate GitHub Actions availability from
   code or workflow-step failures
 - repository hygiene scan artifacts that separate source cleanliness evidence
@@ -143,7 +151,8 @@ Current artifacts also include:
 - reconstruction-risk probe artifacts that keep raw-payload and active-value
   withholding separate from formal privacy-proof claims
 - release-evidence index artifacts that keep blocker, hygiene, native, privacy,
-  and `productionClaim: false` status visible in one caveated dashboard
+  TFHE real-data blocker, and `productionClaim: false` status visible in one
+  caveated dashboard
 
 The current top-level benchmark accuracy field is synthetic contract agreement
 against the plaintext classifier, not real dataset accuracy. Use the
