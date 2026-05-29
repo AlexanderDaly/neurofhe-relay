@@ -20,6 +20,14 @@ for CI parity. `package.json` still accepts Node.js 20 or newer.
 If setup or validation fails, use `docs/troubleshooting.md` before opening an
 issue so the report includes the exact command, error, and smallest next step.
 
+## First Contribution Loop
+
+1. Pick the matching row in `Change Routes` before editing.
+2. Run the focused command for the touched surface while you work.
+3. Run `npm run ci` and `git diff --check` before committing.
+4. If a command cannot run, record the exact command, error, and smallest next
+   step instead of replacing the missing evidence with a broader claim.
+
 ## Change Routes
 
 Use this table before editing so the first check matches the kind of change and

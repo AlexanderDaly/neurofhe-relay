@@ -2870,6 +2870,10 @@ test("development guide preserves setup, evidence, and release boundaries", () =
 test("developer quickstart routes common change types to focused validation", () => {
   const quickstart = readFileSync("docs/developer-quickstart.md", "utf8");
   const requiredEntries = [
+    "## First Contribution Loop",
+    "Pick the matching row in `Change Routes` before editing.",
+    "Run the focused command for the touched surface while you work.",
+    "record the exact command, error, and smallest next",
     "## Change Routes",
     "| Goal | Start With | Confirm Before PR |",
     "Small docs cleanup",
