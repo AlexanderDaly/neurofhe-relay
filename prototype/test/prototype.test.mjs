@@ -1274,6 +1274,11 @@ test("project brief preserves agent-readable repository posture", () => {
     projectBrief.repositoryPosture.releaseApprovalRule,
     "Do not merge, tag, or strengthen release-facing claims without the documented release gate, maintainer approval, and explicit user approval.",
   );
+  assert.equal(
+    projectBrief.currentPrototype.caveat,
+    "The current package is educational and not production cryptography.",
+  );
+  assert.equal(projectBrief.currentPrototype.caveat.includes("current prototype"), false);
 });
 
 test("presentation outputs map lists every tracked generated output file", () => {
@@ -1310,6 +1315,7 @@ test("benchmark artifacts README lists every tracked artifact directory", () => 
   );
   const requiredPosture = [
     "## Artifact Review Routes",
+    "research-alpha package",
     "| Review Need | Start With | Do Not Claim |",
     "Release posture",
     "Native measurement coverage",
@@ -1329,6 +1335,7 @@ test("benchmark artifacts README lists every tracked artifact directory", () => 
     !artifactsReadme.includes(entry),
   );
   const stalePosture = [
+    "runnable prototype",
     "real N-MNIST dataset blocker",
     "N-MNIST-compatible fixture, real public UCI EEG Eye State baseline, and real public dataset blocker reports",
   ].filter((entry) => artifactsReadme.includes(entry));
@@ -2313,6 +2320,7 @@ test("root README keeps first-read navigation role based", () => {
     "privacyBoundary",
     "cryptoInventory",
     "productionClaim: false",
+    "runnable research-alpha scaffold",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !readme.includes(entry),
@@ -2321,6 +2329,7 @@ test("root README keeps first-read navigation role based", () => {
   assert.deepEqual(missingEntries, []);
   assert.equal(readme.includes("New readers should begin with"), false);
   assert.equal(readme.includes("Presentation package"), false);
+  assert.equal(readme.includes("The runnable prototype demonstrates"), false);
 });
 
 test("root README keeps repository layout concise", () => {

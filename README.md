@@ -168,8 +168,8 @@ The gateway is simulated and educational in this package. It is not a medical, s
 
 ## Evidence Snapshot
 
-The runnable prototype demonstrates active-event sparse scoring with toy
-additive homomorphic encryption over a fixed linear model contract:
+The runnable research-alpha scaffold demonstrates active-event sparse scoring
+with toy additive homomorphic encryption over a fixed linear model contract:
 `scores = W x + bias`. The benchmark family keeps dense/raw, unsorted-spike,
 and spatial-sorted representations comparable while preserving
 `privacyBoundary`, `cryptoInventory`, and `productionClaim: false`.

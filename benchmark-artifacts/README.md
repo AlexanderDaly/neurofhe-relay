@@ -1,7 +1,7 @@
 # Benchmark Artifacts
 
 This directory contains published benchmark JSON artifacts for the runnable
-prototype.
+research-alpha package.
 
 For a shorter claim-safety map of the evidence classes, start with
 `docs/evidence-guide.md`.

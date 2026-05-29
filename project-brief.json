@@ -163,7 +163,7 @@
         "spatial-sorted-events"
       ]
     },
-    "caveat": "The current prototype is educational and not production cryptography."
+    "caveat": "The current package is educational and not production cryptography."
   },
   "gatewayPattern": {
     "file": "09-relay-gateway-pattern.md",

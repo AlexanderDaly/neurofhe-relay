@@ -80,9 +80,10 @@ Covered behaviours:
   review-route and source coverage,
   package manifest top-level, owner-route, inventory-review-route, and
   native-evidence posture coverage, package metadata posture coverage,
-  agent-readable project-brief repository posture coverage,
+  agent-readable project-brief repository posture and package-caveat coverage,
   generated presentation output-route and map coverage,
-  benchmark artifact directory, artifact-review-route, and release-evidence routing coverage,
+  benchmark artifact directory, artifact-review-route, research-alpha package
+  framing, and release-evidence routing coverage,
   contributor workflow surface coverage, pull-request-template change-note
   coverage, policy boundary route and root-file
   coverage, status roadmap release-readiness, review-route, and

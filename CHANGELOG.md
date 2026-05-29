@@ -236,6 +236,9 @@ Release target: `v0.1.0-research-alpha`.
   matrix before tagging.
 - Release-purpose and ENER weak-claims wording now use CC0 research-alpha
   repository snapshot framing instead of generic research-prototype framing.
+- Root README, benchmark-artifact README, and project-brief evidence wording now
+  use research-alpha package/scaffold framing instead of generic runnable
+  prototype posture.
 - Public demo naming now uses `Relay-2 Research Demo` instead of diagnostic
   framing across the portable benchmark and research assumptions.
 
