@@ -1124,6 +1124,7 @@ test("policy boundary map lists every policy and claim-boundary root file", () =
     "README.md",
     "RELEASE.md",
     "SECURITY.md",
+    "SUPPORT.md",
     "VALIDATION.md",
   ];
   const missingFiles = policyFiles.filter((filePath) =>
@@ -1131,6 +1132,26 @@ test("policy boundary map lists every policy and claim-boundary root file", () =
   );
 
   assert.deepEqual(missingFiles, []);
+});
+
+test("support policy routes issues without weakening evidence boundaries", () => {
+  const supportPolicy = readFileSync("SUPPORT.md", "utf8");
+  const requiredEntries = [
+    "GitHub issue forms",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "docs/contributor-workflow.md",
+    "docs/operations-runbook.md",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "raw datasets",
+    "private payloads",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !supportPolicy.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
 });
 
 test("status roadmap lists every release-readiness evidence surface", () => {

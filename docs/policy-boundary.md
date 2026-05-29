@@ -17,6 +17,8 @@ review, release approval, or benchmark evidence.
   intelligence boundary, and explicit caveats.
 - `SECURITY.md` - research-prototype security scope and responsible reporting
   guidance.
+- `SUPPORT.md` - routing for public issues, security reports, release blockers,
+  and cleanup/support requests.
 - `CONTRIBUTING.md` - evidence-first contribution rules, including
   `privacyBoundary`, `cryptoInventory`, provenance, and `productionClaim: false`
   expectations.

@@ -19,8 +19,8 @@ into production cryptography, medical, security, or performance claims.
 ## Issue Types
 
 Use the GitHub issue forms to keep reports reproducible. See
-`docs/contributor-workflow.md` for the full map of issue, pull-request, and
-hosted CI surfaces.
+`SUPPORT.md` and `docs/contributor-workflow.md` for the full map of issue,
+pull-request, security-reporting, support-routing, and hosted CI surfaces.
 
 - Reproducible bug or validation failure: failing command, CI job, script,
   prototype behavior, or artifact generation issue.

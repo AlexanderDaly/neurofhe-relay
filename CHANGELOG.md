@@ -30,13 +30,15 @@ Release target: `v0.1.0-research-alpha`.
   exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Added a guarded, concise root README quick-command table that defers detailed
   native and release commands to `docs/command-reference.md` and `RELEASE.md`.
+- Added `SUPPORT.md` and a support-routing guard for public issues, sensitive
+  reports, release blockers, and cleanup requests.
 - Added guarded documentation coverage in the Node test suite so the repository
   maps stay synchronized with tracked surfaces.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 108 tests, Markdown
-  link scan over 69 files, JSON parsing, and repository hygiene scan.
+- `VALIDATION.md` now records the current portable gate as 109 tests, Markdown
+  link scan over 70 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
 

@@ -57,6 +57,8 @@ changing the evidence boundary.
 - `CONTRIBUTING.md` - evidence-first contribution rules and issue/PR workflow.
 - `RELEASE.md` - research-alpha release gate.
 - `VALIDATION.md` - recorded validation commands and caveated results.
+- `SUPPORT.md` - support routing for issues, security reports, release blockers,
+  and cleanup requests.
 - `benchmark-artifacts/README.md` - committed evidence artifact guide.
 
 The root `.editorconfig`, `.nvmrc`, and `.node-version` files provide a small

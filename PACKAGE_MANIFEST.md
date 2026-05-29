@@ -66,6 +66,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `DEVELOPMENT.md` - setup notes, CI parity checks, native FHE commands, and artifact policy.
 - `RELEASE.md` - research-alpha release checklist and evidence gates.
 - `SECURITY.md` - research-prototype security policy and reporting scope.
+- `SUPPORT.md` - support routing for bugs, evidence gaps, security reports,
+  release blockers, and cleanup requests.
 - `.github/ISSUE_TEMPLATE/` - guided bug, validation-gap, and repository-cleanup issue forms.
 - `.github/pull_request_template.md` - evidence-boundary and validation checklist for PRs.
 - `benchmark-artifacts/` - committed derived evidence, hosted-CI snapshots,

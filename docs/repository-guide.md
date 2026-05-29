@@ -54,6 +54,8 @@ clinical validation, deployment evidence, or a security certification.
 - `DEVELOPMENT.md` - local setup, portable validation, native FHE commands, and
   artifact policy.
 - `CONTRIBUTING.md` - evidence-first contribution rules and PR expectations.
+- `SUPPORT.md` - support routing for issues, sensitive reports, release
+  blockers, and cleanup requests.
 - `VALIDATION.md` - recorded local validation commands and caveated results.
 - `RELEASE.md` - research-alpha gate and the order of evidence required before
   tagging.
