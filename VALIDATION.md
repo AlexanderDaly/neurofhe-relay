@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 129
-pass 129
+tests 130
+pass 130
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 129
-pass 129
+tests 130
+pass 130
 fail 0
 ```
 
@@ -87,6 +87,9 @@ Covered behaviours:
 - Claim-evidence ledger coverage requiring every weak-claim area from
   `patent/briefing/ENER_weak_claims_evidence_gaps.md` to map to current
   evidence surfaces and caveats.
+- ENER weak-claims coverage requiring the patent briefing native-FHE evidence
+  note to distinguish current OpenFHE/TFHE real-native-run artifacts from
+  remaining ciphertext-byte and RSS or peak-memory measurement gaps.
 - Evidence-dashboard coverage requiring the human-readable dashboard to map the
   current release-evidence artifact wrapper, subject index, gate status,
   blockers, and caveats without upgrading claims.

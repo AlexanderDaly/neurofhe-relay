@@ -1588,6 +1588,36 @@ test("claim evidence ledger maps every weak-claim area to evidence and caveats",
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("ENER weak-claims note reflects current native FHE evidence posture", () => {
+  const weakClaims = readFileSync(
+    "patent/briefing/ENER_weak_claims_evidence_gaps.md",
+    "utf8",
+  );
+  const requiredEntries = [
+    "benchmark-artifacts/native-evidence/latest.json",
+    "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+    "openfhe-ckks-eeg-eye-state-2026-05-21",
+    "tfhe-rs-memory-rss-2026-05-28",
+    "dependencyDetection.available: true",
+    "real-native-run",
+    "native measurement coverage",
+    "measurement gap index",
+    "ciphertext byte measurements",
+    "RSS or peak-memory measurements",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !weakClaims.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(weakClaims.includes("Current local blocker"), false);
+  assert.equal(weakClaims.includes("OpenFHEConfig.cmake not found"), false);
+  assert.equal(weakClaims.includes("TFHE-rs remains the currently runnable real-library lane"), false);
+  assert.equal(weakClaims.includes("once OpenFHE is installed"), false);
+});
+
 test("evidence dashboard summarizes release gate status without upgrading claims", () => {
   const dashboard = readFileSync("docs/evidence-dashboard.md", "utf8");
   const requiredEntries = [

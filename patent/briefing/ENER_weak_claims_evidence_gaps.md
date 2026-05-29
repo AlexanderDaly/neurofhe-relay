@@ -87,34 +87,44 @@ reconstruction-resistance proof.
 
 ### Real FHE Parameter Evidence
 
-The repo now produces explicit blocker artifacts for missing OpenFHE native
-runs instead of implying that toy Paillier timing is cryptographic evidence:
+The repo now separates real native-library evidence from remaining measurement
+gaps instead of implying that toy Paillier timing is cryptographic evidence:
 
 ```sh
 npm run benchmark:openfhe -- --run --artifact
 npm run benchmark:openfhe-ckks -- --run --artifact
+npm run benchmark:tfhe -- --run --artifact
+npm run native:doctor -- --artifact
 ```
 
-Current local blocker:
+Current committed native evidence:
 
-```text
-OpenFHEConfig.cmake not found
-```
-
-Committed blocker artifacts:
-
+- `benchmark-artifacts/native-evidence/latest.json`
 - `benchmark-artifacts/comparisons/openfhe/latest.json`
 - `benchmark-artifacts/comparisons/openfhe-ckks/latest.json`
+- `benchmark-artifacts/comparisons/tfhe-rs/latest.json`
+- `benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`
 
-The BFVrns blocker records the target `HEStd_128_classic` parameter posture,
-plaintext modulus 65537, multiplicative depth 1, and the exact native commands
-that should run once OpenFHE is installed. The CKKS blocker records
-`HEStd_128_classic`, multiplicative depth 2, scaling modulus size 50, first
-modulus size 60, batch size 64, and `FLEXIBLEAUTO`.
+The native evidence manifest currently records OpenFHE BFVrns, OpenFHE CKKS,
+and TFHE-rs as `real-native-run` lanes with `dependencyDetection.available: true`
+on the indexed host. The current artifact identifiers are:
 
-TFHE-rs remains the currently runnable real-library lane on this machine. Its
-artifacts are synthetic 8x8 event-window runs only and should not be used as
-real-data or production performance claims.
+- OpenFHE BFVrns: `openfhe-bfvrns-eeg-eye-state-2026-05-21`.
+- OpenFHE CKKS: `openfhe-ckks-eeg-eye-state-2026-05-21`.
+- TFHE-rs: `tfhe-rs-memory-rss-2026-05-28`.
+
+This closes the old dependency-availability blocker for the indexed host, but
+it does not close the native measurement coverage gap. BFVrns still lacks
+serialized ciphertext byte measurements and RSS or peak-memory measurements.
+CKKS still has partial, not complete, ciphertext and memory measurements.
+TFHE-rs has a single synthetic run with ciphertext sizing and one current-RSS
+sample, but its real-data input path remains blocked by
+`benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`.
+
+The current release posture remains `releaseGateSatisfied: false`, and all
+native-lane artifacts must preserve `productionClaim: false`. These artifacts
+are not stable performance claims, side-channel evidence, privacy proofs,
+medical evidence, clinical validation, or release approval.
 
 ## Validation Update May 27, 2026
 
