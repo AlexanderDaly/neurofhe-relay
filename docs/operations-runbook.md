@@ -32,13 +32,13 @@ git diff --check
 Then confirm the hosted check rollup:
 
 ```sh
-gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup
+gh pr view <number> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
 gh pr checks <number>
 ```
 
 The expected hosted job name is `Portable validation`. If that check is green
-and the PR is still blocked, record whether the blocker is repository
-ruleset/admin policy rather than a code or CI failure.
+and the PR is still blocked, record the reviewed head SHA and whether the
+blocker is repository ruleset/admin policy rather than a code or CI failure.
 
 ## Evidence Refresh Commands
 
