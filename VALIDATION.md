@@ -98,9 +98,9 @@ Covered behaviours:
 - Evidence-dashboard coverage requiring the human-readable dashboard to map the
   current release-evidence artifact wrapper, subject index, gate status,
   blockers, and caveats without upgrading claims.
-- FAQ coverage requiring common reader questions to preserve
-  `releaseGateSatisfied: false`, `productionClaim: false`, CC0, raw-data,
-  CI/ruleset, and evidence caveats.
+- FAQ coverage requiring question-route guidance and common reader questions to
+  preserve `releaseGateSatisfied: false`, `productionClaim: false`, CC0,
+  raw-data, CI/ruleset, and evidence caveats.
 - Repository-guide coverage requiring the first map to list current reader,
   maintainer, GitHub, CI, release-gate, and ruleset-policy surfaces.
 - Release-gate matrix coverage requiring every minimum evidence command in

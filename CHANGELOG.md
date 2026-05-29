@@ -26,6 +26,8 @@ Release target: `v0.1.0-research-alpha`.
   dashboard status and caveats.
 - Added `docs/faq.md` for common reader questions about claims, evidence,
   raw-data handling, hosted CI, release posture, and CC0 use.
+- Added FAQ question routes for production, medical/clinical, evidence,
+  raw-data, and green-CI/blocked-merge questions.
 - Added `docs/release-gate-matrix.md` for release command, artifact, caveat,
   and blocker review.
 - Added `docs/operations-runbook.md` for routine PR checks, hosted check-rollup

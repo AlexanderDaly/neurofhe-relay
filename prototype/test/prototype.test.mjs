@@ -1838,6 +1838,13 @@ test("evidence dashboard summarizes release gate status without upgrading claims
 test("FAQ answers common reader questions without upgrading claims", () => {
   const faq = readFileSync("docs/faq.md", "utf8");
   const requiredEntries = [
+    "## Question Routes",
+    "| Reader Question | Start With | Then Use |",
+    "Production cryptography or deployment readiness",
+    "Medical, diagnostic, or clinical status",
+    "Evidence strength and real-data artifacts",
+    "Raw data, private payloads, or dataset storage",
+    "Green CI but blocked merge state",
     "productionClaim: false",
     "releaseGateSatisfied: false",
     "privacyBoundary",

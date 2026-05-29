@@ -3,6 +3,19 @@
 This FAQ is a short claim-safety map for readers who need the boundary before
 the longer evidence and release documents.
 
+## Question Routes
+
+Use this table when you know the kind of question you have and need the answer
+plus the next evidence surface.
+
+| Reader Question | Start With | Then Use |
+| --- | --- | --- |
+| Production cryptography or deployment readiness | "Is NeuroFHE Relay production cryptography?" | `RELEASE.md`, `docs/evidence-dashboard.md`, and `benchmark-artifacts/README.md`. |
+| Medical, diagnostic, or clinical status | "Is this medical or diagnostic software?" | `README.md`, `docs/policy-boundary.md`, and `docs/architecture-decisions.md`. |
+| Evidence strength and real-data artifacts | "What evidence is real today?" | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, and `benchmark-artifacts/README.md`. |
+| Raw data, private payloads, or dataset storage | "Where do raw datasets and private payloads go?" | `docs/data-handling.md`, `SECURITY.md`, and `docs/troubleshooting.md`. |
+| Green CI but blocked merge state | "Why can a PR be green but still blocked?" | `docs/operations-runbook.md`, `VALIDATION.md`, and `RELEASE.md`. |
+
 ## Is NeuroFHE Relay production cryptography?
 
 No. The repository is a research-alpha package: not production cryptography.
