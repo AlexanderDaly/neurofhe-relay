@@ -4,6 +4,19 @@ NeuroFHE Relay is a CC0 research-alpha repository. The project welcomes
 good-faith review, issues, and pull requests that keep the evidence boundary
 clear and make the public package easier to inspect.
 
+## Conduct Report Routes
+
+Use this table before opening a public issue or pull request. It keeps ordinary
+collaboration visible while keeping sensitive reports and raw-data-adjacent
+details out of public threads.
+
+| Situation | Start With | Keep Out Of Public Threads |
+| --- | --- | --- |
+| General collaboration or tone concern | `SUPPORT.md` and the public issue forms. | Personal data, unrelated private messages, or unsupported accusations. |
+| Sensitive conduct or safety concern | Maintainer contact path described in `SUPPORT.md`. | Private identities, personal contact details, or safety-sensitive context. |
+| Security, raw-data, or private-payload concern | `SECURITY.md` before opening any public issue. | Secrets, private payloads, raw signal rows, raw datasets, or exploit details. |
+| Evidence, release, or claim-boundary concern | `docs/contributor-workflow.md`, `VALIDATION.md`, and `RELEASE.md`. | Invented benchmark numbers, medical claims, production claims, or release approval assumptions. |
+
 ## Expected Conduct
 
 - Be respectful, precise, and evidence-first in issues, pull requests, and

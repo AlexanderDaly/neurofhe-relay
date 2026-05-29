@@ -153,9 +153,9 @@ Covered behaviours:
   quickstart, command reference, data-handling, evidence-dashboard,
   release-gate matrix, troubleshooting, release-gate, repository-policy, and
   artifact-boundary routing to stay visible.
-- Code of conduct coverage requiring public collaboration boundaries, report
-  routing, raw-data/private-payload limits, `productionClaim: false`, and
-  `releaseGateSatisfied: false`.
+- Code of conduct coverage requiring conduct-report routing, public
+  collaboration boundaries, raw-data/private-payload limits,
+  `productionClaim: false`, and `releaseGateSatisfied: false`.
 - CODEOWNERS coverage requiring review ownership routing for root, GitHub,
   docs, prototype, benchmark-artifacts, and patent surfaces.
 - Pull-request-template coverage requiring validation commands, release caveats,

@@ -42,6 +42,9 @@ Release target: `v0.1.0-research-alpha`.
   native and release commands to `docs/command-reference.md` and `RELEASE.md`.
 - Added `SUPPORT.md` and a support-routing guard for public issues, sensitive
   reports, release blockers, and cleanup requests.
+- Added code-of-conduct report routing so public collaboration, sensitive
+  conduct, security/raw-data, and claim-boundary concerns start in the right
+  policy surface without upgrading project claims.
 - Added `.github/CODEOWNERS` and a review-ownership guard for repository
   change routing.
 - Added `.github/dependabot.yml` and a dependency-update guard for weekly

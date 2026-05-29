@@ -1400,6 +1400,12 @@ test("policy boundary map lists every policy and claim-boundary root file", () =
 test("code of conduct sets public collaboration boundaries without upgrading claims", () => {
   const conduct = readFileSync("CODE_OF_CONDUCT.md", "utf8");
   const requiredEntries = [
+    "## Conduct Report Routes",
+    "| Situation | Start With | Keep Out Of Public Threads |",
+    "General collaboration or tone concern",
+    "Sensitive conduct or safety concern",
+    "Security, raw-data, or private-payload concern",
+    "Evidence, release, or claim-boundary concern",
     "CC0",
     "research-alpha",
     "SECURITY.md",
