@@ -17,6 +17,7 @@ the full package inventory.
 | --- | --- | --- |
 | Understand the project | `README.md` | `docs/faq.md`, `docs/glossary.md`, `docs/briefing-sequence.md` |
 | Run or debug validation | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `VALIDATION.md` |
+| Check current status or next work | `docs/status-roadmap.md` | `RELEASE.md`, `VALIDATION.md`, `docs/evidence-dashboard.md` |
 | Review evidence claims | `docs/evidence-dashboard.md` | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, `benchmark-artifacts/README.md` |
 | Prepare release review | `RELEASE.md` | `docs/release-gate-matrix.md`, `docs/maintainer-checklist.md`, `docs/operations-runbook.md` |
 | Contribute safely | `CONTRIBUTING.md` | `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md`, `docs/contributor-workflow.md` |
