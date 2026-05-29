@@ -11,6 +11,15 @@ Nothing here authorizes a production cryptography, medical, clinical,
 deployment, privacy-proof, side-channel, identity-protection, or
 stable-performance claim.
 
+## Situation Routes
+
+| Situation | First Action | Record Or Escalate In |
+| --- | --- | --- |
+| PR checks need review | Run `gh pr checks <number>` and inspect `statusCheckRollup`. | PR comment or `VALIDATION.md` if the result affects release evidence. |
+| Hosted CI is green but merge is blocked | Confirm `Portable validation` is green and classify the block as repository ruleset/admin policy. | `benchmark-artifacts/ci-blockers/latest.json` or release-validation notes. |
+| Evidence artifacts need refresh | Run only the relevant artifact command intentionally. | Commit derived artifacts or dashboard updates with exact commands. |
+| Command, dependency, dataset, or hosted check cannot run | Capture the exact command, error, and smallest next step. | Structured blocker artifact, `VALIDATION.md`, or `docs/troubleshooting.md`. |
+
 ## Routine PR Check
 
 Start from a clean worktree on the PR branch.

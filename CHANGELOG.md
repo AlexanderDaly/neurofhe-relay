@@ -73,6 +73,9 @@ Release target: `v0.1.0-research-alpha`.
   table without upgrading claims.
 - Tightened command-reference coverage so common validation, demo, release,
   native, and dataset jobs route through a compact command table.
+- Tightened operations-runbook coverage so PR checks, green-CI/ruleset blocks,
+  artifact refreshes, and failed commands route through a compact situation
+  table.
 - Added repository-tooling coverage so `.gitattributes`, `.gitignore`, and
   `.editorconfig` preserve line-ending and local-ignore boundaries.
 - Expanded local ignore boundaries for env files, logs, coverage output, and

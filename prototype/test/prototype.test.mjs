@@ -1938,6 +1938,12 @@ test("architecture decision log records repository boundary decisions", () => {
 test("operations runbook maps maintainer commands and blocker policy", () => {
   const runbook = readFileSync("docs/operations-runbook.md", "utf8");
   const requiredEntries = [
+    "## Situation Routes",
+    "| Situation | First Action | Record Or Escalate In |",
+    "PR checks need review",
+    "Hosted CI is green but merge is blocked",
+    "Evidence artifacts need refresh",
+    "Command, dependency, dataset, or hosted check cannot run",
     "npm run validate",
     "git diff --check",
     "Portable validation",

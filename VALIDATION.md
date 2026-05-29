@@ -113,8 +113,8 @@ Covered behaviours:
 - Architecture decision coverage requiring accepted repository boundary
   decisions, claim posture, raw-data policy, and native/toy lane framing.
 - Operations runbook coverage requiring routine maintainer commands,
-  hosted-check handling, blocker policy, release gate posture, and
-  production-claim caveats.
+  hosted-check handling, situation routing, blocker policy, release gate
+  posture, and production-claim caveats.
 - Root README first-path coverage requiring role-based navigation for reviewers,
   contributors, maintainers, and evidence reviewers while preserving
   `productionClaim: false`.
