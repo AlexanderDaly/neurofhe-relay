@@ -54,6 +54,8 @@ Release target: `v0.1.0-research-alpha`.
   Relay as a CC0 research-alpha repository rather than a presentation package.
 - Added a guarded root README current-status table for release target,
   portable validation, merge policy, release gate, and claim-boundary posture.
+- Updated the root README current-status snapshot to track the current
+  136-test portable gate.
 - Added a guarded, concise root README repository layout that defers the
   exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Added a guarded, concise root README quick-command table that defers detailed

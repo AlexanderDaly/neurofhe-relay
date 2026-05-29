@@ -2270,6 +2270,7 @@ test("root README keeps first-read navigation role based", () => {
     "v0.1.0-research-alpha",
     "Portable validation",
     "Green on PR #23",
+    "136 passing tests",
     "Merge state",
     "repository ruleset/admin policy",
     "Release gate",

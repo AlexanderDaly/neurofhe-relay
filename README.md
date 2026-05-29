@@ -85,7 +85,7 @@ linked source before making release, merge, or public-claim decisions.
 | Status Item | Current Posture | Confirm In |
 | --- | --- | --- |
 | Research-alpha release target | `v0.1.0-research-alpha`; not tagged. | `RELEASE.md`, `docs/status-roadmap.md` |
-| Portable validation | Green on PR #23 and locally recorded with 135 passing tests. | `VALIDATION.md`, `docs/operations-runbook.md` |
+| Portable validation | Green on PR #23 and locally recorded with 136 passing tests. | `VALIDATION.md`, `docs/operations-runbook.md` |
 | Merge state | Hosted CI/check-rollup is green; merge remains blocked by repository ruleset/admin policy. | `docs/status-roadmap.md`, `docs/operations-runbook.md` |
 | Release gate | `releaseGateSatisfied: false`; dashboard evidence is not release approval. | `benchmark-artifacts/release-evidence/latest.json`, `docs/evidence-dashboard.md` |
 | Claim boundary | Preserve `productionClaim: false`, `privacyBoundary`, and `cryptoInventory`. | `docs/architecture-decisions.md`, `docs/evidence-guide.md` |
