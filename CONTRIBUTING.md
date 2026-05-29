@@ -1,9 +1,9 @@
 # Contributing
 
-NeuroFHE Relay is a CC0 research prototype for privacy-preserving sparse event
-inference. Contributions are welcome when they keep the evidence boundary clear:
-do not turn toy arithmetic, single-window native demos, or plaintext baselines
-into production cryptography, medical, security, or performance claims.
+NeuroFHE Relay is a CC0 research-alpha repository for privacy-preserving event intelligence.
+Contributions are welcome when they keep the evidence boundary clear: do not
+turn toy arithmetic, single-window native demos, or plaintext baselines into
+production cryptography, medical, security, or performance claims.
 
 ## Contribution Routes
 

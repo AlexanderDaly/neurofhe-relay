@@ -1647,6 +1647,8 @@ test("security policy preserves research-alpha reporting boundaries", () => {
 test("contributing guide routes evidence and release-boundary work", () => {
   const contributing = readFileSync("CONTRIBUTING.md", "utf8");
   const requiredEntries = [
+    "CC0 research-alpha repository",
+    "privacy-preserving event intelligence",
     "## Contribution Routes",
     "| Change Type | Start With | Keep Visible |",
     "Docs, packaging, or navigation cleanup",
@@ -2457,6 +2459,8 @@ test("TFHE-rs integration note routes native evidence and blockers", () => {
 test("development guide preserves setup, evidence, and release boundaries", () => {
   const development = readFileSync("DEVELOPMENT.md", "utf8");
   const requiredEntries = [
+    "CC0 research-alpha repository",
+    "privacy-preserving event intelligence",
     "## Development Routes",
     "| Need | Start With | Keep In View |",
     "First local validation",

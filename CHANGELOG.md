@@ -149,6 +149,9 @@ Release target: `v0.1.0-research-alpha`.
   reporting table.
 - Added contributing-guide coverage so contributor entrypoints preserve
   evidence, data-handling, release-gate, and repository-policy routing.
+- Tightened contributing and development guide opening posture so both present
+  NeuroFHE Relay as a CC0 research-alpha repository for privacy-preserving
+  event intelligence.
 - Tightened contributing-guide coverage so docs cleanup, prototype/artifact,
   native FHE, real-data, and release-readiness work route through a compact
   contribution table.

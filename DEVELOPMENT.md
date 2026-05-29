@@ -1,8 +1,8 @@
 # Development
 
-NeuroFHE Relay is a CC0 research prototype. The default development loop is
-portable Node.js validation plus optional native FHE checks when OpenFHE or
-Rust/TFHE-rs are installed locally.
+NeuroFHE Relay is a CC0 research-alpha repository for privacy-preserving event intelligence.
+The default development loop is portable Node.js validation plus optional native
+FHE checks when OpenFHE or Rust/TFHE-rs are installed locally.
 
 Nothing in this repository is production cryptography, medical software, or a
 security certification.

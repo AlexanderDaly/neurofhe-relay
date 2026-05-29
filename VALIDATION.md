@@ -151,9 +151,10 @@ Covered behaviours:
   `cryptoInventory`, and `productionClaim: false` routes to stay visible while
   rejecting stale OpenFHE dependency-blocker language.
 - Development guide coverage requiring setup, native-lane, evidence-artifact,
-  development-route, current N-MNIST plaintext baseline routing, hosted-CI,
-  release-gate, explicit user approval, no-merge/no-tag/no-claim-upgrade, and
-  repository ruleset/admin policy boundaries to stay visible.
+  development-route, CC0 research-alpha repository framing, current N-MNIST
+  plaintext baseline routing, hosted-CI, release-gate, explicit user approval,
+  no-merge/no-tag/no-claim-upgrade, and repository ruleset/admin policy
+  boundaries to stay visible.
 - Developer quickstart coverage requiring common change types to route to
   focused validation commands before the shared `npm run ci` and whitespace
   gates.
@@ -169,8 +170,9 @@ Covered behaviours:
 - Contributing-guide coverage requiring contribution-route, developer
   quickstart, command reference, data-handling, evidence-dashboard,
   release-gate matrix, troubleshooting, release-gate, repository-policy, and
-  artifact-boundary routing to stay visible, including explicit user approval
-  and no-merge/no-tag/no-claim-upgrade boundaries.
+  artifact-boundary routing to stay visible, including CC0 research-alpha
+  repository framing, explicit user approval, and no-merge/no-tag/no-claim-upgrade
+  boundaries.
 - Code of conduct coverage requiring conduct-report routing, public
   collaboration boundaries, raw-data/private-payload limits,
   `productionClaim: false`, and `releaseGateSatisfied: false`.
