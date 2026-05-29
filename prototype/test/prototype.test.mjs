@@ -1565,6 +1565,9 @@ test("evidence dashboard summarizes release gate status without upgrading claims
   const dashboard = readFileSync("docs/evidence-dashboard.md", "utf8");
   const requiredEntries = [
     "benchmark-artifacts/release-evidence/latest.json",
+    "subject.releaseGateSatisfied: false",
+    "subject.gateChecks",
+    "subject.productionClaim: false",
     "releaseGateSatisfied: false",
     "productionClaim: false",
     "hostedPortableCi",

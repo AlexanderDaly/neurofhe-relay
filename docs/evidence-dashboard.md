@@ -17,9 +17,14 @@ Source artifact:
 benchmark-artifacts/release-evidence/latest.json
 artifactId: release-evidence-with-green-ci-2026-05-29
 generatedAt: 2026-05-29T04:40:53.000Z
-releaseGateSatisfied: false
+subject.releaseGateSatisfied: false
+subject.productionClaim: false
 productionClaim: false
 ```
+
+The artifact is a `neurofhe.releaseEvidenceArtifact.v1` wrapper. The indexed
+release decision fields and per-check summaries live under `subject`, including
+`subject.gateChecks`. Use those paths when comparing this page with the JSON.
 
 ## Gate Checks
 

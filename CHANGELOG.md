@@ -72,6 +72,8 @@ Release target: `v0.1.0-research-alpha`.
   current evidence, policy, support, contributor, and GitHub-template surfaces.
 - Expanded reviewer-quickstart coverage so diligence review routes through the
   current support, security, contribution, maintainer, issue, and PR surfaces.
+- Tightened evidence-dashboard coverage so the human-readable gate snapshot
+  names the release-evidence wrapper and `subject` JSON paths explicitly.
 
 ### Changed
 

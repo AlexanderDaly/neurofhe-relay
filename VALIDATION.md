@@ -87,8 +87,8 @@ Covered behaviours:
   `patent/briefing/ENER_weak_claims_evidence_gaps.md` to map to current
   evidence surfaces and caveats.
 - Evidence-dashboard coverage requiring the human-readable dashboard to map the
-  current release-evidence index, gate status, blockers, and caveats without
-  upgrading claims.
+  current release-evidence artifact wrapper, subject index, gate status,
+  blockers, and caveats without upgrading claims.
 - FAQ coverage requiring common reader questions to preserve
   `releaseGateSatisfied: false`, `productionClaim: false`, CC0, raw-data,
   CI/ruleset, and evidence caveats.
