@@ -9,6 +9,15 @@ Nothing here authorizes a production cryptography, medical, clinical,
 surveillance, deployment, side-channel, identity-protection, or
 stable-performance claim.
 
+## Review Modes
+
+| Review Mode | Start With | Do Not Proceed Until |
+| --- | --- | --- |
+| Ordinary PR review | `.github/pull_request_template.md`, `.github/CODEOWNERS`, and `docs/operations-runbook.md`. | Local validation, hosted `Portable validation`, raw-data exclusion, and caveats are checked. |
+| Evidence artifact update | `docs/evidence-guide.md`, `docs/data-handling.md`, and `benchmark-artifacts/README.md`. | Command, provenance, artifact path, `productionClaim: false`, `privacyBoundary`, and `cryptoInventory` are preserved. |
+| Release review | `RELEASE.md`, `docs/release-gate-matrix.md`, and `docs/evidence-dashboard.md`. | `releaseGateSatisfied: false` is only changed by satisfied documented gates plus explicit user approval. |
+| Sensitive or raw-data-adjacent report | `SECURITY.md`, `SUPPORT.md`, and `docs/contributor-workflow.md`. | Secrets, private payloads, raw datasets, and exploit details stay out of public threads. |
+
 ## Before Merging A PR
 
 - Confirm the worktree is clean except for the intended changes.

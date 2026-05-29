@@ -1250,6 +1250,12 @@ test("maintainers file defines release authority and evidence boundaries", () =>
 test("maintainer checklist routes review through current policy surfaces", () => {
   const checklist = readFileSync("docs/maintainer-checklist.md", "utf8");
   const requiredEntries = [
+    "## Review Modes",
+    "| Review Mode | Start With | Do Not Proceed Until |",
+    "Ordinary PR review",
+    "Evidence artifact update",
+    "Release review",
+    "Sensitive or raw-data-adjacent report",
     "docs/evidence-dashboard.md",
     "docs/faq.md",
     "SECURITY.md",
