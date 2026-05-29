@@ -1294,7 +1294,7 @@ Result summary:
     },
     {
       "id": "tfhe-rs",
-      "latestArtifactId": "tfhe-rs-memory-rss-2026-05-28",
+      "latestArtifactId": "tfhe-rs-alpha-lane-framing-2026-05-29",
       "evidence": {
         "status": "real-native-run",
         "activeEventCount": 18
@@ -1306,7 +1306,7 @@ Result summary:
         },
         "rssOrPeakMemory": {
           "status": "reported",
-          "bytes": 259309568
+          "bytes": 259096576
         }
       }
     }

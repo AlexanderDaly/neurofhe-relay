@@ -144,7 +144,7 @@ native-lane posture. The indexed native evidence currently includes:
 
 - OpenFHE BFVrns: `openfhe-bfvrns-eeg-eye-state-2026-05-21`.
 - OpenFHE CKKS: `openfhe-ckks-eeg-eye-state-2026-05-21`.
-- TFHE-rs: `tfhe-rs-memory-rss-2026-05-28`.
+- TFHE-rs: `tfhe-rs-alpha-lane-framing-2026-05-29`.
 
 Those artifacts show the integration lanes are real native-library research
 evidence on the indexed host, but native measurement gaps remain. BFVrns still

@@ -111,7 +111,7 @@ on the indexed host. The current artifact identifiers are:
 
 - OpenFHE BFVrns: `openfhe-bfvrns-eeg-eye-state-2026-05-21`.
 - OpenFHE CKKS: `openfhe-ckks-eeg-eye-state-2026-05-21`.
-- TFHE-rs: `tfhe-rs-memory-rss-2026-05-28`.
+- TFHE-rs: `tfhe-rs-alpha-lane-framing-2026-05-29`.
 
 This closes the old dependency-availability blocker for the indexed host, but
 it does not close the native measurement coverage gap. BFVrns still lacks
@@ -134,8 +134,10 @@ per-lane measurement gap index without upgrading any performance claim:
 ```sh
 npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-gap-index-2026-05-27 --generated-at 2026-05-27T20:25:00.000Z
 npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-memory-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:15:00.000Z
 npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact --artifact-id tfhe-rs-realdata-blocker-2026-05-28 --generated-at 2026-05-28T08:28:49.000Z
 npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:18:00.000Z
 npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --artifact --artifact-id nmnist-local-blocker-2026-05-28 --generated-at 2026-05-28T16:35:00.000Z
 npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --artifact --artifact-id nmnist-local-real-2026-05-28 --generated-at 2026-05-28T18:15:00.000Z
 ```

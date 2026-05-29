@@ -245,6 +245,8 @@ Release target: `v0.1.0-research-alpha`.
   scaffold framing instead of legacy evidence/prototype framing.
 - TFHE-rs integration note and native result caveat now use research-alpha
   native-lane framing instead of legacy prototype framing.
+- Package-manifest and ENER weak-claims native-evidence references now point to
+  the refreshed TFHE-rs artifact id.
 - Public demo naming now uses `Relay-2 Research Demo` instead of diagnostic
   framing across the portable benchmark and research assumptions.
 

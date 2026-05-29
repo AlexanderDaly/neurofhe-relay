@@ -1209,7 +1209,7 @@ test("package manifest lists every tracked top-level package entry", () => {
     "research-alpha security scope",
     "openfhe-bfvrns-eeg-eye-state-2026-05-21",
     "openfhe-ckks-eeg-eye-state-2026-05-21",
-    "tfhe-rs-memory-rss-2026-05-28",
+    "tfhe-rs-alpha-lane-framing-2026-05-29",
     "native measurement gaps",
     "not production cryptography",
   ];
@@ -1975,7 +1975,7 @@ test("ENER weak-claims note reflects current native FHE evidence posture", () =>
     "research-alpha repository snapshot",
     "openfhe-bfvrns-eeg-eye-state-2026-05-21",
     "openfhe-ckks-eeg-eye-state-2026-05-21",
-    "tfhe-rs-memory-rss-2026-05-28",
+    "tfhe-rs-alpha-lane-framing-2026-05-29",
     "dependencyDetection.available: true",
     "real-native-run",
     "native measurement coverage",
