@@ -79,6 +79,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened maintainer-checklist coverage so ordinary PR review, evidence
   updates, release review, and sensitive/raw-data-adjacent reports route
   through a compact review-mode table.
+- Tightened contributor-workflow coverage so bug reports, evidence gaps,
+  cleanup requests, pull requests, and sensitive reports route through a
+  compact contribution table.
 - Added repository-tooling coverage so `.gitattributes`, `.gitignore`, and
   `.editorconfig` preserve line-ending and local-ignore boundaries.
 - Expanded local ignore boundaries for env files, logs, coverage output, and

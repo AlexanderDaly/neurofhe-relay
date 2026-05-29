@@ -81,8 +81,9 @@ Covered behaviours:
   at-a-glance gate-posture coverage, glossary term coverage, testing strategy
   validation-surface coverage, dependency matrix setup-surface coverage,
   data-handling boundary-surface coverage, evidence-guide review-route
-  coverage, repository tooling normalization/ignore-boundary coverage, and
-  GitHub Actions trigger and action-major checks.
+  coverage, contributor-workflow route coverage, repository tooling
+  normalization/ignore-boundary coverage, and GitHub Actions trigger and
+  action-major checks.
 - Troubleshooting coverage requiring common local npm, hosted-CI, native-lane,
   dataset, and release-gate blockers to route to exact-command/error/next-step
   recording without weakening `productionClaim: false`.

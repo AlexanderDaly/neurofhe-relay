@@ -10,6 +10,16 @@ security certification. Issues and pull requests should preserve the
 research-alpha caveats and avoid secrets, private data, raw datasets, and
 unsupported benchmark or cryptographic claims.
 
+## Contribution Routes
+
+| Need | Use | Keep Visible |
+| --- | --- | --- |
+| Report a reproducible failure | `.github/ISSUE_TEMPLATE/bug-report.yml` | Exact command, observed result, environment, and smallest next step. |
+| Report an evidence gap | `.github/ISSUE_TEMPLATE/validation-gap.yml` | Current caveat, missing evidence class, and `releaseGateSatisfied: false`. |
+| Request repository cleanup | `.github/ISSUE_TEMPLATE/repository-cleanup.yml` | Reader friction, affected file or workflow, and validation route. |
+| Open or update a pull request | `.github/pull_request_template.md` | Commands run, artifact impact, raw-data boundary, and repository-policy posture. |
+| Report sensitive security or raw-data exposure | `SECURITY.md` and `SUPPORT.md` | Keep secrets, private payloads, raw datasets, and exploit details out of public issues. |
+
 ## Issue Forms
 
 Use `SUPPORT.md` first when deciding whether a report belongs in a public issue,

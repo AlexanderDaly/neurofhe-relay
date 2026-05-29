@@ -1201,11 +1201,24 @@ test("benchmark artifacts README lists every tracked artifact directory", () => 
 test("contributor workflow map lists every tracked GitHub workflow surface", () => {
   const workflowMap = readFileSync("docs/contributor-workflow.md", "utf8");
   const githubFiles = listTrackedFiles(".github").sort();
+  const requiredRoutes = [
+    "## Contribution Routes",
+    "| Need | Use | Keep Visible |",
+    "Report a reproducible failure",
+    "Report an evidence gap",
+    "Request repository cleanup",
+    "Open or update a pull request",
+    "Report sensitive security or raw-data exposure",
+  ];
   const missingFiles = githubFiles.filter((filePath) =>
     !workflowMap.includes(filePath),
   );
+  const missingRoutes = requiredRoutes.filter((entry) =>
+    !workflowMap.includes(entry),
+  );
 
   assert.deepEqual(missingFiles, []);
+  assert.deepEqual(missingRoutes, []);
 });
 
 test("CODEOWNERS maps repository review ownership", () => {
