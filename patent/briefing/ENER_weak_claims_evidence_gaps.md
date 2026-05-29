@@ -5,7 +5,7 @@ This file identifies claims or statements that need evidence before publication,
 | Area | Current Weakness | Evidence Needed |
 |---|---|---|
 | Latent compression performance | The specification describes bandwidth and compute reductions broadly. | Benchmarks comparing raw, dense feature, sparse feature, and compressed latent encrypted inference. |
-| Real neural modality validation | Current repo validation is a research-grade prototype and does not establish real EEG, ECoG, fNIRS, MEG, or implanted-array performance. | Experiments on public or collected datasets with documented preprocessing and model accuracy. |
+| Real neural modality validation | Current research-alpha package validation does not establish real EEG, ECoG, fNIRS, MEG, or implanted-array performance. | Experiments on public or collected datasets with documented preprocessing and model accuracy. |
 | Reconstruction resistance | The draft describes adversarial reconstruction defenses but does not prove them. | Reconstruction attack tests, identity leakage tests, mutual-information estimates, and acceptance criteria. |
 | Homomorphic feasibility | The prototype uses a toy additive path and OpenFHE integration plan, not a complete production FHE deployment. | Native OpenFHE, SEAL, Concrete, TFHE-rs, or equivalent benchmark with parameter reports. |
 | Adaptive compression controller | The controller is architected but not implemented as a verified module. | Control policy implementation, ablation studies, and tradeoff curves. |

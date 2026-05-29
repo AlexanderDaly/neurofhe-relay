@@ -221,6 +221,8 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened README, evidence-guide, and publication-formatting wording so live
   reader-facing surfaces use research-alpha package and bibliography-expansion
   framing instead of stale prototype or placeholder wording.
+- Tightened the ENER weak-claims table so real-modality validation remains
+  caveated without using stale research-prototype framing.
 - Tightened presentation-output coverage so packaged slide review,
   claim/caveat checks, evidence/release-readiness review, and export refreshes
   route through source docs before generated files.

@@ -2009,6 +2009,7 @@ test("ENER weak-claims note reflects current native FHE evidence posture", () =>
   const requiredEntries = [
     "benchmark-artifacts/native-evidence/latest.json",
     "research-alpha repository snapshot",
+    "research-alpha package validation",
     "openfhe-bfvrns-eeg-eye-state-2026-05-21",
     "openfhe-ckks-eeg-eye-state-2026-05-21",
     "tfhe-rs-alpha-lane-framing-2026-05-29",
@@ -2031,6 +2032,7 @@ test("ENER weak-claims note reflects current native FHE evidence posture", () =>
   assert.equal(weakClaims.includes("TFHE-rs remains the currently runnable real-library lane"), false);
   assert.equal(weakClaims.includes("once OpenFHE is installed"), false);
   assert.equal(weakClaims.includes("beyond a\nresearch prototype"), false);
+  assert.equal(weakClaims.includes("research-grade prototype"), false);
 });
 
 test("evidence guide routes evidence review without upgrading claims", () => {
