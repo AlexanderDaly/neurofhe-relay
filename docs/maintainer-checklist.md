@@ -62,5 +62,6 @@ git diff --check
 - `docs/glossary.md` - recurring project and artifact terms.
 - `docs/policy-boundary.md` - root policy and claim-boundary map.
 - `docs/status-roadmap.md` - current readiness and next-work map.
+- `docs/testing-strategy.md` - portable validation and guard-family map.
 - `benchmark-artifacts/README.md` - artifact mechanics and output locations.
 - `RELEASE.md` - research-alpha release gate.

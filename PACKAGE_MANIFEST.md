@@ -20,6 +20,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
   code, evidence artifacts, patent materials, and release gate.
 - `docs/glossary.md` - recurring project, artifact, release, gateway, and
   native-lane terms.
+- `docs/testing-strategy.md` - portable validation, hosted CI, docs-link,
+  hygiene, and guard-family map.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - license, security, contribution, validation, and

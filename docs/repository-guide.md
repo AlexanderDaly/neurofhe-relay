@@ -16,6 +16,8 @@ clinical validation, deployment evidence, or a security certification.
   public briefing files.
 - `docs/glossary.md` - definitions for recurring claim, artifact, release,
   gateway, and native-lane terms.
+- `docs/testing-strategy.md` - portable validation, hosted CI, docs-link,
+  hygiene, and guard-family map.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - map of the license, security, contribution,
@@ -74,6 +76,8 @@ validation, release, or public-claim language.
 Use `docs/status-roadmap.md` when you need the current readiness picture before
 deciding what to review or improve next.
 Use `docs/glossary.md` when project vocabulary is unclear.
+Use `docs/testing-strategy.md` before changing checks, CI, validation wording,
+or repository-readability guards.
 
 ## Prototype Code
 

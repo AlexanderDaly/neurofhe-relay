@@ -1173,6 +1173,23 @@ test("glossary defines recurring repository terms", () => {
   assert.deepEqual(missingTerms, []);
 });
 
+test("testing strategy maps every portable validation surface", () => {
+  const testingStrategy = readFileSync("docs/testing-strategy.md", "utf8");
+  const validationSurfaces = [
+    "package.json",
+    ".github/workflows/ci.yml",
+    "prototype/test/prototype.test.mjs",
+    "prototype/scripts/check-docs.mjs",
+    "prototype/scripts/placeholder-scan.mjs",
+    "VALIDATION.md",
+  ];
+  const missingSurfaces = validationSurfaces.filter((filePath) =>
+    !testingStrategy.includes(filePath),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
