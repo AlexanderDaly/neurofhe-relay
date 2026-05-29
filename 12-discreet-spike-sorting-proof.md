@@ -64,8 +64,8 @@ passes only when it publishes a coherent evidence bundle:
 - native OpenFHE or TFHE-rs handoff evidence, or a blocker artifact;
 - `npm run validate`, `git diff --check`, and JSON artifact guards passing.
 
-The proof can remain research-grade. It must not silently upgrade a proxy into
-brain-machine security evidence.
+The evidence bundle can remain research-alpha. It must not silently upgrade a
+proxy into brain-machine security evidence.
 
 ## First Implementation Slices
 

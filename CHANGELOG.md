@@ -247,6 +247,8 @@ Release target: `v0.1.0-research-alpha`.
   non-medical research-alpha framing instead of research-grade phrasing.
 - Tightened validation and evidence-source scope notes so current boundaries
   use research-alpha framing instead of research-grade wording.
+- Tightened TFHE-rs validation and discreet spike-sorting gate notes so
+  comparison records and evidence bundles use research-alpha wording.
 - Tightened relay-gateway pattern wording so encrypted references, Octra/HFHE
   timing, and downstream trust assumptions read as research-alpha boundaries.
 - Renamed gateway and agent-readable metadata from `currentPrototype` to

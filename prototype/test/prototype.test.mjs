@@ -1073,6 +1073,10 @@ test("briefing sequence guide lists every numbered root brief", () => {
     "utf8",
   );
   const relayGatewayPattern = readFileSync("09-relay-gateway-pattern.md", "utf8");
+  const discreetSpikeSortingProof = readFileSync(
+    "12-discreet-spike-sorting-proof.md",
+    "utf8",
+  );
   const numberedBriefs = readdirSync(".")
     .filter((entry) => /^[0-9]{2}-.+\.md$/.test(entry))
     .sort();
@@ -1223,6 +1227,13 @@ test("briefing sequence guide lists every numbered root brief", () => {
   assert.equal(relayGatewayPattern.includes("placeholder references"), false);
   assert.equal(relayGatewayPattern.includes("operation families are proven"), false);
   assert.equal(relayGatewayPattern.includes("placeholder ciphertext references"), false);
+  assert.equal(
+    discreetSpikeSortingProof.includes(
+      "The evidence bundle can remain research-alpha.",
+    ),
+    true,
+  );
+  assert.equal(discreetSpikeSortingProof.includes("remain research-grade"), false);
 });
 
 test("prototype map lists every library module", () => {
@@ -1985,6 +1996,7 @@ test("validation history points TFHE readers to the current native artifact", ()
     '"latencyMs": 5900.8',
     "research-alpha TFHE-rs native lane only",
     "The runnable dependency-free research-alpha scaffold uses educational additive HE only.",
+    "use it only as a research-alpha comparison record.",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !validation.includes(entry),
@@ -1992,6 +2004,7 @@ test("validation history points TFHE readers to the current native artifact", ()
 
   assert.deepEqual(missingEntries, []);
   assert.equal(validation.includes("prototype is still research-grade"), false);
+  assert.equal(validation.includes("research-grade comparison record"), false);
 });
 
 test("troubleshooting guide routes common repo blockers without weakening caveats", () => {

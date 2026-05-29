@@ -1163,7 +1163,7 @@ benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-validation-2026-05-21.json
 ```
 
 The TFHE-rs result is a single local synthetic 8x8 run. The latency is not a
-stable performance claim; use it only as a research-grade comparison record.
+stable performance claim; use it only as a research-alpha comparison record.
 The RSS value is a single end-of-run current process RSS sample from the local
 process table, not peak RSS, dataset-scale memory, side-channel evidence, or
 stable memory evidence.
