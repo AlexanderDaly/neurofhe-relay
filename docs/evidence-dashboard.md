@@ -9,7 +9,7 @@ It is not benchmark evidence by itself, not release approval, and not a
 production cryptography, medical, clinical, deployment, side-channel,
 anonymity, stable-performance, or privacy-proof claim.
 
-## Current Gate Snapshot
+## Committed Gate Snapshot
 
 Source artifact:
 
@@ -25,6 +25,13 @@ productionClaim: false
 The artifact is a `neurofhe.releaseEvidenceArtifact.v1` wrapper. The indexed
 release decision fields and per-check summaries live under `subject`, including
 `subject.gateChecks`. Use those paths when comparing this page with the JSON.
+This is the latest committed release-evidence snapshot, not a substitute for
+live PR status. Before merge or release review, confirm the current PR head,
+hosted check rollup, and merge policy with:
+
+```sh
+gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
+```
 
 ## Gate Checks
 

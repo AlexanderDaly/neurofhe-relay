@@ -238,6 +238,8 @@ Release target: `v0.1.0-research-alpha`.
 - Refreshed hosted-CI and release-evidence artifacts for the PR #23 `0feaa65`
   snapshot so the evidence dashboard points at a green `Portable validation`
   rollup while keeping `releaseGateSatisfied: false`.
+- Clarified the evidence dashboard snapshot wording so committed release
+  evidence is not confused with live PR head or merge-policy status.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

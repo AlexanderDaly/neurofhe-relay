@@ -2347,6 +2347,11 @@ test("evidence dashboard summarizes release gate status without upgrading claims
   const requiredEntries = [
     "benchmark-artifacts/release-evidence/latest.json",
     "release-evidence-ci-head-0feaa65-2026-05-29",
+    "## Committed Gate Snapshot",
+    "latest committed release-evidence snapshot",
+    "not a substitute for",
+    "live PR status",
+    "gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
     "subject.releaseGateSatisfied: false",
     "subject.gateChecks",
     "subject.productionClaim: false",
