@@ -117,58 +117,22 @@ Avoid saying:
 
 That is not defensible today. The defensible near-term claim is a hybrid architecture: neuromorphic preprocessing plus FHE-protected inference/verification.
 
-## Development And CI
+## Quick Commands
 
-For the portable local gate, run:
+Use `docs/command-reference.md` for the full command list and `RELEASE.md` for
+release-gate commands. The common root commands are:
 
-```sh
-npm run ci
-git diff --check
-```
-
-`npm run ci` currently aliases `npm run validate`. It runs tests, JSON metadata
-parsing, local Markdown link checking, and the repository hygiene scan. GitHub
-Actions runs the same portable validation plus smoke artifact generation and
-upload for synthetic benchmarks, padded-sparse privacy modes, and the
-deterministic N-MNIST-format fixture. Native OpenFHE and TFHE-rs checks remain
-local/release gate commands because they require external libraries and heavier
-host setup.
-See `DEVELOPMENT.md` and `RELEASE.md` before making or tagging release claims.
-
-To check local Markdown links only:
-
-```sh
-npm run check:docs
-```
-To persist a redacted source-hygiene evidence artifact without reading raw
-datasets into git, run:
-
-```sh
-npm run scan:hygiene -- --artifact
-```
-
-To build a compact release-evidence index from the current committed blocker,
-hygiene, native-evidence, privacy-mode, reconstruction-risk, real N-MNIST
-plaintext baseline, and TFHE-rs real-data blocker artifacts, run:
-
-```sh
-npm run release:evidence -- --artifact
-```
+| Job | Command |
+| --- | --- |
+| Portable local gate | `npm run ci` and `git diff --check` |
+| Educational sparse encrypted scorer | `npm run demo` |
+| Local relay gateway scaffold | `npm run gateway:demo` |
+| Publish the synthetic benchmark artifact | `npm run benchmark:artifact` |
+| Refresh the caveated release dashboard | `npm run release:evidence -- --artifact` |
 
 The release-evidence index is a dashboard artifact only. It does not satisfy the
 release gate or upgrade any caveated benchmark, privacy, native-library,
 real-data baseline, or security claim.
-
-To run the synthetic gateway reconstruction-risk probes and publish the current
-caveated artifact, run:
-
-```sh
-npm run reconstruction:risk -- --artifact
-```
-
-The reconstruction-risk artifact checks that raw sentinel payloads and active
-values are withheld from model-facing fields while keeping public-position
-residual risk explicit. It is not a formal privacy proof or attack benchmark.
 
 ## Relay Gateway Pattern
 
@@ -187,165 +151,21 @@ The runnable scaffold demonstrates:
 
 The gateway is simulated and educational in this package. It is not a medical, surveillance, coercive-control, mind-reading, external-control, or production cryptography system.
 
-## Desk Demo
+## Evidence Snapshot
 
-Run the included educational prototype:
+The runnable prototype demonstrates active-event sparse scoring with toy
+additive homomorphic encryption over a fixed linear model contract:
+`scores = W x + bias`. The benchmark family keeps dense/raw, unsorted-spike,
+and spatial-sorted representations comparable while preserving
+`privacyBoundary`, `cryptoInventory`, and `productionClaim: false`.
 
-```sh
-npm run demo
-```
-
-Emit the benchmark schema, including dense/raw, unsorted-spike, and spatial-sorted representation comparison plus SNN/encrypted-readiness evaluation:
-
-```sh
-npm run benchmark
-```
-
-The benchmark also carries the packed-vector plan, the privacy-mode decision
-between public active positions, padded sparse batches, and dense encrypted
-windows, and a framing guardrail that keeps bio-digital language scoped to
-privacy-preserving event intelligence rather than diagnosis or treatment.
-
-Publish a padding ablation for sparse metadata leakage versus overhead:
-
-```sh
-npm run benchmark:privacy-modes -- --artifact
-```
-
-Run the local-first relay gateway scaffold:
-
-```sh
-npm run gateway:demo
-```
-
-Print the real OpenFHE BFVrns integration plan:
-
-```sh
-npm run benchmark:openfhe
-```
-
-Persist an optional OpenFHE adapter comparison artifact:
-
-```sh
-npm run benchmark:openfhe -- --artifact
-```
-
-Run the real OpenFHE BFVrns C++ demo with the embedded synthetic contract:
-
-```sh
-npm run benchmark:openfhe -- --run
-```
-
-Print the OpenFHE CKKS approximate real-number comparison lane:
-
-```sh
-npm run benchmark:openfhe-ckks
-```
-
-Run the real OpenFHE CKKS C++ demo and optionally persist a comparison artifact:
-
-```sh
-npm run benchmark:openfhe-ckks -- --run
-npm run benchmark:openfhe-ckks -- --run --artifact
-```
-
-Print the TFHE-rs integer/Boolean threshold integration plan:
-
-```sh
-npm run benchmark:tfhe
-```
-
-Run the real TFHE-rs Rust demo and optionally persist a comparison artifact:
-
-```sh
-npm run benchmark:tfhe -- --run
-npm run benchmark:tfhe -- --run --artifact
-```
-
-Record the current TFHE-rs real-data input blocker without overwriting the
-latest runnable synthetic TFHE-rs artifact:
-
-```sh
-npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
-```
-
-Summarize native evidence reproducibility across OpenFHE BFVrns, OpenFHE CKKS,
-and TFHE-rs without rerunning benchmarks:
-
-```sh
-npm run native:doctor
-npm run native:doctor -- --artifact
-```
-
-Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
-
-```sh
-npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
-```
-
-Run the real public UCI EEG Eye State baseline. The raw ARFF is downloaded into
-`.cache/` and is not committed; only the derived artifact is published:
-
-```sh
-npm run baseline:eeg-eye-state -- --artifact
-npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact
-```
-
-Generate OpenFHE-ready single-window input contracts from that EEG baseline and
-run BFVrns/CKKS against the derived sparse inputs:
-
-```sh
-npm run contract:eeg-openfhe
-npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
-npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
-```
-
-The committed EEG artifact at
-`benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json` uses a
-chronological 70/30 split, 8-row by 8-channel sparse latent event windows, and
-the same `scores = W x + bias` contract shape `[2, 64]`. It reports 301/561
-correct windows, accuracy `0.536542`, and a compression curve for active budgets
-of 8, 16, 32, and 64 values per window. This is real-data plaintext evidence,
-not encrypted-compute, medical, or generalization evidence.
-
-The committed native OpenFHE real-data artifacts consume one derived EEG sparse
-window from the generated input contract. BFVrns uses the fixed-point view and
-matches the expected quantized classification; CKKS uses approximate-real values
-and reports score drift against plaintext. These artifacts are local
-single-window integration evidence, not production cryptography or broad
-runtime claims. The native evidence manifest under
-`benchmark-artifacts/native-evidence/` records the host/toolchain fingerprint,
-latest artifact classification, exact rerun commands, and remaining gaps for
-the OpenFHE and TFHE-rs lanes. Its measurement gap index lists the exact
-ciphertext-byte and RSS/peak-memory gaps per lane. TFHE-rs now reports a
-single end-of-run current RSS sample for the synthetic native run; that remains
-host-specific memory evidence, not peak-memory, dataset-scale, side-channel, or
-stable performance evidence. The index is a blocker map, not substitute
-performance or memory evidence.
-
-The TFHE-rs real-data blocker under
-`benchmark-artifacts/comparisons/tfhe-rs-realdata/` records that the current
-native TFHE-rs target does not yet accept the EEG-derived OpenFHE input
-contract. It preserves the exact attempted command and smallest next step while
-leaving `benchmark-artifacts/comparisons/tfhe-rs/latest.json` as the latest
-runnable synthetic TFHE-rs evidence.
-
-The real N-MNIST plaintext baseline under
-`benchmark-artifacts/plaintext-baselines/nmnist-local/` uses the extracted
-public N-MNIST `Train/` and `Test/` directories outside git. The current
-sampled artifact evaluates 10 examples per class from each split and reports
-100 test examples, accuracy `0.66`, a compression curve, and
-`productionClaim: false`; it is plaintext preprocessing/model evidence, not
-encrypted-compute or deployment evidence.
-
-Run the deterministic N-MNIST-format smoke fixture and publish a compression
-curve artifact:
-
-```sh
-npm run baseline:plaintext -- --fixture nmnist-smoke --artifact
-```
-
-The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The benchmark now compares dense/raw windows, unsorted spikes, and spatial-sorted events on that same task so representation cost and metadata leakage stay visible. Each spatial-sorted benchmark entry carries its own crypto inventory, sorted-event privacy boundary, reconstruction-resistance caveat, and explicit metadata-leakage list. The benchmark also emits `spatialClusterReadiness`: spatial-sorted events can feed a future SNN path after count-to-spike-train, neuron-index, timestep, and membrane/synapse adapters; the same representation can feed the current lightweight encrypted linear score path directly. The compute side can use the `public-active-neuron-positions-encrypted-features` mode: active neuron/time positions are public, feature values are encrypted, and raw samples remain local. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is included under `prototype/openfhe/` for the same exact integer sparse scorer, and a real OpenFHE CKKS target is included under `prototype/openfhe-ckks/` for approximate neural/ML feature scoring with floating-point-style values and explicit score-drift reporting. A real TFHE-rs Rust target is also included under `prototype/tfhe-rs/`; it evaluates the same sparse integer scores with `FheUint16` and adds an encrypted `FheBool` threshold/comparison gate for `anomaly_score > normal_score`. BFV/BGV remains the default packed-vector lane for exact integer linear algebra; CKKS is the comparison lane for approximate real-valued neural/ML features; TFHE-rs is the comparison lane to prefer when the model becomes threshold-heavy, Boolean, decision-tree-like, or LUT-style. SEAL/TenSEAL, Concrete, or an Octra/HFHE experiment remain candidate follow-on lanes.
+Committed evidence includes derived UCI EEG Eye State plaintext artifacts,
+sampled public N-MNIST plaintext artifacts, synthetic reconstruction-risk
+probes, metadata-padding ablations, native OpenFHE and TFHE-rs comparison
+artifacts or blockers, repository hygiene evidence, and the caveated
+release-evidence dashboard. Use `docs/evidence-guide.md`,
+`benchmark-artifacts/README.md`, and `docs/release-gate-matrix.md` before
+turning any artifact into a public or release-facing claim.
 
 ## Prototype Boundary
 

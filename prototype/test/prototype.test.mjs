@@ -1420,6 +1420,28 @@ test("root README keeps repository layout concise", () => {
   assert.equal(readme.includes("## Package Contents"), false);
 });
 
+test("root README keeps command surface concise", () => {
+  const readme = readFileSync("README.md", "utf8");
+  const requiredEntries = [
+    "## Quick Commands",
+    "npm run ci",
+    "git diff --check",
+    "npm run demo",
+    "npm run gateway:demo",
+    "npm run benchmark:artifact",
+    "npm run release:evidence -- --artifact",
+    "docs/command-reference.md",
+    "RELEASE.md",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !readme.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(readme.includes("## Desk Demo"), false);
+  assert.equal(readme.includes("Run the real OpenFHE BFVrns C++ demo"), false);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
