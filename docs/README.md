@@ -13,6 +13,8 @@ changing the evidence boundary.
   modules, native lanes, and support notes.
 - `patent-package-map.md` - navigation map for ENER patent, briefing, and
   Mermaid diagram sources.
+- `presentation-outputs.md` - map of generated presentation exports retained
+  for packaged review.
 - `repository-guide.md` - map of the root briefs, prototype code, committed
   evidence artifacts, patent materials, and release gate.
 - `developer-quickstart.md` - first local commands for a contributor who wants
@@ -40,8 +42,10 @@ tooling baseline for consistent local edits and CI-parity Node.js selection.
 `npm run validate`. The validation suite also checks that this index lists every
 Markdown page in `docs/` and that `briefing-sequence.md` lists every numbered
 root brief. It also checks that `prototype-map.md` lists every
-`prototype/lib/*.mjs` module and that `patent-package-map.md` lists every
-Markdown and Mermaid source under `patent/`.
+`prototype/lib/*.mjs` module, that `patent-package-map.md` lists every
+Markdown and Mermaid source under `patent/`, and that
+`presentation-outputs.md` lists every tracked generated output file under
+`outputs/`.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

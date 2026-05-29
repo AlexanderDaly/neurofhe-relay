@@ -1050,6 +1050,18 @@ test("package manifest lists every tracked top-level package entry", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("presentation outputs map lists every tracked generated output file", () => {
+  const outputsMap = readFileSync("docs/presentation-outputs.md", "utf8");
+  const outputFiles = listTrackedFiles("outputs")
+    .filter((entry) => !entry.endsWith("/"))
+    .sort();
+  const missingOutputs = outputFiles.filter((outputPath) =>
+    !outputsMap.includes(outputPath),
+  );
+
+  assert.deepEqual(missingOutputs, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
@@ -1072,16 +1084,25 @@ function listFilesRecursive(dir) {
 }
 
 function listTrackedTopLevelEntries() {
-  const result = spawnSync("git", ["ls-files"], { encoding: "utf8" });
-  assert.equal(result.status, 0, result.stderr);
-
+  const trackedFiles = listTrackedFiles();
   const topLevel = new Map();
-  for (const filePath of result.stdout.trim().split("\n").filter(Boolean)) {
+  for (const filePath of trackedFiles) {
     const [entry, ...rest] = filePath.split("/");
     topLevel.set(entry, rest.length > 0 ? `${entry}/` : entry);
   }
 
   return [...topLevel.values()].sort();
+}
+
+function listTrackedFiles(prefix) {
+  const result = spawnSync("git", ["ls-files"], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr);
+
+  return result.stdout
+    .trim()
+    .split("\n")
+    .filter(Boolean)
+    .filter((filePath) => !prefix || filePath === prefix || filePath.startsWith(`${prefix}/`));
 }
 
 test("GitHub Actions CI workflow uses Node 24-ready action majors", () => {

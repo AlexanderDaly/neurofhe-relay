@@ -18,6 +18,8 @@ clinical validation, deployment evidence, or a security certification.
   library modules, native lanes, and support notes.
 - `docs/patent-package-map.md` - navigation map for ENER patent, briefing, and
   Mermaid diagram sources.
+- `docs/presentation-outputs.md` - map of generated presentation exports kept
+  for packaged review.
 - `docs/developer-quickstart.md` - compact local validation path for
   contributors.
 - `docs/command-reference.md` - grouped npm command reference for validation,
@@ -54,7 +56,8 @@ The numbered Markdown files are the public briefing sequence:
   real-data-derived spike-sorting proof gate.
 
 `PACKAGE_MANIFEST.md` is the file inventory for packaged review. `index.html`
-is a self-contained browser briefing deck. `project-brief.json` is the
+is a self-contained browser briefing deck. `docs/presentation-outputs.md` maps
+generated presentation exports under `outputs/`. `project-brief.json` is the
 agent-readable metadata surface.
 
 ## Prototype Code
