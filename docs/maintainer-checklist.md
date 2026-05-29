@@ -14,6 +14,9 @@ stable-performance claim.
 - Confirm the worktree is clean except for the intended changes.
 - Confirm the PR description says what changed, what was validated, and what
   caveats or blockers remain.
+- Confirm `.github/pull_request_template.md` and the issue forms under
+  `.github/ISSUE_TEMPLATE/` still route validation, release, raw-data, and
+  repository-policy caveats clearly.
 - Confirm `.github/CODEOWNERS` still routes review ownership appropriately for
   the touched area.
 - Run:
@@ -26,6 +29,12 @@ git diff --check
 - Confirm hosted `Portable validation` is green on the PR head.
 - Use `docs/operations-runbook.md` if the PR check rollup is empty, failing, or
   green but still blocked by repository ruleset/admin policy.
+- Use `docs/faq.md` and `docs/evidence-dashboard.md` when answering review
+  questions about current evidence, release posture, raw-data handling, or
+  claim boundaries.
+- Use `SECURITY.md`, `SUPPORT.md`, `CONTRIBUTING.md`, and
+  `docs/contributor-workflow.md` when routing sensitive reports, public support
+  requests, contributor changes, or GitHub issue/PR workflow questions.
 - Confirm raw datasets, raw signals, secrets, private payloads, and proprietary
   material are not staged or attached.
 - Confirm claim language still matches the research-alpha boundary.
@@ -64,7 +73,16 @@ git diff --check
 
 - `docs/command-reference.md` - grouped command list.
 - `docs/evidence-guide.md` - claim-safe evidence map.
+- `docs/evidence-dashboard.md` - current release-evidence posture and caveats.
+- `docs/faq.md` - concise answers for common reader and reviewer questions.
 - `CHANGELOG.md` - unreleased review history and release-caveat summary.
+- `SECURITY.md` - sensitive-reporting scope and research-alpha security
+  boundaries.
+- `SUPPORT.md` - routing for public issues, evidence gaps, sensitive reports,
+  release blockers, and cleanup requests.
+- `CONTRIBUTING.md` - contributor expectations and evidence-boundary rules.
+- `docs/contributor-workflow.md` - GitHub issue, PR, and hosted-validation
+  surface map.
 - `docs/reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `docs/architecture-decisions.md` - accepted repository boundary decisions.
 - `docs/operations-runbook.md` - routine PR and blocker handling.
@@ -80,4 +98,6 @@ git diff --check
 - `MAINTAINERS.md` - current maintainer route and release authority boundary.
 - `.github/CODEOWNERS` - repository review ownership routing.
 - `.github/dependabot.yml` - weekly dependency update routing.
+- `.github/pull_request_template.md` - PR validation and caveat checklist.
+- `.github/ISSUE_TEMPLATE/` - guided bug, validation-gap, and cleanup forms.
 - `RELEASE.md` - research-alpha release gate.

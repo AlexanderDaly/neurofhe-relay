@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 125
-pass 125
+tests 126
+pass 126
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 125
-pass 125
+tests 126
+pass 126
 fail 0
 ```
 
@@ -144,6 +144,9 @@ Covered behaviours:
 - Maintainers-file coverage requiring the current maintainer route, release
   authority boundary, repository ruleset/admin policy, explicit user approval,
   `releaseGateSatisfied: false`, and `productionClaim: false`.
+- Maintainer-checklist coverage requiring current evidence-dashboard, FAQ,
+  security, support, contribution, GitHub-template, release-gate, and
+  repository-policy routing to stay visible.
 - Dependabot coverage requiring weekly dependency update routing for GitHub
   Actions and npm metadata without treating update prompts as release evidence.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene

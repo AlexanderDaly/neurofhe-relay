@@ -1172,6 +1172,32 @@ test("maintainers file defines release authority and evidence boundaries", () =>
   assert.deepEqual(missingEntries, []);
 });
 
+test("maintainer checklist routes review through current policy surfaces", () => {
+  const checklist = readFileSync("docs/maintainer-checklist.md", "utf8");
+  const requiredEntries = [
+    "docs/evidence-dashboard.md",
+    "docs/faq.md",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "CONTRIBUTING.md",
+    "docs/contributor-workflow.md",
+    ".github/pull_request_template.md",
+    ".github/ISSUE_TEMPLATE/",
+    "repository ruleset/admin policy",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "exact command",
+    "smallest next",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !checklist.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("Dependabot config covers package and workflow maintenance", () => {
   const dependabot = readFileSync(".github/dependabot.yml", "utf8");
   const requiredEntries = [

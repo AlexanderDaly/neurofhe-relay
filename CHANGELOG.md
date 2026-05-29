@@ -68,10 +68,12 @@ Release target: `v0.1.0-research-alpha`.
   claim-boundary, exact-command, and hygiene-scan-limit language.
 - Added contributing-guide coverage so contributor entrypoints preserve
   evidence, data-handling, release-gate, and repository-policy routing.
+- Added maintainer-checklist coverage so review routing stays aligned with the
+  current evidence, policy, support, contributor, and GitHub-template surfaces.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 125 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 126 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
