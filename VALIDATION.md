@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 134
-pass 134
+tests 135
+pass 135
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 134
-pass 134
+tests 135
+pass 135
 fail 0
 ```
 
@@ -69,6 +69,9 @@ Covered behaviours:
 - Native evidence manifest generation that fingerprints the current host/toolchain, classifies latest OpenFHE and TFHE-rs artifacts, records exact rerun commands, and preserves remaining native evidence gaps.
 - N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
 - UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
+- Linear-algebra handoff routing for sparse-score contract, operation-count and
+  metadata tradeoff, native BFVrns adapter, privacy-mode, and future
+  implementation-boundary review.
 - Documentation and repository-readability guards for Markdown links, command
   reference script and command-route coverage, documentation index coverage, documentation-index
   role routing and concision, numbered briefing sequence and briefing-route coverage, prototype

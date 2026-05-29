@@ -174,10 +174,13 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened glossary coverage so claim-boundary, release-readiness, native
   measurement, privacy/metadata, and blocker terminology routes to controlling
   evidence surfaces before the term list.
+- Added linear-algebra handoff coverage so sparse-score contract,
+  operation-count, native-adapter, privacy-mode, and implementation-boundary
+  review routes stay visible.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 134 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 135 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

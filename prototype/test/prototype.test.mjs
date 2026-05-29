@@ -1112,6 +1112,31 @@ test("prototype map lists every native lane source file", () => {
   assert.deepEqual(missingFiles, []);
 });
 
+test("linear algebra handoff routes sparse contract review", () => {
+  const handoff = readFileSync("prototype/LINEAR_ALGEBRA_NEXT.md", "utf8");
+  const requiredEntries = [
+    "## Handoff Routes",
+    "| Review Need | Start With | Confirm Against |",
+    "Current sparse linear score contract",
+    "Operation-count or metadata tradeoff",
+    "Native BFVrns adapter follow-up",
+    "Privacy-mode or padding follow-up",
+    "Future implementation boundary",
+    "scores = W x + bias",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "docs/evidence-guide.md",
+    "docs/release-gate-matrix.md",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !handoff.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("patent package map lists every patent markdown and mermaid source", () => {
   const patentMap = readFileSync("docs/patent-package-map.md", "utf8");
   const patentSources = listFilesRecursive("patent")

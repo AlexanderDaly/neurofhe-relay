@@ -4,6 +4,19 @@ This is the linear-algebra handoff for the current sparse demo. The first pass
 is now implemented in `lib/linear-algebra.mjs`; this note preserves the contract
 and the next research steps.
 
+## Handoff Routes
+
+Use this table before changing the sparse scorer, native adapter, or
+privacy-mode language.
+
+| Review Need | Start With | Confirm Against |
+| --- | --- | --- |
+| Current sparse linear score contract | `scores = W x + bias`, matrix orientation, and bias handling below | `prototype/lib/linear-algebra.mjs`, `prototype/README.md`, and the current test suite before changing model shape. |
+| Operation-count or metadata tradeoff | Sparse form, active-event positions, and dense comparison notes below | `docs/evidence-guide.md`, `benchmark-artifacts/privacy-modes/padding-ablation/latest.json`, and `productionClaim: false` caveats before making efficiency or privacy claims. |
+| Native BFVrns adapter follow-up | OpenFHE adapter decision and first packed-vector target below | `prototype/OPENFHE_INTEGRATION.md`, `benchmark-artifacts/native-evidence/latest.json`, `privacyBoundary`, and `cryptoInventory` before treating native evidence as complete. |
+| Privacy-mode or padding follow-up | Privacy-mode decision and padded sparse default below | `docs/release-gate-matrix.md`, `benchmark-artifacts/README.md`, and `docs/evidence-dashboard.md` before closing an evidence gap. |
+| Future implementation boundary | Next Work and Non-Goals below | `DEVELOPMENT.md`, `docs/command-reference.md`, and `docs/troubleshooting.md` before adding commands, dependencies, or blocker artifacts. |
+
 ## Current Contract
 
 The event window is an 8 by 8 tensor flattened into a feature vector:
