@@ -104,6 +104,8 @@ Release target: `v0.1.0-research-alpha`.
   before showing the detailed package inventory.
 - Added developer-quickstart coverage so common change types point to focused
   validation before the full local gate.
+- Tightened support-policy coverage so public issue, private security,
+  release-blocker, and cleanup routes are visible in a compact table.
 
 ### Changed
 

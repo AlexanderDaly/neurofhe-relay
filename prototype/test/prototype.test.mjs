@@ -1367,6 +1367,12 @@ test("code of conduct sets public collaboration boundaries without upgrading cla
 test("support policy routes issues without weakening evidence boundaries", () => {
   const supportPolicy = readFileSync("SUPPORT.md", "utf8");
   const requiredEntries = [
+    "## Report Routing",
+    "| Situation | Public Route | Private Or Special Route |",
+    "Reproducible command, CI, script, or artifact failure",
+    "Sensitive security issue, suspected secret exposure, or private data leak",
+    "Release readiness, hosted-check, or repository ruleset blocker",
+    "Documentation, packaging, navigation, or repository cleanup",
     "GitHub issue forms",
     "SECURITY.md",
     "CONTRIBUTING.md",

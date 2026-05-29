@@ -6,6 +6,17 @@ security certification, deployment approval, or release approval.
 
 ## Where To Route Reports
 
+## Report Routing
+
+| Situation | Public Route | Private Or Special Route |
+| --- | --- | --- |
+| Reproducible command, CI, script, or artifact failure | GitHub bug report issue form | Use `docs/troubleshooting.md` first so the report includes exact command, error, and smallest next step. |
+| Validation or evidence gap | GitHub validation-gap issue form | Use `docs/evidence-dashboard.md` and `docs/release-gate-matrix.md` before calling it release-ready or release-blocking. |
+| Documentation, packaging, navigation, or repository cleanup | GitHub repository-cleanup issue form | Use `CONTRIBUTING.md` and `docs/contributor-workflow.md` before opening a cleanup PR. |
+| Sensitive security issue, suspected secret exposure, or private data leak | Do not open a public issue. | Use `SECURITY.md`; keep secrets, private payloads, raw datasets, and exploit details out of public threads. |
+| Release readiness, hosted-check, or repository ruleset blocker | Public issue only when it can be discussed without private data. | Use `docs/operations-runbook.md`, `RELEASE.md`, and `docs/release-gate-matrix.md`; distinguish CI/check-rollup from repository ruleset/admin policy. |
+| Conduct concern | Do not continue the public thread if it is unsafe or sensitive. | Use `CODE_OF_CONDUCT.md` report routing. |
+
 Use the GitHub issue forms for public, non-sensitive reports:
 
 - Reproducible bugs, failing commands, CI failures, or artifact-generation

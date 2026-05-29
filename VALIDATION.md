@@ -138,8 +138,9 @@ Covered behaviours:
   focused validation commands before the shared `npm run ci` and whitespace
   gates.
 - Support policy coverage requiring issue, security, support, and release
-  blocker routing while preserving `releaseGateSatisfied: false`,
-  `productionClaim: false`, and raw-data boundaries.
+  blocker routing, including a public-versus-private report routing table,
+  while preserving `releaseGateSatisfied: false`, `productionClaim: false`,
+  and raw-data boundaries.
 - Security policy coverage requiring sensitive-report routing, raw-data and
   private-payload exclusions, `privacyBoundary`, `cryptoInventory`,
   `releaseGateSatisfied: false`, `productionClaim: false`, exact-command and
