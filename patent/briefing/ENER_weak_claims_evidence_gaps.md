@@ -18,7 +18,7 @@ This file identifies claims or statements that need evidence before publication,
 ## Validation Update May 21, 2026
 
 This update narrows three evidence gaps without upgrading the project beyond a
-research prototype.
+research-alpha repository snapshot.
 
 ### Real Neural/Event Modality Baseline
 

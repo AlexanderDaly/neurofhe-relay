@@ -118,7 +118,8 @@ Covered behaviours:
   `RELEASE.md` to map to expected artifacts, caveats, and blocker posture.
 - Release-plan coverage requiring no-tag, release-gate false, repository
   ruleset/admin policy, evidence-dashboard, and explicit-approval boundaries to
-  stay visible.
+  stay visible while preserving CC0 research-alpha repository snapshot
+  framing.
 - Changelog coverage requiring the unreleased cleanup stack, release caveats,
   hosted-CI status, and PR #23 blocker posture to stay visible.
 - Reviewer quickstart coverage requiring review-route guidance, diligence

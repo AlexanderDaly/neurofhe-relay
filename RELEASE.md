@@ -9,8 +9,8 @@ v0.1.0-research-alpha
 
 ## Release Purpose
 
-The first release should freeze a diligence-ready public snapshot of the
-research prototype:
+The first release should freeze a diligence-ready public snapshot of the CC0
+research-alpha repository:
 
 - boundary-first architecture for privacy-preserving event intelligence
 - dependency-free toy arithmetic demo for schema and workflow education

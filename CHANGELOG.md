@@ -234,6 +234,8 @@ Release target: `v0.1.0-research-alpha`.
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
+- Release-purpose and ENER weak-claims wording now use CC0 research-alpha
+  repository snapshot framing instead of generic research-prototype framing.
 - Public demo naming now uses `Relay-2 Research Demo` instead of diagnostic
   framing across the portable benchmark and research assumptions.
 

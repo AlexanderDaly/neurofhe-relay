@@ -1956,6 +1956,7 @@ test("ENER weak-claims note reflects current native FHE evidence posture", () =>
   );
   const requiredEntries = [
     "benchmark-artifacts/native-evidence/latest.json",
+    "research-alpha repository snapshot",
     "openfhe-bfvrns-eeg-eye-state-2026-05-21",
     "openfhe-ckks-eeg-eye-state-2026-05-21",
     "tfhe-rs-memory-rss-2026-05-28",
@@ -1977,6 +1978,7 @@ test("ENER weak-claims note reflects current native FHE evidence posture", () =>
   assert.equal(weakClaims.includes("OpenFHEConfig.cmake not found"), false);
   assert.equal(weakClaims.includes("TFHE-rs remains the currently runnable real-library lane"), false);
   assert.equal(weakClaims.includes("once OpenFHE is installed"), false);
+  assert.equal(weakClaims.includes("beyond a\nresearch prototype"), false);
 });
 
 test("evidence guide routes evidence review without upgrading claims", () => {
@@ -2132,6 +2134,8 @@ test("release plan states no-tag gate and approval boundaries", () => {
   const releasePlan = readFileSync("RELEASE.md", "utf8");
   const requiredEntries = [
     "v0.1.0-research-alpha",
+    "diligence-ready public snapshot",
+    "CC0\nresearch-alpha repository",
     "releaseGateSatisfied: false",
     "productionClaim: false",
     "repository ruleset/admin policy",
@@ -2147,6 +2151,7 @@ test("release plan states no-tag gate and approval boundaries", () => {
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(releasePlan.includes("research prototype:"), false);
   assert.equal(releasePlan.includes("Yes:"), false);
 });
 
