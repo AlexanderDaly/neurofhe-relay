@@ -9,6 +9,20 @@ cryptographic assurance, clinical validation, medical guidance, or security
 certification. The authoritative gates remain the files and artifacts linked
 below.
 
+## Roadmap Review Routes
+
+Use this table before changing the roadmap or answering status questions from
+memory. Each route starts with the shortest human-readable surface, then points
+to the artifact or boundary file that should confirm the claim.
+
+| Review Need | Start With | Confirm Against |
+| --- | --- | --- |
+| Merge-readiness review | `docs/operations-runbook.md` and `VALIDATION.md` | Hosted `Portable validation`, `git diff --check`, and repository ruleset/admin policy status. |
+| Release-gate review | `RELEASE.md` and `docs/release-gate-matrix.md` | `benchmark-artifacts/release-evidence/latest.json`, `docs/evidence-dashboard.md`, and `releaseGateSatisfied: false`. |
+| Evidence-gap triage | `docs/claim-evidence-ledger.md` | `benchmark-artifacts/native-evidence/latest.json` and `patent/briefing/ENER_weak_claims_evidence_gaps.md`. |
+| Next implementation slice | `docs/status-roadmap.md` | `docs/developer-quickstart.md`, `docs/command-reference.md`, and the focused test or artifact command for the touched area. |
+| Claim or boundary check | `docs/architecture-decisions.md` | `productionClaim: false`, `privacyBoundary`, `cryptoInventory`, CC0 framing, and raw-data exclusions. |
+
 ## Current Review State
 
 | Question | Current Answer | Authoritative Source |

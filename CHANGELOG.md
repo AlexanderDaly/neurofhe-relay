@@ -93,6 +93,9 @@ Release target: `v0.1.0-research-alpha`.
   release or maintainer review.
 - Tightened status-roadmap coverage so current hosted-CI, release-gate, and
   ruleset/admin merge posture is visible in an at-a-glance table.
+- Added status-roadmap review routes so merge-readiness, release-gate,
+  evidence-gap, next-slice, and claim-boundary questions start from the right
+  controlling surfaces.
 - Added evidence-guide coverage so artifact mechanics, claim discipline,
   release posture, and repository decisions route through a compact review
   table without upgrading claims.

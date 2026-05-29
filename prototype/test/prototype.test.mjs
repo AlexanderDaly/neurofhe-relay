@@ -1592,6 +1592,13 @@ test("contributing guide routes evidence and release-boundary work", () => {
 test("status roadmap lists every release-readiness evidence surface", () => {
   const statusRoadmap = readFileSync("docs/status-roadmap.md", "utf8");
   const releaseReadinessSurfaces = [
+    "## Roadmap Review Routes",
+    "| Review Need | Start With | Confirm Against |",
+    "Merge-readiness review",
+    "Release-gate review",
+    "Evidence-gap triage",
+    "Next implementation slice",
+    "Claim or boundary check",
     "| Question | Current Answer | Authoritative Source |",
     "Is hosted portable CI green?",
     "Yes on PR #23",
@@ -1606,6 +1613,13 @@ test("status roadmap lists every release-readiness evidence surface", () => {
     "benchmark-artifacts/release-evidence/latest.json",
     "benchmark-artifacts/repo-hygiene/latest.json",
     "patent/briefing/ENER_weak_claims_evidence_gaps.md",
+    "docs/release-gate-matrix.md",
+    "docs/evidence-dashboard.md",
+    "docs/claim-evidence-ledger.md",
+    "docs/architecture-decisions.md",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
   ];
   const missingSurfaces = releaseReadinessSurfaces.filter((filePath) =>
     !statusRoadmap.includes(filePath),
