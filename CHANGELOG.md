@@ -50,10 +50,12 @@ Release target: `v0.1.0-research-alpha`.
   maps stay synchronized with tracked surfaces.
 - Added repository-guide coverage so the first map stays aligned with current
   reader, maintainer, GitHub, CI, release-gate, and ruleset-policy surfaces.
+- Added prototype README coverage so the runnable-code entrypoint stays concise
+  and routes detailed command/module inventory to the maintained maps.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 117 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 118 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

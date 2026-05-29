@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 117
-pass 117
+tests 118
+pass 118
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 117
-pass 117
+tests 118
+pass 118
 fail 0
 ```
 
@@ -112,6 +112,9 @@ Covered behaviours:
 - Root README command-surface coverage requiring a quick-command table that
   defers detailed native and release commands to `docs/command-reference.md`
   and `RELEASE.md`.
+- Prototype README coverage requiring the prototype entrypoint to stay concise,
+  route detailed command and module inventory to repository maps, and preserve
+  toy/native/raw-data/release caveats.
 - Support policy coverage requiring issue, security, support, and release
   blocker routing while preserving `releaseGateSatisfied: false`,
   `productionClaim: false`, and raw-data boundaries.

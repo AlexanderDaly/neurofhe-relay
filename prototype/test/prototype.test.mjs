@@ -1640,6 +1640,37 @@ test("root README keeps command surface concise", () => {
   assert.equal(readme.includes("Run the real OpenFHE BFVrns C++ demo"), false);
 });
 
+test("prototype README stays a concise entrypoint instead of a command wall", () => {
+  const prototypeReadme = readFileSync("prototype/README.md", "utf8");
+  const requiredEntries = [
+    "## First Commands",
+    "## Evidence Boundaries",
+    "../docs/prototype-map.md",
+    "../docs/command-reference.md",
+    "../docs/troubleshooting.md",
+    "../benchmark-artifacts/README.md",
+    "npm run demo",
+    "npm run gateway:demo",
+    "npm run benchmark:artifact",
+    "npm run validate",
+    "toy additive",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "native OpenFHE",
+    "TFHE-rs",
+    "raw datasets",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !prototypeReadme.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(prototypeReadme.includes("Current modules:"), false);
+  assert.equal(prototypeReadme.includes("Print the real OpenFHE BFVrns integration plan"), false);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
