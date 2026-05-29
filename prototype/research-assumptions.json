@@ -2,9 +2,9 @@
   "schema": "neurofhe.researchAssumptions.v1",
   "project": "NeuroFHE Relay",
   "naming": {
-    "publicName": "Relay-2 Diagnostic Demo",
+    "publicName": "Relay-2 Research Demo",
     "shortName": "Relay-2",
-    "note": "The public artifact avoids third-party character marks. Private jokes stay private."
+    "note": "The public artifact avoids third-party character marks and diagnostic or medical claims. Private jokes stay private."
   },
   "ipGuardrails": {
     "cleanRoomOnly": true,

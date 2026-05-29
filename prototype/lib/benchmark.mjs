@@ -54,7 +54,7 @@ export function runPrototypeBenchmark(options = {}) {
   return {
     schema: "neurofhe.benchmark.v1",
     project: "NeuroFHE Relay",
-    demo: "Relay-2 Diagnostic Demo",
+    demo: "Relay-2 Research Demo",
     boundaryDomain: "bio-digital-event-intelligence",
     dataset: "synthetic-events-v0",
     model: "tiny-linear-spike-count-v0",

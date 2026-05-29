@@ -218,7 +218,7 @@ Result summary:
 ```json
 {
   "demo": "toy encrypted sparse spike-count classifier",
-  "prototypeCodename": "Relay-2 Diagnostic Demo",
+  "prototypeCodename": "Relay-2 Research Demo",
   "boundaryDomain": "bio-digital-event-intelligence",
   "eventWindow": {
     "schema": "neurofhe.events.v1.demo",

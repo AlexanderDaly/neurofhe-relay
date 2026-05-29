@@ -270,6 +270,8 @@ test("prototype benchmark emits privacy boundary, crypto inventory, and dense ba
   const benchmark = runPrototypeBenchmark({ seed: 91 });
 
   assert.equal(benchmark.schema, "neurofhe.benchmark.v1");
+  assert.equal(benchmark.demo, "Relay-2 Research Demo");
+  assert.equal(JSON.stringify(benchmark).includes("Diagnostic Demo"), false);
   assert.equal(benchmark.dataset, "synthetic-events-v0");
   assert.equal(benchmark.model, "tiny-linear-spike-count-v0");
   assert.equal(benchmark.scheme, "toy-paillier-additive-research-only");
@@ -2290,7 +2292,7 @@ test("root README keeps first-read navigation role based", () => {
     "v0.1.0-research-alpha",
     "Portable validation",
     "Green on PR #23",
-    "136 passing tests",
+    "137 passing tests",
     "Merge state",
     "repository ruleset/admin policy",
     "Release gate",
@@ -3874,8 +3876,9 @@ test("research assumptions are falsifiable and preserve clean-room guardrails", 
   const assumptions = JSON.parse(text);
 
   assert.equal(assumptions.schema, "neurofhe.researchAssumptions.v1");
-  assert.ok(assumptions.naming.publicName);
+  assert.equal(assumptions.naming.publicName, "Relay-2 Research Demo");
   assert.ok(!/r2-?d2/i.test(assumptions.naming.publicName));
+  assert.equal(JSON.stringify(assumptions).includes("Diagnostic Demo"), false);
   assert.ok(assumptions.ipGuardrails.cleanRoomOnly);
   assert.ok(assumptions.ipGuardrails.noProprietaryReverseEngineering);
   assert.ok(assumptions.hypotheses.length >= 5);
