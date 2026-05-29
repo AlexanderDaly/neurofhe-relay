@@ -1715,6 +1715,14 @@ test("FAQ answers common reader questions without upgrading claims", () => {
 test("repository guide maps current reader, maintainer, and GitHub surfaces", () => {
   const guide = readFileSync("docs/repository-guide.md", "utf8");
   const requiredEntries = [
+    "## Navigation By Task",
+    "| Task | Start With | Then Use |",
+    "Understand the project",
+    "Run or debug validation",
+    "Review evidence claims",
+    "Prepare release review",
+    "Contribute safely",
+    "Detailed File Map",
     "docs/faq.md",
     "docs/evidence-dashboard.md",
     "docs/troubleshooting.md",

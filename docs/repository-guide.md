@@ -8,7 +8,22 @@ or release evidence.
 Nothing in this repository is production cryptography, medical software,
 clinical validation, deployment evidence, or a security certification.
 
-## Start Here
+## Navigation By Task
+
+Use this table first, then fall through to the detailed file map when you need
+the full package inventory.
+
+| Task | Start With | Then Use |
+| --- | --- | --- |
+| Understand the project | `README.md` | `docs/faq.md`, `docs/glossary.md`, `docs/briefing-sequence.md` |
+| Run or debug validation | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `VALIDATION.md` |
+| Review evidence claims | `docs/evidence-dashboard.md` | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, `benchmark-artifacts/README.md` |
+| Prepare release review | `RELEASE.md` | `docs/release-gate-matrix.md`, `docs/maintainer-checklist.md`, `docs/operations-runbook.md` |
+| Contribute safely | `CONTRIBUTING.md` | `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md`, `docs/contributor-workflow.md` |
+| Inspect code layout | `docs/prototype-map.md` | `prototype/README.md`, `DEVELOPMENT.md`, `docs/dependency-matrix.md` |
+| Review patent package | `docs/patent-package-map.md` | `patent/briefing/ENER_weak_claims_evidence_gaps.md`, `06-evidence-and-sources.md` |
+
+## Detailed File Map
 
 - `README.md` - project thesis, public framing, demos, and caveats.
 - `CHANGELOG.md` - unreleased review history and release-caveat summary.

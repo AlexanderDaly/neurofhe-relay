@@ -100,6 +100,8 @@ Release target: `v0.1.0-research-alpha`.
   `releaseGateSatisfied` release boundary to true.
 - Added validation-history coverage so old PR #7 CI/account blocker evidence
   stays labeled as historical and does not confuse the current PR #23 state.
+- Tightened repository-guide coverage so the first map routes readers by task
+  before showing the detailed package inventory.
 
 ### Changed
 
