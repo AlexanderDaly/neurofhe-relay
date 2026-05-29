@@ -1007,6 +1007,12 @@ test("documentation index lists every docs page", () => {
 test("documentation index stays concise and reader-facing", () => {
   const docsIndex = readFileSync("docs/README.md", "utf8");
   const requiredEntries = [
+    "## Start Here",
+    "| Need | Start With | Then Use |",
+    "New reviewer",
+    "Contributor",
+    "Evidence reviewer",
+    "Release or maintainer review",
     "## Validation Coverage",
     "npm run validate",
     "docs/testing-strategy.md",

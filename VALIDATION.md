@@ -71,8 +71,9 @@ Covered behaviours:
 - UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
 - Documentation and repository-readability guards for Markdown links, command
   reference script coverage, documentation index coverage, documentation-index
-  concision, numbered briefing sequence coverage, prototype module, top-level
-  entrypoint, and native source map coverage, patent package source coverage,
+  role routing and concision, numbered briefing sequence coverage, prototype
+  module, top-level entrypoint, and native source map coverage, patent package
+  source coverage,
   package manifest top-level, owner-route, and native-evidence posture
   coverage, generated presentation output map coverage, benchmark artifact
   directory and release-evidence routing coverage, contributor workflow surface

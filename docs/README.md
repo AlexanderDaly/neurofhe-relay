@@ -5,6 +5,15 @@ top-level numbered briefs remain the public presentation sequence; these docs
 help people navigate the repository and run the research-alpha checks without
 changing the evidence boundary.
 
+## Start Here
+
+| Need | Start With | Then Use |
+| --- | --- | --- |
+| New reviewer | `docs/reviewer-quickstart.md` | `docs/faq.md`, `docs/glossary.md`, `docs/status-roadmap.md` |
+| Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md` |
+| Evidence reviewer | `docs/evidence-dashboard.md` | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, `benchmark-artifacts/README.md` |
+| Release or maintainer review | `RELEASE.md` | `docs/release-gate-matrix.md`, `docs/maintainer-checklist.md`, `docs/operations-runbook.md` |
+
 ## Reader Paths
 
 - `briefing-sequence.md` - reading order for the root `01-` through `12-`
