@@ -1447,6 +1447,13 @@ test("contributing guide routes evidence and release-boundary work", () => {
 test("status roadmap lists every release-readiness evidence surface", () => {
   const statusRoadmap = readFileSync("docs/status-roadmap.md", "utf8");
   const releaseReadinessSurfaces = [
+    "| Question | Current Answer | Authoritative Source |",
+    "Is hosted portable CI green?",
+    "Yes on PR #23",
+    "Is the release gate satisfied?",
+    "No; `releaseGateSatisfied: false`",
+    "What blocks merge?",
+    "Repository ruleset/admin policy",
     "RELEASE.md",
     "VALIDATION.md",
     "benchmark-artifacts/ci-blockers/latest.json",

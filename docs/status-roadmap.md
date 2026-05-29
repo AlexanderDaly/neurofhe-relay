@@ -11,21 +11,16 @@ below.
 
 ## Current Review State
 
-- Release target: `v0.1.0-research-alpha`, governed by `RELEASE.md`.
-- Current local portable gate: recorded in `VALIDATION.md`.
-- Current review history: `CHANGELOG.md`.
-- Hosted CI/check-rollup evidence: `benchmark-artifacts/ci-blockers/latest.json`.
-- Release dashboard artifact: `benchmark-artifacts/release-evidence/latest.json`.
-- Human-readable evidence dashboard: `docs/evidence-dashboard.md`.
-- Repository hygiene evidence: `benchmark-artifacts/repo-hygiene/latest.json`.
-- Native-lane evidence and measurement gaps:
-  `benchmark-artifacts/native-evidence/latest.json`.
-- Patent and briefing evidence gaps:
-  `patent/briefing/ENER_weak_claims_evidence_gaps.md`.
-- Claim-to-evidence posture: `docs/claim-evidence-ledger.md`.
-- Release command matrix: `docs/release-gate-matrix.md`.
-- Accepted repository decisions: `docs/architecture-decisions.md`.
-- Routine PR and blocker handling: `docs/operations-runbook.md`.
+| Question | Current Answer | Authoritative Source |
+| --- | --- | --- |
+| What release is being prepared? | `v0.1.0-research-alpha` | `RELEASE.md` |
+| Is the local portable gate current? | Yes; the latest recorded run is in `VALIDATION.md`. | `VALIDATION.md`, `CHANGELOG.md` |
+| Is hosted portable CI green? | Yes on PR #23. | `benchmark-artifacts/ci-blockers/latest.json`, `docs/operations-runbook.md` |
+| Is repository hygiene passing? | Yes in the latest redacted source scan. | `benchmark-artifacts/repo-hygiene/latest.json` |
+| Is the release gate satisfied? | No; `releaseGateSatisfied: false`. | `benchmark-artifacts/release-evidence/latest.json`, `docs/evidence-dashboard.md`, `docs/release-gate-matrix.md` |
+| What blocks merge? | Repository ruleset/admin policy. | `docs/operations-runbook.md`, `RELEASE.md` |
+| What evidence still needs care? | Native measurement gaps, TFHE-rs real-data input, metadata/reconstruction caveats, and patent briefing gaps. | `benchmark-artifacts/native-evidence/latest.json`, `docs/claim-evidence-ledger.md`, `patent/briefing/ENER_weak_claims_evidence_gaps.md` |
+| What repository decisions frame cleanup? | Keep the CC0 research-alpha boundary, raw-data exclusions, toy/native split, and evidence-backed claims. | `docs/architecture-decisions.md` |
 
 ## What Is Ready To Review
 

@@ -66,6 +66,8 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened documentation-index coverage so `docs/README.md` starts with
   role-based routes for reviewers, contributors, evidence reviewers, and
   release or maintainer review.
+- Tightened status-roadmap coverage so current hosted-CI, release-gate, and
+  ruleset/admin merge posture is visible in an at-a-glance table.
 - Added repository-tooling coverage so `.gitattributes`, `.gitignore`, and
   `.editorconfig` preserve line-ending and local-ignore boundaries.
 - Expanded local ignore boundaries for env files, logs, coverage output, and
