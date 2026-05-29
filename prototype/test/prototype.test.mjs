@@ -1489,6 +1489,23 @@ test("testing strategy maps every portable validation surface", () => {
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("validation history distinguishes historical CI blockers from current PR state", () => {
+  const validation = readFileSync("VALIDATION.md", "utf8");
+  const requiredEntries = [
+    "Historical PR #7 Runner-Startup Blocker",
+    "historical PR #7",
+    "PR #23",
+    "hostedPortableCiSatisfied: true",
+    "repository ruleset/admin policy, not a CI or check-rollup failure",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !validation.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(validation.includes("PR #7 is the current draft PR"), false);
+});
+
 test("troubleshooting guide routes common repo blockers without weakening caveats", () => {
   const troubleshooting = readFileSync("docs/troubleshooting.md", "utf8");
   const requiredEntries = [

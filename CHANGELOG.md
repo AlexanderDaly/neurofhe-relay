@@ -98,10 +98,12 @@ Release target: `v0.1.0-research-alpha`.
 - Added hosted-CI evidence coverage so a green PR check rollup is tracked as
   `hostedPortableCiSatisfied: true` without setting the overall
   `releaseGateSatisfied` release boundary to true.
+- Added validation-history coverage so old PR #7 CI/account blocker evidence
+  stays labeled as historical and does not confuse the current PR #23 state.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 131 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 132 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

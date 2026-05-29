@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 131
-pass 131
+tests 132
+pass 132
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 131
-pass 131
+tests 132
+pass 132
 fail 0
 ```
 
@@ -171,6 +171,8 @@ Covered behaviours:
   itself.
 - Hosted-CI evidence coverage requiring green check-rollup status to stay
   separate from the overall `releaseGateSatisfied: false` release boundary.
+- Validation-history coverage requiring historical CI blockers to stay labeled
+  as historical and separate from the current PR #23 hosted-check state.
 - Research assumptions with clean-room and naming guardrails.
 
 ### Desk Demo
@@ -1444,10 +1446,12 @@ Result:
 ascii scan complete
 ```
 
-### GitHub Actions CI Blocker
+### Historical PR #7 Runner-Startup Blocker
 
-PR #7 is the current draft PR using portable GitHub Actions validation. The
-latest remote checks still do not reach any runner steps.
+Historical PR #7 used portable GitHub Actions validation, but its remote checks
+did not reach any runner steps. This section is retained as a historical
+runner-startup/account blocker transcript; it is not the current release PR
+state.
 
 Observed metadata:
 
@@ -1486,7 +1490,7 @@ benchmark-artifacts/ci-blockers/runs/github-actions-runner-startup-block-2026-05
 ```
 
 This is tracked as an account or runner-startup blocker, not evidence of a test
-or workflow-step failure. The PR #7 local parity validation passed with
+or workflow-step failure. The historical PR #7 local parity validation passed with
 `npm run ci` (68/68 tests), smoke artifact generation into a temporary
 directory, and `git diff --check`. A prior matching PR #6 check exposed the
 GitHub annotation: "The job was not started because your account is locked due
@@ -1508,7 +1512,7 @@ Result:
 
 ```text
 Open pull requests: #23, with #17 through #22 superseded by the collapsed stack
-Stack head: d2f8eee on codex/open-pr-stack-ci-blocker
+Hosted-CI evidence snapshot head: d2f8eee on codex/open-pr-stack-ci-blocker
 CI workflow: active, push, pull_request, and workflow_dispatch
 Latest hosted CI runs: green on PR #23 pull_request and push events
 Ruleset API: active default-branch ruleset iamthelaw includes an update rule
@@ -1522,7 +1526,10 @@ annotation. PR #23 still reports `mergeStateStatus: BLOCKED` because the active
 default-branch ruleset `iamthelaw` applies an update rule to `main`; that is a
 repository ruleset/admin merge policy, not a CI or check-rollup failure. The
 hosted-CI snapshot now uses `hostedPortableCiSatisfied: true` for the CI gate
-while preserving overall `releaseGateSatisfied: false`. The current hosted-CI
+while preserving overall `releaseGateSatisfied: false`. The current live PR #23
+state should still be checked with `gh pr view 23` before merge or release
+work; when hosted checks are green but merge remains blocked, that is
+repository ruleset/admin policy, not a CI or check-rollup failure. The hosted-CI
 evidence artifact is:
 
 ```text
