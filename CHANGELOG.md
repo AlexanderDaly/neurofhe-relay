@@ -249,6 +249,8 @@ Release target: `v0.1.0-research-alpha`.
   the refreshed TFHE-rs artifact id.
 - TFHE-rs validation history now points current native-run readers at the
   refreshed May 29 artifact and its current RSS/latency summary.
+- ENER policy-whitepaper wording now uses current research-alpha package
+  framing instead of current research-prototype framing.
 - Public demo naming now uses `Relay-2 Research Demo` instead of diagnostic
   framing across the portable benchmark and research assumptions.
 

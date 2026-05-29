@@ -1154,6 +1154,10 @@ test("linear algebra handoff routes sparse contract review", () => {
 
 test("patent package map lists every patent markdown and mermaid source", () => {
   const patentMap = readFileSync("docs/patent-package-map.md", "utf8");
+  const policyWhitepaper = readFileSync(
+    "patent/briefing/ENER_policy_whitepaper.md",
+    "utf8",
+  );
   const patentSources = listFilesRecursive("patent")
     .filter((entry) => /\.(md|mmd)$/.test(entry))
     .sort();
@@ -1175,6 +1179,8 @@ test("patent package map lists every patent markdown and mermaid source", () => 
 
   assert.deepEqual(missingSources, []);
   assert.deepEqual(missingRoutes, []);
+  assert.equal(policyWhitepaper.includes("research-alpha package"), true);
+  assert.equal(policyWhitepaper.includes("current research prototype"), false);
 });
 
 test("package manifest lists every tracked top-level package entry", () => {
