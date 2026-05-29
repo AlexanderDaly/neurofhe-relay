@@ -21,6 +21,7 @@ below.
 - Patent and briefing evidence gaps:
   `patent/briefing/ENER_weak_claims_evidence_gaps.md`.
 - Claim-to-evidence posture: `docs/claim-evidence-ledger.md`.
+- Release command matrix: `docs/release-gate-matrix.md`.
 
 ## What Is Ready To Review
 
@@ -37,6 +38,8 @@ below.
 
 - PR merge remains controlled by repository ruleset/admin policy.
 - `RELEASE.md` commands still need a final release-machine rerun before tagging.
+- `docs/release-gate-matrix.md` should be used to track each command's
+  artifact, caveat, and blocker posture during that rerun.
 - `benchmark-artifacts/native-evidence/latest.json` still records incomplete
   ciphertext-byte and RSS or peak-memory measurement coverage for OpenFHE lanes.
 - TFHE-rs real-data execution is still blocked until an integer/Boolean adapter
@@ -74,5 +77,6 @@ below.
   `VALIDATION.md`.
 - Evidence reviewer: start with `docs/evidence-guide.md`,
   `docs/claim-evidence-ledger.md`,
+  `docs/release-gate-matrix.md`,
   `benchmark-artifacts/README.md`, and
   `benchmark-artifacts/release-evidence/latest.json`.

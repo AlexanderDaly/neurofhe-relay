@@ -24,6 +24,8 @@ clinical validation, deployment evidence, or a security certification.
   boundary map.
 - `docs/claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
   ledger.
+- `docs/release-gate-matrix.md` - minimum release command, artifact, caveat,
+  and blocker matrix.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - map of the license, security, contribution,
@@ -90,6 +92,8 @@ Use `docs/data-handling.md` before adding raw-data-adjacent commands, derived
 artifacts, blocker reports, or hygiene evidence.
 Use `docs/claim-evidence-ledger.md` before strengthening public, patent,
 investor, release, or standards-facing language.
+Use `docs/release-gate-matrix.md` before rerunning or reviewing release-gate
+commands.
 
 ## Prototype Code
 

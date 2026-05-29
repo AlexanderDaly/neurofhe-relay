@@ -17,11 +17,11 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 100
-pass 100
+tests 101
+pass 101
 fail 0
 json ok
-markdown link scan ok (64 files)
+markdown link scan ok (65 files)
 repository hygiene scan ok
 ```
 
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 100
-pass 100
+tests 101
+pass 101
 fail 0
 ```
 
@@ -82,6 +82,8 @@ Covered behaviours:
 - Claim-evidence ledger coverage requiring every weak-claim area from
   `patent/briefing/ENER_weak_claims_evidence_gaps.md` to map to current
   evidence surfaces and caveats.
+- Release-gate matrix coverage requiring every minimum evidence command in
+  `RELEASE.md` to map to expected artifacts, caveats, and blocker posture.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene
   status, native measurement gaps, metadata-leakage caveats, reconstruction-risk
   caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker

@@ -1259,6 +1259,34 @@ test("claim evidence ledger maps every weak-claim area to evidence and caveats",
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("release gate matrix lists every minimum evidence command", () => {
+  const releasePlan = readFileSync("RELEASE.md", "utf8");
+  const releaseMatrix = readFileSync("docs/release-gate-matrix.md", "utf8");
+  const releaseCommands = releasePlan
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("npm run "));
+  const requiredSurfaces = [
+    ...releaseCommands,
+    "benchmark-artifacts/release-evidence/latest.json",
+    "benchmark-artifacts/repo-hygiene/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json",
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/",
+    "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+    "benchmark-artifacts/reconstruction-risk/latest.json",
+    "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "repository ruleset/admin policy",
+  ];
+  const missingSurfaces = requiredSurfaces.filter((item) =>
+    !releaseMatrix.includes(item),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

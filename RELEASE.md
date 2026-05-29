@@ -46,6 +46,8 @@ If OpenFHE or TFHE-rs cannot run on the release machine, publish the generated
 blocker artifact instead of inventing substitute results. Record the exact
 command, error, and smallest next step.
 
+For a command-by-command review map, use `docs/release-gate-matrix.md`.
+
 ## Release Checklist
 
 - Confirm `.cache/` and raw public datasets are not staged.

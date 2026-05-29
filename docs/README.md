@@ -27,6 +27,8 @@ changing the evidence boundary.
   boundary map.
 - `claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
   ledger.
+- `release-gate-matrix.md` - minimum release command, artifact, caveat, and
+  blocker matrix.
 - `status-roadmap.md` - current review state, remaining release blockers, and
   next evidence-work queue.
 - `policy-boundary.md` - map of license, security, contribution, validation,
@@ -70,7 +72,8 @@ and that `glossary.md` defines recurring repository terms. It also checks that
 `dependency-matrix.md` lists portable and native setup surfaces. It also checks
 that `data-handling.md` lists dataset and artifact boundary surfaces. It also
 checks that `claim-evidence-ledger.md` maps every weak-claim area to current
-evidence and caveats.
+evidence and caveats. It also checks that `release-gate-matrix.md` lists every
+minimum evidence command from `RELEASE.md`.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

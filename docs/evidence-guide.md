@@ -4,6 +4,7 @@ Use this as the short map for reading committed evidence before making claims.
 The detailed artifact mechanics live in `benchmark-artifacts/README.md`.
 Raw-data and derived-artifact boundaries live in `docs/data-handling.md`.
 Weak-claim evidence posture lives in `docs/claim-evidence-ledger.md`.
+Release command evidence posture lives in `docs/release-gate-matrix.md`.
 
 NeuroFHE Relay is a research-alpha package. Evidence in this repository can
 support scoped prototype statements, but it does not support production
@@ -36,6 +37,8 @@ Before using an artifact in public or release-facing text:
 - State blockers as blockers. Do not replace a failed native dependency, absent
   dataset, or unsupported input path with toy or synthetic numbers.
 - Use `RELEASE.md` before suggesting a tag or release.
+- Use `docs/release-gate-matrix.md` before rerunning or reviewing release-gate
+  commands.
 - Use `docs/claim-evidence-ledger.md` before strengthening weak claims into
   public, patent, investor, release, or standards-facing language.
 

@@ -28,6 +28,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
   boundary map.
 - `docs/claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
   ledger.
+- `docs/release-gate-matrix.md` - minimum release command, artifact, caveat,
+  and blocker matrix.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - license, security, contribution, validation, and
