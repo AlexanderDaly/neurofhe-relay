@@ -44,6 +44,9 @@ state. Use `benchmark-artifacts/release-evidence/latest.json` for the caveated
 release dashboard. Use `benchmark-artifacts/repo-hygiene/latest.json` before
 claiming the repository hygiene scan is current.
 
+Use `docs/troubleshooting.md` for common local npm, hosted-CI, native-lane,
+dataset, and release-gate blocker routes before opening a new report.
+
 ## Blocker Recording Policy
 
 If a command cannot run, record the exact command, error, and smallest next step

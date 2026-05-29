@@ -46,6 +46,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `docs/architecture-decisions.md` - accepted repository boundary decisions.
 - `docs/operations-runbook.md` - routine PR, hosted-check, evidence refresh,
   and blocker handling.
+- `docs/troubleshooting.md` - common local, hosted-CI, native-lane, dataset,
+  and release-gate blocker routes.
 - `docs/reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `docs/developer-quickstart.md` - compact local validation path for contributors.
 - `docs/command-reference.md` - grouped npm command reference for validation,

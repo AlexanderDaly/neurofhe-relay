@@ -17,6 +17,9 @@ The portable JavaScript harness has no npm dependencies today.
 For local version managers, `.nvmrc` and `.node-version` point to Node.js 22
 for CI parity. `package.json` still accepts Node.js 20 or newer.
 
+If setup or validation fails, use `docs/troubleshooting.md` before opening an
+issue so the report includes the exact command, error, and smallest next step.
+
 ## First Validation Pass
 
 From the repository root:

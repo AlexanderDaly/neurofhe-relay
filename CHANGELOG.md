@@ -26,6 +26,8 @@ Release target: `v0.1.0-research-alpha`.
   and blocker review.
 - Added `docs/operations-runbook.md` for routine PR checks, hosted check-rollup
   review, evidence refresh commands, and blocker recording.
+- Added `docs/troubleshooting.md` for common local npm, hosted-CI, native-lane,
+  dataset, and release-gate blockers.
 - Added a guarded, role-based root README first path for reviewers,
   contributors, maintainers, and evidence reviewers.
 - Added a guarded, concise root README repository layout that defers the
@@ -43,8 +45,8 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 112 tests, Markdown
-  link scan over 71 files, JSON parsing, and repository hygiene scan.
+- `VALIDATION.md` now records the current portable gate as 113 tests, Markdown
+  link scan over 72 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
 

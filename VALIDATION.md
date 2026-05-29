@@ -17,11 +17,11 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 112
-pass 112
+tests 113
+pass 113
 fail 0
 json ok
-markdown link scan ok (71 files)
+markdown link scan ok (72 files)
 repository hygiene scan ok
 ```
 
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 112
-pass 112
+tests 113
+pass 113
 fail 0
 ```
 
@@ -79,6 +79,9 @@ Covered behaviours:
   coverage, testing strategy validation-surface coverage, dependency matrix
   setup-surface coverage, data-handling boundary-surface coverage, and GitHub
   Actions trigger and action-major checks.
+- Troubleshooting coverage requiring common local npm, hosted-CI, native-lane,
+  dataset, and release-gate blockers to route to exact-command/error/next-step
+  recording without weakening `productionClaim: false`.
 - Claim-evidence ledger coverage requiring every weak-claim area from
   `patent/briefing/ENER_weak_claims_evidence_gaps.md` to map to current
   evidence surfaces and caveats.

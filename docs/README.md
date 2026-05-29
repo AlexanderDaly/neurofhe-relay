@@ -40,6 +40,8 @@ changing the evidence boundary.
 - `architecture-decisions.md` - accepted repository boundary decisions.
 - `operations-runbook.md` - routine PR, hosted-check, evidence refresh, and
   blocker handling.
+- `troubleshooting.md` - common local, hosted-CI, native-lane, dataset, and
+  release-gate blockers.
 - `reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `developer-quickstart.md` - first local commands for a contributor who wants
   to validate the package before opening an issue or PR.
@@ -88,7 +90,9 @@ It also checks that
 `reviewer-quickstart.md` lists the main due-diligence entrypoints and caveats.
 It also checks that `architecture-decisions.md` records the accepted repository
 boundary decisions. It also checks that `operations-runbook.md` records the
-routine maintainer commands and blocker policy.
+routine maintainer commands and blocker policy. It also checks that
+`troubleshooting.md` routes common blockers without weakening release and claim
+caveats.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

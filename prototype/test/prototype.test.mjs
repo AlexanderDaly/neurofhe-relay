@@ -1248,6 +1248,28 @@ test("testing strategy maps every portable validation surface", () => {
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("troubleshooting guide routes common repo blockers without weakening caveats", () => {
+  const troubleshooting = readFileSync("docs/troubleshooting.md", "utf8");
+  const requiredEntries = [
+    "PATH=\"/opt/homebrew/bin:$PATH\" npm run ci",
+    "Node.js 22",
+    "gh pr checks",
+    "repository ruleset/admin policy",
+    "OpenFHEConfig.cmake not found",
+    "Train/",
+    "Test/",
+    "raw datasets must remain outside git",
+    "exact command, error, and smallest next step",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !troubleshooting.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("dependency matrix lists portable and native setup surfaces", () => {
   const dependencyMatrix = readFileSync("docs/dependency-matrix.md", "utf8");
   const requiredSurfaces = [
