@@ -634,7 +634,7 @@ Result summary:
 
 The index is a dashboard artifact over already committed hosted-CI, hygiene,
 native-evidence, privacy-mode, reconstruction-risk, real N-MNIST baseline, and
-TFHE real-data blocker artifacts. The current hosted-CI artifact records PR #23
+TFHE real-data blocker artifacts. The committed hosted-CI snapshot records PR #23
 against `main` head `7317f11` with successful `pull_request` and `push`
 `Portable validation` check runs on PR head `609b48c` after automatic triggers
 were restored. Manual dispatch CI also passed on the superseded stacked branch

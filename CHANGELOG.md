@@ -238,9 +238,9 @@ Release target: `v0.1.0-research-alpha`.
 - Refreshed hosted-CI and release-evidence artifacts for the PR #23 `0feaa65`
   snapshot so the evidence dashboard points at a green `Portable validation`
   rollup while keeping `releaseGateSatisfied: false`.
-- Refreshed hosted-CI and release-evidence artifacts again for the current PR
-  #23 `609b48c` head so committed CI evidence matches the live green
-  check-rollup while keeping `releaseGateSatisfied: false`.
+- Refreshed hosted-CI and release-evidence artifacts again for the PR #23
+  `609b48c` snapshot so committed CI evidence records a recent green
+  check-rollup while live PR head review remains a separate check.
 - Clarified the evidence dashboard snapshot wording so committed release
   evidence is not confused with live PR head or merge-policy status.
 - Clarified the status roadmap so committed hosted-CI evidence snapshots stay
