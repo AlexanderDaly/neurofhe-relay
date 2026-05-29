@@ -24,6 +24,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
   hygiene, and guard-family map.
 - `docs/dependency-matrix.md` - portable, hosted, native-lane, dataset, and
   release dependency map.
+- `docs/data-handling.md` - raw-data, derived-artifact, blocker, and hygiene
+  boundary map.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - license, security, contribution, validation, and

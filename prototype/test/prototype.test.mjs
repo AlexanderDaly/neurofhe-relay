@@ -1210,6 +1210,25 @@ test("dependency matrix lists portable and native setup surfaces", () => {
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("data handling guide lists dataset and artifact boundary surfaces", () => {
+  const dataGuide = readFileSync("docs/data-handling.md", "utf8");
+  const requiredSurfaces = [
+    ".gitignore",
+    "prototype/scripts/placeholder-scan.mjs",
+    "benchmark-artifacts/repo-hygiene/latest.json",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json",
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/",
+    "privacyBoundary",
+    "productionClaim: false",
+  ];
+  const missingSurfaces = requiredSurfaces.filter((filePath) =>
+    !dataGuide.includes(filePath),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

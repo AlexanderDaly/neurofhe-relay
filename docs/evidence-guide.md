@@ -2,6 +2,7 @@
 
 Use this as the short map for reading committed evidence before making claims.
 The detailed artifact mechanics live in `benchmark-artifacts/README.md`.
+Raw-data and derived-artifact boundaries live in `docs/data-handling.md`.
 
 NeuroFHE Relay is a research-alpha package. Evidence in this repository can
 support scoped prototype statements, but it does not support production
@@ -52,4 +53,3 @@ when intentionally refreshing native-evidence manifests.
 If a command cannot run because a dataset, OpenFHE, TFHE-rs, GitHub Actions, or
 host setup is unavailable, record the exact command, error, and smallest next
 step in a structured blocker artifact or validation note.
-

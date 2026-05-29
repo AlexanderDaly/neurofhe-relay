@@ -23,6 +23,8 @@ changing the evidence boundary.
   and guard-family map.
 - `dependency-matrix.md` - portable, hosted, native-lane, dataset, and release
   dependency map.
+- `data-handling.md` - raw-data, derived-artifact, blocker, and hygiene
+  boundary map.
 - `status-roadmap.md` - current review state, remaining release blockers, and
   next evidence-work queue.
 - `policy-boundary.md` - map of license, security, contribution, validation,
@@ -63,7 +65,8 @@ Markdown and Mermaid source under `patent/`, and that
 checks that `status-roadmap.md` lists the release-readiness evidence surfaces
 and that `glossary.md` defines recurring repository terms. It also checks that
 `testing-strategy.md` maps the portable validation surfaces and that
-`dependency-matrix.md` lists portable and native setup surfaces.
+`dependency-matrix.md` lists portable and native setup surfaces. It also checks
+that `data-handling.md` lists dataset and artifact boundary surfaces.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

@@ -56,7 +56,8 @@ gate explicitly support that narrower statement.
 ## Release Review Dependencies
 
 Use `RELEASE.md` for the release command sequence, `VALIDATION.md` for recorded
-outputs, `docs/testing-strategy.md` for the gate model, and
+outputs, `docs/testing-strategy.md` for the gate model,
+`docs/data-handling.md` for raw-data and derived-artifact boundaries, and
 `docs/status-roadmap.md` for the current blocker and next-work map.
 
 Before tagging, confirm the portable gate, hosted CI, native evidence or

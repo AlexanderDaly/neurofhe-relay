@@ -20,6 +20,8 @@ clinical validation, deployment evidence, or a security certification.
   hygiene, and guard-family map.
 - `docs/dependency-matrix.md` - portable, hosted, native-lane, dataset, and
   release dependency map.
+- `docs/data-handling.md` - raw-data, derived-artifact, blocker, and hygiene
+  boundary map.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - map of the license, security, contribution,
@@ -82,6 +84,8 @@ Use `docs/testing-strategy.md` before changing checks, CI, validation wording,
 or repository-readability guards.
 Use `docs/dependency-matrix.md` before changing runtime versions, native lanes,
 dataset inputs, or hosted validation requirements.
+Use `docs/data-handling.md` before adding raw-data-adjacent commands, derived
+artifacts, blocker reports, or hygiene evidence.
 
 ## Prototype Code
 
