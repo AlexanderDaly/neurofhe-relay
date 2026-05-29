@@ -5,6 +5,7 @@ The detailed artifact mechanics live in `benchmark-artifacts/README.md`.
 Raw-data and derived-artifact boundaries live in `docs/data-handling.md`.
 Weak-claim evidence posture lives in `docs/claim-evidence-ledger.md`.
 Release command evidence posture lives in `docs/release-gate-matrix.md`.
+Human-readable release dashboard status lives in `docs/evidence-dashboard.md`.
 Unreleased review history lives in `CHANGELOG.md`.
 Reviewer entrypoints live in `docs/reviewer-quickstart.md`.
 Accepted repository decisions live in `docs/architecture-decisions.md`.

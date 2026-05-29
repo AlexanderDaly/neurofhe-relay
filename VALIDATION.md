@@ -17,11 +17,11 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 111
-pass 111
+tests 112
+pass 112
 fail 0
 json ok
-markdown link scan ok (70 files)
+markdown link scan ok (71 files)
 repository hygiene scan ok
 ```
 
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 111
-pass 111
+tests 112
+pass 112
 fail 0
 ```
 
@@ -82,6 +82,9 @@ Covered behaviours:
 - Claim-evidence ledger coverage requiring every weak-claim area from
   `patent/briefing/ENER_weak_claims_evidence_gaps.md` to map to current
   evidence surfaces and caveats.
+- Evidence-dashboard coverage requiring the human-readable dashboard to map the
+  current release-evidence index, gate status, blockers, and caveats without
+  upgrading claims.
 - Release-gate matrix coverage requiring every minimum evidence command in
   `RELEASE.md` to map to expected artifacts, caveats, and blocker posture.
 - Changelog coverage requiring the unreleased cleanup stack, release caveats,

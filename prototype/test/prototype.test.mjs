@@ -1318,6 +1318,29 @@ test("claim evidence ledger maps every weak-claim area to evidence and caveats",
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("evidence dashboard summarizes release gate status without upgrading claims", () => {
+  const dashboard = readFileSync("docs/evidence-dashboard.md", "utf8");
+  const requiredEntries = [
+    "benchmark-artifacts/release-evidence/latest.json",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "hostedPortableCi",
+    "repositoryHygiene",
+    "nativeMeasurementCoverage",
+    "metadataLeakage",
+    "reconstructionRisk",
+    "realNmnistBaseline",
+    "tfheRealDataPath",
+    "repository ruleset/admin policy",
+    "not benchmark evidence by itself",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !dashboard.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("release gate matrix lists every minimum evidence command", () => {
   const releasePlan = readFileSync("RELEASE.md", "utf8");
   const releaseMatrix = readFileSync("docs/release-gate-matrix.md", "utf8");

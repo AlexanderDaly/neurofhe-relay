@@ -20,6 +20,7 @@ certification.
 Use these files when checking evidence posture:
 
 - `docs/evidence-guide.md` - evidence classes and claim discipline.
+- `docs/evidence-dashboard.md` - human-readable release dashboard status.
 - `docs/release-gate-matrix.md` - release command, artifact, caveat, and
   blocker matrix.
 - `docs/claim-evidence-ledger.md` - weak-claim evidence posture.

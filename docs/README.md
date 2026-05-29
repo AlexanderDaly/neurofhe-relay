@@ -27,6 +27,8 @@ changing the evidence boundary.
   boundary map.
 - `claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
   ledger.
+- `evidence-dashboard.md` - human-readable release-evidence dashboard with
+  current gate status and caveats.
 - `release-gate-matrix.md` - minimum release command, artifact, caveat, and
   blocker matrix.
 - `status-roadmap.md` - current review state, remaining release blockers, and
@@ -79,8 +81,10 @@ and that `glossary.md` defines recurring repository terms. It also checks that
 `dependency-matrix.md` lists portable and native setup surfaces. It also checks
 that `data-handling.md` lists dataset and artifact boundary surfaces. It also
 checks that `claim-evidence-ledger.md` maps every weak-claim area to current
-evidence and caveats. It also checks that `release-gate-matrix.md` lists every
-minimum evidence command from `RELEASE.md`. It also checks that
+evidence and caveats. It also checks that `evidence-dashboard.md` summarizes
+the current release gate status without upgrading claims. It also checks that
+`release-gate-matrix.md` lists every minimum evidence command from `RELEASE.md`.
+It also checks that
 `reviewer-quickstart.md` lists the main due-diligence entrypoints and caveats.
 It also checks that `architecture-decisions.md` records the accepted repository
 boundary decisions. It also checks that `operations-runbook.md` records the

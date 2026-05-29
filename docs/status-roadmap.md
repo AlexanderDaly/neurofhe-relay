@@ -16,6 +16,7 @@ below.
 - Current review history: `CHANGELOG.md`.
 - Hosted CI/check-rollup evidence: `benchmark-artifacts/ci-blockers/latest.json`.
 - Release dashboard artifact: `benchmark-artifacts/release-evidence/latest.json`.
+- Human-readable evidence dashboard: `docs/evidence-dashboard.md`.
 - Repository hygiene evidence: `benchmark-artifacts/repo-hygiene/latest.json`.
 - Native-lane evidence and measurement gaps:
   `benchmark-artifacts/native-evidence/latest.json`.
@@ -33,6 +34,8 @@ below.
 - The release evidence dashboard indexes the current hosted CI, repository
   hygiene, native evidence, metadata-leakage, reconstruction-risk, real N-MNIST
   baseline, TFHE-rs real-data blocker, and `productionClaim: false` posture.
+- `docs/evidence-dashboard.md` gives reviewers the same dashboard posture in a
+  short human-readable form before they inspect the JSON artifact.
 - The repository now has reader maps for docs, briefs, prototype code, native
   sources, patent materials, generated outputs, contributor workflow, policy
   boundaries, evidence artifacts, operations, and maintainer checks.
@@ -79,6 +82,7 @@ below.
 - Maintainer: use `docs/maintainer-checklist.md`,
   `docs/operations-runbook.md`, `RELEASE.md`, and `VALIDATION.md`.
 - Evidence reviewer: start with `docs/evidence-guide.md`,
+  `docs/evidence-dashboard.md`,
   `docs/reviewer-quickstart.md`,
   `docs/architecture-decisions.md`,
   `docs/claim-evidence-ledger.md`,

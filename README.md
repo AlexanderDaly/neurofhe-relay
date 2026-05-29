@@ -68,7 +68,7 @@ complete documentation index:
 | New reviewer | `docs/reviewer-quickstart.md` | `docs/status-roadmap.md`, `CHANGELOG.md`, `VALIDATION.md` |
 | Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `CONTRIBUTING.md` |
 | Maintainer | `docs/maintainer-checklist.md` | `docs/operations-runbook.md`, `RELEASE.md` |
-| Evidence reviewer | `docs/evidence-guide.md` | `docs/claim-evidence-ledger.md`, `docs/release-gate-matrix.md` |
+| Evidence reviewer | `docs/evidence-guide.md` | `docs/evidence-dashboard.md`, `docs/claim-evidence-ledger.md`, `docs/release-gate-matrix.md` |
 
 The repository remains a research-alpha package. Keep `productionClaim: false`,
 `privacyBoundary`, `cryptoInventory`, CC0/public-domain framing, and the
@@ -164,6 +164,7 @@ sampled public N-MNIST plaintext artifacts, synthetic reconstruction-risk
 probes, metadata-padding ablations, native OpenFHE and TFHE-rs comparison
 artifacts or blockers, repository hygiene evidence, and the caveated
 release-evidence dashboard. Use `docs/evidence-guide.md`,
+`docs/evidence-dashboard.md`,
 `benchmark-artifacts/README.md`, and `docs/release-gate-matrix.md` before
 turning any artifact into a public or release-facing claim.
 

@@ -20,6 +20,8 @@ Release target: `v0.1.0-research-alpha`.
 - Added `docs/data-handling.md` for raw-data, derived-artifact, blocker, and
   hygiene boundaries.
 - Added `docs/claim-evidence-ledger.md` for weak-claim evidence posture.
+- Added `docs/evidence-dashboard.md` for human-readable release-evidence
+  dashboard status and caveats.
 - Added `docs/release-gate-matrix.md` for release command, artifact, caveat,
   and blocker review.
 - Added `docs/operations-runbook.md` for routine PR checks, hosted check-rollup
@@ -41,8 +43,8 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 111 tests, Markdown
-  link scan over 70 files, JSON parsing, and repository hygiene scan.
+- `VALIDATION.md` now records the current portable gate as 112 tests, Markdown
+  link scan over 71 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
 
