@@ -99,7 +99,8 @@ Covered behaviours:
 - Changelog coverage requiring the unreleased cleanup stack, release caveats,
   hosted-CI status, and PR #23 blocker posture to stay visible.
 - Reviewer quickstart coverage requiring diligence entrypoints, evidence
-  surfaces, release caveats, and PR blocker posture to stay visible.
+  surfaces, support/security/contribution routing, exact-command blocker
+  recording, release caveats, and PR blocker posture to stay visible.
 - Architecture decision coverage requiring accepted repository boundary
   decisions, claim posture, raw-data policy, and native/toy lane framing.
 - Operations runbook coverage requiring routine maintainer commands,

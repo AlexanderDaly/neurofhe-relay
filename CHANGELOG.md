@@ -70,6 +70,8 @@ Release target: `v0.1.0-research-alpha`.
   evidence, data-handling, release-gate, and repository-policy routing.
 - Added maintainer-checklist coverage so review routing stays aligned with the
   current evidence, policy, support, contributor, and GitHub-template surfaces.
+- Expanded reviewer-quickstart coverage so diligence review routes through the
+  current support, security, contribution, maintainer, issue, and PR surfaces.
 
 ### Changed
 

@@ -13,7 +13,9 @@ certification.
 2. Read `CHANGELOG.md` for the current unreleased stack and caveats.
 3. Read `docs/status-roadmap.md` for what is ready, what is blocked, and what
    still needs evidence.
-4. Read `VALIDATION.md` for the current portable local gate.
+4. Read `docs/faq.md` for common claim, evidence, raw-data, CI, release, and
+   CC0 questions.
+5. Read `VALIDATION.md` for the current portable local gate.
 
 ## Evidence Review
 
@@ -30,6 +32,9 @@ Use these files when checking evidence posture:
 
 The release dashboard currently remains `releaseGateSatisfied: false`, and
 artifact/lane metadata must preserve `productionClaim: false` where it applies.
+Do not treat `privacyBoundary` or `cryptoInventory` metadata as a privacy proof,
+security certification, or complete cryptographic inventory beyond the artifact
+being reviewed.
 
 ## Local Check
 
@@ -44,6 +49,32 @@ This gate proves the portable Node tests, JSON parsing, local Markdown links,
 and repository hygiene scan. It does not prove native OpenFHE or TFHE-rs
 availability, production cryptography, clinical validity, deployment readiness,
 privacy guarantees, or release approval.
+
+## Routing Review Comments
+
+Use these surfaces to route review findings without turning them into release
+approval:
+
+- `CONTRIBUTING.md` - evidence-first contribution rules and local validation
+  expectations.
+- `SECURITY.md` - sensitive reporting route for possible security issues,
+  private payload exposure, or raw-data mishandling.
+- `SUPPORT.md` - public support routing for issues, release blockers, and
+  cleanup requests.
+- `.github/ISSUE_TEMPLATE/` - structured issue intake that keeps raw data and
+  private payloads out of GitHub.
+- `.github/pull_request_template.md` - PR checklist for validation commands,
+  release caveats, raw-data exclusions, and repository-policy routing.
+- `docs/maintainer-checklist.md` - maintainer review route for evidence,
+  support, security, contribution, and release-gate surfaces.
+- `docs/operations-runbook.md` - routine hosted-check, artifact-refresh, and
+  blocker-recording commands.
+
+If a command, dependency, dataset, or hosted check cannot run, record the exact command
+and error, plus the smallest next step, in the relevant issue, blocker artifact,
+or validation note.
+Keep GitHub Actions billing/account, hosted check-rollup, and repository
+ruleset/admin policy blockers separate from local code or test failures.
 
 ## PR And Release Posture
 
