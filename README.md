@@ -124,7 +124,7 @@ For the gateway framing, use:
 
 > The local gateway is the only trusted boundary allowed to inspect raw signals. Models receive only validated, transformed, permissioned event representations.
 
-Avoid medical-device language until a real regulated use case, dataset, clinical validation path, and legal review exist. The current prototype is about privacy-preserving event representation and encrypted scoring, not diagnosis or treatment.
+Avoid medical-device language until a real regulated use case, dataset, clinical validation path, and legal review exist. The current research-alpha package is about privacy-preserving event representation and encrypted scoring, not diagnosis or treatment.
 
 Avoid saying:
 

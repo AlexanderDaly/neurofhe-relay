@@ -1181,6 +1181,19 @@ test("patent package map lists every patent markdown and mermaid source", () => 
   assert.deepEqual(missingRoutes, []);
   assert.equal(policyWhitepaper.includes("research-alpha package"), true);
   assert.equal(policyWhitepaper.includes("current research prototype"), false);
+
+  const publicationFormatting = readFileSync(
+    "patent/briefing/ENER_publication_formatting.md",
+    "utf8",
+  );
+  assert.equal(
+    publicationFormatting.includes("source-category references for later bibliography expansion"),
+    true,
+  );
+  assert.equal(
+    publicationFormatting.includes("source-category references as placeholders"),
+    false,
+  );
 });
 
 test("package manifest lists every tracked top-level package entry", () => {
@@ -2038,12 +2051,14 @@ test("evidence guide routes evidence review without upgrading claims", () => {
     "production cryptography",
     "identity-protection",
     "stable-performance claims",
+    "current research-alpha sparse-event contract",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !evidenceGuide.includes(entry),
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(evidenceGuide.includes("current prototype contract"), false);
 });
 
 test("evidence dashboard summarizes release gate status without upgrading claims", () => {
@@ -2363,6 +2378,7 @@ test("root README keeps first-read navigation role based", () => {
   assert.equal(readme.includes("New readers should begin with"), false);
   assert.equal(readme.includes("Presentation package"), false);
   assert.equal(readme.includes("The runnable prototype demonstrates"), false);
+  assert.equal(readme.includes("The current prototype is about"), false);
 });
 
 test("root README keeps repository layout concise", () => {

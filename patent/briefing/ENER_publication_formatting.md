@@ -25,7 +25,7 @@ The style should resemble an institutional R&D briefing. Use measured claims, pl
 
 ## Citation Style
 
-Use IEEE-style bracket citations in the body. The current package uses source-category references as placeholders for later publication review. Before public release, replace categories with full bibliographic entries and URLs.
+Use IEEE-style bracket citations in the body. The current package uses source-category references for later bibliography expansion and publication review. Before public release, replace categories with full bibliographic entries and URLs.
 
 ## Language Replacements
 

@@ -218,6 +218,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened patent-package-map coverage so provisional drafting, counsel/IP
   review, public briefing, evidence-gap, and diagram reuse paths are routed
   before the full source inventory.
+- Tightened README, evidence-guide, and publication-formatting wording so live
+  reader-facing surfaces use research-alpha package and bibliography-expansion
+  framing instead of stale prototype or placeholder wording.
 - Tightened presentation-output coverage so packaged slide review,
   claim/caveat checks, evidence/release-readiness review, and export refreshes
   route through source docs before generated files.
