@@ -75,10 +75,10 @@ Covered behaviours:
   entrypoint, and native source map coverage, patent package source coverage,
   package manifest top-level, owner-route, and native-evidence posture
   coverage, generated presentation output map coverage, benchmark artifact
-  directory coverage, contributor workflow surface coverage, policy boundary
-  map coverage, status roadmap release-readiness coverage, glossary term
-  coverage, testing strategy validation-surface coverage, dependency matrix
-  setup-surface coverage, data-handling boundary-surface coverage, repository tooling
+  directory and release-evidence routing coverage, contributor workflow surface
+  coverage, policy boundary map coverage, status roadmap release-readiness
+  coverage, glossary term coverage, testing strategy validation-surface
+  coverage, dependency matrix setup-surface coverage, data-handling boundary-surface coverage, repository tooling
   normalization/ignore-boundary coverage, and GitHub Actions trigger and
   action-major checks.
 - Troubleshooting coverage requiring common local npm, hosted-CI, native-lane,

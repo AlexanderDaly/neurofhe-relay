@@ -158,11 +158,14 @@ identity-leakage, mutual-information, side-channel, or privacy-proof evidence.
 
 Release-evidence index artifacts are written under
 `benchmark-artifacts/release-evidence/`. They summarize the current committed CI
-blocker, repository hygiene, native evidence, metadata-leakage, and
-reconstruction-risk artifacts, plus the real N-MNIST dataset blocker and
-TFHE-rs real-data input blocker, so the release gate can be reviewed from one
-JSON surface. They are dashboard artifacts only and do not constitute new
-benchmark evidence or release approval.
+evidence, repository hygiene, native evidence, metadata-leakage, and
+reconstruction-risk artifacts, plus the real N-MNIST plaintext baseline at
+`benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json` and the
+TFHE-rs real-data input blocker at
+`benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`, so the release
+gate can be reviewed from one JSON surface. They are dashboard artifacts only,
+must keep `releaseGateSatisfied: false` until the documented gate is actually
+satisfied, and do not constitute new benchmark evidence or release approval.
 
 Every `neurofhe.benchmarkArtifact.v1` file must include:
 
@@ -181,7 +184,9 @@ Current artifacts also include:
 - privacy-mode decision for public active positions, padded sparse batches, or dense encrypted windows
 - metadata padding ablation output for leakage masking, observable-category
   exposure score, and operation overhead
-- plaintext N-MNIST-compatible fixture, real public UCI EEG Eye State baseline, and real public dataset blocker reports
+- plaintext N-MNIST-compatible fixture, real public N-MNIST plaintext baseline,
+  real public UCI EEG Eye State baseline, and dataset blocker reports where a
+  local dataset is unavailable
 - framing guardrail for privacy-preserving event intelligence, not diagnosis or treatment
 - optional OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs adapter/native comparison artifacts for the same synthetic 8x8 sparse score contract
 - native OpenFHE BFVrns and CKKS comparison artifacts for one generated UCI EEG Eye State sparse input contract

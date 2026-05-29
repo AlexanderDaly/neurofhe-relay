@@ -1153,8 +1153,27 @@ test("benchmark artifacts README lists every tracked artifact directory", () => 
   const missingDirectories = artifactDirectories.filter((dirPath) =>
     !artifactsReadme.includes(`${dirPath}/`),
   );
+  const requiredPosture = [
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "real N-MNIST plaintext baseline",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "TFHE-rs real-data input blocker",
+    "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+    "release-evidence index artifacts",
+    "dashboard artifacts only",
+  ];
+  const missingPosture = requiredPosture.filter((entry) =>
+    !artifactsReadme.includes(entry),
+  );
+  const stalePosture = [
+    "real N-MNIST dataset blocker",
+    "N-MNIST-compatible fixture, real public UCI EEG Eye State baseline, and real public dataset blocker reports",
+  ].filter((entry) => artifactsReadme.includes(entry));
 
   assert.deepEqual(missingDirectories, []);
+  assert.deepEqual(missingPosture, []);
+  assert.deepEqual(stalePosture, []);
 });
 
 test("contributor workflow map lists every tracked GitHub workflow surface", () => {

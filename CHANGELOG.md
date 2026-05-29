@@ -79,6 +79,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.
+- Tightened benchmark-artifact index coverage so release-evidence routing names
+  the current real N-MNIST plaintext baseline and TFHE-rs real-data blocker
+  paths while preserving `releaseGateSatisfied: false`.
 - Added release-plan coverage so the no-tag gate, evidence-dashboard route,
   repository-policy merge path, and explicit approval boundary stay visible.
 - Added plaintext-baseline note coverage so real-data evidence routes,
