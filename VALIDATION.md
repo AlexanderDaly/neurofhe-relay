@@ -80,7 +80,8 @@ Covered behaviours:
   contributor workflow surface coverage, policy boundary map coverage, status
   roadmap release-readiness and
   at-a-glance gate-posture coverage, glossary term coverage, testing strategy
-  validation-surface coverage, dependency matrix dependency-route and setup-surface coverage,
+  validation-route and validation-surface coverage, dependency matrix
+  dependency-route and setup-surface coverage,
   data-handling boundary-surface coverage, evidence-guide review-route
   coverage, contributor-workflow route coverage, repository tooling
   normalization/ignore-boundary coverage, and GitHub Actions trigger and

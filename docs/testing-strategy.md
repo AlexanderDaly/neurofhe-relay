@@ -9,6 +9,20 @@ Passing these checks does not create production cryptography, clinical,
 medical, deployment, privacy-proof, side-channel, anonymity, or stable
 performance claims.
 
+## Validation Routes
+
+Use this table before deciding which check or evidence surface answers a review
+question. It keeps portable validation, hosted CI, docs navigation, hygiene, and
+native/release evidence from being substituted for one another.
+
+| Concern | Run Or Inspect | Does Not Prove |
+| --- | --- | --- |
+| Local portable gate | `npm run validate` and `git diff --check`. | Hosted CI success, native dependency availability, or release approval. |
+| Hosted PR check-rollup | `.github/workflows/ci.yml`, `gh pr checks`, and PR status. | Repository ruleset/admin policy approval or a satisfied release gate. |
+| Documentation navigation drift | `npm run check:docs` and `docs/README.md`. | Artifact freshness, benchmark validity, or security review completion. |
+| Source hygiene and raw-data mistakes | `prototype/scripts/placeholder-scan.mjs` and `benchmark-artifacts/repo-hygiene/latest.json`. | Secret-manager audit, private-dataset review, or production security certification. |
+| Native or release evidence readiness | `RELEASE.md`, `docs/release-gate-matrix.md`, and `benchmark-artifacts/native-evidence/latest.json`. | Production cryptography, stable performance, privacy proof, medical evidence, or release approval. |
+
 ## Portable Gate
 
 The canonical local command is defined in `package.json`:

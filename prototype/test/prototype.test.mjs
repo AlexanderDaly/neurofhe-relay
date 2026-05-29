@@ -1569,6 +1569,13 @@ test("glossary defines recurring repository terms", () => {
 test("testing strategy maps every portable validation surface", () => {
   const testingStrategy = readFileSync("docs/testing-strategy.md", "utf8");
   const validationSurfaces = [
+    "## Validation Routes",
+    "| Concern | Run Or Inspect | Does Not Prove |",
+    "Local portable gate",
+    "Hosted PR check-rollup",
+    "Documentation navigation drift",
+    "Source hygiene and raw-data mistakes",
+    "Native or release evidence readiness",
     "package.json",
     ".github/workflows/ci.yml",
     "prototype/test/prototype.test.mjs",
