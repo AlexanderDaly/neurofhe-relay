@@ -113,8 +113,9 @@ Covered behaviours:
 - Reviewer quickstart coverage requiring diligence entrypoints, evidence
   surfaces, support/security/contribution routing, exact-command blocker
   recording, release caveats, and PR blocker posture to stay visible.
-- Architecture decision coverage requiring accepted repository boundary
-  decisions, claim posture, raw-data policy, and native/toy lane framing.
+- Architecture decision coverage requiring decision-route guidance, accepted
+  repository boundary decisions, claim posture, raw-data policy, and
+  native/toy lane framing.
 - Operations runbook coverage requiring routine maintainer commands,
   hosted-check handling, situation routing, blocker policy, release gate
   posture, and production-claim caveats.

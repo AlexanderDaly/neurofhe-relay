@@ -7,6 +7,20 @@ Nothing here upgrades NeuroFHE Relay into production cryptography, clinical
 validation, medical software, deployment evidence, a privacy proof, or a
 security certification.
 
+## Decision Routes
+
+Use this table before changing a repository boundary decision. It keeps durable
+architecture posture tied to the file family that must move with it.
+
+| Decision Area | Start With | Do Not Change Without |
+| --- | --- | --- |
+| License and public-domain posture | `LICENSE`, `PUBLIC_DOMAIN_NOTICE.md`, and `docs/policy-boundary.md`. | Maintainer review and a deliberate CC0/public-domain posture change. |
+| Claim, release, or production boundary | `RELEASE.md`, `docs/evidence-dashboard.md`, and `docs/claim-evidence-ledger.md`. | Evidence that supports the stronger claim plus explicit release review. |
+| Privacy, crypto inventory, or artifact metadata | `benchmark-artifacts/README.md`, `docs/evidence-guide.md`, and generated artifact commands. | Fresh derived evidence or blocker artifacts preserving provenance and caveats. |
+| Toy prototype versus native FHE lane | `prototype/README.md`, `docs/prototype-map.md`, and `docs/dependency-matrix.md`. | Native-library evidence when a toy path cannot support the claim. |
+| Raw-data and repository hygiene boundary | `docs/data-handling.md`, `.gitignore`, and `prototype/scripts/placeholder-scan.mjs`. | A reviewed storage policy and proof that raw/private material remains outside git. |
+| Hosted CI versus repository-policy boundary | `docs/operations-runbook.md`, `VALIDATION.md`, and PR check-rollup evidence. | Clear separation between code/check failures and repository ruleset/admin policy. |
+
 ## Current Decisions
 
 | Decision | Status | Rationale | Caveat |

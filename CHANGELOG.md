@@ -49,6 +49,8 @@ Release target: `v0.1.0-research-alpha`.
   reproduction, dataset refreshes, and release dependency review.
 - Added validation-route guidance for local checks, hosted PR rollups,
   documentation navigation, source hygiene, and native/release evidence review.
+- Added architecture decision routes for license, claim, metadata, native-lane,
+  raw-data, and hosted-CI/repository-policy boundary changes.
 - Added `SUPPORT.md` and a support-routing guard for public issues, sensitive
   reports, release blockers, and cleanup requests.
 - Added code-of-conduct report routing so public collaboration, sensitive

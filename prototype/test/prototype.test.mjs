@@ -1995,6 +1995,14 @@ test("reviewer quickstart maps due diligence entrypoints and caveats", () => {
 test("architecture decision log records repository boundary decisions", () => {
   const decisionLog = readFileSync("docs/architecture-decisions.md", "utf8");
   const requiredEntries = [
+    "## Decision Routes",
+    "| Decision Area | Start With | Do Not Change Without |",
+    "License and public-domain posture",
+    "Claim, release, or production boundary",
+    "Privacy, crypto inventory, or artifact metadata",
+    "Toy prototype versus native FHE lane",
+    "Raw-data and repository hygiene boundary",
+    "Hosted CI versus repository-policy boundary",
     "CC0",
     "research-alpha",
     "productionClaim: false",
