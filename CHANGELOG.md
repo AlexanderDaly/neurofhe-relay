@@ -244,6 +244,9 @@ Release target: `v0.1.0-research-alpha`.
   separate from live PR head, check-rollup, and merge-policy review.
 - Clarified the reviewer quickstart PR posture so reviewers confirm live head,
   check rollup, and merge policy before treating PR #23 as ready.
+- Clarified the documentation index so release and maintainer reviewers confirm
+  live PR head, check rollup, and repository ruleset/admin policy before
+  treating a release-validation PR as merge-ready.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

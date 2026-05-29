@@ -14,6 +14,14 @@ changing the evidence boundary.
 | Evidence reviewer | `docs/evidence-dashboard.md` | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, `benchmark-artifacts/README.md` |
 | Release or maintainer review | `RELEASE.md` | `docs/release-gate-matrix.md`, `docs/maintainer-checklist.md`, `docs/operations-runbook.md` |
 
+Before treating a release-validation PR as merge-ready, confirm the live head,
+check rollup, and repository ruleset/admin policy state instead of relying only
+on a committed dashboard snapshot:
+
+```sh
+gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
+```
+
 ## Repository Baseline
 
 Use this short map when checking whether the package looks like a maintained
