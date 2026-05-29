@@ -73,33 +73,30 @@ changing the evidence boundary.
 
 The root `.editorconfig`, `.nvmrc`, and `.node-version` files provide a small
 tooling baseline for consistent local edits and CI-parity Node.js selection.
-`npm run check:docs` verifies local Markdown links and is part of
-`npm run validate`. The validation suite also checks that this index lists every
-Markdown page in `docs/` and that `briefing-sequence.md` lists every numbered
-root brief. It also checks that `prototype-map.md` lists every
-`prototype/lib/*.mjs` module, that `patent-package-map.md` lists every
-Markdown and Mermaid source under `patent/`, and that
-`presentation-outputs.md` lists every tracked generated output file under
-`outputs/`. It also checks that `contributor-workflow.md` lists every tracked
-`.github` workflow, issue, and pull-request surface, and that
-`policy-boundary.md` lists the root policy and claim-boundary files. It also
-checks that `status-roadmap.md` lists the release-readiness evidence surfaces
-and that `glossary.md` defines recurring repository terms. It also checks that
-`testing-strategy.md` maps the portable validation surfaces and that
-`dependency-matrix.md` lists portable and native setup surfaces. It also checks
-that `data-handling.md` lists dataset and artifact boundary surfaces. It also
-checks that `claim-evidence-ledger.md` maps every weak-claim area to current
-evidence and caveats. It also checks that `evidence-dashboard.md` summarizes
-the current release gate status without upgrading claims. It also checks that
-`release-gate-matrix.md` lists every minimum evidence command from `RELEASE.md`.
-It also checks that
-`reviewer-quickstart.md` lists the main due-diligence entrypoints and caveats.
-It also checks that `architecture-decisions.md` records the accepted repository
-boundary decisions. It also checks that `operations-runbook.md` records the
-routine maintainer commands and blocker policy. It also checks that
-`troubleshooting.md` routes common blockers without weakening release and claim
-caveats. It also checks that `faq.md` answers common reader questions without
-upgrading claims.
+
+## Validation Coverage
+
+Use `docs/testing-strategy.md` for the complete guard-family map and
+`docs/command-reference.md` for runnable commands. The common local gate is:
+
+```sh
+npm run validate
+```
+
+That gate keeps this index, the reader maps, the artifact guides, and the
+claim-boundary documents from drifting as the repository grows.
+
+| Surface | Guarded By |
+| --- | --- |
+| Documentation links and page inventory | `npm run check:docs` and the Node test suite |
+| Command inventory | `docs/command-reference.md` coverage against `package.json` |
+| Evidence artifacts | `benchmark-artifacts/README.md`, artifact-schema tests, and release-evidence checks |
+| Repository hygiene | `prototype/scripts/placeholder-scan.mjs` |
+| Release and claim boundaries | `VALIDATION.md`, `RELEASE.md`, and the docs listed above |
+
+Passing validation keeps the package readable and internally consistent. It
+does not create production cryptography, medical software, clinical validation,
+deployment evidence, release approval, or security certification.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

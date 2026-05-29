@@ -1004,6 +1004,25 @@ test("documentation index lists every docs page", () => {
   assert.deepEqual(missingPages, []);
 });
 
+test("documentation index stays concise and reader-facing", () => {
+  const docsIndex = readFileSync("docs/README.md", "utf8");
+  const requiredEntries = [
+    "## Validation Coverage",
+    "npm run validate",
+    "docs/testing-strategy.md",
+    "docs/command-reference.md",
+    "benchmark-artifacts/README.md",
+    "production cryptography",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !docsIndex.includes(entry),
+  );
+  const validationLitanyMatches = docsIndex.match(/It also checks/g) ?? [];
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(validationLitanyMatches.length, 0);
+});
+
 test("briefing sequence guide lists every numbered root brief", () => {
   const briefingGuide = readFileSync("docs/briefing-sequence.md", "utf8");
   const numberedBriefs = readdirSync(".")

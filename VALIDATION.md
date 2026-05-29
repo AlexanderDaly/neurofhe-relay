@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 121
-pass 121
+tests 122
+pass 122
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 121
-pass 121
+tests 122
+pass 122
 fail 0
 ```
 
@@ -70,15 +70,15 @@ Covered behaviours:
 - N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
 - UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
 - Documentation and repository-readability guards for Markdown links, command
-  reference script coverage, documentation index coverage, numbered briefing
-  sequence coverage, prototype module, top-level entrypoint, and native source
-  map coverage, patent package source coverage, package manifest top-level
-  coverage, generated presentation output map coverage, benchmark artifact
-  directory coverage, contributor workflow surface coverage, policy boundary
-  map coverage, status roadmap release-readiness coverage, glossary term
-  coverage, testing strategy validation-surface coverage, dependency matrix
-  setup-surface coverage, data-handling boundary-surface coverage, and GitHub
-  Actions trigger and action-major checks.
+  reference script coverage, documentation index coverage, documentation-index
+  concision, numbered briefing sequence coverage, prototype module, top-level
+  entrypoint, and native source map coverage, patent package source coverage,
+  package manifest top-level coverage, generated presentation output map
+  coverage, benchmark artifact directory coverage, contributor workflow surface
+  coverage, policy boundary map coverage, status roadmap release-readiness
+  coverage, glossary term coverage, testing strategy validation-surface
+  coverage, dependency matrix setup-surface coverage, data-handling
+  boundary-surface coverage, and GitHub Actions trigger and action-major checks.
 - Troubleshooting coverage requiring common local npm, hosted-CI, native-lane,
   dataset, and release-gate blockers to route to exact-command/error/next-step
   recording without weakening `productionClaim: false`.
