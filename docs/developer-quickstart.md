@@ -20,6 +20,19 @@ for CI parity. `package.json` still accepts Node.js 20 or newer.
 If setup or validation fails, use `docs/troubleshooting.md` before opening an
 issue so the report includes the exact command, error, and smallest next step.
 
+## Change Routes
+
+Use this table before editing so the first check matches the kind of change and
+the PR notes point to the right evidence boundary.
+
+| Goal | Start With | Confirm Before PR |
+| --- | --- | --- |
+| Small docs cleanup | `npm run check:docs` | Reader routes still point to maintained owners and `productionClaim: false` remains intact. |
+| Prototype or gateway behavior | `npm test -- --test-name-pattern "<focused behavior>"` | `docs/command-reference.md`, `prototype/README.md`, and the relevant boundary caveats still match the code. |
+| Artifact or real-data update | The exact artifact command in a temporary directory first. | `docs/data-handling.md`, provenance, raw-data exclusion, `privacyBoundary`, and `cryptoInventory`. |
+| Native dependency work | `npm run native:doctor` or the relevant OpenFHE/TFHE-rs command. | `docs/troubleshooting.md`, exact command/error/smallest next step, and no toy substitute for native evidence. |
+| Release-readiness or PR-policy review | `gh pr checks <number>` and `gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup`. | `docs/operations-runbook.md`, `docs/release-gate-matrix.md`, and `releaseGateSatisfied: false` unless every documented gate is satisfied. |
+
 ## First Validation Pass
 
 From the repository root:

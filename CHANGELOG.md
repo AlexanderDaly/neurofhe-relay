@@ -83,6 +83,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened development guide coverage so first validation, docs navigation,
   native FHE, real-data/artifact, and release-readiness work route through a
   compact table before command details.
+- Added developer-quickstart change routes so docs, prototype, artifact,
+  native, and release-policy work start with focused checks and evidence
+  boundaries.
 - Tightened development guide real-data coverage so the current real public
   N-MNIST plaintext baseline route stays visible alongside the structured
   blocker path for missing local datasets.

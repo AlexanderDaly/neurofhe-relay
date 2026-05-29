@@ -2389,6 +2389,13 @@ test("development guide preserves setup, evidence, and release boundaries", () =
 test("developer quickstart routes common change types to focused validation", () => {
   const quickstart = readFileSync("docs/developer-quickstart.md", "utf8");
   const requiredEntries = [
+    "## Change Routes",
+    "| Goal | Start With | Confirm Before PR |",
+    "Small docs cleanup",
+    "Prototype or gateway behavior",
+    "Artifact or real-data update",
+    "Native dependency work",
+    "Release-readiness or PR-policy review",
     "## Validation By Change Type",
     "| Change Type | Run First | Then Run |",
     "Docs-only navigation or wording",
@@ -2399,6 +2406,11 @@ test("developer quickstart routes common change types to focused validation", ()
     "gh pr checks",
     "Benchmark, dataset, native lane, or release evidence",
     "temporary directory",
+    "docs/data-handling.md",
+    "docs/release-gate-matrix.md",
+    "docs/operations-runbook.md",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
     "npm run ci",
     "git diff --check",
   ];
