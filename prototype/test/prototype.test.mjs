@@ -1229,6 +1229,36 @@ test("data handling guide lists dataset and artifact boundary surfaces", () => {
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("claim evidence ledger maps every weak-claim area to evidence and caveats", () => {
+  const weakClaims = readFileSync(
+    "patent/briefing/ENER_weak_claims_evidence_gaps.md",
+    "utf8",
+  );
+  const claimLedger = readFileSync("docs/claim-evidence-ledger.md", "utf8");
+  const weakClaimAreas = weakClaims
+    .split("\n")
+    .filter((line) => line.startsWith("| ") && !line.includes("---"))
+    .map((line) => line.split("|")[1].trim())
+    .filter((area) => area !== "Area");
+  const requiredSurfaces = [
+    ...weakClaimAreas,
+    "benchmark-artifacts/release-evidence/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+    "benchmark-artifacts/reconstruction-risk/latest.json",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyProofClaim: false",
+  ];
+  const missingSurfaces = requiredSurfaces.filter((item) =>
+    !claimLedger.includes(item),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

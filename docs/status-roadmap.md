@@ -20,6 +20,7 @@ below.
   `benchmark-artifacts/native-evidence/latest.json`.
 - Patent and briefing evidence gaps:
   `patent/briefing/ENER_weak_claims_evidence_gaps.md`.
+- Claim-to-evidence posture: `docs/claim-evidence-ledger.md`.
 
 ## What Is Ready To Review
 
@@ -72,5 +73,6 @@ below.
 - Maintainer: use `docs/maintainer-checklist.md`, `RELEASE.md`, and
   `VALIDATION.md`.
 - Evidence reviewer: start with `docs/evidence-guide.md`,
+  `docs/claim-evidence-ledger.md`,
   `benchmark-artifacts/README.md`, and
   `benchmark-artifacts/release-evidence/latest.json`.

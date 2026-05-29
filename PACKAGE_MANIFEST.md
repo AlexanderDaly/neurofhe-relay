@@ -26,6 +26,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
   release dependency map.
 - `docs/data-handling.md` - raw-data, derived-artifact, blocker, and hygiene
   boundary map.
+- `docs/claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
+  ledger.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - license, security, contribution, validation, and

@@ -25,6 +25,8 @@ changing the evidence boundary.
   dependency map.
 - `data-handling.md` - raw-data, derived-artifact, blocker, and hygiene
   boundary map.
+- `claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
+  ledger.
 - `status-roadmap.md` - current review state, remaining release blockers, and
   next evidence-work queue.
 - `policy-boundary.md` - map of license, security, contribution, validation,
@@ -66,7 +68,9 @@ checks that `status-roadmap.md` lists the release-readiness evidence surfaces
 and that `glossary.md` defines recurring repository terms. It also checks that
 `testing-strategy.md` maps the portable validation surfaces and that
 `dependency-matrix.md` lists portable and native setup surfaces. It also checks
-that `data-handling.md` lists dataset and artifact boundary surfaces.
+that `data-handling.md` lists dataset and artifact boundary surfaces. It also
+checks that `claim-evidence-ledger.md` maps every weak-claim area to current
+evidence and caveats.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

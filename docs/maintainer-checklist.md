@@ -62,6 +62,7 @@ git diff --check
 - `docs/glossary.md` - recurring project and artifact terms.
 - `docs/dependency-matrix.md` - portable and native dependency map.
 - `docs/data-handling.md` - raw-data and derived-artifact boundary map.
+- `docs/claim-evidence-ledger.md` - weak-claim evidence and caveat ledger.
 - `docs/policy-boundary.md` - root policy and claim-boundary map.
 - `docs/status-roadmap.md` - current readiness and next-work map.
 - `docs/testing-strategy.md` - portable validation and guard-family map.

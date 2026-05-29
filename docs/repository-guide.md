@@ -22,6 +22,8 @@ clinical validation, deployment evidence, or a security certification.
   release dependency map.
 - `docs/data-handling.md` - raw-data, derived-artifact, blocker, and hygiene
   boundary map.
+- `docs/claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
+  ledger.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - map of the license, security, contribution,
@@ -86,6 +88,8 @@ Use `docs/dependency-matrix.md` before changing runtime versions, native lanes,
 dataset inputs, or hosted validation requirements.
 Use `docs/data-handling.md` before adding raw-data-adjacent commands, derived
 artifacts, blocker reports, or hygiene evidence.
+Use `docs/claim-evidence-ledger.md` before strengthening public, patent,
+investor, release, or standards-facing language.
 
 ## Prototype Code
 
