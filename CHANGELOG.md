@@ -76,6 +76,9 @@ Release target: `v0.1.0-research-alpha`.
   names the release-evidence wrapper and `subject` JSON paths explicitly.
 - Tightened package-manifest coverage so the manifest stays an inventory and
   routes commands, evidence artifacts, and release gates to maintained owners.
+- Tightened package-manifest native-evidence coverage so stale OpenFHE
+  dependency wording is rejected and current native artifact IDs plus
+  measurement gaps stay visible.
 - Added release-plan coverage so the no-tag gate, evidence-dashboard route,
   repository-policy merge path, and explicit approval boundary stay visible.
 - Added plaintext-baseline note coverage so real-data evidence routes,

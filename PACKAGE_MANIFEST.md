@@ -119,7 +119,25 @@ certification.
 
 ## Caveat
 
-The included JavaScript prototype demonstrates the privacy boundary with toy additive homomorphic encryption. It is not production cryptography, not full FHE, and not the low-level runtime target. It uses public active neuron positions plus encrypted active feature values for the sorted-event path, so sparse metadata is visible to the compute layer. The native OpenFHE BFVrns path carries the same sparse sorted-event score contract for exact integer packed arithmetic comparison and now accepts generated fixed-point real-data input contracts once OpenFHE is installed and reviewed. The native OpenFHE CKKS path carries the same sparse contract for approximate real-valued neural/ML feature scoring with score-drift reporting and generated approximate-real real-data input contracts. The native TFHE-rs path carries the same sparse score contract plus an encrypted Boolean threshold bit for threshold/LUT-style comparison. None of the native lanes is production cryptography.
+The included JavaScript prototype demonstrates the privacy boundary with toy
+additive homomorphic encryption. It is not production cryptography, not full
+FHE, and not the low-level runtime target. It uses public active neuron
+positions plus encrypted active feature values for the sorted-event path, so
+sparse metadata is visible to the compute layer.
+
+Use `benchmark-artifacts/native-evidence/latest.json` for the current
+native-lane posture. The indexed native evidence currently includes:
+
+- OpenFHE BFVrns: `openfhe-bfvrns-eeg-eye-state-2026-05-21`.
+- OpenFHE CKKS: `openfhe-ckks-eeg-eye-state-2026-05-21`.
+- TFHE-rs: `tfhe-rs-memory-rss-2026-05-28`.
+
+Those artifacts show the integration lanes are real native-library research
+evidence on the indexed host, but native measurement gaps remain. BFVrns still
+needs serialized ciphertext-byte and RSS or peak-memory measurements. CKKS
+still has partial ciphertext and memory measurements. TFHE-rs remains a
+synthetic threshold/LUT-style comparison lane until its real-data input adapter
+or transformer exists. None of the native lanes is production cryptography.
 
 ## Proprietary Track Note
 

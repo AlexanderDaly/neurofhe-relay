@@ -1110,6 +1110,12 @@ test("package manifest lists every tracked top-level package entry", () => {
     "productionClaim: false",
     "privacyBoundary",
     "cryptoInventory",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+    "openfhe-ckks-eeg-eye-state-2026-05-21",
+    "tfhe-rs-memory-rss-2026-05-28",
+    "native measurement gaps",
+    "not production cryptography",
   ];
   const missingRouting = requiredRouting.filter((entry) =>
     !packageManifest.includes(entry),
@@ -1120,6 +1126,7 @@ test("package manifest lists every tracked top-level package entry", () => {
     "Run the benchmark:",
     "Run the TFHE-rs comparison lane:",
     "Generate OpenFHE-ready EEG input contracts",
+    "once OpenFHE is installed",
   ].filter((entry) => packageManifest.includes(entry));
 
   assert.deepEqual(missingRouting, []);
