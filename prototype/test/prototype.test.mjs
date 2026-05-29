@@ -979,6 +979,19 @@ test("markdown link check CLI exits nonzero for broken local docs links", async 
   assert.equal(result.stderr, "");
 });
 
+test("command reference documents every package script", () => {
+  const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+  const commandReference = readFileSync("docs/command-reference.md", "utf8");
+  const missingScripts = Object.keys(packageJson.scripts).filter((scriptName) => {
+    const expected = scriptName === "test"
+      ? /\bnpm test\b/
+      : new RegExp(`\\bnpm run ${escapeRegExp(scriptName)}\\b`);
+    return !expected.test(commandReference);
+  });
+
+  assert.deepEqual(missingScripts, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
@@ -986,6 +999,10 @@ test("GitHub Actions CI workflow runs automatically for pushes and pull requests
   assert.match(workflow, /^\s*push:\s*$/m);
   assert.match(workflow, /^\s*pull_request:\s*$/m);
 });
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 test("GitHub Actions CI workflow uses Node 24-ready action majors", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");

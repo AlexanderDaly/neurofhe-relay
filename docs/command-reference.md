@@ -3,6 +3,9 @@
 This reference groups the npm scripts by the job a reader or contributor is
 trying to do. Run commands from the repository root.
 
+`npm run validate` checks that every `package.json` script remains represented
+here, so update this page when adding or renaming scripts.
+
 The portable commands are evidence and validation helpers for a research-alpha
 package. Native-library commands require local dependencies and should not be
 used to make production cryptography, clinical, medical, surveillance,
@@ -101,4 +104,3 @@ gate by itself, or create new benchmark evidence.
 
 Before tagging anything, use `RELEASE.md` and confirm the current hosted CI,
 local validation, evidence artifacts, and caveats are all current.
-
