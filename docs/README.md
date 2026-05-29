@@ -17,6 +17,8 @@ changing the evidence boundary.
   for packaged review.
 - `repository-guide.md` - map of the root briefs, prototype code, committed
   evidence artifacts, patent materials, and release gate.
+- `glossary.md` - definitions for recurring claim, artifact, release, gateway,
+  and native-lane terms.
 - `status-roadmap.md` - current review state, remaining release blockers, and
   next evidence-work queue.
 - `policy-boundary.md` - map of license, security, contribution, validation,
@@ -54,7 +56,8 @@ Markdown and Mermaid source under `patent/`, and that
 `outputs/`. It also checks that `contributor-workflow.md` lists every tracked
 `.github` workflow, issue, and pull-request surface, and that
 `policy-boundary.md` lists the root policy and claim-boundary files. It also
-checks that `status-roadmap.md` lists the release-readiness evidence surfaces.
+checks that `status-roadmap.md` lists the release-readiness evidence surfaces
+and that `glossary.md` defines recurring repository terms.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

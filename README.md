@@ -63,14 +63,14 @@ The cryptographic design target is:
 New readers should begin with `docs/README.md`, `docs/briefing-sequence.md`,
 `docs/repository-guide.md`, `docs/prototype-map.md`,
 `docs/patent-package-map.md`, `docs/presentation-outputs.md`,
-`docs/status-roadmap.md`, `docs/policy-boundary.md`,
+`docs/glossary.md`, `docs/status-roadmap.md`, `docs/policy-boundary.md`,
 `docs/contributor-workflow.md`, `docs/developer-quickstart.md`,
 `docs/command-reference.md`, and `docs/evidence-guide.md`. Maintainers should also use
 `docs/maintainer-checklist.md`. Together they map the public briefing sequence,
 prototype code, committed evidence artifacts, patent briefing material,
-current status, claim-boundary files, contributor workflow, runnable commands, and
-research-alpha release gate without upgrading any cryptographic, security,
-medical, or deployment claim.
+recurring vocabulary, current status, claim-boundary files, contributor
+workflow, runnable commands, and research-alpha release gate without upgrading
+any cryptographic, security, medical, or deployment claim.
 
 ## Package Contents
 
@@ -81,6 +81,8 @@ medical, or deployment claim.
 - `docs/README.md` - documentation index for reader and contributor paths.
 - `docs/briefing-sequence.md` - reading order for the numbered public briefs.
 - `docs/repository-guide.md` - first-pass map for readers and contributors.
+- `docs/glossary.md` - recurring project, artifact, release, gateway, and
+  native-lane terms.
 - `docs/status-roadmap.md` - current review state, release blockers, and next
   evidence-work queue.
 - `docs/policy-boundary.md` - license, security, contribution, validation, and

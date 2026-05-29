@@ -1151,6 +1151,28 @@ test("status roadmap lists every release-readiness evidence surface", () => {
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("glossary defines recurring repository terms", () => {
+  const glossary = readFileSync("docs/glossary.md", "utf8");
+  const requiredTerms = [
+    "bio-digital event intelligence",
+    "privacyBoundary",
+    "cryptoInventory",
+    "productionClaim: false",
+    "release gate",
+    "release-evidence index",
+    "native lane",
+    "blocker artifact",
+    "plaintext baseline",
+    "metadata-leakage proxy",
+    "reconstruction-risk probe",
+  ];
+  const missingTerms = requiredTerms.filter((term) =>
+    !glossary.includes(term),
+  );
+
+  assert.deepEqual(missingTerms, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

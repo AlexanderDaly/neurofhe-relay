@@ -14,6 +14,8 @@ clinical validation, deployment evidence, or a security certification.
 - `docs/README.md` - documentation index for reader and contributor paths.
 - `docs/briefing-sequence.md` - reading order for the root `01-` through `12-`
   public briefing files.
+- `docs/glossary.md` - definitions for recurring claim, artifact, release,
+  gateway, and native-lane terms.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - map of the license, security, contribution,
@@ -71,6 +73,7 @@ Use `docs/policy-boundary.md` before changing license, security, contribution,
 validation, release, or public-claim language.
 Use `docs/status-roadmap.md` when you need the current readiness picture before
 deciding what to review or improve next.
+Use `docs/glossary.md` when project vocabulary is unclear.
 
 ## Prototype Code
 
