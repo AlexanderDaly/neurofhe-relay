@@ -11,6 +11,9 @@ clinical validation, deployment evidence, or a security certification.
 ## Start Here
 
 - `README.md` - project thesis, public framing, demos, and caveats.
+- `docs/README.md` - documentation index for reader and contributor paths.
+- `docs/developer-quickstart.md` - compact local validation path for
+  contributors.
 - `DEVELOPMENT.md` - local setup, portable validation, native FHE commands, and
   artifact policy.
 - `CONTRIBUTING.md` - evidence-first contribution rules and PR expectations.

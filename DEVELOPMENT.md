@@ -7,6 +7,8 @@ Rust/TFHE-rs are installed locally.
 Nothing in this repository is production cryptography, medical software, or a
 security certification.
 
+For the short first-pass contributor path, see `docs/developer-quickstart.md`.
+
 ## Prerequisites
 
 - Node.js 20 or newer.
@@ -14,6 +16,9 @@ security certification.
 - Optional: CMake, a C++17 compiler, and a local OpenFHE install for the BFVrns
   and CKKS native lanes.
 - Optional: Rust stable and Cargo for the TFHE-rs comparison lane.
+
+For CI parity, `.nvmrc` and `.node-version` point to Node.js 22. The package
+engine remains `>=20` until a specific runtime feature requires a higher floor.
 
 The JavaScript harness has no npm dependencies today. If dependencies are added
 later, commit the lockfile and update the CI workflow before relying on
