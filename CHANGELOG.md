@@ -56,6 +56,8 @@ Release target: `v0.1.0-research-alpha`.
   portable validation, merge policy, release gate, and claim-boundary posture.
 - Updated the root README current-status snapshot to track the current
   139-test portable gate.
+- Tightened the root README boundary section so the JavaScript path is framed
+  as a scaffold rather than a broader prototype.
 - Tightened post-quantum and linear-algebra handoff wording so prototype
   language uses research-alpha lane and contract framing.
 - Tightened security policy and agent-readable whitepaper metadata so BCI and

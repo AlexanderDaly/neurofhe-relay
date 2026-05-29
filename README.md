@@ -183,9 +183,9 @@ release-evidence dashboard. Use `docs/evidence-guide.md`,
 `benchmark-artifacts/README.md`, and `docs/release-gate-matrix.md` before
 turning any artifact into a public or release-facing claim.
 
-## Prototype Boundary
+## Scaffold Boundary
 
-The JavaScript prototype is a portable contract harness, not the target runtime for low-level execution. Performance-critical paths should move to native HE libraries, systems code, or hardware-aware edge implementations, with Node kept for demos, artifact generation, schema checks, and orchestration. See `10-native-performance-track.md`.
+The JavaScript scaffold is a portable contract harness, not the target runtime for low-level execution. Performance-critical paths should move to native HE libraries, systems code, or hardware-aware edge implementations, with Node kept for demos, artifact generation, schema checks, and orchestration. See `10-native-performance-track.md`.
 
 This repository is CC0. If the project later needs proprietary implementation, keep partner-specific adapters, datasets, trained weights, deployment code, and non-public library integrations in a separate private repository with explicit dependency and license review. Do not import proprietary reverse-engineered code into this public reference package.
 

@@ -2609,6 +2609,8 @@ test("root README keeps first-read navigation role based", () => {
     "cryptoInventory",
     "productionClaim: false",
     "runnable research-alpha scaffold",
+    "## Scaffold Boundary",
+    "The JavaScript scaffold is a portable contract harness",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !readme.includes(entry),
@@ -2617,6 +2619,8 @@ test("root README keeps first-read navigation role based", () => {
   assert.deepEqual(missingEntries, []);
   assert.equal(readme.includes("New readers should begin with"), false);
   assert.equal(readme.includes("Presentation package"), false);
+  assert.equal(readme.includes("## Prototype Boundary"), false);
+  assert.equal(readme.includes("The JavaScript prototype is a portable contract harness"), false);
   assert.equal(readme.includes("The runnable prototype demonstrates"), false);
   assert.equal(readme.includes("The current prototype is about"), false);
 });
