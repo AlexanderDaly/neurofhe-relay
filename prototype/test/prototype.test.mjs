@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -924,6 +925,14 @@ test("repository hygiene artifact CLI honors deterministic artifact options", as
   assert.equal(artifact.result, "pass");
   assert.equal(artifact.findingsCount, 0);
   assert.equal(artifact.privacyBoundary.secrets, "redacted from artifacts");
+});
+
+test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
+  const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
+
+  assert.match(workflow, /^\s*workflow_dispatch:\s*$/m);
+  assert.match(workflow, /^\s*push:\s*$/m);
+  assert.match(workflow, /^\s*pull_request:\s*$/m);
 });
 
 test("release evidence index summarizes blocker, hygiene, native, and privacy evidence without satisfying the gate", () => {
