@@ -12,16 +12,16 @@ Use this as the short map for reading committed evidence before making claims.
 | Repository decisions | `docs/architecture-decisions.md` | `docs/reviewer-quickstart.md`, `docs/operations-runbook.md` |
 
 NeuroFHE Relay is a research-alpha package. Evidence in this repository can
-support scoped prototype statements, but it does not support production cryptography,
-medical, clinical, surveillance, deployment, side-channel, identity-protection,
-or stable-performance claims.
+support scoped research-alpha scaffold statements, but it does not support
+production cryptography, medical, clinical, surveillance, deployment,
+side-channel, identity-protection, or stable-performance claims.
 
 ## Evidence Classes
 
 | Class | Where To Look | What It Can Support | What It Cannot Support |
 | --- | --- | --- | --- |
 | Portable validation | GitHub Actions `Portable validation`, `npm run validate` | Tests, JSON metadata parsing, local Markdown links, source hygiene, and smoke artifact generation are passing | Native-library availability, release approval, production readiness |
-| Synthetic prototype | `benchmark-artifacts/latest.json`, `benchmark-artifacts/runs/` | Toy sparse scorer behavior, schema shape, operation-count comparisons, privacy-boundary metadata | Real FHE security, real dataset accuracy, speed or deployment claims |
+| Synthetic scaffold | `benchmark-artifacts/latest.json`, `benchmark-artifacts/runs/` | Toy sparse scorer behavior, schema shape, operation-count comparisons, privacy-boundary metadata | Real FHE security, real dataset accuracy, speed or deployment claims |
 | Plaintext real-data baselines | `benchmark-artifacts/plaintext-baselines/` | Derived public-data preprocessing and plaintext model evidence | Encrypted-compute accuracy, medical utility, production deployment |
 | Native comparison lanes | `benchmark-artifacts/comparisons/`, `benchmark-artifacts/native-evidence/` | Local OpenFHE or TFHE-rs integration evidence when dependencies are present | Broad runtime claims, peak memory claims, side-channel resistance, dataset-scale encrypted validation |
 | Privacy-mode ablation | `benchmark-artifacts/privacy-modes/` | Sparse metadata versus padding overhead for the current research-alpha sparse-event contract | Formal leakage metrics, anonymity, mutual information, reconstruction-resistance proof |

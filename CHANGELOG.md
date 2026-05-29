@@ -55,7 +55,7 @@ Release target: `v0.1.0-research-alpha`.
 - Added a guarded root README current-status table for release target,
   portable validation, merge policy, release gate, and claim-boundary posture.
 - Updated the root README current-status snapshot to track the current
-  138-test portable gate.
+  139-test portable gate.
 - Tightened post-quantum and linear-algebra handoff wording so prototype
   language uses research-alpha lane and contract framing.
 - Tightened security policy and agent-readable whitepaper metadata so BCI and
@@ -141,6 +141,8 @@ Release target: `v0.1.0-research-alpha`.
 - Added evidence-guide coverage so artifact mechanics, claim discipline,
   release posture, and repository decisions route through a compact review
   table without upgrading claims.
+- Tightened evidence-guide taxonomy so synthetic evidence is framed as a
+  research-alpha scaffold, not a broader prototype claim.
 - Tightened command-reference coverage so common validation, demo, release,
   native, and dataset jobs route through a compact command table.
 - Tightened operations-runbook coverage so PR checks, green-CI/ruleset blocks,
@@ -281,7 +283,7 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 138 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 139 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

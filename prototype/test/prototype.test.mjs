@@ -2269,9 +2269,11 @@ test("evidence guide routes evidence review without upgrading claims", () => {
     "docs/release-gate-matrix.md",
     "docs/evidence-dashboard.md",
     "docs/operations-runbook.md",
+    "support scoped research-alpha scaffold statements",
     "production cryptography",
     "identity-protection",
     "stable-performance claims",
+    "| Synthetic scaffold |",
     "current research-alpha sparse-event contract",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
@@ -2280,6 +2282,8 @@ test("evidence guide routes evidence review without upgrading claims", () => {
 
   assert.deepEqual(missingEntries, []);
   assert.equal(evidenceGuide.includes("current prototype contract"), false);
+  assert.equal(evidenceGuide.includes("support scoped prototype statements"), false);
+  assert.equal(evidenceGuide.includes("| Synthetic prototype |"), false);
 });
 
 test("evidence dashboard summarizes release gate status without upgrading claims", () => {
@@ -2575,7 +2579,7 @@ test("root README keeps first-read navigation role based", () => {
     "v0.1.0-research-alpha",
     "Portable validation",
     "Green on PR #23",
-    "138 passing tests",
+    "139 passing tests",
     "Merge state",
     "repository ruleset/admin policy",
     "Release gate",

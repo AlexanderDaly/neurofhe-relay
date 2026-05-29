@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 138
-pass 138
+tests 139
+pass 139
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 138
-pass 138
+tests 139
+pass 139
 fail 0
 ```
 
