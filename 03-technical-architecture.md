@@ -261,12 +261,12 @@ Raw signal
 
 ## Security Boundary
 
-The first prototype should claim only:
+The current research-alpha package should claim only:
 
 - Data is encrypted before external compute.
 - Compute layer receives ciphertext, public parameters, and public model metadata.
 - Secret key remains client-side.
-- Prototype is research-grade, not audited production cryptography.
+- The package is not audited production cryptography.
 - Post-quantum claims are design targets until concrete libraries, parameters, and reviews exist.
 
 ## Success Metrics

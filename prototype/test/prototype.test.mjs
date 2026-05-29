@@ -1104,7 +1104,12 @@ test("briefing sequence guide lists every numbered root brief", () => {
     technicalArchitecture.includes("current research-alpha sparse-score contract"),
     true,
   );
+  assert.equal(
+    technicalArchitecture.includes("The current research-alpha package should claim only"),
+    true,
+  );
   assert.equal(technicalArchitecture.includes("The current prototype uses"), false);
+  assert.equal(technicalArchitecture.includes("Prototype is research-grade"), false);
   assert.equal(
     encryptedThoughtsWhitepaper.includes("The current research-alpha package is deliberately small"),
     true,
