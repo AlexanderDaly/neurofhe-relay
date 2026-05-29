@@ -74,9 +74,9 @@ Covered behaviours:
   role routing and concision, numbered briefing sequence coverage, prototype
   module, top-level entrypoint, and native source map coverage, patent package
   source coverage,
-  package manifest top-level, owner-route, and native-evidence posture
-  coverage, generated presentation output map coverage, benchmark artifact
-  directory, artifact-review-route, and release-evidence routing coverage,
+  package manifest top-level, owner-route, inventory-review-route, and
+  native-evidence posture coverage, generated presentation output map coverage,
+  benchmark artifact directory, artifact-review-route, and release-evidence routing coverage,
   contributor workflow surface coverage, policy boundary map coverage, status
   roadmap release-readiness and
   at-a-glance gate-posture coverage, glossary term coverage, testing strategy

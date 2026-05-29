@@ -7,6 +7,19 @@ repository surfaces a reviewer should expect in the CC0 research-alpha package
 and routes commands, evidence, and release decisions to the maintained
 documents that own them.
 
+## Inventory Review Routes
+
+Use this table before the full file list when checking whether a packaged
+snapshot is readable, caveated, and ready for diligence review.
+
+| Review Need | Start With | Then Use |
+| --- | --- | --- |
+| First-read orientation | `README.md` | `docs/README.md`, `docs/repository-guide.md`, `docs/faq.md` |
+| Current validation and release posture | `VALIDATION.md` | `RELEASE.md`, `docs/status-roadmap.md`, `docs/release-gate-matrix.md` |
+| Evidence artifacts and caveats | `docs/evidence-dashboard.md` | `benchmark-artifacts/README.md`, `docs/claim-evidence-ledger.md`, `docs/evidence-guide.md` |
+| Contribution and maintenance routing | `CONTRIBUTING.md` | `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md`, `docs/maintainer-checklist.md` |
+| Patent or briefing review | `docs/patent-package-map.md` | `patent/briefing/ENER_weak_claims_evidence_gaps.md`, `docs/briefing-sequence.md` |
+
 ## Files
 
 - `README.md` - project overview and recommended framing.

@@ -1122,6 +1122,13 @@ test("package manifest lists every tracked top-level package entry", () => {
 
   const requiredRouting = [
     "inventory, not a command reference",
+    "## Inventory Review Routes",
+    "| Review Need | Start With | Then Use |",
+    "First-read orientation",
+    "Current validation and release posture",
+    "Evidence artifacts and caveats",
+    "Contribution and maintenance routing",
+    "Patent or briefing review",
     "docs/command-reference.md",
     "VALIDATION.md",
     "RELEASE.md",
