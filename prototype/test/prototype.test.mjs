@@ -1400,6 +1400,26 @@ test("root README keeps first-read navigation role based", () => {
   assert.equal(readme.includes("New readers should begin with"), false);
 });
 
+test("root README keeps repository layout concise", () => {
+  const readme = readFileSync("README.md", "utf8");
+  const requiredEntries = [
+    "## Repository Layout",
+    "PACKAGE_MANIFEST.md",
+    "docs/",
+    "prototype/",
+    "benchmark-artifacts/",
+    "patent/",
+    ".github/",
+    "Root policy files",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !readme.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(readme.includes("## Package Contents"), false);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

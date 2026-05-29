@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 106
-pass 106
+tests 107
+pass 107
 fail 0
 json ok
 markdown link scan ok (69 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 106
-pass 106
+tests 107
+pass 107
 fail 0
 ```
 
@@ -96,6 +96,8 @@ Covered behaviours:
 - Root README first-path coverage requiring role-based navigation for reviewers,
   contributors, maintainers, and evidence reviewers while preserving
   `productionClaim: false`.
+- Root README repository-layout coverage requiring a concise layout table that
+  defers exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene
   status, native measurement gaps, metadata-leakage caveats, reconstruction-risk
   caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker

@@ -26,12 +26,14 @@ Release target: `v0.1.0-research-alpha`.
   review, evidence refresh commands, and blocker recording.
 - Added a guarded, role-based root README first path for reviewers,
   contributors, maintainers, and evidence reviewers.
+- Added a guarded, concise root README repository layout that defers the
+  exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Added guarded documentation coverage in the Node test suite so the repository
   maps stay synchronized with tracked surfaces.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 106 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 107 tests, Markdown
   link scan over 69 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

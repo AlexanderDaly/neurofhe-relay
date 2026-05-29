@@ -75,69 +75,21 @@ The repository remains a research-alpha package. Keep `productionClaim: false`,
 bio-digital event intelligence boundary intact unless stronger evidence is
 actually present and documented.
 
-## Package Contents
+## Repository Layout
 
-- `LICENSE` - CC0 1.0 Universal public-domain dedication.
-- `PUBLIC_DOMAIN_NOTICE.md` - plain-English free-use notice.
-- `CHANGELOG.md` - unreleased review history and release-caveat summary.
-- `.editorconfig`, `.nvmrc`, and `.node-version` - editor and Node.js version
-  hints for consistent local work.
-- `docs/README.md` - documentation index for reader and contributor paths.
-- `docs/briefing-sequence.md` - reading order for the numbered public briefs.
-- `docs/repository-guide.md` - first-pass map for readers and contributors.
-- `docs/glossary.md` - recurring project, artifact, release, gateway, and
-  native-lane terms.
-- `docs/testing-strategy.md` - portable validation, hosted CI, docs-link,
-  hygiene, and guard-family map.
-- `docs/dependency-matrix.md` - portable, hosted, native-lane, dataset, and
-  release dependency map.
-- `docs/data-handling.md` - raw-data, derived-artifact, blocker, and hygiene
-  boundary map.
-- `docs/claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
-  ledger.
-- `docs/release-gate-matrix.md` - minimum release command, artifact, caveat,
-  and blocker matrix.
-- `docs/status-roadmap.md` - current review state, release blockers, and next
-  evidence-work queue.
-- `docs/policy-boundary.md` - license, security, contribution, validation, and
-  release boundary map.
-- `docs/prototype-map.md` - code navigation map for prototype surfaces.
-- `docs/patent-package-map.md` - navigation map for patent and briefing sources.
-- `docs/presentation-outputs.md` - map of generated presentation exports.
-- `docs/contributor-workflow.md` - map of issue, PR, and hosted CI surfaces.
-- `docs/architecture-decisions.md` - accepted repository boundary decisions.
-- `docs/operations-runbook.md` - routine PR, hosted-check, and blocker handling.
-- `docs/reviewer-quickstart.md` - diligence and evidence-review entry path.
-- `docs/developer-quickstart.md` - compact local validation path for contributors.
-- `docs/command-reference.md` - grouped npm command reference.
-- `docs/evidence-guide.md` - short evidence map for claim-safe artifact review.
-- `docs/maintainer-checklist.md` - merge, artifact, and release-review checklist.
-- `01-one-pager.md` - executive one-page brief.
-- `02-pitch-deck.md` - 11-slide presentation narrative.
-- `03-technical-architecture.md` - system architecture and data flow.
-- `04-demo-roadmap.md` - prototype plan from desk demo to fundable pilot.
-- `05-risk-register.md` - technical, market, and execution risks.
-- `06-evidence-and-sources.md` - source-backed research notes.
-- `07-post-quantum-cryptography-track.md` - PQC design target and roadmap.
-- `08-encrypted-thoughts-whitepaper.md` - whitepaper on encrypted-thoughts architecture for BCI and neural-data privacy.
-- `09-relay-gateway-pattern.md` - local-first gateway pattern for raw-signal intake, privacy filtering, model-facing events, recommendations, audit, replay, and failure handling.
-- `10-native-performance-track.md` - native-first implementation boundary for low-latency and energy-aware execution.
-- `11-architecture-visuals.md` - Mermaid architecture diagrams for pipeline, encrypted relay flow, latent embedding, and trust-boundary views.
-- `12-discreet-spike-sorting-proof.md` - proof gate for real-data-derived event sorting, raw-boundary evidence, leakage probes, and the Quiet Allocations shelf rule.
-- `CONTRIBUTING.md` - evidence-first contribution rules and local validation expectations.
-- `DEVELOPMENT.md` - local setup, portable checks, native OpenFHE/TFHE-rs commands, and artifact policy.
-- `RELEASE.md` - research-alpha release checklist and evidence gates.
-- `SECURITY.md` - research-prototype security policy and reporting guidance.
-- `.github/ISSUE_TEMPLATE/` - guided forms for bugs, validation gaps, and repository cleanup requests.
-- `.github/pull_request_template.md` - PR checklist for evidence boundary and validation notes.
-- `VALIDATION.md` - local validation commands, outputs, artifacts, and caveats.
-- `.github/workflows/ci.yml` - portable CI for tests, schema checks, repository hygiene scan, and smoke artifact generation/upload.
-- `benchmark-artifacts/` - intentionally committed derived benchmark evidence, repository hygiene scan evidence, and blocker reports.
-- `patent/` - ENER provisional drafting materials, claim seeds, drawings, prior-art search plan, filing checklist, and briefing package.
-- `project-brief.json` - structured project metadata for agents.
-- `index.html` - self-contained briefing deck for browser presentation.
-- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, relay gateway scaffold, benchmark runner, real OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs integration lanes, tests, and research assumptions.
-- `package.json` - local command scripts. The package is marked private to prevent accidental npm publication; it does not change the repository's CC0 license.
+`PACKAGE_MANIFEST.md` is the detailed file inventory. The top-level layout is:
+
+| Path | Purpose |
+| --- | --- |
+| `docs/` | Reader, contributor, maintainer, evidence, and release navigation. |
+| `prototype/` | Portable demo code, test suite, artifact publishers, and native lane adapters. |
+| `benchmark-artifacts/` | Committed derived evidence, blocker reports, and release dashboards. |
+| `patent/` | ENER provisional drafting package, drawings, prior-art plan, and briefing material. |
+| `.github/` | Issue templates, PR template, and hosted portable CI workflow. |
+| Root policy files | `LICENSE`, `PUBLIC_DOMAIN_NOTICE.md`, `CONTRIBUTING.md`, `SECURITY.md`, `RELEASE.md`, and `VALIDATION.md`. |
+
+Use `PACKAGE_MANIFEST.md` when you need the exhaustive packaged-review
+inventory; keep this README focused on orientation, claims, and commands.
 
 ## Recommended Framing
 
