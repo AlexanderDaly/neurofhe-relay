@@ -1,0 +1,57 @@
+name: Documentation or repository cleanup
+description: Propose a readability, navigation, documentation, or packaging cleanup.
+title: "[cleanup]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for changes that make the repository easier to read, review, validate, or maintain. Keep requests scoped and preserve the research-alpha evidence boundary.
+  - type: dropdown
+    id: cleanup_area
+    attributes:
+      label: Cleanup area
+      options:
+        - README or start-here flow
+        - development or validation docs
+        - release evidence documentation
+        - benchmark artifact documentation
+        - prototype documentation
+        - patent or briefing organization
+        - GitHub templates or contributor workflow
+        - file layout or package manifest
+    validations:
+      required: true
+  - type: textarea
+    id: current_friction
+    attributes:
+      label: Current friction
+      description: What is hard to find, understand, review, or maintain?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_cleanup
+    attributes:
+      label: Proposed cleanup
+      description: Describe the smallest change that would make the repository clearer.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Suggested validation
+      description: List the docs, commands, or artifacts that should be checked after the cleanup.
+      render: sh
+    validations:
+      required: false
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Boundary checks
+      options:
+        - label: This cleanup preserves CC0/public-domain framing.
+          required: true
+        - label: This cleanup does not invent benchmark numbers or cryptographic, security, medical, or deployment claims.
+          required: true
+        - label: This cleanup keeps raw datasets, raw signals, secrets, private payloads, and proprietary material out of git.
+          required: true
+

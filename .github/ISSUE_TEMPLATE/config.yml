@@ -1,0 +1,9 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Research-alpha release gate
+    url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/RELEASE.md
+    about: Review release evidence requirements before requesting a tag or release.
+  - name: Contribution guide
+    url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/CONTRIBUTING.md
+    about: Read the evidence boundary and validation expectations before opening an issue.
+

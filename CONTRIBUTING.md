@@ -16,6 +16,21 @@ into production cryptography, medical, security, or performance claims.
 - Keep the local gateway framing intact: raw payloads stay local, and only
   approved event representations cross the boundary.
 
+## Issue Types
+
+Use the GitHub issue forms to keep reports reproducible:
+
+- Reproducible bug or validation failure: failing command, CI job, script,
+  prototype behavior, or artifact generation issue.
+- Validation or evidence gap: missing or incomplete research-alpha evidence
+  where the current caveat must stay visible.
+- Documentation or repository cleanup: readability, navigation, packaging, or
+  contributor-workflow improvements.
+
+Every issue should include the relevant command, artifact path, observed result,
+and smallest next step when those details apply. Do not attach secrets, private
+payloads, raw datasets, raw signal rows, or proprietary material.
+
 ## Before Opening a Pull Request
 
 Run:

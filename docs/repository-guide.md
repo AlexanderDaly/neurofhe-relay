@@ -19,6 +19,10 @@ clinical validation, deployment evidence, or a security certification.
   tagging.
 - `benchmark-artifacts/README.md` - guide to committed benchmark, blocker,
   hygiene, native-evidence, reconstruction-risk, and release-index artifacts.
+- `.github/ISSUE_TEMPLATE/` - guided forms for reproducible bugs, evidence
+  gaps, and repository-cleanup requests.
+- `.github/pull_request_template.md` - PR checklist for validation and
+  evidence-boundary notes.
 
 ## Top-Level Package
 
@@ -90,6 +94,11 @@ evidence gap to close.
 
 ## Change Discipline
 
+Use the issue templates before broad cleanup work: bug reports should include
+the exact command and observed result, validation gaps should preserve the
+current caveat, and repository-cleanup requests should name the reader friction
+they are trying to remove.
+
 Before opening or updating a PR:
 
 ```sh
@@ -102,4 +111,3 @@ include the exact artifact command and commit only derived evidence or a
 structured blocker report. If a native dependency cannot run, record the exact
 command, error, and smallest next setup step instead of substituting toy or
 unverified numbers.
-

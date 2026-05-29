@@ -86,6 +86,8 @@ cryptographic, security, medical, or deployment claim.
 - `DEVELOPMENT.md` - local setup, portable checks, native OpenFHE/TFHE-rs commands, and artifact policy.
 - `RELEASE.md` - research-alpha release checklist and evidence gates.
 - `SECURITY.md` - research-prototype security policy and reporting guidance.
+- `.github/ISSUE_TEMPLATE/` - guided forms for bugs, validation gaps, and repository cleanup requests.
+- `.github/pull_request_template.md` - PR checklist for evidence boundary and validation notes.
 - `VALIDATION.md` - local validation commands, outputs, artifacts, and caveats.
 - `.github/workflows/ci.yml` - portable CI for tests, schema checks, repository hygiene scan, and smoke artifact generation/upload.
 - `benchmark-artifacts/` - intentionally committed derived benchmark evidence, repository hygiene scan evidence, and blocker reports.

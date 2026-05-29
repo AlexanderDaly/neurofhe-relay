@@ -62,5 +62,5 @@ body:
           required: true
         - label: Raw datasets, raw signals, secrets, and private payloads are not attached or committed.
           required: true
-        - label: The evidence keeps `productionClaim: false` where artifact metadata is involved.
+        - label: "The evidence keeps `productionClaim: false` where artifact metadata is involved."
           required: true
