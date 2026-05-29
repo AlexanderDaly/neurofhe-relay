@@ -65,7 +65,7 @@ complete documentation index:
 
 | Role | Start With | Then Use |
 | --- | --- | --- |
-| New reviewer | `docs/reviewer-quickstart.md` | `docs/status-roadmap.md`, `CHANGELOG.md`, `VALIDATION.md` |
+| New reviewer | `docs/reviewer-quickstart.md` | `docs/faq.md`, `docs/status-roadmap.md`, `CHANGELOG.md`, `VALIDATION.md` |
 | Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md` |
 | Maintainer | `MAINTAINERS.md` | `docs/maintainer-checklist.md`, `docs/operations-runbook.md`, `RELEASE.md` |
 | Evidence reviewer | `docs/evidence-guide.md` | `docs/evidence-dashboard.md`, `docs/claim-evidence-ledger.md`, `docs/release-gate-matrix.md` |

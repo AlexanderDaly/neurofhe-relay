@@ -17,6 +17,8 @@ changing the evidence boundary.
   for packaged review.
 - `repository-guide.md` - map of the root briefs, prototype code, committed
   evidence artifacts, patent materials, and release gate.
+- `faq.md` - short answers to common claim, evidence, raw-data, CI, release,
+  and CC0 questions.
 - `glossary.md` - definitions for recurring claim, artifact, release, gateway,
   and native-lane terms.
 - `testing-strategy.md` - portable validation, hosted CI, docs-link, hygiene,
@@ -96,7 +98,8 @@ It also checks that `architecture-decisions.md` records the accepted repository
 boundary decisions. It also checks that `operations-runbook.md` records the
 routine maintainer commands and blocker policy. It also checks that
 `troubleshooting.md` routes common blockers without weakening release and claim
-caveats.
+caveats. It also checks that `faq.md` answers common reader questions without
+upgrading claims.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

@@ -1408,6 +1408,31 @@ test("evidence dashboard summarizes release gate status without upgrading claims
   assert.deepEqual(missingEntries, []);
 });
 
+test("FAQ answers common reader questions without upgrading claims", () => {
+  const faq = readFileSync("docs/faq.md", "utf8");
+  const requiredEntries = [
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "CC0",
+    "not production cryptography",
+    "not medical",
+    "raw datasets",
+    "toy additive",
+    "real N-MNIST",
+    "repository ruleset/admin policy",
+    "RELEASE.md",
+    "docs/evidence-dashboard.md",
+    "docs/troubleshooting.md",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !faq.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("release gate matrix lists every minimum evidence command", () => {
   const releasePlan = readFileSync("RELEASE.md", "utf8");
   const releaseMatrix = readFileSync("docs/release-gate-matrix.md", "utf8");
