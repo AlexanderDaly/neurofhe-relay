@@ -11,6 +11,16 @@ package. Native-library commands require local dependencies and should not be
 used to make production cryptography, clinical, medical, surveillance,
 deployment, or stable-performance claims.
 
+## Command Routes
+
+| Job | Start With | Details |
+| --- | --- | --- |
+| Validate a local change | `npm run ci` and `git diff --check` | Use `npm test -- --test-name-pattern "<focused behavior>"` while iterating. |
+| Try the demos | `npm run demo` and `npm run gateway:demo` | Educational toy arithmetic and local gateway scaffolds only. |
+| Refresh release evidence | `npm run release:evidence` | Use `-- --artifact` only when intentionally updating committed release-dashboard artifacts. |
+| Investigate native evidence | `npm run native:doctor` | OpenFHE and TFHE-rs runs require local native dependencies. |
+| Handle real-data or dataset work | `npm run baseline:plaintext` and `npm run contract:eeg-openfhe` | Keep raw datasets outside git; commit derived artifacts or blocker reports only. |
+
 ## Portable Validation
 
 ```sh

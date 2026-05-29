@@ -70,7 +70,7 @@ Covered behaviours:
 - N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
 - UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
 - Documentation and repository-readability guards for Markdown links, command
-  reference script coverage, documentation index coverage, documentation-index
+  reference script and command-route coverage, documentation index coverage, documentation-index
   role routing and concision, numbered briefing sequence coverage, prototype
   module, top-level entrypoint, and native source map coverage, patent package
   source coverage,

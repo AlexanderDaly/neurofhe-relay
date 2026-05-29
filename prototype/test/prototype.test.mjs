@@ -982,14 +982,30 @@ test("markdown link check CLI exits nonzero for broken local docs links", async 
 test("command reference documents every package script", () => {
   const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
   const commandReference = readFileSync("docs/command-reference.md", "utf8");
+  const requiredRoutes = [
+    "## Command Routes",
+    "| Job | Start With | Details |",
+    "Validate a local change",
+    "Try the demos",
+    "Refresh release evidence",
+    "Investigate native evidence",
+    "Handle real-data or dataset work",
+    "npm run ci",
+    "npm run release:evidence",
+    "npm run native:doctor",
+  ];
   const missingScripts = Object.keys(packageJson.scripts).filter((scriptName) => {
     const expected = scriptName === "test"
       ? /\bnpm test\b/
       : new RegExp(`\\bnpm run ${escapeRegExp(scriptName)}\\b`);
     return !expected.test(commandReference);
   });
+  const missingRoutes = requiredRoutes.filter((entry) =>
+    !commandReference.includes(entry),
+  );
 
   assert.deepEqual(missingScripts, []);
+  assert.deepEqual(missingRoutes, []);
 });
 
 test("documentation index lists every docs page", () => {
