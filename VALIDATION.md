@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 105
-pass 105
+tests 106
+pass 106
 fail 0
 json ok
 markdown link scan ok (69 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 105
-pass 105
+tests 106
+pass 106
 fail 0
 ```
 
@@ -93,6 +93,9 @@ Covered behaviours:
 - Operations runbook coverage requiring routine maintainer commands,
   hosted-check handling, blocker policy, release gate posture, and
   production-claim caveats.
+- Root README first-path coverage requiring role-based navigation for reviewers,
+  contributors, maintainers, and evidence reviewers while preserving
+  `productionClaim: false`.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene
   status, native measurement gaps, metadata-leakage caveats, reconstruction-risk
   caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker

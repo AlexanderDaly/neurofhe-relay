@@ -1378,6 +1378,28 @@ test("operations runbook maps maintainer commands and blocker policy", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("root README keeps first-read navigation role based", () => {
+  const readme = readFileSync("README.md", "utf8");
+  const requiredEntries = [
+    "## First Paths",
+    "New reviewer",
+    "Contributor",
+    "Maintainer",
+    "Evidence reviewer",
+    "docs/reviewer-quickstart.md",
+    "docs/developer-quickstart.md",
+    "docs/operations-runbook.md",
+    "docs/evidence-guide.md",
+    "productionClaim: false",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !readme.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(readme.includes("New readers should begin with"), false);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

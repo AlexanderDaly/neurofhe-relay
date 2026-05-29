@@ -58,26 +58,22 @@ The cryptographic design target is:
 
 > Quantum-resistant by design, cryptographically agile by default.
 
-## Start Here
+## First Paths
 
-New readers should begin with `docs/README.md`, `docs/briefing-sequence.md`,
-`docs/repository-guide.md`, `docs/prototype-map.md`,
-`docs/patent-package-map.md`, `docs/presentation-outputs.md`,
-`docs/glossary.md`, `docs/testing-strategy.md`, `docs/dependency-matrix.md`,
-`docs/data-handling.md`, `docs/claim-evidence-ledger.md`,
-`docs/release-gate-matrix.md`, `docs/status-roadmap.md`,
-`docs/policy-boundary.md`, `docs/contributor-workflow.md`,
-`docs/architecture-decisions.md`, `docs/operations-runbook.md`,
-`docs/reviewer-quickstart.md`, `docs/developer-quickstart.md`,
-`docs/command-reference.md`, and `docs/evidence-guide.md`. Maintainers should
-also use `docs/maintainer-checklist.md`. Together they map the public briefing
-sequence, prototype code, committed evidence artifacts, patent briefing material,
-recurring vocabulary, testing strategy, dependency posture, data/artifact
-boundaries, claim evidence, release gate commands, architecture decisions,
-operations, reviewer paths, current status, claim-boundary files, contributor
-workflow, runnable commands, and
-research-alpha release gate without upgrading any cryptographic, security,
-medical, or deployment claim.
+Use the path that matches your job, then fall back to `docs/README.md` for the
+complete documentation index:
+
+| Role | Start With | Then Use |
+| --- | --- | --- |
+| New reviewer | `docs/reviewer-quickstart.md` | `docs/status-roadmap.md`, `CHANGELOG.md`, `VALIDATION.md` |
+| Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `CONTRIBUTING.md` |
+| Maintainer | `docs/maintainer-checklist.md` | `docs/operations-runbook.md`, `RELEASE.md` |
+| Evidence reviewer | `docs/evidence-guide.md` | `docs/claim-evidence-ledger.md`, `docs/release-gate-matrix.md` |
+
+The repository remains a research-alpha package. Keep `productionClaim: false`,
+`privacyBoundary`, `cryptoInventory`, CC0/public-domain framing, and the
+bio-digital event intelligence boundary intact unless stronger evidence is
+actually present and documented.
 
 ## Package Contents
 

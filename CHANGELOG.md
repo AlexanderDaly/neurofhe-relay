@@ -24,12 +24,14 @@ Release target: `v0.1.0-research-alpha`.
   and blocker review.
 - Added `docs/operations-runbook.md` for routine PR checks, hosted check-rollup
   review, evidence refresh commands, and blocker recording.
+- Added a guarded, role-based root README first path for reviewers,
+  contributors, maintainers, and evidence reviewers.
 - Added guarded documentation coverage in the Node test suite so the repository
   maps stay synchronized with tracked surfaces.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 105 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 106 tests, Markdown
   link scan over 69 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
