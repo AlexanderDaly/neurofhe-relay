@@ -1176,6 +1176,13 @@ test("benchmark artifacts README lists every tracked artifact directory", () => 
     !artifactsReadme.includes(`${dirPath}/`),
   );
   const requiredPosture = [
+    "## Artifact Review Routes",
+    "| Review Need | Start With | Do Not Claim |",
+    "Release posture",
+    "Native measurement coverage",
+    "Real-data plaintext baselines",
+    "Metadata and reconstruction caveats",
+    "Hosted CI or repository hygiene",
     "releaseGateSatisfied: false",
     "productionClaim: false",
     "real N-MNIST plaintext baseline",

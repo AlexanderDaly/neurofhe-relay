@@ -17,6 +17,20 @@ The publisher writes:
 - `latest.json` - the most recent benchmark artifact.
 - `runs/*.json` - timestamped run artifacts.
 
+## Artifact Review Routes
+
+Use this table before opening individual JSON files. It keeps review questions
+tied to the artifact family that can answer them without turning dashboard,
+blocker, plaintext, or synthetic evidence into a broader claim.
+
+| Review Need | Start With | Do Not Claim |
+| --- | --- | --- |
+| Release posture | `benchmark-artifacts/release-evidence/latest.json` and `docs/evidence-dashboard.md` | Release approval, production readiness, or a satisfied release gate. |
+| Native measurement coverage | `benchmark-artifacts/native-evidence/latest.json` and `benchmark-artifacts/comparisons/` | Stable performance, complete memory evidence, or side-channel assurance. |
+| Real-data plaintext baselines | `benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json` and `benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json` | Encrypted-compute accuracy, medical evidence, or deployment evidence. |
+| Metadata and reconstruction caveats | `benchmark-artifacts/privacy-modes/padding-ablation/latest.json` and `benchmark-artifacts/reconstruction-risk/latest.json` | Formal leakage, anonymity, reconstruction-resistance, or privacy-proof evidence. |
+| Hosted CI or repository hygiene | `benchmark-artifacts/ci-blockers/latest.json` and `benchmark-artifacts/repo-hygiene/latest.json` | Release approval, security audit completion, or repository-policy merge approval. |
+
 ## Directory Map
 
 Use this map to navigate the committed derived evidence without upgrading any

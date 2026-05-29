@@ -104,6 +104,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened benchmark-artifact index coverage so release-evidence routing names
   the current real N-MNIST plaintext baseline and TFHE-rs real-data blocker
   paths while preserving `releaseGateSatisfied: false`.
+- Tightened benchmark-artifact review coverage so release posture, native
+  measurement, plaintext baseline, metadata/reconstruction, hosted-CI, and
+  hygiene questions route through a compact artifact table.
 - Added release-plan coverage so the no-tag gate, evidence-dashboard route,
   repository-policy merge path, and explicit approval boundary stay visible.
 - Added plaintext-baseline note coverage so real-data evidence routes,

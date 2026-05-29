@@ -76,8 +76,9 @@ Covered behaviours:
   source coverage,
   package manifest top-level, owner-route, and native-evidence posture
   coverage, generated presentation output map coverage, benchmark artifact
-  directory and release-evidence routing coverage, contributor workflow surface
-  coverage, policy boundary map coverage, status roadmap release-readiness and
+  directory, artifact-review-route, and release-evidence routing coverage,
+  contributor workflow surface coverage, policy boundary map coverage, status
+  roadmap release-readiness and
   at-a-glance gate-posture coverage, glossary term coverage, testing strategy
   validation-surface coverage, dependency matrix setup-surface coverage,
   data-handling boundary-surface coverage, evidence-guide review-route
