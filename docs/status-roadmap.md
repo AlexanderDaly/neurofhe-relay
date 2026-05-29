@@ -23,6 +23,7 @@ below.
   `patent/briefing/ENER_weak_claims_evidence_gaps.md`.
 - Claim-to-evidence posture: `docs/claim-evidence-ledger.md`.
 - Release command matrix: `docs/release-gate-matrix.md`.
+- Accepted repository decisions: `docs/architecture-decisions.md`.
 
 ## What Is Ready To Review
 
@@ -78,6 +79,7 @@ below.
   `VALIDATION.md`.
 - Evidence reviewer: start with `docs/evidence-guide.md`,
   `docs/reviewer-quickstart.md`,
+  `docs/architecture-decisions.md`,
   `docs/claim-evidence-ledger.md`,
   `docs/release-gate-matrix.md`,
   `benchmark-artifacts/README.md`, and

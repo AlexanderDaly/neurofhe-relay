@@ -1332,6 +1332,29 @@ test("reviewer quickstart maps due diligence entrypoints and caveats", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("architecture decision log records repository boundary decisions", () => {
+  const decisionLog = readFileSync("docs/architecture-decisions.md", "utf8");
+  const requiredEntries = [
+    "CC0",
+    "research-alpha",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "bio-digital event intelligence",
+    "toy additive",
+    "native OpenFHE",
+    "TFHE-rs",
+    "raw data stays outside git",
+    "repository ruleset/admin policy",
+    "releaseGateSatisfied: false",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !decisionLog.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

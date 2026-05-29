@@ -39,6 +39,7 @@ clinical validation, deployment evidence, or a security certification.
   for packaged review.
 - `docs/contributor-workflow.md` - map of issue forms, PR template, and hosted
   CI workflow surfaces.
+- `docs/architecture-decisions.md` - accepted repository boundary decisions.
 - `docs/reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `docs/developer-quickstart.md` - compact local validation path for
   contributors.
@@ -98,6 +99,8 @@ Use `docs/release-gate-matrix.md` before rerunning or reviewing release-gate
 commands.
 Use `docs/reviewer-quickstart.md` when reviewing the repository from a
 diligence, grant, patent, or maintainer perspective.
+Use `docs/architecture-decisions.md` before changing repository boundaries,
+license posture, raw-data policy, claim posture, or native/toy lane framing.
 
 ## Prototype Code
 
