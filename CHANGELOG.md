@@ -91,6 +91,9 @@ Release target: `v0.1.0-research-alpha`.
   accidental dataset/download scratch folders.
 - Added security-policy coverage so sensitive reports preserve raw-data,
   claim-boundary, exact-command, and hygiene-scan-limit language.
+- Tightened security-policy coverage so data exposure, claim-boundary, unsafe
+  CLI/input, and release-posture reports route through a compact private/public
+  reporting table.
 - Added contributing-guide coverage so contributor entrypoints preserve
   evidence, data-handling, release-gate, and repository-policy routing.
 - Tightened contributing-guide coverage so docs cleanup, prototype/artifact,

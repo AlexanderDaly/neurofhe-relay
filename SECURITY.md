@@ -4,6 +4,18 @@ NeuroFHE Relay is a research prototype. It is not production cryptography, a
 medical device, a clinical decision system, a surveillance system, or a
 deployment-ready privacy product.
 
+## Security Report Routes
+
+Use this table before reporting so sensitive material stays out of public
+threads and research limitations remain separate from vulnerabilities.
+
+| Report Type | Route | Keep Out Of Public Threads |
+| --- | --- | --- |
+| Raw data, secret, or private payload exposure | Use GitHub private vulnerability reporting if enabled; otherwise avoid public detail and contact the maintainer route in `MAINTAINERS.md`. | Secrets, raw signal rows, raw dataset files, private payloads, and exploit payloads. |
+| Claim-boundary or cryptography-posture issue | Public issue is acceptable when no sensitive material is involved. | Any language that upgrades toy arithmetic or local native runs into production cryptography. |
+| Unsafe CLI or malformed input behavior | Public issue with exact command, affected file, observed behavior, and smallest next step. | Private paths, proprietary files, raw datasets, and secret values. |
+| Release posture or evidence-gate concern | Use `RELEASE.md`, `docs/release-gate-matrix.md`, and `docs/evidence-dashboard.md` before calling it ready. | Private repository settings, sensitive CI details, or unsupported release claims. |
+
 ## Supported Scope
 
 Security reports are useful when they identify issues in the public prototype

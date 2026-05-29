@@ -145,7 +145,7 @@ Covered behaviours:
   blocker routing, including a public-versus-private report routing table,
   while preserving `releaseGateSatisfied: false`, `productionClaim: false`,
   and raw-data boundaries.
-- Security policy coverage requiring sensitive-report routing, raw-data and
+- Security policy coverage requiring security-report routing, raw-data and
   private-payload exclusions, `privacyBoundary`, `cryptoInventory`,
   `releaseGateSatisfied: false`, `productionClaim: false`, exact-command and
   smallest-next-step reporting, and repository-hygiene-scan limits.

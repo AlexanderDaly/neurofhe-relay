@@ -1448,6 +1448,12 @@ test("support policy routes issues without weakening evidence boundaries", () =>
 test("security policy preserves research-alpha reporting boundaries", () => {
   const securityPolicy = readFileSync("SECURITY.md", "utf8");
   const requiredEntries = [
+    "## Security Report Routes",
+    "| Report Type | Route | Keep Out Of Public Threads |",
+    "Raw data, secret, or private payload exposure",
+    "Claim-boundary or cryptography-posture issue",
+    "Unsafe CLI or malformed input behavior",
+    "Release posture or evidence-gate concern",
     "GitHub private vulnerability reporting",
     "raw signal",
     "raw dataset",
