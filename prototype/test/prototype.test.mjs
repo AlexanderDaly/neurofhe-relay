@@ -1109,18 +1109,36 @@ test("briefing sequence guide lists every numbered root brief", () => {
     onePager.includes("Reviewer-facing briefing deck and local CLI demo evidence."),
     true,
   );
+  assert.equal(
+    onePager.includes("Permission to pursue a focused 90-day research-alpha evidence package"),
+    true,
+  );
   assert.equal(onePager.includes("browser/CLI demo"), false);
   assert.equal(onePager.includes("CKKS/BFV/TFHE library prototype"), false);
   assert.equal(onePager.includes("proves whether sparse spiking inference"), false);
   assert.equal(onePager.includes("Produce a credible demo and technical memo:"), false);
   assert.equal(onePager.includes("HE inference prototype."), false);
   assert.equal(onePager.includes("Investor/research deck"), false);
+  assert.equal(onePager.includes("focused 90-day prototype and evidence package"), false);
   assert.equal(
     pitchDeck.includes("The current demo path is deliberately small"),
     true,
   );
+  assert.equal(
+    pitchDeck.includes("90 days to a credible research-alpha evidence package:"),
+    true,
+  );
+  assert.equal(
+    pitchDeck.includes(
+      "Ask: approve focused evidence work and use the first benchmark package to decide the next research, grant, or encrypted-compute integration path.",
+    ),
+    true,
+  );
   assert.equal(pitchDeck.includes("once local benchmarks prove the workload shape"), false);
   assert.equal(pitchDeck.includes("Encrypted inference prototype"), false);
+  assert.equal(pitchDeck.includes("90 days to a credible prototype:"), false);
+  assert.equal(pitchDeck.includes("approve focused prototype work"), false);
+  assert.equal(pitchDeck.includes("serious research startup"), false);
   assert.equal(
     technicalArchitecture.includes("current research-alpha sparse-score contract"),
     true,
@@ -1149,9 +1167,11 @@ test("briefing sequence guide lists every numbered root brief", () => {
   assert.equal(demoRoadmap.includes("Goal: validate that the concept is coherent enough to demo."), true);
   assert.equal(demoRoadmap.includes("Current research-alpha foothold:"), true);
   assert.equal(demoRoadmap.includes("Goal: validate that the project can turn rights-clean real data"), true);
+  assert.equal(demoRoadmap.includes("Reviewer-facing briefing deck."), true);
   assert.equal(demoRoadmap.includes("Goal: prove the concept"), false);
   assert.equal(demoRoadmap.includes("Current prototype foothold:"), false);
   assert.equal(demoRoadmap.includes("Goal: prove that the project can turn rights-clean real data"), false);
+  assert.equal(demoRoadmap.includes("8-12 slide pitch deck."), false);
   assert.equal(
     riskRegister.includes(
       "Add Octra only after a compact operation family is measured and bounded.",

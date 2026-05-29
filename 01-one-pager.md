@@ -98,4 +98,4 @@ Produce a credible research-alpha evidence package:
 
 ## Ask
 
-Permission to pursue a focused 90-day prototype and evidence package, with the first milestone being local benchmarks that test whether sparse event inference can materially reduce encrypted inference cost.
+Permission to pursue a focused 90-day research-alpha evidence package, with the first milestone being local benchmarks that test whether sparse event inference can materially reduce encrypted inference cost.

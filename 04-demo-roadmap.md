@@ -168,7 +168,7 @@ Deliverables:
 - Technical memo.
 - Benchmark CSV/JSON.
 - Live local demo.
-- 8-12 slide pitch deck.
+- Reviewer-facing briefing deck.
 - Risk register.
 - Partner list.
 

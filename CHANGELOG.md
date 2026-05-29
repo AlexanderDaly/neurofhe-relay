@@ -230,6 +230,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened one-page 90-day wording so the public brief asks for a
   research-alpha evidence package instead of pitch-style prototype and
   investor-deck language.
+- Tightened one-page, pitch-deck, and demo-roadmap ask language so 90-day
+  work is framed as research-alpha evidence rather than prototype/startup
+  positioning.
 - Tightened pitch-deck demo wording so the external narrative matches the
   current CLI/evidence scaffold and treats Octra workload fit as testable.
 - Tightened technical-architecture security-boundary wording so it uses

@@ -91,10 +91,10 @@ NeuroFHE Relay is released under CC0 and should be quantum-resistant by design:
 
 ## Slide 12 - Roadmap and Ask
 
-90 days to a credible prototype:
+90 days to a credible research-alpha evidence package:
 
 - Month 1: plaintext SNN and event encoder.
 - Month 2: encrypted inference kernel, benchmarks, and crypto inventory.
 - Month 3: Octra feasibility adapter, demo deck, and pilot targets.
 
-Ask: approve focused prototype work and use the first benchmark to decide whether this becomes a serious research startup, grant proposal, or Octra ecosystem project.
+Ask: approve focused evidence work and use the first benchmark package to decide the next research, grant, or encrypted-compute integration path.
