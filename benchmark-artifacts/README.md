@@ -93,7 +93,9 @@ CI blocker and hosted-CI evidence artifacts are written under
 for account or host reasons outside the portable validation commands, or when
 the release stack needs an auditable hosted-CI snapshot. The May 29 green-stack
 refresh records PR #23 against `main` with successful `pull_request` and `push`
-`Portable validation` check runs after automatic triggers were restored. Manual
+`Portable validation` check runs after automatic triggers were restored. It
+also records the Node 24-ready action major updates for checkout, setup-node,
+and upload-artifact, clearing the prior Node 20 runtime annotation. Manual
 dispatch CI also passed on the superseded stacked branch heads #17 through #22,
 although GitHub does not attach those manual runs to the old stacked PR
 rollups. The remaining `mergeStateStatus: BLOCKED` on PR #23 is attributed to

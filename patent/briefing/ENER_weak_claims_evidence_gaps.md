@@ -176,8 +176,9 @@ Current committed evidence:
 - schema: `neurofhe.releaseEvidenceIndex.v1`
 - release gate: not satisfied.
 - hosted portable CI: passing on PR #23 after restoring automatic `push` and
-  `pull_request` triggers; remaining PR blocked state is repository ruleset
-  policy, not CI/check-rollup.
+  `pull_request` triggers and updating GitHub action majors for the Node 24
+  runner transition; remaining PR blocked state is repository ruleset policy,
+  not CI/check-rollup.
 - native measurement coverage: incomplete.
 - metadata leakage: caveated taxonomy proxy only.
 - reconstruction risk: synthetic probe only; public-position linkage remains a

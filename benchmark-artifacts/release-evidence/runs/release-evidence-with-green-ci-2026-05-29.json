@@ -1,18 +1,18 @@
 {
   "schema": "neurofhe.releaseEvidenceArtifact.v1",
   "artifactId": "release-evidence-with-green-ci-2026-05-29",
-  "generatedAt": "2026-05-29T04:33:30.000Z",
+  "generatedAt": "2026-05-29T04:40:53.000Z",
   "subjectSchema": "neurofhe.releaseEvidenceIndex.v1",
   "subject": {
     "schema": "neurofhe.releaseEvidenceIndex.v1",
-    "generatedAt": "2026-05-29T04:33:30.000Z",
+    "generatedAt": "2026-05-29T04:40:53.000Z",
     "releaseTarget": "v0.1.0-research-alpha",
     "purpose": "Provide a compact index of the current release-gate evidence without upgrading caveated research artifacts into release approval.",
     "releaseGateSatisfied": false,
     "gateChecks": {
       "hostedPortableCi": {
         "status": "pass",
-        "reason": "Automatic push and pull_request triggers were restored on the release-validation stack branch, and PR #23 now has successful hosted CI check runs in its status check rollup. Manual workflow_dispatch runs also passed on the superseded stacked branch heads.",
+        "reason": "Automatic push and pull_request triggers were restored on the release-validation stack branch, PR #23 now has successful hosted CI check runs in its status check rollup, and the workflow uses current Node 24-ready action majors. Manual workflow_dispatch runs also passed on the superseded stacked branch heads.",
         "artifactId": "github-actions-green-release-stack-2026-05-29",
         "openPullRequestCount": 1,
         "workflowTrigger": "push,pull_request,workflow_dispatch",
