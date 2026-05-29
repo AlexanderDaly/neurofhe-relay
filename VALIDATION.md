@@ -1,8 +1,35 @@
 # Validation
 
-Validated locally on 2026-05-21.
+Current portable gate validated locally on 2026-05-29. Historical artifact
+sections below retain the exact commands and outputs that produced specific
+committed evidence snapshots.
 
 Commands below are written for the standalone package root.
+
+## Current Portable Gate
+
+Command:
+
+```sh
+npm run validate
+```
+
+Result summary from the 2026-05-29 cleanup branch:
+
+```text
+tests 88
+pass 88
+fail 0
+json ok
+markdown link scan ok (55 files)
+repository hygiene scan ok
+```
+
+`npm run validate` currently runs the Node test suite, parses
+`project-brief.json` and `prototype/research-assumptions.json`, checks local
+Markdown links, and runs the repository hygiene scan. This portable gate is
+necessary release evidence, but it is not production-cryptography, medical,
+deployment, privacy-proof, or native-library performance evidence.
 
 ## Checks Run
 
@@ -17,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 55
-pass 55
+tests 88
+pass 88
 fail 0
 ```
 
@@ -42,6 +69,16 @@ Covered behaviours:
 - Native evidence manifest generation that fingerprints the current host/toolchain, classifies latest OpenFHE and TFHE-rs artifacts, records exact rerun commands, and preserves remaining native evidence gaps.
 - N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
 - UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
+- Documentation and repository-readability guards for Markdown links, command
+  reference script coverage, documentation index coverage, numbered briefing
+  sequence coverage, prototype module map coverage, patent package source
+  coverage, package manifest top-level coverage, and GitHub Actions trigger and
+  action-major checks.
+- Release-evidence indexing that preserves hosted-CI status, repository hygiene
+  status, native measurement gaps, metadata-leakage caveats, reconstruction-risk
+  caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker
+  status, and `productionClaim: false` without satisfying the release gate by
+  itself.
 - Research assumptions with clean-room and naming guardrails.
 
 ### Desk Demo
