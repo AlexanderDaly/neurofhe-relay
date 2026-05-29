@@ -14,6 +14,8 @@ clinical validation, deployment evidence, or a security certification.
 - `docs/README.md` - documentation index for reader and contributor paths.
 - `docs/briefing-sequence.md` - reading order for the root `01-` through `12-`
   public briefing files.
+- `docs/prototype-map.md` - code navigation map for prototype entrypoints,
+  library modules, native lanes, and support notes.
 - `docs/developer-quickstart.md` - compact local validation path for
   contributors.
 - `docs/command-reference.md` - grouped npm command reference for validation,

@@ -8,6 +8,9 @@ the schema, benchmark shape, privacy boundary, and toy arithmetic. The
 performance path should move into native OpenFHE/SEAL/TFHE-rs/Concrete code and
 native or hardware-aware encoder implementations.
 
+For a compact navigation map of entrypoints, library modules, native lanes, and
+supporting notes, see `docs/prototype-map.md`.
+
 It uses an educational additive homomorphic encryption toy based on Paillier-style arithmetic to classify a synthetic sparse event window. It is not production cryptography and it is not full FHE. Its purpose is to make the product claim testable:
 
 1. The edge receives raw neural-like samples locally.

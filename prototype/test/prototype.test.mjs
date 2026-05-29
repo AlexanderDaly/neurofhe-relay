@@ -1016,6 +1016,18 @@ test("briefing sequence guide lists every numbered root brief", () => {
   assert.deepEqual(missingBriefs, []);
 });
 
+test("prototype map lists every library module", () => {
+  const prototypeMap = readFileSync("docs/prototype-map.md", "utf8");
+  const libraryModules = readdirSync("prototype/lib")
+    .filter((entry) => entry.endsWith(".mjs"))
+    .sort();
+  const missingModules = libraryModules.filter((moduleName) =>
+    !new RegExp(`\\bprototype/lib/${escapeRegExp(moduleName)}\\b`).test(prototypeMap),
+  );
+
+  assert.deepEqual(missingModules, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
