@@ -4,9 +4,12 @@ NeuroFHE Relay is a CC0 research-alpha package. Support channels are best-effort
 and evidence-first; they are not commercial support, clinical guidance,
 security certification, deployment approval, or release approval.
 
-## Where To Route Reports
+## Support Routes
 
-## Report Routing
+Use this table before opening a public thread. It keeps ordinary support,
+evidence gaps, cleanup requests, sensitive reports, conduct concerns, and
+release blockers on the right path without exposing private material or
+weakening the research-alpha evidence boundary.
 
 | Situation | Public Route | Private Or Special Route |
 | --- | --- | --- |

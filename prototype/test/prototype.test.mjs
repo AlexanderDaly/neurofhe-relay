@@ -1528,7 +1528,8 @@ test("code of conduct sets public collaboration boundaries without upgrading cla
 test("support policy routes issues without weakening evidence boundaries", () => {
   const supportPolicy = readFileSync("SUPPORT.md", "utf8");
   const requiredEntries = [
-    "## Report Routing",
+    "## Support Routes",
+    "Use this table before opening a public thread",
     "| Situation | Public Route | Private Or Special Route |",
     "Reproducible command, CI, script, or artifact failure",
     "Sensitive security issue, suspected secret exposure, or private data leak",
@@ -1549,6 +1550,7 @@ test("support policy routes issues without weakening evidence boundaries", () =>
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(supportPolicy.includes("## Where To Route Reports"), false);
 });
 
 test("security policy preserves research-alpha reporting boundaries", () => {

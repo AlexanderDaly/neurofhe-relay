@@ -66,6 +66,9 @@ Release target: `v0.1.0-research-alpha`.
   security/raw-data, and release/validation posture changes.
 - Added `SUPPORT.md` and a support-routing guard for public issues, sensitive
   reports, release blockers, and cleanup requests.
+- Added a support-route pre-thread cue so support, evidence gaps, cleanup
+  requests, sensitive reports, conduct concerns, and release blockers stay on
+  the right public or private path.
 - Added code-of-conduct report routing so public collaboration, sensitive
   conduct, security/raw-data, and claim-boundary concerns start in the right
   policy surface without upgrading project claims.

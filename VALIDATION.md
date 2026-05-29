@@ -150,10 +150,11 @@ Covered behaviours:
 - Developer quickstart coverage requiring common change types to route to
   focused validation commands before the shared `npm run ci` and whitespace
   gates.
-- Support policy coverage requiring issue, security, support, and release
-  blocker routing, including a public-versus-private report routing table,
-  while preserving `releaseGateSatisfied: false`, `productionClaim: false`,
-  and raw-data boundaries.
+- Support policy coverage requiring a single support-route table for issue,
+  security, support, conduct, cleanup, and release blocker routing, including
+  a public-versus-private report routing table, while preserving
+  `releaseGateSatisfied: false`, `productionClaim: false`, and raw-data
+  boundaries.
 - Security policy coverage requiring security-report routing, raw-data and
   private-payload exclusions, `privacyBoundary`, `cryptoInventory`,
   `releaseGateSatisfied: false`, `productionClaim: false`, exact-command and
