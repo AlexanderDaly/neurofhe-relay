@@ -63,7 +63,7 @@ git diff --check
 ## Before Committing Evidence Artifacts
 
 - Confirm the command, generated timestamp, provenance, and artifact path.
-- Confirm the artifact class: synthetic prototype, plaintext real-data, native
+- Confirm the artifact class: synthetic scaffold, plaintext real-data, native
   encrypted-compute, blocker, hygiene, reconstruction-risk, or release
   dashboard.
 - Preserve `productionClaim: false` wherever artifact metadata carries it.

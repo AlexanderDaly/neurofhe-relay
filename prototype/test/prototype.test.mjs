@@ -1684,6 +1684,7 @@ test("maintainer checklist routes review through current policy surfaces", () =>
     "productionClaim: false",
     "privacyBoundary",
     "cryptoInventory",
+    "synthetic scaffold",
     "exact command",
     "smallest next",
   ];
@@ -1692,6 +1693,7 @@ test("maintainer checklist routes review through current policy surfaces", () =>
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(checklist.includes("synthetic prototype"), false);
 });
 
 test("Dependabot config covers package and workflow maintenance", () => {
