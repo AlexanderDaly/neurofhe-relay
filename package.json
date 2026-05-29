@@ -1,7 +1,7 @@
 {
   "name": "neurofhe-relay",
   "version": "0.1.0",
-  "description": "CC0 research prototype for privacy-preserving sparse event inference with homomorphic-encryption comparison lanes.",
+  "description": "CC0 research-alpha repository for privacy-preserving event intelligence with homomorphic-encryption comparison lanes.",
   "private": true,
   "type": "module",
   "license": "CC0-1.0",
@@ -14,6 +14,10 @@
   },
   "homepage": "https://github.com/AlexanderDaly/neurofhe-relay#readme",
   "keywords": [
+    "cc0",
+    "research-alpha",
+    "bio-digital-event-intelligence",
+    "event-intelligence",
     "homomorphic-encryption",
     "neuromorphic",
     "privacy-preserving-ml",

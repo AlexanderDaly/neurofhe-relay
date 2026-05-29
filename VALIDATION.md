@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 135
-pass 135
+tests 136
+pass 136
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 135
-pass 135
+tests 136
+pass 136
 fail 0
 ```
 
@@ -79,7 +79,8 @@ Covered behaviours:
   module, top-level entrypoint, prototype route table, root README current-status snapshot, and native source map coverage, patent package
   review-route and source coverage,
   package manifest top-level, owner-route, inventory-review-route, and
-  native-evidence posture coverage, generated presentation output-route and map coverage,
+  native-evidence posture coverage, package metadata posture coverage,
+  generated presentation output-route and map coverage,
   benchmark artifact directory, artifact-review-route, and release-evidence routing coverage,
   contributor workflow surface coverage, pull-request-template change-note
   coverage, policy boundary route and root-file

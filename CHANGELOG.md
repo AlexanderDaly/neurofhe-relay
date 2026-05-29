@@ -164,6 +164,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened package-manifest review coverage so first-read, validation,
   evidence, contribution, maintenance, patent, and briefing review paths are
   visible before the full inventory.
+- Tightened package metadata so npm-facing fields preserve CC0 research-alpha
+  repository framing, public issue/repository routes, private-package status,
+  engine posture, and discovery keywords.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.
@@ -219,7 +222,7 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 135 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 136 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

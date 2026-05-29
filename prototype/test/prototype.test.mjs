@@ -1221,6 +1221,41 @@ test("package manifest lists every tracked top-level package entry", () => {
   assert.deepEqual(forbiddenCommandWall, []);
 });
 
+test("package metadata preserves public repository posture", () => {
+  const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+  const keywords = new Set(packageJson.keywords);
+
+  assert.equal(packageJson.private, true);
+  assert.equal(packageJson.license, "CC0-1.0");
+  assert.equal(packageJson.type, "module");
+  assert.equal(packageJson.engines.node, ">=20");
+  assert.match(packageJson.description, /CC0 research-alpha repository/);
+  assert.match(packageJson.description, /privacy-preserving event intelligence/);
+  assert.equal(
+    packageJson.repository.url,
+    "git+https://github.com/AlexanderDaly/neurofhe-relay.git",
+  );
+  assert.equal(
+    packageJson.bugs.url,
+    "https://github.com/AlexanderDaly/neurofhe-relay/issues",
+  );
+  assert.equal(
+    packageJson.homepage,
+    "https://github.com/AlexanderDaly/neurofhe-relay#readme",
+  );
+
+  for (const keyword of [
+    "cc0",
+    "research-alpha",
+    "bio-digital-event-intelligence",
+    "event-intelligence",
+    "homomorphic-encryption",
+    "neuromorphic",
+  ]) {
+    assert.equal(keywords.has(keyword), true);
+  }
+});
+
 test("presentation outputs map lists every tracked generated output file", () => {
   const outputsMap = readFileSync("docs/presentation-outputs.md", "utf8");
   const outputFiles = listTrackedFiles("outputs")
