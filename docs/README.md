@@ -35,6 +35,7 @@ changing the evidence boundary.
   and release boundary files.
 - `contributor-workflow.md` - map of issue forms, PR template, and hosted CI
   workflow surfaces.
+- `reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `developer-quickstart.md` - first local commands for a contributor who wants
   to validate the package before opening an issue or PR.
 - `command-reference.md` - grouped npm commands for validation, demos,
@@ -74,7 +75,8 @@ and that `glossary.md` defines recurring repository terms. It also checks that
 that `data-handling.md` lists dataset and artifact boundary surfaces. It also
 checks that `claim-evidence-ledger.md` maps every weak-claim area to current
 evidence and caveats. It also checks that `release-gate-matrix.md` lists every
-minimum evidence command from `RELEASE.md`.
+minimum evidence command from `RELEASE.md`. It also checks that
+`reviewer-quickstart.md` lists the main due-diligence entrypoints and caveats.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

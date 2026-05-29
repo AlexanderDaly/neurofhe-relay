@@ -17,11 +17,11 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 102
-pass 102
+tests 103
+pass 103
 fail 0
 json ok
-markdown link scan ok (66 files)
+markdown link scan ok (67 files)
 repository hygiene scan ok
 ```
 
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 102
-pass 102
+tests 103
+pass 103
 fail 0
 ```
 
@@ -86,6 +86,8 @@ Covered behaviours:
   `RELEASE.md` to map to expected artifacts, caveats, and blocker posture.
 - Changelog coverage requiring the unreleased cleanup stack, release caveats,
   hosted-CI status, and PR #23 blocker posture to stay visible.
+- Reviewer quickstart coverage requiring diligence entrypoints, evidence
+  surfaces, release caveats, and PR blocker posture to stay visible.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene
   status, native measurement gaps, metadata-leakage caveats, reconstruction-risk
   caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker

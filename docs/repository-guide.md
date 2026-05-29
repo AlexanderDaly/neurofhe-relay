@@ -39,6 +39,7 @@ clinical validation, deployment evidence, or a security certification.
   for packaged review.
 - `docs/contributor-workflow.md` - map of issue forms, PR template, and hosted
   CI workflow surfaces.
+- `docs/reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `docs/developer-quickstart.md` - compact local validation path for
   contributors.
 - `docs/command-reference.md` - grouped npm command reference for validation,
@@ -95,6 +96,8 @@ Use `docs/claim-evidence-ledger.md` before strengthening public, patent,
 investor, release, or standards-facing language.
 Use `docs/release-gate-matrix.md` before rerunning or reviewing release-gate
 commands.
+Use `docs/reviewer-quickstart.md` when reviewing the repository from a
+diligence, grant, patent, or maintainer perspective.
 
 ## Prototype Code
 

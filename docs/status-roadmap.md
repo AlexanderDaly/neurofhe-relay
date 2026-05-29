@@ -70,13 +70,14 @@ below.
 
 ## Where To Start By Role
 
-- New reviewer: read `README.md`, then `docs/repository-guide.md`, then this
-  file.
+- New reviewer: read `README.md`, then `docs/reviewer-quickstart.md`, then
+  this file.
 - Contributor: read `docs/developer-quickstart.md`,
   `docs/command-reference.md`, and `CONTRIBUTING.md`.
 - Maintainer: use `docs/maintainer-checklist.md`, `RELEASE.md`, and
   `VALIDATION.md`.
 - Evidence reviewer: start with `docs/evidence-guide.md`,
+  `docs/reviewer-quickstart.md`,
   `docs/claim-evidence-ledger.md`,
   `docs/release-gate-matrix.md`,
   `benchmark-artifacts/README.md`, and

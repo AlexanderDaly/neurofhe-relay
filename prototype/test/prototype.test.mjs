@@ -1308,6 +1308,30 @@ test("changelog records unreleased cleanup stack and release caveats", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("reviewer quickstart maps due diligence entrypoints and caveats", () => {
+  const reviewerGuide = readFileSync("docs/reviewer-quickstart.md", "utf8");
+  const requiredEntries = [
+    "README.md",
+    "CHANGELOG.md",
+    "VALIDATION.md",
+    "RELEASE.md",
+    "docs/status-roadmap.md",
+    "docs/release-gate-matrix.md",
+    "docs/claim-evidence-ledger.md",
+    "benchmark-artifacts/release-evidence/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "npm run validate",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "repository ruleset/admin policy",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !reviewerGuide.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
