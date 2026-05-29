@@ -1522,6 +1522,8 @@ test("project brief preserves agent-readable repository posture", () => {
   assert.equal(projectBrief.currentScaffold.caveat.includes("current prototype"), false);
   assert.equal(Object.hasOwn(projectBrief, "currentPrototype"), false);
   assert.equal(projectBrief.whitepapers[0].boundary.includes("research-grade"), false);
+  assert.equal(projectBrief.ninetyDayMilestones.includes("research-alpha briefing deck"), true);
+  assert.equal(projectBrief.ninetyDayMilestones.includes("pilot-ready deck"), false);
 });
 
 test("presentation outputs map lists every tracked generated output file", () => {

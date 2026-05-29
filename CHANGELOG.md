@@ -211,6 +211,8 @@ Release target: `v0.1.0-research-alpha`.
 - Added agent-readable `project-brief.json` repository posture metadata for
   release target, gate status, production-claim boundary, hosted-CI versus
   repository-policy separation, and explicit release approval rules.
+- Tightened the agent-readable project milestones so the deck target is framed
+  as research-alpha briefing material, not pilot readiness.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.
