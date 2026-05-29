@@ -1591,6 +1591,15 @@ test("status roadmap lists every release-readiness evidence surface", () => {
 
 test("glossary defines recurring repository terms", () => {
   const glossary = readFileSync("docs/glossary.md", "utf8");
+  const requiredRoutes = [
+    "## Glossary Routes",
+    "| Reader Need | Start With | Then Confirm |",
+    "Claim-boundary wording",
+    "Release-readiness language",
+    "Native FHE or measurement wording",
+    "Privacy and metadata wording",
+    "Blocker or unavailable-evidence wording",
+  ];
   const requiredTerms = [
     "bio-digital event intelligence",
     "privacyBoundary",
@@ -1607,7 +1616,11 @@ test("glossary defines recurring repository terms", () => {
   const missingTerms = requiredTerms.filter((term) =>
     !glossary.includes(term),
   );
+  const missingRoutes = requiredRoutes.filter((entry) =>
+    !glossary.includes(entry),
+  );
 
+  assert.deepEqual(missingRoutes, []);
   assert.deepEqual(missingTerms, []);
 });
 

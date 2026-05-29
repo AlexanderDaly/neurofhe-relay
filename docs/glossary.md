@@ -5,6 +5,19 @@ reviewing the repository, evidence artifacts, or release gate for the first
 time. It does not upgrade any research-alpha, cryptographic, privacy, medical,
 security, deployment, or performance claim.
 
+## Glossary Routes
+
+Use this table when a recurring term appears in a review, PR, artifact, or
+briefing note and you need the controlling context.
+
+| Reader Need | Start With | Then Confirm |
+| --- | --- | --- |
+| Claim-boundary wording | `productionClaim: false`, `bio-digital event intelligence`, and `local relay gateway` | `docs/policy-boundary.md`, `docs/faq.md`, and `README.md` before strengthening public language. |
+| Release-readiness language | `release gate` and `release-evidence index` | `RELEASE.md`, `docs/release-gate-matrix.md`, and `docs/evidence-dashboard.md` before treating a gate as satisfied. |
+| Native FHE or measurement wording | `native lane`, `single-window native run`, and `measurement gap` | `benchmark-artifacts/native-evidence/latest.json` and `benchmark-artifacts/README.md` before making performance claims. |
+| Privacy and metadata wording | `privacyBoundary`, `metadata-leakage proxy`, `reconstruction-risk probe`, `padded sparse`, and `dense encrypted window` | `docs/evidence-guide.md` and `benchmark-artifacts/privacy-modes/padding-ablation/latest.json` before treating a proxy as proof. |
+| Blocker or unavailable-evidence wording | `blocker artifact`, `repository hygiene scan`, and `hosted Portable validation` | `docs/troubleshooting.md` and `docs/operations-runbook.md` before classifying a failure. |
+
 ## Terms
 
 - **bio-digital event intelligence** - the project framing for

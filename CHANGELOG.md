@@ -171,6 +171,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened presentation-output coverage so packaged slide review,
   claim/caveat checks, evidence/release-readiness review, and export refreshes
   route through source docs before generated files.
+- Tightened glossary coverage so claim-boundary, release-readiness, native
+  measurement, privacy/metadata, and blocker terminology routes to controlling
+  evidence surfaces before the term list.
 
 ### Changed
 

@@ -79,7 +79,7 @@ Covered behaviours:
   benchmark artifact directory, artifact-review-route, and release-evidence routing coverage,
   contributor workflow surface coverage, policy boundary route and root-file
   coverage, status roadmap release-readiness and
-  at-a-glance gate-posture coverage, glossary term coverage, testing strategy
+  at-a-glance gate-posture coverage, glossary route and term coverage, testing strategy
   validation-route and validation-surface coverage, dependency matrix
   dependency-route and setup-surface coverage,
   data-handling data-route and boundary-surface coverage, evidence-guide review-route
