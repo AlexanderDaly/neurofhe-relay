@@ -96,6 +96,9 @@ Release target: `v0.1.0-research-alpha`.
   details.
 - Added issue-template coverage so incoming reports preserve evidence
   boundaries, release-gate posture, raw-data exclusions, and CI/ruleset routing.
+- Added issue-template routing to troubleshooting, data-handling, support, and
+  security surfaces so reports avoid sensitive payloads and missing blocker
+  details.
 - Added documentation-index concision coverage so `docs/README.md` stays a
   reader-facing map instead of becoming a validation transcript.
 - Tightened documentation-index coverage so `docs/README.md` starts with

@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Use this for changes that make the repository easier to read, review, validate, or maintain. Keep requests scoped and preserve the research-alpha evidence boundary, including `releaseGateSatisfied: false` unless the documented release gate is actually satisfied.
+        Use this for changes that make the repository easier to read, review, validate, or maintain. Check SUPPORT.md for routing and docs/troubleshooting.md for validation failures before filing. If cleanup touches datasets, artifacts, or local ignore rules, use docs/data-handling.md. Keep requests scoped and preserve the research-alpha evidence boundary, including `releaseGateSatisfied: false` unless the documented release gate is actually satisfied.
   - type: dropdown
     id: cleanup_area
     attributes:

@@ -171,8 +171,8 @@ Covered behaviours:
   raw-data boundaries, and repository ruleset/admin policy routing to stay
   visible.
 - Issue-template coverage requiring incoming reports to preserve evidence
-  boundaries, release-gate posture, raw-data exclusions, and
-  CI-versus-ruleset routing.
+  boundaries, release-gate posture, raw-data exclusions, troubleshooting,
+  data-handling, support/security, and CI-versus-ruleset routing.
 - Maintainers-file coverage requiring maintainer-route, review-mode, evidence,
   hosted-check, repository ruleset/admin policy, sensitive-report, release
   authority, explicit user approval, `releaseGateSatisfied: false`, and

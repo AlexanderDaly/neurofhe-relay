@@ -12,3 +12,9 @@ contact_links:
   - name: Contribution guide
     url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/CONTRIBUTING.md
     about: Read the evidence boundary and validation expectations before opening an issue.
+  - name: Support routing
+    url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/SUPPORT.md
+    about: Decide whether a report belongs in a public issue, private report, PR, or validation note.
+  - name: Security policy
+    url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/SECURITY.md
+    about: Use private reporting for secrets, raw data exposure, private payloads, or exploit details.
