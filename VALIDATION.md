@@ -579,12 +579,14 @@ npm run release:evidence -- --artifact --artifact-id release-evidence-with-open-
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-green-ci-2026-05-29 --generated-at 2026-05-29T04:33:30.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:19:00.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-ci-head-0feaa65-2026-05-29 --generated-at 2026-05-29T16:51:30.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-ci-head-609b48c-2026-05-29 --generated-at 2026-05-29T17:28:00.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-ci-head-609b48c-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-ci-head-0feaa65-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-tfhe-alpha-lane-framing-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-green-ci-2026-05-29.json
@@ -606,7 +608,7 @@ Result summary:
   "gateChecks": {
     "hostedPortableCi": {
       "status": "pass",
-      "artifactId": "github-actions-green-pr23-0feaa65-2026-05-29",
+      "artifactId": "github-actions-green-pr23-609b48c-2026-05-29",
       "openPullRequestCount": 1,
       "workflowTrigger": "push,pull_request,workflow_dispatch",
       "isCodeFailure": false
@@ -634,7 +636,7 @@ The index is a dashboard artifact over already committed hosted-CI, hygiene,
 native-evidence, privacy-mode, reconstruction-risk, real N-MNIST baseline, and
 TFHE real-data blocker artifacts. The current hosted-CI artifact records PR #23
 against `main` head `7317f11` with successful `pull_request` and `push`
-`Portable validation` check runs on PR head `0feaa65` after automatic triggers
+`Portable validation` check runs on PR head `609b48c` after automatic triggers
 were restored. Manual dispatch CI also passed on the superseded stacked branch
 heads #17 through #22, but GitHub does not attach those manual runs to the old
 stacked PR rollups. It does not create encrypted benchmark measurements,
@@ -1556,7 +1558,7 @@ Result:
 
 ```text
 Open pull requests: #23, with #17 through #22 superseded by the collapsed stack
-Hosted-CI evidence snapshot head: 0feaa65 on codex/open-pr-stack-ci-blocker
+Hosted-CI evidence snapshot head: 609b48c on codex/open-pr-stack-ci-blocker
 CI workflow: active, push, pull_request, and workflow_dispatch
 Latest hosted CI runs: green on PR #23 pull_request and push events
 Ruleset API: active default-branch ruleset iamthelaw includes an update rule
@@ -1578,6 +1580,7 @@ evidence artifact is:
 
 ```text
 benchmark-artifacts/ci-blockers/latest.json
+benchmark-artifacts/ci-blockers/runs/github-actions-green-pr23-609b48c-2026-05-29.json
 benchmark-artifacts/ci-blockers/runs/github-actions-green-pr23-0feaa65-2026-05-29.json
 benchmark-artifacts/ci-blockers/runs/github-actions-green-release-stack-2026-05-29.json
 ```
@@ -1591,6 +1594,7 @@ npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-alpha-lane-fram
 npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:18:00.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:19:00.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-ci-head-0feaa65-2026-05-29 --generated-at 2026-05-29T16:51:30.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-ci-head-609b48c-2026-05-29 --generated-at 2026-05-29T17:28:00.000Z
 ```
 
 Result summary:
@@ -1599,7 +1603,7 @@ Result summary:
 {
   "tfheArtifactId": "tfhe-rs-alpha-lane-framing-2026-05-29",
   "nativeEvidenceArtifactId": "native-evidence-tfhe-alpha-lane-framing-2026-05-29",
-  "releaseEvidenceArtifactId": "release-evidence-ci-head-0feaa65-2026-05-29",
+  "releaseEvidenceArtifactId": "release-evidence-ci-head-609b48c-2026-05-29",
   "tfheCaveat": "research-alpha TFHE-rs native lane only; not production cryptography, not clinical validation, and not side-channel reviewed.",
   "productionClaim": false,
   "releaseGateSatisfied": false
@@ -1614,6 +1618,7 @@ benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-alpha-lane-framing-2026-05-
 benchmark-artifacts/native-evidence/latest.json
 benchmark-artifacts/native-evidence/runs/native-evidence-tfhe-alpha-lane-framing-2026-05-29.json
 benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-ci-head-609b48c-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-ci-head-0feaa65-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-tfhe-alpha-lane-framing-2026-05-29.json
 ```

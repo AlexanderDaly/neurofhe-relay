@@ -15,8 +15,8 @@ Source artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
-artifactId: release-evidence-ci-head-0feaa65-2026-05-29
-generatedAt: 2026-05-29T16:51:30.000Z
+artifactId: release-evidence-ci-head-609b48c-2026-05-29
+generatedAt: 2026-05-29T17:28:00.000Z
 subject.releaseGateSatisfied: false
 subject.productionClaim: false
 productionClaim: false
