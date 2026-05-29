@@ -17,11 +17,11 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 94
-pass 94
+tests 95
+pass 95
 fail 0
 json ok
-markdown link scan ok (58 files)
+markdown link scan ok (59 files)
 repository hygiene scan ok
 ```
 
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 94
-pass 94
+tests 95
+pass 95
 fail 0
 ```
 
@@ -75,7 +75,8 @@ Covered behaviours:
   map coverage, patent package source coverage, package manifest top-level
   coverage, generated presentation output map coverage, benchmark artifact
   directory coverage, contributor workflow surface coverage, policy boundary
-  map coverage, and GitHub Actions trigger and action-major checks.
+  map coverage, status roadmap release-readiness coverage, and GitHub Actions
+  trigger and action-major checks.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene
   status, native measurement gaps, metadata-leakage caveats, reconstruction-risk
   caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker

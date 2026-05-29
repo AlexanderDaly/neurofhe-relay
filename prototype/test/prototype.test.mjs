@@ -1133,6 +1133,24 @@ test("policy boundary map lists every policy and claim-boundary root file", () =
   assert.deepEqual(missingFiles, []);
 });
 
+test("status roadmap lists every release-readiness evidence surface", () => {
+  const statusRoadmap = readFileSync("docs/status-roadmap.md", "utf8");
+  const releaseReadinessSurfaces = [
+    "RELEASE.md",
+    "VALIDATION.md",
+    "benchmark-artifacts/ci-blockers/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "benchmark-artifacts/release-evidence/latest.json",
+    "benchmark-artifacts/repo-hygiene/latest.json",
+    "patent/briefing/ENER_weak_claims_evidence_gaps.md",
+  ];
+  const missingSurfaces = releaseReadinessSurfaces.filter((filePath) =>
+    !statusRoadmap.includes(filePath),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

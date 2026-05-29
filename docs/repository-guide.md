@@ -14,6 +14,8 @@ clinical validation, deployment evidence, or a security certification.
 - `docs/README.md` - documentation index for reader and contributor paths.
 - `docs/briefing-sequence.md` - reading order for the root `01-` through `12-`
   public briefing files.
+- `docs/status-roadmap.md` - current review state, remaining release blockers,
+  and next evidence-work queue.
 - `docs/policy-boundary.md` - map of the license, security, contribution,
   validation, and release files that define the claim boundary.
 - `docs/prototype-map.md` - code navigation map for prototype entrypoints,
@@ -67,6 +69,8 @@ agent-readable metadata surface.
 
 Use `docs/policy-boundary.md` before changing license, security, contribution,
 validation, release, or public-claim language.
+Use `docs/status-roadmap.md` when you need the current readiness picture before
+deciding what to review or improve next.
 
 ## Prototype Code
 
