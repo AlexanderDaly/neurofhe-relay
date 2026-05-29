@@ -213,6 +213,8 @@ Release target: `v0.1.0-research-alpha`.
   repository-policy separation, and explicit release approval rules.
 - Tightened the agent-readable project milestones so the deck target is framed
   as research-alpha briefing material, not pilot readiness.
+- Tightened the code-map front door so the reader-facing heading is scaffold
+  code while preserving the literal `prototype/` path for file references.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

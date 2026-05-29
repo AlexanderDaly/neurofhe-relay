@@ -1281,7 +1281,9 @@ test("briefing sequence guide lists every numbered root brief", () => {
 
 test("prototype map lists every library module", () => {
   const prototypeMap = readFileSync("docs/prototype-map.md", "utf8");
+  assert.equal(prototypeMap.includes("# Scaffold Code Map"), true);
   assert.equal(prototypeMap.includes("research-alpha scaffold code"), true);
+  assert.equal(prototypeMap.includes("# Prototype Map"), false);
   assert.equal(prototypeMap.includes("runnable prototype code"), false);
   assert.equal(prototypeMap.includes("detailed prototype tutorial"), false);
 
@@ -2402,6 +2404,8 @@ test("repository guide maps current reader, maintainer, and GitHub surfaces", ()
     "repository ruleset/admin policy",
     "evidence narrative, architecture, and research-alpha roadmap",
     "portable scaffold code",
+    "## Scaffold Code",
+    "Important scaffold surfaces",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !guide.includes(entry),
@@ -2412,6 +2416,8 @@ test("repository guide maps current reader, maintainer, and GitHub surfaces", ()
   assert.equal(guide.includes("portable prototype code"), false);
   assert.equal(guide.includes("code navigation map for prototype entrypoints"), false);
   assert.equal(guide.includes("Important prototype surfaces"), false);
+  assert.equal(guide.includes("## Prototype Code"), false);
+  assert.equal(guide.includes("Important prototype/ surfaces"), false);
 });
 
 test("release gate matrix lists every minimum evidence command", () => {

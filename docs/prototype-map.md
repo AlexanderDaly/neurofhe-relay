@@ -1,4 +1,4 @@
-# Prototype Map
+# Scaffold Code Map
 
 This map explains the research-alpha scaffold code by ownership area. The
 JavaScript harness is portable validation and artifact orchestration, not the

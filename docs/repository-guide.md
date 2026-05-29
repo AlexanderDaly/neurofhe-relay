@@ -141,13 +141,13 @@ artifacts, or recording hosted-CI and repository-policy blockers.
 Use `docs/troubleshooting.md` when a local command, hosted check, native lane,
 dataset path, or release-gate command fails.
 
-## Prototype Code
+## Scaffold Code
 
 `prototype/` is the runnable contract harness. Keep Node.js as the portable
 orchestration and validation layer. Treat native OpenFHE and TFHE-rs code as
 comparison lanes that require local dependencies and explicit caveats.
 
-Important prototype/ surfaces:
+Important scaffold surfaces:
 
 - `prototype/lib/` - event encoding, gateway policy, linear scoring, artifact
   publishing, real-data preprocessing, native-adapter manifests, and evidence
