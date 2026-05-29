@@ -86,9 +86,10 @@ Covered behaviours:
   coverage, contributor-workflow route coverage, repository tooling
   normalization/ignore-boundary coverage, and GitHub Actions trigger and
   action-major checks.
-- Troubleshooting coverage requiring common local npm, hosted-CI, native-lane,
-  dataset, and release-gate blockers to route to exact-command/error/next-step
-  recording without weakening `productionClaim: false`.
+- Troubleshooting coverage requiring troubleshooting-route guidance plus common
+  local npm, hosted-CI, native-lane, dataset, and release-gate blockers to
+  route to exact-command/error/next-step recording without weakening
+  `productionClaim: false`.
 - Claim-evidence ledger coverage requiring every weak-claim area from
   `patent/briefing/ENER_weak_claims_evidence_gaps.md` to map to current
   evidence surfaces and caveats.

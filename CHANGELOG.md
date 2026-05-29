@@ -36,6 +36,8 @@ Release target: `v0.1.0-research-alpha`.
   review, evidence refresh commands, and blocker recording.
 - Added `docs/troubleshooting.md` for common local npm, hosted-CI, native-lane,
   dataset, and release-gate blockers.
+- Added troubleshooting routes for local validation, hosted CI, native
+  dependencies, dataset paths, and release-gate confusion.
 - Added `CODE_OF_CONDUCT.md` for public collaboration expectations and
   reporting boundaries.
 - Added `MAINTAINERS.md` for current maintainer routing, review ownership, and

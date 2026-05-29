@@ -8,6 +8,16 @@ Nothing here authorizes substitute benchmark numbers, production cryptography
 claims, release approval, medical or clinical claims, deployment evidence,
 privacy-proof claims, or stable-performance claims.
 
+## Troubleshooting Routes
+
+| Symptom | Check First | Record Or Route |
+| --- | --- | --- |
+| Local portable gate fails | `npm run ci`, `git diff --check`, Node.js version, and Homebrew `PATH` visibility | Record the exact failing command and local error before changing evidence artifacts. |
+| Hosted CI is green but PR is blocked | `gh pr checks <number>` and `gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup` | Separate repository ruleset/admin policy from hosted check-rollup, GitHub Actions billing/account, code, or workflow failures. |
+| Native OpenFHE or TFHE-rs command fails | Dependency discovery, build output, and lane-specific comparison artifact command | Publish or update the blocker artifact with the exact command, error, and smallest next step rather than substituting toy arithmetic. |
+| Dataset path is missing or malformed | Local dataset shape, especially public N-MNIST `Train/` and `Test/` directories | Keep raw datasets outside git and write only derived artifacts or blocker reports under `benchmark-artifacts/`. |
+| Release evidence looks green but gate is false | `RELEASE.md`, `docs/release-gate-matrix.md`, and `benchmark-artifacts/release-evidence/latest.json` | Preserve `releaseGateSatisfied: false` until all gates are satisfied and the user explicitly approves the final release action. |
+
 ## Portable Validation
 
 Start from the repository root:

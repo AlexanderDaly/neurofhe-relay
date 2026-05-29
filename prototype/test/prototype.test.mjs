@@ -1617,6 +1617,13 @@ test("validation history distinguishes historical CI blockers from current PR st
 test("troubleshooting guide routes common repo blockers without weakening caveats", () => {
   const troubleshooting = readFileSync("docs/troubleshooting.md", "utf8");
   const requiredEntries = [
+    "## Troubleshooting Routes",
+    "| Symptom | Check First | Record Or Route |",
+    "Local portable gate fails",
+    "Hosted CI is green but PR is blocked",
+    "Native OpenFHE or TFHE-rs command fails",
+    "Dataset path is missing or malformed",
+    "Release evidence looks green but gate is false",
     "PATH=\"/opt/homebrew/bin:$PATH\" npm run ci",
     "Node.js 22",
     "gh pr checks",
