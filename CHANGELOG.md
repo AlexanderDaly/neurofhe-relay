@@ -231,6 +231,10 @@ Release target: `v0.1.0-research-alpha`.
 - Added a guarded PR readiness snapshot to the pull request template so authors
   summarize local validation, hosted checks, merge state, release posture, and
   remaining blockers in the same shape maintainers review.
+- Routed the contributor workflow pull-request guidance through the PR
+  Readiness Snapshot so authors report local validation, hosted
+  `Portable validation`, merge state, release-gate posture, and remaining
+  blockers consistently.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

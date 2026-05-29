@@ -17,7 +17,7 @@ unsupported benchmark or cryptographic claims.
 | Report a reproducible failure | `.github/ISSUE_TEMPLATE/bug-report.yml` | Exact command, observed result, environment, and smallest next step. |
 | Report an evidence gap | `.github/ISSUE_TEMPLATE/validation-gap.yml` | Current caveat, missing evidence class, and `releaseGateSatisfied: false`. |
 | Request repository cleanup | `.github/ISSUE_TEMPLATE/repository-cleanup.yml` | Reader friction, affected file or workflow, and validation route. |
-| Open or update a pull request | `.github/pull_request_template.md` | Commands run, artifact impact, raw-data boundary, and repository-policy posture. |
+| Open or update a pull request | `.github/pull_request_template.md` | Commands run, PR Readiness Snapshot, artifact impact, raw-data boundary, and repository-policy posture. |
 | Report sensitive security or raw-data exposure | `SECURITY.md` and `SUPPORT.md` | Keep secrets, private payloads, raw datasets, and exploit details out of public issues. |
 
 ## Issue Forms
@@ -57,6 +57,10 @@ git diff --check
 If a benchmark, dataset, native lane, release index, or artifact changes,
 include the exact command and whether the committed evidence is a derived
 artifact or a structured blocker report.
+
+Use the pull request template's PR Readiness Snapshot to report local
+validation, hosted `Portable validation`, merge state, release-gate posture,
+and the remaining blocker, caveat, or next action.
 
 ## Hosted Validation
 

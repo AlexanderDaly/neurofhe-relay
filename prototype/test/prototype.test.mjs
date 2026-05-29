@@ -1612,6 +1612,12 @@ test("contributor workflow map lists every tracked GitHub workflow surface", () 
     "Report an evidence gap",
     "Request repository cleanup",
     "Open or update a pull request",
+    "PR Readiness Snapshot",
+    "local validation",
+    "hosted `Portable validation`",
+    "merge state",
+    "release-gate posture",
+    "remaining blocker, caveat, or next action",
     "Report sensitive security or raw-data exposure",
   ];
   const missingFiles = githubFiles.filter((filePath) =>
