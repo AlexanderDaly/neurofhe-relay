@@ -2570,6 +2570,9 @@ test("reviewer quickstart maps due diligence entrypoints and caveats", () => {
     "exact command",
     "smallest next step",
     "repository ruleset/admin policy",
+    "Confirm the live head, check rollup, and merge",
+    "policy before treating the PR as ready",
+    "gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !reviewerGuide.includes(entry),

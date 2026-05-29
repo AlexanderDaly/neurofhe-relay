@@ -242,6 +242,8 @@ Release target: `v0.1.0-research-alpha`.
   evidence is not confused with live PR head or merge-policy status.
 - Clarified the status roadmap so committed hosted-CI evidence snapshots stay
   separate from live PR head, check-rollup, and merge-policy review.
+- Clarified the reviewer quickstart PR posture so reviewers confirm live head,
+  check rollup, and merge policy before treating PR #23 as ready.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

@@ -89,6 +89,12 @@ ruleset/admin policy blockers separate from local code or test failures.
 ## PR And Release Posture
 
 PR #23 has green hosted `Portable validation`, but merge remains controlled by
-repository ruleset/admin policy. Do not tag a release or merge a release PR
-until the `RELEASE.md` gates are satisfied and the user explicitly approves the
-final action.
+repository ruleset/admin policy. Confirm the live head, check rollup, and merge
+policy before treating the PR as ready:
+
+```sh
+gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
+```
+
+Do not tag a release or merge a release PR until the `RELEASE.md` gates are
+satisfied and the user explicitly approves the final action.
