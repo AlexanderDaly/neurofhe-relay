@@ -8,6 +8,7 @@ Nothing in this repository is production cryptography, medical software, or a
 security certification.
 
 For the short first-pass contributor path, see `docs/developer-quickstart.md`.
+For a grouped script list, see `docs/command-reference.md`.
 
 ## Prerequisites
 

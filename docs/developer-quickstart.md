@@ -2,7 +2,8 @@
 
 Use this path when you want to make a small change and prove that the
 research-alpha package still validates. For fuller native-library and artifact
-policy details, see `DEVELOPMENT.md`.
+policy details, see `DEVELOPMENT.md`. For a grouped list of npm scripts, see
+`docs/command-reference.md`.
 
 ## Prerequisites
 
@@ -37,6 +38,8 @@ PATH="/opt/homebrew/bin:$PATH" npm run ci
 ```
 
 ## Useful Local Commands
+
+For the full grouped command list, see `docs/command-reference.md`.
 
 Run the desk demo:
 

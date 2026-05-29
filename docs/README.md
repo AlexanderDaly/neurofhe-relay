@@ -11,6 +11,8 @@ changing the evidence boundary.
   evidence artifacts, patent materials, and release gate.
 - `developer-quickstart.md` - first local commands for a contributor who wants
   to validate the package before opening an issue or PR.
+- `command-reference.md` - grouped npm commands for validation, demos,
+  benchmarks, native lanes, and release evidence.
 
 ## Related Top-Level Docs
 

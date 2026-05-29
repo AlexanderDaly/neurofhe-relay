@@ -14,6 +14,8 @@ clinical validation, deployment evidence, or a security certification.
 - `docs/README.md` - documentation index for reader and contributor paths.
 - `docs/developer-quickstart.md` - compact local validation path for
   contributors.
+- `docs/command-reference.md` - grouped npm command reference for validation,
+  demos, benchmarks, native lanes, and release evidence.
 - `DEVELOPMENT.md` - local setup, portable validation, native FHE commands, and
   artifact policy.
 - `CONTRIBUTING.md` - evidence-first contribution rules and PR expectations.

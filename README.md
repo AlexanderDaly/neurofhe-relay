@@ -60,11 +60,12 @@ The cryptographic design target is:
 
 ## Start Here
 
-New readers should begin with `docs/README.md`, `docs/repository-guide.md`, and
-`docs/developer-quickstart.md`. Together they map the public briefing sequence,
-prototype code, committed evidence artifacts, patent briefing material,
-contributor workflow, and research-alpha release gate without upgrading any
-cryptographic, security, medical, or deployment claim.
+New readers should begin with `docs/README.md`, `docs/repository-guide.md`,
+`docs/developer-quickstart.md`, and `docs/command-reference.md`. Together they
+map the public briefing sequence, prototype code, committed evidence artifacts,
+patent briefing material, contributor workflow, runnable commands, and
+research-alpha release gate without upgrading any cryptographic, security,
+medical, or deployment claim.
 
 ## Package Contents
 
@@ -75,6 +76,7 @@ cryptographic, security, medical, or deployment claim.
 - `docs/README.md` - documentation index for reader and contributor paths.
 - `docs/repository-guide.md` - first-pass map for readers and contributors.
 - `docs/developer-quickstart.md` - compact local validation path for contributors.
+- `docs/command-reference.md` - grouped npm command reference.
 - `01-one-pager.md` - executive one-page brief.
 - `02-pitch-deck.md` - 11-slide presentation narrative.
 - `03-technical-architecture.md` - system architecture and data flow.
