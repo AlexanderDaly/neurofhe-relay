@@ -2951,6 +2951,8 @@ test("developer quickstart routes common change types to focused validation", ()
     "npm test -- --test-name-pattern",
     "GitHub Actions or repository policy",
     "gh pr checks",
+    "gh pr view <number> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "reviewed head SHA",
     "Benchmark, dataset, native lane, or release evidence",
     "temporary directory",
     "docs/data-handling.md",
@@ -2968,6 +2970,10 @@ test("developer quickstart routes common change types to focused validation", ()
   assert.deepEqual(missingEntries, []);
   assert.equal(quickstart.includes("Prototype or gateway behavior"), false);
   assert.equal(quickstart.includes("Prototype library or artifact behavior"), false);
+  assert.equal(
+    quickstart.includes("gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup"),
+    false,
+  );
 });
 
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {

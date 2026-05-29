@@ -39,7 +39,7 @@ the PR notes point to the right evidence boundary.
 | Scaffold or gateway behavior | `npm test -- --test-name-pattern "<focused behavior>"` | `docs/command-reference.md`, `prototype/README.md`, and the relevant boundary caveats still match the code. |
 | Artifact or real-data update | The exact artifact command in a temporary directory first. | `docs/data-handling.md`, provenance, raw-data exclusion, `privacyBoundary`, and `cryptoInventory`. |
 | Native dependency work | `npm run native:doctor` or the relevant OpenFHE/TFHE-rs command. | `docs/troubleshooting.md`, exact command/error/smallest next step, and no toy substitute for native evidence. |
-| Release-readiness or PR-policy review | `gh pr checks <number>` and `gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup`. | `docs/operations-runbook.md`, `docs/release-gate-matrix.md`, and `releaseGateSatisfied: false` unless every documented gate is satisfied. |
+| Release-readiness or PR-policy review | `gh pr checks <number>` and `gh pr view <number> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup`. | `docs/operations-runbook.md`, `docs/release-gate-matrix.md`, reviewed head SHA, and `releaseGateSatisfied: false` unless every documented gate is satisfied. |
 
 ## First Validation Pass
 
@@ -70,7 +70,7 @@ common gate before committing.
 | --- | --- | --- |
 | Docs-only navigation or wording | `npm run check:docs` | `npm run ci` and `git diff --check` |
 | Scaffold library or artifact behavior | `npm test -- --test-name-pattern "<focused behavior>"` | `npm run ci` and `git diff --check` |
-| GitHub Actions or repository policy | `gh pr checks <number>` and `gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup` | `npm run ci` and `git diff --check` |
+| GitHub Actions or repository policy | `gh pr checks <number>` and `gh pr view <number> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup` | `npm run ci` and `git diff --check` |
 | Benchmark, dataset, native lane, or release evidence | Run the relevant artifact command into a temporary directory | `npm run ci`, `git diff --check`, and the exact artifact command if committed output changed |
 
 ## Useful Local Commands

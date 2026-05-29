@@ -247,6 +247,9 @@ Release target: `v0.1.0-research-alpha`.
 - Aligned the operations runbook PR-check command with the live-head review
   flow so maintainers record the reviewed head SHA with the hosted check
   rollup and repository-policy state.
+- Aligned the developer quickstart PR-policy route with the same live-head
+  review command so contributors include `headRefOid` when checking hosted
+  CI and repository-policy state.
 - Clarified the evidence dashboard snapshot wording so committed release
   evidence is not confused with live PR head or merge-policy status.
 - Clarified the status roadmap so committed hosted-CI evidence snapshots stay
