@@ -1,0 +1,14 @@
+# NeuroFHE Relay review ownership.
+#
+# This file routes repository review to the current public maintainer. Review
+# ownership does not upgrade evidence, release, cryptographic, medical, or
+# deployment claims; preserve productionClaim: false unless documented evidence
+# and release gates support a change.
+
+* @AlexanderDaly
+
+/.github/ @AlexanderDaly
+/docs/ @AlexanderDaly
+/prototype/ @AlexanderDaly
+/benchmark-artifacts/ @AlexanderDaly
+/patent/ @AlexanderDaly

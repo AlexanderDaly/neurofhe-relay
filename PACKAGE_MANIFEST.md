@@ -69,6 +69,7 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `SUPPORT.md` - support routing for bugs, evidence gaps, security reports,
   release blockers, and cleanup requests.
 - `.github/ISSUE_TEMPLATE/` - guided bug, validation-gap, and repository-cleanup issue forms.
+- `.github/CODEOWNERS` - repository review ownership routing.
 - `.github/pull_request_template.md` - evidence-boundary and validation checklist for PRs.
 - `benchmark-artifacts/` - committed derived evidence, hosted-CI snapshots,
   blocker reports, and release-evidence indexes.

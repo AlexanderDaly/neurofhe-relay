@@ -13,6 +13,8 @@ stable-performance claim.
 - Confirm the worktree is clean except for the intended changes.
 - Confirm the PR description says what changed, what was validated, and what
   caveats or blockers remain.
+- Confirm `.github/CODEOWNERS` still routes review ownership appropriately for
+  the touched area.
 - Run:
 
 ```sh
@@ -74,4 +76,5 @@ git diff --check
 - `docs/status-roadmap.md` - current readiness and next-work map.
 - `docs/testing-strategy.md` - portable validation and guard-family map.
 - `benchmark-artifacts/README.md` - artifact mechanics and output locations.
+- `.github/CODEOWNERS` - repository review ownership routing.
 - `RELEASE.md` - research-alpha release gate.

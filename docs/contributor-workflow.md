@@ -29,6 +29,8 @@ private security report, pull request, validation note, or release blocker.
 
 ## Pull Requests
 
+- [`.github/CODEOWNERS`](../.github/CODEOWNERS)
+  - review ownership routing for repository changes.
 - [`.github/pull_request_template.md`](../.github/pull_request_template.md)
   - evidence-boundary and validation checklist for proposed changes.
 

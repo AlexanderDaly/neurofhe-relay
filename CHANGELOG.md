@@ -32,12 +32,14 @@ Release target: `v0.1.0-research-alpha`.
   native and release commands to `docs/command-reference.md` and `RELEASE.md`.
 - Added `SUPPORT.md` and a support-routing guard for public issues, sensitive
   reports, release blockers, and cleanup requests.
+- Added `.github/CODEOWNERS` and a review-ownership guard for repository
+  change routing.
 - Added guarded documentation coverage in the Node test suite so the repository
   maps stay synchronized with tracked surfaces.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 109 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 110 tests, Markdown
   link scan over 70 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

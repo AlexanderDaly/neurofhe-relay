@@ -1114,6 +1114,24 @@ test("contributor workflow map lists every tracked GitHub workflow surface", () 
   assert.deepEqual(missingFiles, []);
 });
 
+test("CODEOWNERS maps repository review ownership", () => {
+  const codeowners = readFileSync(".github/CODEOWNERS", "utf8");
+  const requiredEntries = [
+    "* @AlexanderDaly",
+    "/.github/ @AlexanderDaly",
+    "/docs/ @AlexanderDaly",
+    "/prototype/ @AlexanderDaly",
+    "/benchmark-artifacts/ @AlexanderDaly",
+    "/patent/ @AlexanderDaly",
+    "productionClaim: false",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !codeowners.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("policy boundary map lists every policy and claim-boundary root file", () => {
   const policyMap = readFileSync("docs/policy-boundary.md", "utf8");
   const policyFiles = [
