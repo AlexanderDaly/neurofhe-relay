@@ -9,8 +9,11 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `README.md` - project overview and recommended framing.
 - `LICENSE` - CC0 1.0 Universal public-domain dedication.
 - `PUBLIC_DOMAIN_NOTICE.md` - plain-English free-use notice.
+- `PACKAGE_MANIFEST.md` - this packaged-review inventory.
 - `.editorconfig`, `.nvmrc`, and `.node-version` - editor and Node.js version
   hints for consistent local work.
+- `.gitattributes` and `.gitignore` - repository file-normalization and
+  ignore rules.
 - `docs/README.md` - documentation index for reader and contributor paths.
 - `docs/briefing-sequence.md` - reading order for the numbered public briefs.
 - `docs/repository-guide.md` - orientation map for the root briefs, prototype
@@ -40,6 +43,9 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `SECURITY.md` - research-prototype security policy and reporting scope.
 - `.github/ISSUE_TEMPLATE/` - guided bug, validation-gap, and repository-cleanup issue forms.
 - `.github/pull_request_template.md` - evidence-boundary and validation checklist for PRs.
+- `benchmark-artifacts/` - committed derived evidence, hosted-CI snapshots,
+  blocker reports, and release-evidence indexes.
+- `outputs/` - generated presentation exports retained for packaged review.
 - `patent/` - ENER provisional drafting package, revised claim seeds, drawings, prior-art search plan, submission checklist, and policy/commercial briefing materials.
 - `project-brief.json` - agent-readable structured project summary.
 - `index.html` - self-contained browser briefing deck.

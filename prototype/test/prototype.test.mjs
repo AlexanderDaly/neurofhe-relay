@@ -1040,6 +1040,16 @@ test("patent package map lists every patent markdown and mermaid source", () => 
   assert.deepEqual(missingSources, []);
 });
 
+test("package manifest lists every tracked top-level package entry", () => {
+  const packageManifest = readFileSync("PACKAGE_MANIFEST.md", "utf8");
+  const trackedTopLevelEntries = listTrackedTopLevelEntries();
+  const missingEntries = trackedTopLevelEntries.filter((entry) =>
+    !packageManifest.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
@@ -1059,6 +1069,19 @@ function listFilesRecursive(dir) {
     if (!entry.isFile()) return [];
     return [path];
   });
+}
+
+function listTrackedTopLevelEntries() {
+  const result = spawnSync("git", ["ls-files"], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr);
+
+  const topLevel = new Map();
+  for (const filePath of result.stdout.trim().split("\n").filter(Boolean)) {
+    const [entry, ...rest] = filePath.split("/");
+    topLevel.set(entry, rest.length > 0 ? `${entry}/` : entry);
+  }
+
+  return [...topLevel.values()].sort();
 }
 
 test("GitHub Actions CI workflow uses Node 24-ready action majors", () => {
