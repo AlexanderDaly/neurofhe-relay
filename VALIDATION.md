@@ -179,7 +179,8 @@ Covered behaviours:
   `productionClaim: false` boundaries.
 - Maintainer-checklist coverage requiring review-mode routing, current
   evidence-dashboard, FAQ, security, support, contribution, GitHub-template,
-  release-gate, and repository-policy routing to stay visible.
+  pre-merge local/hosted validation, raw-data, claim-boundary, release-gate,
+  and repository-policy routing to stay visible.
 - Dependabot coverage requiring weekly dependency update routing for GitHub
   Actions and npm metadata without treating update prompts as release evidence.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene

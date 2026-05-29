@@ -18,6 +18,18 @@ stable-performance claim.
 | Release review | `RELEASE.md`, `docs/release-gate-matrix.md`, and `docs/evidence-dashboard.md`. | `releaseGateSatisfied: false` is only changed by satisfied documented gates plus explicit user approval. |
 | Sensitive or raw-data-adjacent report | `SECURITY.md`, `SUPPORT.md`, and `docs/contributor-workflow.md`. | Secrets, private payloads, raw datasets, and exploit details stay out of public threads. |
 
+## Pre-Merge Routes
+
+Use this table first, then use the checklist below for supporting details.
+
+| Check | Confirm In | Do Not Merge If |
+| --- | --- | --- |
+| Local validation | `npm run ci`, `git diff --check`, and `VALIDATION.md`. | The intended change is unvalidated or whitespace is not clean. |
+| Hosted validation | GitHub `Portable validation` check rollup and `docs/operations-runbook.md`. | Checks are failing, missing, or confused with repository ruleset/admin policy. |
+| Raw-data and secret boundary | `benchmark-artifacts/repo-hygiene/latest.json`, `SECURITY.md`, and `docs/data-handling.md`. | Raw datasets, raw signals, secrets, private payloads, or proprietary material are staged or attached. |
+| Claim boundary | `docs/evidence-dashboard.md`, `docs/faq.md`, and `docs/architecture-decisions.md`. | The PR upgrades `productionClaim: false`, `privacyBoundary`, `cryptoInventory`, or release caveats without evidence. |
+| Repository policy state | `docs/operations-runbook.md`, `RELEASE.md`, and the PR merge state. | Merge remains blocked by repository ruleset/admin policy or release approval is being inferred from green CI. |
+
 ## Before Merging A PR
 
 - Confirm the worktree is clean except for the intended changes.

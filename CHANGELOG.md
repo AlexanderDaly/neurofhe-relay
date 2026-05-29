@@ -120,6 +120,8 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened maintainer-checklist coverage so ordinary PR review, evidence
   updates, release review, and sensitive/raw-data-adjacent reports route
   through a compact review-mode table.
+- Added maintainer pre-merge routes for local validation, hosted validation,
+  raw-data/secret boundaries, claim boundaries, and repository-policy state.
 - Tightened contributor-workflow coverage so bug reports, evidence gaps,
   cleanup requests, pull requests, and sensitive reports route through a
   compact contribution table.
