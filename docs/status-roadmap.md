@@ -45,7 +45,7 @@ to the artifact or boundary file that should confirm the claim.
   baseline, TFHE-rs real-data blocker, and `productionClaim: false` posture.
 - `docs/evidence-dashboard.md` gives reviewers the same dashboard posture in a
   short human-readable form before they inspect the JSON artifact.
-- The repository now has reader maps for docs, briefs, prototype code, native
+- The repository now has reader maps for docs, briefs, prototype/ scaffold code, native
   sources, patent materials, generated outputs, contributor workflow, policy
   boundaries, evidence artifacts, operations, and maintainer checks.
 

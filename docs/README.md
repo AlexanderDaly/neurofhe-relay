@@ -37,7 +37,7 @@ public repository before opening the deeper inventories.
   Mermaid diagram sources.
 - `presentation-outputs.md` - map of generated presentation exports retained
   for packaged review.
-- `repository-guide.md` - map of the root briefs, prototype code, committed
+- `repository-guide.md` - map of the root briefs, prototype/ scaffold code, committed
   evidence artifacts, patent materials, and release gate.
 - `faq.md` - short answers to common claim, evidence, raw-data, CI, release,
   and CC0 questions.

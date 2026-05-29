@@ -104,6 +104,8 @@ Release target: `v0.1.0-research-alpha`.
   maps stay synchronized with tracked surfaces.
 - Added repository-guide coverage so the first map stays aligned with current
   reader, maintainer, GitHub, CI, release-gate, and ruleset-policy surfaces.
+- Tightened reader-map code-surface wording so docs refer to portable scaffold
+  code instead of broad prototype-code framing.
 - Added prototype README coverage so the runnable-code entrypoint stays concise
   and routes detailed command/module inventory to the maintained maps.
 - Added prototype README route coverage so validation, demo, artifact, native,

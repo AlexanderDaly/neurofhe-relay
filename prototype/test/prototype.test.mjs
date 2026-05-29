@@ -1050,6 +1050,7 @@ test("documentation index stays concise and reader-facing", () => {
     "docs/command-reference.md",
     "benchmark-artifacts/README.md",
     "top-level numbered briefs remain the public briefing sequence",
+    "prototype/ scaffold code",
     "production cryptography",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
@@ -1060,6 +1061,7 @@ test("documentation index stays concise and reader-facing", () => {
   assert.deepEqual(missingEntries, []);
   assert.equal(validationLitanyMatches.length, 0);
   assert.equal(docsIndex.includes("public presentation sequence"), false);
+  assert.equal(docsIndex.includes("prototype code, committed"), false);
 });
 
 test("briefing sequence guide lists every numbered root brief", () => {
@@ -1967,12 +1969,14 @@ test("status roadmap lists every release-readiness evidence surface", () => {
     "productionClaim: false",
     "privacyBoundary",
     "cryptoInventory",
+    "prototype/ scaffold code",
   ];
   const missingSurfaces = releaseReadinessSurfaces.filter((filePath) =>
     !statusRoadmap.includes(filePath),
   );
 
   assert.deepEqual(missingSurfaces, []);
+  assert.equal(statusRoadmap.includes("prototype code, native"), false);
 });
 
 test("glossary defines recurring repository terms", () => {
@@ -2380,6 +2384,7 @@ test("repository guide maps current reader, maintainer, and GitHub surfaces", ()
     "releaseGateSatisfied: false",
     "repository ruleset/admin policy",
     "evidence narrative, architecture, and research-alpha roadmap",
+    "portable scaffold code",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !guide.includes(entry),
@@ -2387,6 +2392,7 @@ test("repository guide maps current reader, maintainer, and GitHub surfaces", ()
 
   assert.deepEqual(missingEntries, []);
   assert.equal(guide.includes("pitch narrative, architecture, and prototype path"), false);
+  assert.equal(guide.includes("portable prototype code"), false);
 });
 
 test("release gate matrix lists every minimum evidence command", () => {

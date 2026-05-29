@@ -1,7 +1,7 @@
 # Repository Guide
 
 NeuroFHE Relay is a CC0 research-alpha package. It combines concept briefs,
-portable prototype code, committed evidence artifacts, and ENER patent drafting
+portable scaffold code, committed evidence artifacts, and ENER patent drafting
 materials. Use this guide as the first map before changing claims, benchmarks,
 or release evidence.
 
