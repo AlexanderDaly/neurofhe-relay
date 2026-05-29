@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 123
-pass 123
+tests 124
+pass 124
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 123
-pass 123
+tests 124
+pass 124
 fail 0
 ```
 
@@ -122,6 +122,10 @@ Covered behaviours:
 - Support policy coverage requiring issue, security, support, and release
   blocker routing while preserving `releaseGateSatisfied: false`,
   `productionClaim: false`, and raw-data boundaries.
+- Security policy coverage requiring sensitive-report routing, raw-data and
+  private-payload exclusions, `privacyBoundary`, `cryptoInventory`,
+  `releaseGateSatisfied: false`, `productionClaim: false`, exact-command and
+  smallest-next-step reporting, and repository-hygiene-scan limits.
 - Code of conduct coverage requiring public collaboration boundaries, report
   routing, raw-data/private-payload limits, `productionClaim: false`, and
   `releaseGateSatisfied: false`.

@@ -1305,6 +1305,30 @@ test("support policy routes issues without weakening evidence boundaries", () =>
   assert.deepEqual(missingEntries, []);
 });
 
+test("security policy preserves research-alpha reporting boundaries", () => {
+  const securityPolicy = readFileSync("SECURITY.md", "utf8");
+  const requiredEntries = [
+    "GitHub private vulnerability reporting",
+    "raw signal",
+    "raw dataset",
+    "secrets",
+    "private payload",
+    "privacyBoundary",
+    "cryptoInventory",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "repository hygiene scan",
+    "not a security audit",
+    "exact command",
+    "smallest next step",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !securityPolicy.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("status roadmap lists every release-readiness evidence surface", () => {
   const statusRoadmap = readFileSync("docs/status-roadmap.md", "utf8");
   const releaseReadinessSurfaces = [

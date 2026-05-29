@@ -15,7 +15,8 @@ itself, such as:
   cryptographic security evidence;
 - unsafe CLI behavior that could overwrite files unexpectedly;
 - malformed input handling that breaks the documented privacy boundary;
-- incorrect crypto inventory, parameter, or provenance reporting.
+- incorrect `privacyBoundary`, `cryptoInventory`, parameter, or provenance
+  reporting.
 
 Known research limitations, such as the toy additive scheme being insecure or
 metadata leakage from public active positions, are documented caveats rather
@@ -30,12 +31,21 @@ GitHub issue is fine.
 Do not post secrets, private data, raw neural/EEG records, proprietary model
 weights, or exploit payloads in public issues or pull requests.
 
+If the report concerns release posture rather than a vulnerability, preserve
+`releaseGateSatisfied: false` unless every documented release gate is actually
+satisfied.
+
 ## Response Expectations
 
 This is a public-domain research package maintained as time permits, not a
-commercial security product with an SLA. Reports that include reproducible
-commands, affected files, expected behavior, and observed behavior are easiest
-to validate.
+commercial security product with an SLA. Reports that include the exact command,
+affected files, expected behavior, observed behavior, and the smallest next step
+are easiest to validate.
+
+The repository hygiene scan can help identify common placeholder text,
+token-shaped secrets, and raw-data path mistakes. It is not a security audit,
+secret-manager review, malware scan, dependency audit, penetration test, or
+private-dataset review.
 
 ## Cryptographic Posture
 

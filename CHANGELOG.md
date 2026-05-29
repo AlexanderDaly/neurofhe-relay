@@ -64,10 +64,12 @@ Release target: `v0.1.0-research-alpha`.
   `.editorconfig` preserve line-ending and local-ignore boundaries.
 - Expanded local ignore boundaries for env files, logs, coverage output, and
   accidental dataset/download scratch folders.
+- Added security-policy coverage so sensitive reports preserve raw-data,
+  claim-boundary, exact-command, and hygiene-scan-limit language.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 123 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 124 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
