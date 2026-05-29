@@ -1812,6 +1812,23 @@ test("validation history distinguishes historical CI blockers from current PR st
   assert.equal(validation.includes("PR #7 is the current draft PR"), false);
 });
 
+test("validation history points TFHE readers to the current native artifact", () => {
+  const validation = readFileSync("VALIDATION.md", "utf8");
+  const requiredEntries = [
+    "### TFHE-rs Native Run And Artifact",
+    "tfhe-rs-alpha-lane-framing-2026-05-29",
+    "benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-alpha-lane-framing-2026-05-29.json",
+    '"rssBytes": 259096576',
+    '"latencyMs": 5900.8',
+    "research-alpha TFHE-rs native lane only",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !validation.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("troubleshooting guide routes common repo blockers without weakening caveats", () => {
   const troubleshooting = readFileSync("docs/troubleshooting.md", "utf8");
   const requiredEntries = [
@@ -2314,7 +2331,7 @@ test("root README keeps first-read navigation role based", () => {
     "v0.1.0-research-alpha",
     "Portable validation",
     "Green on PR #23",
-    "137 passing tests",
+    "138 passing tests",
     "Merge state",
     "repository ruleset/admin policy",
     "Release gate",

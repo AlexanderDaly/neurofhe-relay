@@ -55,7 +55,7 @@ Release target: `v0.1.0-research-alpha`.
 - Added a guarded root README current-status table for release target,
   portable validation, merge policy, release gate, and claim-boundary posture.
 - Updated the root README current-status snapshot to track the current
-  137-test portable gate.
+  138-test portable gate.
 - Added a guarded, concise root README repository layout that defers the
   exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Added a guarded, concise root README quick-command table that defers detailed
@@ -230,7 +230,7 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 137 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 138 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
@@ -247,6 +247,8 @@ Release target: `v0.1.0-research-alpha`.
   native-lane framing instead of legacy prototype framing.
 - Package-manifest and ENER weak-claims native-evidence references now point to
   the refreshed TFHE-rs artifact id.
+- TFHE-rs validation history now points current native-run readers at the
+  refreshed May 29 artifact and its current RSS/latency summary.
 - Public demo naming now uses `Relay-2 Research Demo` instead of diagnostic
   framing across the portable benchmark and research assumptions.
 

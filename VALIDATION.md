@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 137
-pass 137
+tests 138
+pass 138
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 137
-pass 137
+tests 138
+pass 138
 fail 0
 ```
 
@@ -1111,6 +1111,7 @@ Command:
 ```sh
 npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-validation-2026-05-21 --generated-at 2026-05-21T12:15:00.000Z
 npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-memory-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:15:00.000Z
 ```
 
 Result summary:
@@ -1143,10 +1144,11 @@ Result summary:
     "total": 2658613
   },
   "memoryUsage": {
-    "rssBytes": 259309568,
+    "rssBytes": 259096576,
     "measurement": "current process RSS via ps -o rss= -p <pid>; KiB converted to bytes"
   },
-  "latencyMs": 5948.059,
+  "latencyMs": 5900.8,
+  "caveat": "research-alpha TFHE-rs native lane only; not production cryptography, not clinical validation, and not side-channel reviewed.",
   "productionClaim": false
 }
 ```
@@ -1155,6 +1157,7 @@ Published artifact:
 
 ```text
 benchmark-artifacts/comparisons/tfhe-rs/latest.json
+benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-alpha-lane-framing-2026-05-29.json
 benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-memory-rss-2026-05-28.json
 benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-validation-2026-05-21.json
 ```
