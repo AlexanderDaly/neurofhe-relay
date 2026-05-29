@@ -169,6 +169,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened package metadata so npm-facing fields preserve CC0 research-alpha
   repository framing, public issue/repository routes, private-package status,
   engine posture, and discovery keywords.
+- Added agent-readable `project-brief.json` repository posture metadata for
+  release target, gate status, production-claim boundary, hosted-CI versus
+  repository-policy separation, and explicit release approval rules.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.
@@ -224,7 +227,7 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 136 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 137 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

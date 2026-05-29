@@ -1256,6 +1256,24 @@ test("package metadata preserves public repository posture", () => {
   }
 });
 
+test("project brief preserves agent-readable repository posture", () => {
+  const projectBrief = JSON.parse(readFileSync("project-brief.json", "utf8"));
+
+  assert.equal(projectBrief.repositoryPosture.packageClass, "CC0 research-alpha repository");
+  assert.equal(projectBrief.repositoryPosture.releaseTarget, "v0.1.0-research-alpha");
+  assert.equal(projectBrief.repositoryPosture.releaseGateSatisfied, false);
+  assert.equal(projectBrief.repositoryPosture.productionClaim, false);
+  assert.equal(projectBrief.repositoryPosture.boundaryDomain, "bio-digital-event-intelligence");
+  assert.equal(
+    projectBrief.repositoryPosture.hostedCiBoundary,
+    "Hosted portable CI and check-rollup status are separate from repository ruleset/admin merge policy.",
+  );
+  assert.equal(
+    projectBrief.repositoryPosture.releaseApprovalRule,
+    "Do not merge, tag, or strengthen release-facing claims without the documented release gate, maintainer approval, and explicit user approval.",
+  );
+});
+
 test("presentation outputs map lists every tracked generated output file", () => {
   const outputsMap = readFileSync("docs/presentation-outputs.md", "utf8");
   const outputFiles = listTrackedFiles("outputs")
