@@ -231,6 +231,8 @@ Release target: `v0.1.0-research-alpha`.
   current CLI/evidence scaffold and treats Octra workload fit as testable.
 - Tightened technical-architecture security-boundary wording so it uses
   research-alpha package framing instead of research-grade prototype language.
+- Tightened demo-roadmap goal and foothold wording so validation/evidence
+  language replaces proof/prototype phrasing.
 - Tightened presentation-output coverage so packaged slide review,
   claim/caveat checks, evidence/release-readiness review, and export refreshes
   route through source docs before generated files.

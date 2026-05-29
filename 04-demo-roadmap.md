@@ -2,7 +2,7 @@
 
 ## Phase 0 - Desk Validation
 
-Goal: prove the concept is coherent enough to demo.
+Goal: validate that the concept is coherent enough to demo.
 
 Deliverables:
 
@@ -43,7 +43,7 @@ Tasks:
 - Emit machine-readable model and event-window metadata.
 - Record plaintext accuracy and latency.
 
-Current prototype foothold:
+Current research-alpha foothold:
 
 - Synthetic 8 by 8 event window.
 - Public active event positions with encrypted active spike counts.
@@ -63,7 +63,7 @@ Decision gate:
 
 ## Phase 1.5 - Discreet Real-Data Sorting Proof
 
-Goal: prove that the project can turn rights-clean real data into derived sparse
+Goal: validate that the project can turn rights-clean real data into derived sparse
 events without committing raw payloads or pretending metadata leakage has been
 solved.
 

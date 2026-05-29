@@ -1060,6 +1060,7 @@ test("briefing sequence guide lists every numbered root brief", () => {
   const onePager = readFileSync("01-one-pager.md", "utf8");
   const pitchDeck = readFileSync("02-pitch-deck.md", "utf8");
   const technicalArchitecture = readFileSync("03-technical-architecture.md", "utf8");
+  const demoRoadmap = readFileSync("04-demo-roadmap.md", "utf8");
   const encryptedThoughtsWhitepaper = readFileSync(
     "08-encrypted-thoughts-whitepaper.md",
     "utf8",
@@ -1110,6 +1111,12 @@ test("briefing sequence guide lists every numbered root brief", () => {
   );
   assert.equal(technicalArchitecture.includes("The current prototype uses"), false);
   assert.equal(technicalArchitecture.includes("Prototype is research-grade"), false);
+  assert.equal(demoRoadmap.includes("Goal: validate that the concept is coherent enough to demo."), true);
+  assert.equal(demoRoadmap.includes("Current research-alpha foothold:"), true);
+  assert.equal(demoRoadmap.includes("Goal: validate that the project can turn rights-clean real data"), true);
+  assert.equal(demoRoadmap.includes("Goal: prove the concept"), false);
+  assert.equal(demoRoadmap.includes("Current prototype foothold:"), false);
+  assert.equal(demoRoadmap.includes("Goal: prove that the project can turn rights-clean real data"), false);
   assert.equal(
     encryptedThoughtsWhitepaper.includes("The current research-alpha package is deliberately small"),
     true,
