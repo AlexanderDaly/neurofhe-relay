@@ -1041,6 +1041,23 @@ test("prototype map lists every top-level prototype entrypoint and note", () => 
   assert.deepEqual(missingFiles, []);
 });
 
+test("prototype map lists every native lane source file", () => {
+  const prototypeMap = readFileSync("docs/prototype-map.md", "utf8");
+  const nativeFiles = listTrackedFiles("prototype")
+    .filter((entry) =>
+      entry === "prototype/openfhe_contract_loader.hpp"
+      || entry.startsWith("prototype/openfhe/")
+      || entry.startsWith("prototype/openfhe-ckks/")
+      || entry.startsWith("prototype/tfhe-rs/"),
+    )
+    .sort();
+  const missingFiles = nativeFiles.filter((filePath) =>
+    !prototypeMap.includes(filePath),
+  );
+
+  assert.deepEqual(missingFiles, []);
+});
+
 test("patent package map lists every patent markdown and mermaid source", () => {
   const patentMap = readFileSync("docs/patent-package-map.md", "utf8");
   const patentSources = listFilesRecursive("patent")

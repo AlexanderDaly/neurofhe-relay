@@ -70,6 +70,20 @@ evidence.
 - [`prototype/tfhe-rs/`](../prototype/tfhe-rs/) - TFHE-rs Rust comparison lane
   for sparse integer scoring and encrypted threshold comparison.
 
+## Native Source Files
+
+| File | Owns |
+| --- | --- |
+| [`prototype/openfhe/CMakeLists.txt`](../prototype/openfhe/CMakeLists.txt) | OpenFHE BFVrns CMake target |
+| [`prototype/openfhe/openfhe_linear_demo.cpp`](../prototype/openfhe/openfhe_linear_demo.cpp) | OpenFHE BFVrns sparse linear demo |
+| [`prototype/openfhe-ckks/CMakeLists.txt`](../prototype/openfhe-ckks/CMakeLists.txt) | OpenFHE CKKS CMake target |
+| [`prototype/openfhe-ckks/openfhe_ckks_linear_demo.cpp`](../prototype/openfhe-ckks/openfhe_ckks_linear_demo.cpp) | OpenFHE CKKS approximate-real sparse linear demo |
+| [`prototype/openfhe_contract_loader.hpp`](../prototype/openfhe_contract_loader.hpp) | Shared OpenFHE contract JSON loader |
+| [`prototype/tfhe-rs/Cargo.toml`](../prototype/tfhe-rs/Cargo.toml) | TFHE-rs crate manifest |
+| [`prototype/tfhe-rs/Cargo.lock`](../prototype/tfhe-rs/Cargo.lock) | TFHE-rs locked dependency graph |
+| [`prototype/tfhe-rs/src/lib.rs`](../prototype/tfhe-rs/src/lib.rs) | TFHE-rs sparse scoring library |
+| [`prototype/tfhe-rs/src/main.rs`](../prototype/tfhe-rs/src/main.rs) | TFHE-rs JSON-emitting demo binary |
+
 ## Supporting Notes
 
 - [`prototype/README.md`](../prototype/README.md) - detailed prototype tutorial
@@ -85,6 +99,6 @@ evidence.
 - [`prototype/LINEAR_ALGEBRA_NEXT.md`](../prototype/LINEAR_ALGEBRA_NEXT.md) -
   next matrix/vector cleanup handoff.
 
-Validation checks that every `prototype/lib/*.mjs` module and every top-level
-`prototype/*.mjs` or `prototype/*.md` entrypoint/note is represented on this
-page.
+Validation checks that every `prototype/lib/*.mjs` module, every top-level
+`prototype/*.mjs` or `prototype/*.md` entrypoint/note, and every tracked native
+lane source/config file is represented on this page.
