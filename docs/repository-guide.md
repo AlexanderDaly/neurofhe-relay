@@ -13,6 +13,7 @@ clinical validation, deployment evidence, or a security certification.
 - `README.md` - project thesis, public framing, demos, and caveats.
 - `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `docs/README.md` - documentation index for reader and contributor paths.
+- `docs/faq.md` - short claim-safety answers for common reader questions.
 - `docs/briefing-sequence.md` - reading order for the root `01-` through `12-`
   public briefing files.
 - `docs/glossary.md` - definitions for recurring claim, artifact, release,
@@ -25,6 +26,8 @@ clinical validation, deployment evidence, or a security certification.
   boundary map.
 - `docs/claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
   ledger.
+- `docs/evidence-dashboard.md` - human-readable release-evidence dashboard
+  with current gate status and caveats.
 - `docs/release-gate-matrix.md` - minimum release command, artifact, caveat,
   and blocker matrix.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
@@ -42,6 +45,8 @@ clinical validation, deployment evidence, or a security certification.
 - `docs/architecture-decisions.md` - accepted repository boundary decisions.
 - `docs/operations-runbook.md` - routine PR, hosted-check, evidence refresh,
   and blocker handling.
+- `docs/troubleshooting.md` - common local, hosted-CI, native-lane, dataset,
+  and release-gate blockers.
 - `docs/reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `docs/developer-quickstart.md` - compact local validation path for
   contributors.
@@ -54,6 +59,10 @@ clinical validation, deployment evidence, or a security certification.
 - `DEVELOPMENT.md` - local setup, portable validation, native FHE commands, and
   artifact policy.
 - `CONTRIBUTING.md` - evidence-first contribution rules and PR expectations.
+- `CODE_OF_CONDUCT.md` - public collaboration expectations and reporting
+  boundaries.
+- `MAINTAINERS.md` - current maintainer route, review ownership, and release
+  authority boundary.
 - `SUPPORT.md` - support routing for issues, sensitive reports, release
   blockers, and cleanup requests.
 - `VALIDATION.md` - recorded local validation commands and caveated results.
@@ -63,6 +72,9 @@ clinical validation, deployment evidence, or a security certification.
   hygiene, native-evidence, reconstruction-risk, and release-index artifacts.
 - `.github/ISSUE_TEMPLATE/` - guided forms for reproducible bugs, evidence
   gaps, and repository-cleanup requests.
+- `.github/CODEOWNERS` - repository review ownership routing.
+- `.github/dependabot.yml` - dependency-update routing for GitHub Actions and
+  npm metadata.
 - `.github/pull_request_template.md` - PR checklist for validation and
   evidence-boundary notes.
 - `.github/workflows/ci.yml` - hosted portable validation workflow.
@@ -99,14 +111,20 @@ Use `docs/data-handling.md` before adding raw-data-adjacent commands, derived
 artifacts, blocker reports, or hygiene evidence.
 Use `docs/claim-evidence-ledger.md` before strengthening public, patent,
 investor, release, or standards-facing language.
+Use `docs/evidence-dashboard.md` before summarizing current release readiness
+or public evidence posture.
 Use `docs/release-gate-matrix.md` before rerunning or reviewing release-gate
 commands.
+Use `docs/faq.md` when answering common public-reader questions without opening
+the longer evidence surfaces.
 Use `docs/reviewer-quickstart.md` when reviewing the repository from a
 diligence, grant, patent, or maintainer perspective.
 Use `docs/architecture-decisions.md` before changing repository boundaries,
 license posture, raw-data policy, claim posture, or native/toy lane framing.
 Use `docs/operations-runbook.md` when checking PR rollups, refreshing evidence
 artifacts, or recording hosted-CI and repository-policy blockers.
+Use `docs/troubleshooting.md` when a local command, hosted check, native lane,
+dataset path, or release-gate command fails.
 
 ## Prototype Code
 
@@ -147,6 +165,9 @@ The most release-relevant artifact groups are:
 
 Release-evidence indexes do not create new benchmark evidence and do not approve
 a release by themselves.
+The current release dashboard remains `releaseGateSatisfied: false` until the
+documented gate is satisfied, the validation PR is merged, and the maintainer
+approves the release action.
 
 ## Patent And Briefing Materials
 
@@ -180,3 +201,8 @@ include the exact artifact command and commit only derived evidence or a
 structured blocker report. If a native dependency cannot run, record the exact
 command, error, and smallest next setup step instead of substituting toy or
 unverified numbers.
+
+If hosted `Portable validation` is green but the pull request remains blocked,
+separate CI/check-rollup status from repository ruleset/admin policy. Do not
+merge or tag a release until the documented release gate is satisfied and the
+maintainer has explicitly approved the action.

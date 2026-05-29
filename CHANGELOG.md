@@ -48,10 +48,12 @@ Release target: `v0.1.0-research-alpha`.
   GitHub Actions and npm maintenance routing.
 - Added guarded documentation coverage in the Node test suite so the repository
   maps stay synchronized with tracked surfaces.
+- Added repository-guide coverage so the first map stays aligned with current
+  reader, maintainer, GitHub, CI, release-gate, and ruleset-policy surfaces.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 116 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 117 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

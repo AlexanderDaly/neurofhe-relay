@@ -1433,6 +1433,30 @@ test("FAQ answers common reader questions without upgrading claims", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("repository guide maps current reader, maintainer, and GitHub surfaces", () => {
+  const guide = readFileSync("docs/repository-guide.md", "utf8");
+  const requiredEntries = [
+    "docs/faq.md",
+    "docs/evidence-dashboard.md",
+    "docs/troubleshooting.md",
+    "CODE_OF_CONDUCT.md",
+    "MAINTAINERS.md",
+    ".github/CODEOWNERS",
+    ".github/dependabot.yml",
+    ".github/ISSUE_TEMPLATE/",
+    ".github/pull_request_template.md",
+    ".github/workflows/ci.yml",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "repository ruleset/admin policy",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !guide.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("release gate matrix lists every minimum evidence command", () => {
   const releasePlan = readFileSync("RELEASE.md", "utf8");
   const releaseMatrix = readFileSync("docs/release-gate-matrix.md", "utf8");

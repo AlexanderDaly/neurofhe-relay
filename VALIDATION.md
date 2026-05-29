@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 116
-pass 116
+tests 117
+pass 117
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 116
-pass 116
+tests 117
+pass 117
 fail 0
 ```
 
@@ -91,6 +91,8 @@ Covered behaviours:
 - FAQ coverage requiring common reader questions to preserve
   `releaseGateSatisfied: false`, `productionClaim: false`, CC0, raw-data,
   CI/ruleset, and evidence caveats.
+- Repository-guide coverage requiring the first map to list current reader,
+  maintainer, GitHub, CI, release-gate, and ruleset-policy surfaces.
 - Release-gate matrix coverage requiring every minimum evidence command in
   `RELEASE.md` to map to expected artifacts, caveats, and blocker posture.
 - Changelog coverage requiring the unreleased cleanup stack, release caveats,
