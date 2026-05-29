@@ -74,6 +74,8 @@ Release target: `v0.1.0-research-alpha`.
   current support, security, contribution, maintainer, issue, and PR surfaces.
 - Tightened evidence-dashboard coverage so the human-readable gate snapshot
   names the release-evidence wrapper and `subject` JSON paths explicitly.
+- Tightened package-manifest coverage so the manifest stays an inventory and
+  routes commands, evidence artifacts, and release gates to maintained owners.
 
 ### Changed
 

@@ -2,7 +2,10 @@
 
 ## Purpose
 
-This repository packages the first presentation-ready version of NeuroFHE Relay: a privacy-preserving neuromorphic + homomorphic-encryption project concept with a small desk demo, BCI privacy whitepaper, and clear 90-day prototype path.
+This file is a packaged-review inventory, not a command reference. It lists the
+repository surfaces a reviewer should expect in the CC0 research-alpha package
+and routes commands, evidence, and release decisions to the maintained
+documents that own them.
 
 ## Files
 
@@ -96,72 +99,23 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 
 ## Validation
 
-Run the desk demo:
+Use these owner documents instead of duplicating command details here:
 
-```sh
-npm run demo
-```
+| Need | Maintained Route |
+| --- | --- |
+| Current portable gate and recorded local results | `VALIDATION.md` |
+| Runnable npm commands and native-lane command groups | `docs/command-reference.md` |
+| Research-alpha release gate and no-tag checklist | `RELEASE.md` |
+| Command-by-command release artifact/caveat map | `docs/release-gate-matrix.md` |
+| Human-readable release evidence posture | `docs/evidence-dashboard.md` |
+| Committed evidence artifact directories and caveats | `benchmark-artifacts/README.md` |
 
-Expected result: JSON output showing an educational encrypted spike-count classifier with decrypted scores and final classification.
-
-Run the benchmark:
-
-```sh
-npm run benchmark
-```
-
-Expected result: JSON output with schema `neurofhe.benchmark.v1`, sparse operation counts, dense baseline comparison, dense/raw vs unsorted-spike vs spatial-sorted representation comparison, public-active-neuron privacy mode, spatial-cluster readiness for SNN/encrypted model handoff, privacy boundary, and crypto inventory.
-
-Run the relay gateway scaffold:
-
-```sh
-npm run gateway:demo
-```
-
-Expected result: JSON output with schema `neurofhe.gateway.demo.v1`, a simulated raw-intake summary, canonical spatial spike-sorter metadata, approved reconstruction-resistant model-facing event, accepted safe local recommendation, rejected unsafe command recommendation, audit log, and sanitized replay stream.
-
-Run the synthetic reconstruction-risk probes:
-
-```sh
-npm run reconstruction:risk
-```
-
-Expected result: JSON output with schema `neurofhe.reconstructionRiskProbes.v1`
-showing raw-payload replay and active-value recovery blocked in the synthetic
-gateway probe while public-position linkage remains a residual risk.
-
-Run tests:
-
-```sh
-npm test
-```
-
-Run the TFHE-rs comparison lane:
-
-```sh
-npm run benchmark:tfhe -- --run
-```
-
-Print the OpenFHE CKKS approximate-real comparison lane:
-
-```sh
-npm run benchmark:openfhe-ckks
-```
-
-Generate OpenFHE-ready EEG input contracts and run the native BFVrns/CKKS lanes
-against one derived sparse window:
-
-```sh
-npm run contract:eeg-openfhe
-npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
-npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
-```
-
-Run the plaintext real-data baseline against a local N-MNIST directory:
-
-```sh
-npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
-```
+The current release posture remains `releaseGateSatisfied: false`. Artifact
+metadata that carries `productionClaim: false`, `privacyBoundary`, or
+`cryptoInventory` must preserve those fields. This manifest does not create
+benchmark evidence, release approval, production cryptography, medical or
+clinical validation, deployment evidence, a privacy proof, or a security
+certification.
 
 ## Caveat
 

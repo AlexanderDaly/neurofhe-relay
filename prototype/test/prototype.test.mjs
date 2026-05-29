@@ -1097,6 +1097,33 @@ test("package manifest lists every tracked top-level package entry", () => {
   );
 
   assert.deepEqual(missingEntries, []);
+
+  const requiredRouting = [
+    "inventory, not a command reference",
+    "docs/command-reference.md",
+    "VALIDATION.md",
+    "RELEASE.md",
+    "docs/evidence-dashboard.md",
+    "docs/release-gate-matrix.md",
+    "benchmark-artifacts/README.md",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+  ];
+  const missingRouting = requiredRouting.filter((entry) =>
+    !packageManifest.includes(entry),
+  );
+  const forbiddenCommandWall = [
+    "first presentation-ready version",
+    "Run the desk demo:",
+    "Run the benchmark:",
+    "Run the TFHE-rs comparison lane:",
+    "Generate OpenFHE-ready EEG input contracts",
+  ].filter((entry) => packageManifest.includes(entry));
+
+  assert.deepEqual(missingRouting, []);
+  assert.deepEqual(forbiddenCommandWall, []);
 });
 
 test("presentation outputs map lists every tracked generated output file", () => {

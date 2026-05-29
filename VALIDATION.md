@@ -73,13 +73,14 @@ Covered behaviours:
   reference script coverage, documentation index coverage, documentation-index
   concision, numbered briefing sequence coverage, prototype module, top-level
   entrypoint, and native source map coverage, patent package source coverage,
-  package manifest top-level coverage, generated presentation output map
-  coverage, benchmark artifact directory coverage, contributor workflow surface
-  coverage, policy boundary map coverage, status roadmap release-readiness
-  coverage, glossary term coverage, testing strategy validation-surface
-  coverage, dependency matrix setup-surface coverage, data-handling
-  boundary-surface coverage, repository tooling normalization/ignore-boundary
-  coverage, and GitHub Actions trigger and action-major checks.
+  package manifest top-level and owner-route coverage, generated presentation
+  output map coverage, benchmark artifact directory coverage, contributor
+  workflow surface coverage, policy boundary map coverage, status roadmap
+  release-readiness coverage, glossary term coverage, testing strategy
+  validation-surface coverage, dependency matrix setup-surface coverage,
+  data-handling boundary-surface coverage, repository tooling
+  normalization/ignore-boundary coverage, and GitHub Actions trigger and
+  action-major checks.
 - Troubleshooting coverage requiring common local npm, hosted-CI, native-lane,
   dataset, and release-gate blockers to route to exact-command/error/next-step
   recording without weakening `productionClaim: false`.
