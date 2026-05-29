@@ -223,6 +223,9 @@ Release target: `v0.1.0-research-alpha`.
   contributors can move from route selection to focused validation cleanly.
 - Tightened the root README repository layout so `prototype/` is described as
   portable scaffold code instead of broad demo code.
+- Added a guarded PR readiness snapshot to the maintainer checklist so review
+  notes report local validation, hosted checks, merge policy, release posture,
+  and remaining blockers consistently.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

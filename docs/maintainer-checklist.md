@@ -30,6 +30,17 @@ Use this table first, then use the checklist below for supporting details.
 | Claim boundary | `docs/evidence-dashboard.md`, `docs/faq.md`, and `docs/architecture-decisions.md`. | The PR upgrades `productionClaim: false`, `privacyBoundary`, `cryptoInventory`, or release caveats without evidence. |
 | Repository policy state | `docs/operations-runbook.md`, `RELEASE.md`, and the PR merge state. | Merge remains blocked by repository ruleset/admin policy or release approval is being inferred from green CI. |
 
+## PR Readiness Snapshot
+
+After review, leave a short status note with:
+
+- local validation command and result;
+- hosted `Portable validation` result and run link;
+- merge state, including repository ruleset/admin policy when present;
+- release-gate posture, including `releaseGateSatisfied: false` unless the
+  documented gate is satisfied;
+- remaining blocker, caveat, or next action.
+
 ## Before Merging A PR
 
 - Confirm the worktree is clean except for the intended changes.
