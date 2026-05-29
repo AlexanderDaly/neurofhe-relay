@@ -30,6 +30,9 @@ import {
   scanRepositoryHygiene,
 } from "../lib/repo-hygiene.mjs";
 import {
+  scanMarkdownLinks,
+} from "../lib/docs-links.mjs";
+import {
   buildReleaseEvidenceIndex,
 } from "../lib/release-evidence.mjs";
 import {
@@ -925,6 +928,55 @@ test("repository hygiene artifact CLI honors deterministic artifact options", as
   assert.equal(artifact.result, "pass");
   assert.equal(artifact.findingsCount, 0);
   assert.equal(artifact.privacyBoundary.secrets, "redacted from artifacts");
+});
+
+test("markdown link scan catches missing local documentation targets", async () => {
+  const root = await mkdtemp(join(tmpdir(), "neurofhe-doc-links-fixture-"));
+  await mkdir(join(root, "docs"), { recursive: true });
+  await writeFile(join(root, "README.md"), [
+    "# Fixture",
+    "",
+    "[ok](docs/ok.md#heading)",
+    "[missing](docs/missing.md)",
+    "[external](https://example.com)",
+    "[anchor](#fixture)",
+    "",
+  ].join("\n"), "utf8");
+  await writeFile(join(root, "docs", "ok.md"), "# Heading\n", "utf8");
+
+  const result = scanMarkdownLinks({ root });
+
+  assert.equal(result.result, "fail");
+  assert.equal(result.scannedFileCount, 2);
+  assert.deepEqual(result.findings, [
+    {
+      category: "broken-markdown-link",
+      path: "README.md",
+      line: 4,
+      target: "docs/missing.md",
+      resolvedPath: "docs/missing.md",
+      message: "local Markdown link target does not exist",
+    },
+  ]);
+});
+
+test("markdown link check CLI exits nonzero for broken local docs links", async () => {
+  const root = await mkdtemp(join(tmpdir(), "neurofhe-doc-links-cli-"));
+  await writeFile(join(root, "README.md"), "[missing](docs/missing.md)\n", "utf8");
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      "prototype/scripts/check-docs.mjs",
+      "--root",
+      root,
+    ],
+    { cwd: process.cwd(), encoding: "utf8" },
+  );
+
+  assert.equal(result.status, 1);
+  assert.match(result.stdout, /README\.md:1:broken-markdown-link:docs\/missing\.md/);
+  assert.equal(result.stderr, "");
 });
 
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {

@@ -33,8 +33,15 @@ npm run ci
 ```
 
 That command runs the Node test suite, parses the core JSON metadata files, and
-scans for placeholder text, common secret tokens, and committed raw dataset
-paths. `npm run ci` currently aliases `npm run validate`.
+checks local Markdown links before scanning for placeholder text, common secret
+tokens, and committed raw dataset paths. `npm run ci` currently aliases
+`npm run validate`.
+
+Run only the documentation link check:
+
+```sh
+npm run check:docs
+```
 
 Run smoke artifact generation without touching committed artifacts:
 

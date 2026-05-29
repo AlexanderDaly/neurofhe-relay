@@ -24,6 +24,8 @@ changing the evidence boundary.
 
 The root `.editorconfig`, `.nvmrc`, and `.node-version` files provide a small
 tooling baseline for consistent local edits and CI-parity Node.js selection.
+`npm run check:docs` verifies local Markdown links and is part of
+`npm run validate`.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

@@ -26,8 +26,9 @@ git diff --check
 ```
 
 `npm run ci` currently aliases `npm run validate`. It runs the Node test suite,
-parses core JSON metadata, and scans the source tree for placeholder tokens,
-common token-shaped secrets, and committed raw-data paths.
+parses core JSON metadata, checks local Markdown links, and scans the source
+tree for placeholder tokens, common token-shaped secrets, and committed raw-data
+paths.
 
 If your shell does not expose Homebrew's npm, use:
 
@@ -68,6 +69,12 @@ Run the repository hygiene scanner directly:
 
 ```sh
 npm run scan:hygiene
+```
+
+Check local Markdown links directly:
+
+```sh
+npm run check:docs
 ```
 
 ## Native And Real-Data Work

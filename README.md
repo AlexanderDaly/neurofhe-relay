@@ -137,12 +137,20 @@ npm run ci
 git diff --check
 ```
 
-`npm run ci` currently aliases `npm run validate`. GitHub Actions runs the same
-portable validation plus smoke artifact generation and upload for synthetic
-benchmarks, padded-sparse privacy modes, and the deterministic N-MNIST-format
-fixture. Native OpenFHE and TFHE-rs checks remain local/release gate commands
-because they require external libraries and heavier host setup.
+`npm run ci` currently aliases `npm run validate`. It runs tests, JSON metadata
+parsing, local Markdown link checking, and the repository hygiene scan. GitHub
+Actions runs the same portable validation plus smoke artifact generation and
+upload for synthetic benchmarks, padded-sparse privacy modes, and the
+deterministic N-MNIST-format fixture. Native OpenFHE and TFHE-rs checks remain
+local/release gate commands because they require external libraries and heavier
+host setup.
 See `DEVELOPMENT.md` and `RELEASE.md` before making or tagging release claims.
+
+To check local Markdown links only:
+
+```sh
+npm run check:docs
+```
 To persist a redacted source-hygiene evidence artifact without reading raw
 datasets into git, run:
 
