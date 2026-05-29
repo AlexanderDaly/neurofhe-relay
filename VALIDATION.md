@@ -107,8 +107,10 @@ Covered behaviours:
 - FAQ coverage requiring question-route guidance and common reader questions to
   preserve `releaseGateSatisfied: false`, `productionClaim: false`, CC0,
   raw-data, CI/ruleset, and evidence caveats.
-- Repository-guide coverage requiring the first map to list current reader,
-  maintainer, GitHub, CI, release-gate, and ruleset-policy surfaces.
+- Repository-guide coverage requiring the first map and change-discipline
+  footer to list current reader, maintainer, GitHub, CI, release-gate,
+  ruleset-policy, blocker-report, and no-merge/no-tag/no-claim-upgrade
+  surfaces.
 - Release-gate matrix coverage requiring every minimum evidence command in
   `RELEASE.md` to map to expected artifacts, caveats, and blocker posture.
 - Release-plan coverage requiring no-tag, release-gate false, repository

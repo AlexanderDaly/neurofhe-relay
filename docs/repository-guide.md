@@ -221,3 +221,5 @@ If hosted `Portable validation` is green but the pull request remains blocked,
 separate CI/check-rollup status from repository ruleset/admin policy. Do not
 merge or tag a release until the documented release gate is satisfied and the
 maintainer has explicitly approved the action.
+In cleanup PRs, do not merge, tag, or strengthen release-facing claims just
+because navigation and hosted checks look healthy.

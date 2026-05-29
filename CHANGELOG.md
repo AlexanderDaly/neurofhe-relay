@@ -184,6 +184,8 @@ Release target: `v0.1.0-research-alpha`.
   stays labeled as historical and does not confuse the current PR #23 state.
 - Tightened repository-guide coverage so the first map routes readers by task
   before showing the detailed package inventory.
+- Tightened repository-guide change discipline so cleanup work keeps
+  blocker-report, no-merge, no-tag, and no-claim-upgrade boundaries visible.
 - Added developer-quickstart coverage so common change types point to focused
   validation before the full local gate.
 - Tightened support-policy coverage so public issue, private security,
