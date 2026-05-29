@@ -62,6 +62,8 @@ Release target: `v0.1.0-research-alpha`.
   reader-facing map instead of becoming a validation transcript.
 - Added repository-tooling coverage so `.gitattributes`, `.gitignore`, and
   `.editorconfig` preserve line-ending and local-ignore boundaries.
+- Expanded local ignore boundaries for env files, logs, coverage output, and
+  accidental dataset/download scratch folders.
 
 ### Changed
 

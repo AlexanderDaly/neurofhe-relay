@@ -12,14 +12,15 @@ deployment, side-channel, identity-protection, or stable-performance claims.
 | Surface | Rule |
 | --- | --- |
 | `.gitattributes` | Keeps source, docs, JSON, YAML, native code, and HTML normalized with LF line endings while marking packaged binary artifacts as binary. |
-| `.gitignore` | Keeps local caches, build outputs, Node dependencies, and native build targets out of git. |
+| `.gitignore` | Keeps local caches, environment files, logs, coverage output, build outputs, Node dependencies, native build targets, and accidental local dataset folders out of git. |
 | `prototype/scripts/placeholder-scan.mjs` | Scans tracked source for placeholder text, token-shaped secrets, and raw-data path mistakes during `npm run validate`. |
 | `benchmark-artifacts/repo-hygiene/latest.json` | Records the latest redacted source-hygiene result without storing secret values or raw dataset rows. |
 
 Raw EEG, neural, sensor, partner, proprietary, private, or user-identifying
-payloads stay outside git. If a future adapter needs proprietary data, trained
-weights, deployment glue, or partner material, keep it outside this public
-reference repository.
+payloads stay outside git. Local dataset folders such as `Downloads/` or
+`N-MNIST/` are ignored as scratch paths, not as evidence destinations. If a
+future adapter needs proprietary data, trained weights, deployment glue, or
+partner material, keep it outside this public reference repository.
 
 ## Allowed Derived Artifacts
 

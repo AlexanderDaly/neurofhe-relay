@@ -1,6 +1,23 @@
 .DS_Store
 .cache/
+
+# Local secrets and machine-specific configuration.
+.env
+.env.*
+!.env.example
+
+# Local logs and coverage output.
+*.log
+coverage/
+.nyc_output/
+
+# Dependencies and generated build output.
 node_modules/
 dist/
 build/
 prototype/tfhe-rs/target/
+
+# Accidental local dataset/download scratch paths. Committed derived evidence
+# belongs under benchmark-artifacts/ with explicit provenance and caveats.
+Downloads/
+N-MNIST/
