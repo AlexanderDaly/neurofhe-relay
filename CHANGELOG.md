@@ -28,6 +28,8 @@ Release target: `v0.1.0-research-alpha`.
   raw-data handling, hosted CI, release posture, and CC0 use.
 - Added FAQ question routes for production, medical/clinical, evidence,
   raw-data, and green-CI/blocked-merge questions.
+- Added reviewer quickstart review routes for orientation, evidence, local
+  validation, sensitive reports, and green-CI/blocked-merge review.
 - Added `docs/release-gate-matrix.md` for release command, artifact, caveat,
   and blocker review.
 - Added `docs/operations-runbook.md` for routine PR checks, hosted check-rollup

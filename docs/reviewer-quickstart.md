@@ -7,6 +7,16 @@ This guide is not release approval, production cryptography evidence, medical
 or clinical validation, deployment evidence, a privacy proof, or a security
 certification.
 
+## Review Routes
+
+| Review Need | Start With | Then Confirm |
+| --- | --- | --- |
+| First-pass repository orientation | `README.md`, `CHANGELOG.md`, and `docs/status-roadmap.md` | Check `VALIDATION.md` for the current portable gate and `docs/faq.md` for claim-boundary questions. |
+| Evidence and release posture | `docs/evidence-guide.md`, `docs/evidence-dashboard.md`, and `docs/release-gate-matrix.md` | Confirm `docs/claim-evidence-ledger.md`, `benchmark-artifacts/release-evidence/latest.json`, and `benchmark-artifacts/native-evidence/latest.json` before treating an evidence gap as closed. |
+| Local validation or reproducibility | `npm run validate` and `git diff --check` | Record any failed command with the exact command, error, and smallest next step in the relevant blocker artifact or validation note. |
+| Sensitive security, raw-data, or private-payload concern | `SECURITY.md` | Keep raw data and private payloads out of public GitHub issues and route public support through `SUPPORT.md` or `.github/ISSUE_TEMPLATE/`. |
+| Green CI but blocked merge | PR #23 hosted `Portable validation` and `docs/operations-runbook.md` | Keep hosted check-rollup, GitHub Actions billing/account, and repository ruleset/admin policy blockers separate from local code or test failures. |
+
 ## First 15 Minutes
 
 1. Read `README.md` for the thesis and public framing.

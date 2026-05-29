@@ -1973,6 +1973,13 @@ test("changelog records unreleased cleanup stack and release caveats", () => {
 test("reviewer quickstart maps due diligence entrypoints and caveats", () => {
   const reviewerGuide = readFileSync("docs/reviewer-quickstart.md", "utf8");
   const requiredEntries = [
+    "## Review Routes",
+    "| Review Need | Start With | Then Confirm |",
+    "First-pass repository orientation",
+    "Evidence and release posture",
+    "Local validation or reproducibility",
+    "Sensitive security, raw-data, or private-payload concern",
+    "Green CI but blocked merge",
     "README.md",
     "CHANGELOG.md",
     "VALIDATION.md",
