@@ -5,6 +5,20 @@ lanes, public datasets kept outside git, and hosted CI. This matrix gives
 contributors and reviewers a compact setup map without turning local evidence
 into deployment or production claims.
 
+## Dependency Routes
+
+Use this table before changing setup docs, tool versions, native-lane notes, or
+dataset commands. It keeps each dependency question tied to the evidence surface
+that can answer it.
+
+| Need | Start With | Do Not Treat As |
+| --- | --- | --- |
+| Portable local validation | `.node-version`, `.nvmrc`, `package.json`, and `VALIDATION.md`. | Native OpenFHE/TFHE-rs availability, release approval, or production readiness. |
+| Hosted CI check-rollup | `.github/workflows/ci.yml`, `docs/operations-runbook.md`, and PR check evidence. | Repository ruleset/admin policy approval or release-gate satisfaction. |
+| Native OpenFHE or TFHE-rs reproduction | `benchmark-artifacts/native-evidence/latest.json`, `prototype/openfhe/`, `prototype/openfhe-ckks/`, and `prototype/tfhe-rs/`. | Stable performance, side-channel assurance, or complete ciphertext/RSS coverage. |
+| Public dataset or real-data baseline refresh | `docs/data-handling.md` and committed derived plaintext baseline artifacts. | Permission to commit raw datasets, raw signal rows, or private payloads. |
+| Release dependency review | `RELEASE.md`, `docs/release-gate-matrix.md`, and `docs/status-roadmap.md`. | A release tag, merge approval, or `releaseGateSatisfied: true`. |
+
 ## Portable Repository Checks
 
 | Surface | Role | Required For |

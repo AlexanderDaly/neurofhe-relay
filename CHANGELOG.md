@@ -43,6 +43,8 @@ Release target: `v0.1.0-research-alpha`.
   exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Added a guarded, concise root README quick-command table that defers detailed
   native and release commands to `docs/command-reference.md` and `RELEASE.md`.
+- Added dependency-route guidance for portable validation, hosted CI, native
+  reproduction, dataset refreshes, and release dependency review.
 - Added `SUPPORT.md` and a support-routing guard for public issues, sensitive
   reports, release blockers, and cleanup requests.
 - Added code-of-conduct report routing so public collaboration, sensitive

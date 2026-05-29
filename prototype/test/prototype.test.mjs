@@ -1625,6 +1625,13 @@ test("troubleshooting guide routes common repo blockers without weakening caveat
 test("dependency matrix lists portable and native setup surfaces", () => {
   const dependencyMatrix = readFileSync("docs/dependency-matrix.md", "utf8");
   const requiredSurfaces = [
+    "## Dependency Routes",
+    "| Need | Start With | Do Not Treat As |",
+    "Portable local validation",
+    "Hosted CI check-rollup",
+    "Native OpenFHE or TFHE-rs reproduction",
+    "Public dataset or real-data baseline refresh",
+    "Release dependency review",
     ".node-version",
     ".nvmrc",
     "package.json",
