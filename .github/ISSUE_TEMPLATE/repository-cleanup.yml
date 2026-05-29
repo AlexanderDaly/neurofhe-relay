@@ -15,7 +15,7 @@ body:
         - development or validation docs
         - release evidence documentation
         - benchmark artifact documentation
-        - prototype documentation
+        - prototype/ scaffold documentation
         - patent or briefing organization
         - GitHub templates or contributor workflow
         - file layout or package manifest

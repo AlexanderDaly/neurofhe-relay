@@ -133,6 +133,9 @@ Release target: `v0.1.0-research-alpha`.
 - Added issue-template routing to troubleshooting, data-handling, support, and
   security surfaces so reports avoid sensitive payloads and missing blocker
   details.
+- Tightened GitHub issue and PR templates plus contribution routing so public
+  report surfaces use scaffold wording instead of broader prototype/runtime
+  wording.
 - Added documentation-index concision coverage so `docs/README.md` stays a
   reader-facing map instead of becoming a validation transcript.
 - Added documentation-index repository-baseline routing for CC0/license files,

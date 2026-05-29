@@ -40,8 +40,8 @@ briefing note and you need the controlling context.
   hygiene, native evidence, privacy-mode, reconstruction-risk, real-data
   baseline, blocker, and `productionClaim: false` posture in one JSON surface.
   It is navigation evidence, not release approval.
-- **native lane** - a real-library implementation path outside the toy
-  JavaScript prototype, such as OpenFHE BFVrns, OpenFHE CKKS, or TFHE-rs. Native
+- **native lane** - a real-library implementation path outside the portable
+  JavaScript scaffold, such as OpenFHE BFVrns, OpenFHE CKKS, or TFHE-rs. Native
   lanes need dependency-specific setup and stronger caveats than portable Node
   checks.
 - **blocker artifact** - a structured JSON artifact that records an exact

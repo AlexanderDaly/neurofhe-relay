@@ -1,5 +1,5 @@
 name: Reproducible bug or validation failure
-description: Report a failing command, broken workflow, or unexpected prototype behavior with enough evidence to reproduce it.
+description: Report a failing command, broken workflow, or unexpected scaffold behavior with enough evidence to reproduce it.
 title: "[bug]: "
 body:
   - type: markdown
@@ -12,7 +12,7 @@ body:
       label: Area
       options:
         - portable validation or CI
-        - prototype runtime
+        - portable scaffold runtime
         - benchmark or artifact generation
         - native OpenFHE lane
         - native TFHE-rs lane

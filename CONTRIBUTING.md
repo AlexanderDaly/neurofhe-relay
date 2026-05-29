@@ -13,7 +13,7 @@ document and keeps the relevant caveat visible.
 | Change Type | Start With | Keep Visible |
 | --- | --- | --- |
 | Docs, packaging, or navigation cleanup | `docs/developer-quickstart.md`, then `docs/command-reference.md` | Reader route, exact validation command, and `productionClaim: false` caveats. |
-| Prototype or artifact behavior | `docs/command-reference.md`, then `benchmark-artifacts/README.md` | Artifact command, provenance, `privacyBoundary`, and `cryptoInventory`. |
+| Scaffold or artifact behavior | `docs/command-reference.md`, then `benchmark-artifacts/README.md` | Artifact command, provenance, `privacyBoundary`, and `cryptoInventory`. |
 | Native FHE lane work | `docs/dependency-matrix.md`, then `benchmark-artifacts/native-evidence/latest.json` | Local dependency state, exact command, error, and smallest next step when blocked. |
 | Real-data baseline or dataset-adjacent work | `docs/data-handling.md`, then `docs/evidence-dashboard.md` | Raw datasets stay out of git; commit only derived artifacts or blocker reports. |
 | Release-readiness or hosted-check work | `docs/release-gate-matrix.md`, then `docs/troubleshooting.md` | `releaseGateSatisfied: false`, repository ruleset/admin policy, and CI/check-rollup separation. |
@@ -45,7 +45,7 @@ Use the GitHub issue forms to keep reports reproducible. See
 pull-request, security-reporting, support-routing, and hosted CI surfaces.
 
 - Reproducible bug or validation failure: failing command, CI job, script,
-  prototype behavior, or artifact generation issue.
+  scaffold behavior, or artifact generation issue.
 - Validation or evidence gap: missing or incomplete research-alpha evidence
   where the current caveat must stay visible.
 - Documentation or repository cleanup: readability, navigation, packaging, or

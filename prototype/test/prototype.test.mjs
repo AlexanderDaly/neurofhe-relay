@@ -1726,7 +1726,7 @@ test("pull request template preserves validation and release caveats", () => {
     "## Change Notes",
     "| Change Type | Note In This PR |",
     "Docs or repository navigation",
-    "Prototype, benchmark, or gateway behavior",
+    "Scaffold, benchmark, or gateway behavior",
     "Native FHE lane",
     "Real-data or dataset-adjacent artifact",
     "Release-readiness or repository-policy posture",
@@ -1751,6 +1751,7 @@ test("pull request template preserves validation and release caveats", () => {
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(pullRequestTemplate.includes("Prototype, benchmark, or gateway behavior"), false);
 });
 
 test("issue templates preserve evidence boundaries and release routing", () => {
@@ -1776,12 +1777,17 @@ test("issue templates preserve evidence boundaries and release routing", () => {
     "private payloads",
     "exact command",
     "smallest next step",
+    "unexpected scaffold behavior",
+    "portable scaffold runtime",
+    "prototype/ scaffold documentation",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !combined.includes(entry),
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(combined.includes("unexpected prototype behavior"), false);
+  assert.equal(combined.includes("prototype runtime"), false);
 });
 
 test("policy boundary map lists every policy and claim-boundary root file", () => {
@@ -1911,7 +1917,7 @@ test("contributing guide routes evidence and release-boundary work", () => {
     "## Contribution Routes",
     "| Change Type | Start With | Keep Visible |",
     "Docs, packaging, or navigation cleanup",
-    "Prototype or artifact behavior",
+    "Scaffold or artifact behavior",
     "Native FHE lane work",
     "Real-data baseline or dataset-adjacent work",
     "Release-readiness or hosted-check work",
@@ -1936,6 +1942,8 @@ test("contributing guide routes evidence and release-boundary work", () => {
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(contributing.includes("Prototype or artifact behavior"), false);
+  assert.equal(contributing.includes("prototype behavior"), false);
 });
 
 test("status roadmap lists every release-readiness evidence surface", () => {

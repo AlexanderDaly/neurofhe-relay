@@ -26,7 +26,7 @@ Use `SUPPORT.md` first when deciding whether a report belongs in a public issue,
 private security report, pull request, validation note, or release blocker.
 
 - [`.github/ISSUE_TEMPLATE/bug-report.yml`](../.github/ISSUE_TEMPLATE/bug-report.yml)
-  - reproducible bug, failing command, CI job, script, prototype behavior, or
+  - reproducible bug, failing command, CI job, script, scaffold behavior, or
     artifact-generation report.
 - [`.github/ISSUE_TEMPLATE/validation-gap.yml`](../.github/ISSUE_TEMPLATE/validation-gap.yml)
   - missing or incomplete evidence report where the current caveat must remain
