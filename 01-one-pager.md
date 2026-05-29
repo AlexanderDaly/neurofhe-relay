@@ -85,16 +85,16 @@ The moat is not one encryption primitive. It is the workload compiler:
 - Keep ciphertext packing, sparsity, and activation approximation under one contract.
 - Produce auditable privacy/performance benchmarks.
 
-## 90-Day Goal
+## 90-Day Evidence Target
 
-Produce a credible demo and technical memo:
+Produce a credible research-alpha evidence package:
 
-- Tiny SNN baseline.
-- HE inference prototype.
-- Benchmark table.
+- Tiny plaintext event/SNN baseline.
+- Sparse encrypted-score contract with native HE adapter lanes.
+- Caveated benchmark table.
 - Post-quantum crypto inventory.
 - Octra feasibility note.
-- Investor/research deck with a live local demo.
+- Reviewer-facing briefing deck and local CLI demo evidence.
 
 ## Ask
 

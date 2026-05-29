@@ -184,7 +184,7 @@ The benchmark also emits `neurofhe.spatialClusterReadiness.v1`: SNN handoff is
 encrypted nonlinear scoring is `research-only` until real HE parameter sets and
 operation costs are measured.
 
-Non-goals for the first prototype:
+Non-goals for the current research-alpha contract:
 
 - Large transformer inference.
 - Full encrypted training.
@@ -193,7 +193,7 @@ Non-goals for the first prototype:
 
 ### 6. Octra Adapter
 
-Octra should enter after local feasibility is proven.
+Octra should enter after local feasibility is measured and bounded.
 
 Possible adapter responsibilities:
 
@@ -225,7 +225,7 @@ Every run should emit:
   "cryptoInventory": {
     "keyEstablishment": ["ML-KEM-768"],
     "signatures": ["ML-DSA-65"],
-    "encryptedComputation": ["bfv-or-ckks-prototype"],
+    "encryptedComputation": ["research-alpha BFV/BGV/CKKS adapter evidence"],
     "hybridMode": true,
     "productionClaim": false
   },

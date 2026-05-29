@@ -1093,9 +1093,21 @@ test("briefing sequence guide lists every numbered root brief", () => {
     onePager.includes("The current CLI research-alpha scaffold is deliberately small"),
     true,
   );
+  assert.equal(onePager.includes("Produce a credible research-alpha evidence package:"), true);
+  assert.equal(
+    onePager.includes("Sparse encrypted-score contract with native HE adapter lanes."),
+    true,
+  );
+  assert.equal(
+    onePager.includes("Reviewer-facing briefing deck and local CLI demo evidence."),
+    true,
+  );
   assert.equal(onePager.includes("browser/CLI demo"), false);
   assert.equal(onePager.includes("CKKS/BFV/TFHE library prototype"), false);
   assert.equal(onePager.includes("proves whether sparse spiking inference"), false);
+  assert.equal(onePager.includes("Produce a credible demo and technical memo:"), false);
+  assert.equal(onePager.includes("HE inference prototype."), false);
+  assert.equal(onePager.includes("Investor/research deck"), false);
   assert.equal(
     pitchDeck.includes("The current demo path is deliberately small"),
     true,
@@ -1110,8 +1122,23 @@ test("briefing sequence guide lists every numbered root brief", () => {
     technicalArchitecture.includes("The current research-alpha package should claim only"),
     true,
   );
+  assert.equal(
+    technicalArchitecture.includes("Non-goals for the current research-alpha contract:"),
+    true,
+  );
+  assert.equal(
+    technicalArchitecture.includes("Octra should enter after local feasibility is measured and bounded."),
+    true,
+  );
+  assert.equal(
+    technicalArchitecture.includes("research-alpha BFV/BGV/CKKS adapter evidence"),
+    true,
+  );
   assert.equal(technicalArchitecture.includes("The current prototype uses"), false);
   assert.equal(technicalArchitecture.includes("Prototype is research-grade"), false);
+  assert.equal(technicalArchitecture.includes("Non-goals for the first prototype"), false);
+  assert.equal(technicalArchitecture.includes("local feasibility is proven"), false);
+  assert.equal(technicalArchitecture.includes("bfv-or-ckks-prototype"), false);
   assert.equal(demoRoadmap.includes("Goal: validate that the concept is coherent enough to demo."), true);
   assert.equal(demoRoadmap.includes("Current research-alpha foothold:"), true);
   assert.equal(demoRoadmap.includes("Goal: validate that the project can turn rights-clean real data"), true);

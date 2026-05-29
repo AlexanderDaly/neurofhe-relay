@@ -227,10 +227,15 @@ Release target: `v0.1.0-research-alpha`.
   encrypted-thoughts surfaces use research-alpha package/contract framing.
 - Tightened one-page briefing demo wording so the front-door public story names
   the current CLI scaffold, evidence artifacts, native lanes, and blocker path.
+- Tightened one-page 90-day wording so the public brief asks for a
+  research-alpha evidence package instead of pitch-style prototype and
+  investor-deck language.
 - Tightened pitch-deck demo wording so the external narrative matches the
   current CLI/evidence scaffold and treats Octra workload fit as testable.
 - Tightened technical-architecture security-boundary wording so it uses
   research-alpha package framing instead of research-grade prototype language.
+- Tightened technical-architecture kernel, crypto-inventory, and Octra wording
+  so it uses current research-alpha contract and measured-feasibility framing.
 - Tightened demo-roadmap goal and foothold wording so validation/evidence
   language replaces proof/prototype phrasing.
 - Tightened risk-register mitigation wording so Octra, security-language, and
