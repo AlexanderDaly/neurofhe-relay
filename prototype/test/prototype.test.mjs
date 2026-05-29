@@ -1114,6 +1114,25 @@ test("contributor workflow map lists every tracked GitHub workflow surface", () 
   assert.deepEqual(missingFiles, []);
 });
 
+test("policy boundary map lists every policy and claim-boundary root file", () => {
+  const policyMap = readFileSync("docs/policy-boundary.md", "utf8");
+  const policyFiles = [
+    "CONTRIBUTING.md",
+    "DEVELOPMENT.md",
+    "LICENSE",
+    "PUBLIC_DOMAIN_NOTICE.md",
+    "README.md",
+    "RELEASE.md",
+    "SECURITY.md",
+    "VALIDATION.md",
+  ];
+  const missingFiles = policyFiles.filter((filePath) =>
+    !policyMap.includes(filePath),
+  );
+
+  assert.deepEqual(missingFiles, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

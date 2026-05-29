@@ -18,6 +18,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `docs/briefing-sequence.md` - reading order for the numbered public briefs.
 - `docs/repository-guide.md` - orientation map for the root briefs, prototype
   code, evidence artifacts, patent materials, and release gate.
+- `docs/policy-boundary.md` - license, security, contribution, validation, and
+  release boundary map.
 - `docs/prototype-map.md` - code navigation map for prototype surfaces.
 - `docs/patent-package-map.md` - navigation map for patent and briefing sources.
 - `docs/presentation-outputs.md` - map of generated presentation exports kept

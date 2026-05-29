@@ -14,6 +14,8 @@ clinical validation, deployment evidence, or a security certification.
 - `docs/README.md` - documentation index for reader and contributor paths.
 - `docs/briefing-sequence.md` - reading order for the root `01-` through `12-`
   public briefing files.
+- `docs/policy-boundary.md` - map of the license, security, contribution,
+  validation, and release files that define the claim boundary.
 - `docs/prototype-map.md` - code navigation map for prototype entrypoints,
   library modules, native lanes, and support notes.
 - `docs/patent-package-map.md` - navigation map for ENER patent, briefing, and
@@ -62,6 +64,9 @@ The numbered Markdown files are the public briefing sequence:
 is a self-contained browser briefing deck. `docs/presentation-outputs.md` maps
 generated presentation exports under `outputs/`. `project-brief.json` is the
 agent-readable metadata surface.
+
+Use `docs/policy-boundary.md` before changing license, security, contribution,
+validation, release, or public-claim language.
 
 ## Prototype Code
 

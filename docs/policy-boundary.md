@@ -1,0 +1,55 @@
+# Policy Boundary Map
+
+NeuroFHE Relay is a CC0 research-alpha package, not a production cryptography,
+medical, clinical, surveillance, deployment, side-channel, or security-certified
+system. Use this map to find the repository files that define that boundary
+before changing release language, evidence artifacts, contribution guidance, or
+public framing.
+
+This page is navigation only. It is not legal advice, security review, medical
+review, release approval, or benchmark evidence.
+
+## Root Boundary Files
+
+- `LICENSE` - CC0 1.0 Universal public-domain dedication.
+- `PUBLIC_DOMAIN_NOTICE.md` - plain-English public-domain and free-use notice.
+- `README.md` - public thesis, recommended phrasing, bio-digital event
+  intelligence boundary, and explicit caveats.
+- `SECURITY.md` - research-prototype security scope and responsible reporting
+  guidance.
+- `CONTRIBUTING.md` - evidence-first contribution rules, including
+  `privacyBoundary`, `cryptoInventory`, provenance, and `productionClaim: false`
+  expectations.
+- `DEVELOPMENT.md` - local setup, portable validation, native dependency
+  boundaries, and artifact policy.
+- `RELEASE.md` - research-alpha release gate and no-tag checklist.
+- `VALIDATION.md` - current and historical validation commands, outputs, and
+  caveats.
+
+## Claim Boundary
+
+- Keep the CC0/public-domain framing intact unless the whole release posture is
+  intentionally changed and reviewed.
+- Keep bio-digital event intelligence framed as privacy-preserving event
+  representation and encrypted scoring, not diagnosis, treatment,
+  mind-reading, surveillance, coercive control, or external command authority.
+- Preserve `productionClaim: false` wherever artifact metadata carries it.
+- Preserve `privacyBoundary`, `cryptoInventory`, provenance, caveats, and rerun
+  commands for evidence artifacts that expose those fields.
+- Treat the local relay gateway as the only trusted boundary allowed to inspect
+  raw signals; exported records should remain validated, transformed,
+  permissioned event representations.
+- Separate hosted CI/account/ruleset blockers from local code failures and
+  benchmark blockers.
+- If native dependencies, datasets, or release gates cannot run, record the
+  exact command, error, and smallest next step in a blocker artifact or
+  validation note.
+
+## Release Boundary
+
+`RELEASE.md` remains the controlling release checklist. A green portable CI run,
+passing local validation, and a caveated release-evidence index are necessary
+review inputs, but they do not by themselves authorize a release tag.
+
+Do not merge or tag a release unless the documented gates are satisfied and the
+user explicitly approves that final action.
