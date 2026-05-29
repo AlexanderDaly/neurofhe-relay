@@ -33,14 +33,14 @@ NeuroFHE Relay provides:
 
 ## First Demo
 
-A browser/CLI demo classifies a small event-style dataset:
+The current CLI research-alpha scaffold is deliberately small:
 
-1. Generate or ingest N-MNIST-like spike/event frames.
-2. Run a tiny spiking model locally in plaintext.
-3. Encrypt the compact spike window.
-4. Run encrypted inference through CKKS/BFV/TFHE library prototype.
-5. Decrypt only the final class score.
-6. Show latency, accuracy, ciphertext size, and privacy boundary.
+1. Run the toy sparse encrypted scorer and local relay gateway demos.
+2. Generate or ingest N-MNIST-like spike/event frames for plaintext baselines.
+3. Publish derived baseline, privacy-mode, reconstruction-risk, and release-evidence artifacts.
+4. Compare OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs native lanes where local dependencies are available.
+5. Record blockers with exact commands, errors, and smallest next steps when dependencies or input adapters are missing.
+6. Show latency, accuracy, ciphertext size, operation counts, and the privacy boundary with explicit caveats.
 
 Octra is introduced as an integration path, not as a dependency for the first bench.
 
@@ -98,4 +98,4 @@ Produce a credible demo and technical memo:
 
 ## Ask
 
-Permission to pursue a focused 90-day prototype and evidence package, with the first milestone being a local benchmark that proves whether sparse spiking inference materially reduces encrypted inference cost.
+Permission to pursue a focused 90-day prototype and evidence package, with the first milestone being local benchmarks that test whether sparse event inference can materially reduce encrypted inference cost.
