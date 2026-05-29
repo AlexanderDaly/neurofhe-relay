@@ -74,7 +74,7 @@ Covered behaviours:
   implementation-boundary review.
 - Documentation and repository-readability guards for Markdown links, command
   reference script and command-route coverage, documentation index coverage, documentation-index
-  role routing and concision, numbered briefing sequence and briefing-route coverage, prototype
+  role routing, repository-baseline routing, and concision, numbered briefing sequence and briefing-route coverage, prototype
   module, top-level entrypoint, prototype route table, root README current-status snapshot, and native source map coverage, patent package
   review-route and source coverage,
   package manifest top-level, owner-route, inventory-review-route, and

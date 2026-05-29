@@ -109,6 +109,9 @@ Release target: `v0.1.0-research-alpha`.
   details.
 - Added documentation-index concision coverage so `docs/README.md` stays a
   reader-facing map instead of becoming a validation transcript.
+- Added documentation-index repository-baseline routing for CC0/license files,
+  package manifest, GitHub workflow surfaces, local tooling pins, changelog,
+  and validation posture.
 - Tightened documentation-index coverage so `docs/README.md` starts with
   role-based routes for reviewers, contributors, evidence reviewers, and
   release or maintainer review.

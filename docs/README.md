@@ -14,6 +14,19 @@ changing the evidence boundary.
 | Evidence reviewer | `docs/evidence-dashboard.md` | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, `benchmark-artifacts/README.md` |
 | Release or maintainer review | `RELEASE.md` | `docs/release-gate-matrix.md`, `docs/maintainer-checklist.md`, `docs/operations-runbook.md` |
 
+## Repository Baseline
+
+Use this short map when checking whether the package looks like a maintained
+public repository before opening the deeper inventories.
+
+| Surface | Purpose |
+| --- | --- |
+| `LICENSE` and `PUBLIC_DOMAIN_NOTICE.md` | CC0/public-domain framing and reuse boundary. |
+| `PACKAGE_MANIFEST.md` | Exhaustive packaged-review file inventory. |
+| `.github/` | Issue templates, PR template, CODEOWNERS, Dependabot, and hosted CI. |
+| `.node-version`, `.nvmrc`, and `.editorconfig` | Local edit and Node.js version consistency. |
+| `CHANGELOG.md` and `VALIDATION.md` | Current review history and recorded validation posture. |
+
 ## Reader Paths
 
 - `briefing-sequence.md` - reading order for the root `01-` through `12-`
