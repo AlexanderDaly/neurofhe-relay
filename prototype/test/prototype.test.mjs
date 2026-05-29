@@ -1028,6 +1028,19 @@ test("prototype map lists every library module", () => {
   assert.deepEqual(missingModules, []);
 });
 
+test("prototype map lists every top-level prototype entrypoint and note", () => {
+  const prototypeMap = readFileSync("docs/prototype-map.md", "utf8");
+  const topLevelFiles = readdirSync("prototype")
+    .filter((entry) => /\.(mjs|md)$/.test(entry))
+    .map((entry) => `prototype/${entry}`)
+    .sort();
+  const missingFiles = topLevelFiles.filter((filePath) =>
+    !prototypeMap.includes(filePath),
+  );
+
+  assert.deepEqual(missingFiles, []);
+});
+
 test("patent package map lists every patent markdown and mermaid source", () => {
   const patentMap = readFileSync("docs/patent-package-map.md", "utf8");
   const patentSources = listFilesRecursive("patent")

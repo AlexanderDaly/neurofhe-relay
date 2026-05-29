@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 91
-pass 91
+tests 92
+pass 92
 fail 0
 json ok
 markdown link scan ok (57 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 91
-pass 91
+tests 92
+pass 92
 fail 0
 ```
 
@@ -71,10 +71,11 @@ Covered behaviours:
 - UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
 - Documentation and repository-readability guards for Markdown links, command
   reference script coverage, documentation index coverage, numbered briefing
-  sequence coverage, prototype module map coverage, patent package source
-  coverage, package manifest top-level coverage, generated presentation output
-  map coverage, benchmark artifact directory coverage, contributor workflow
-  surface coverage, and GitHub Actions trigger and action-major checks.
+  sequence coverage, prototype module and top-level entrypoint map coverage,
+  patent package source coverage, package manifest top-level coverage,
+  generated presentation output map coverage, benchmark artifact directory
+  coverage, contributor workflow surface coverage, and GitHub Actions trigger
+  and action-major checks.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene
   status, native measurement gaps, metadata-leakage caveats, reconstruction-risk
   caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker

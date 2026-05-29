@@ -23,6 +23,12 @@ evidence.
   plaintext fixture and real-data baseline entrypoint.
 - [`prototype/openfhe-realdata-contract.mjs`](../prototype/openfhe-realdata-contract.mjs)
   - EEG-derived OpenFHE input-contract publisher.
+- [`prototype/openfhe-benchmark.mjs`](../prototype/openfhe-benchmark.mjs) -
+  OpenFHE BFVrns adapter and native-run CLI wrapper.
+- [`prototype/openfhe-ckks-benchmark.mjs`](../prototype/openfhe-ckks-benchmark.mjs)
+  - OpenFHE CKKS adapter and native-run CLI wrapper.
+- [`prototype/tfhe-rs-benchmark.mjs`](../prototype/tfhe-rs-benchmark.mjs) -
+  TFHE-rs adapter and native-run CLI wrapper.
 - [`prototype/reconstruction-risk.mjs`](../prototype/reconstruction-risk.mjs) -
   synthetic gateway reconstruction-risk probe entrypoint.
 - [`prototype/native-evidence.mjs`](../prototype/native-evidence.mjs) - native
@@ -79,6 +85,6 @@ evidence.
 - [`prototype/LINEAR_ALGEBRA_NEXT.md`](../prototype/LINEAR_ALGEBRA_NEXT.md) -
   next matrix/vector cleanup handoff.
 
-Validation checks that every `prototype/lib/*.mjs` module is represented on
-this page.
-
+Validation checks that every `prototype/lib/*.mjs` module and every top-level
+`prototype/*.mjs` or `prototype/*.md` entrypoint/note is represented on this
+page.
