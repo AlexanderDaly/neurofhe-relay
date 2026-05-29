@@ -60,10 +60,12 @@ Release target: `v0.1.0-research-alpha`.
   boundaries, release-gate posture, raw-data exclusions, and CI/ruleset routing.
 - Added documentation-index concision coverage so `docs/README.md` stays a
   reader-facing map instead of becoming a validation transcript.
+- Added repository-tooling coverage so `.gitattributes`, `.gitignore`, and
+  `.editorconfig` preserve line-ending and local-ignore boundaries.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 122 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 123 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

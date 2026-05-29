@@ -1408,6 +1408,7 @@ test("dependency matrix lists portable and native setup surfaces", () => {
 test("data handling guide lists dataset and artifact boundary surfaces", () => {
   const dataGuide = readFileSync("docs/data-handling.md", "utf8");
   const requiredSurfaces = [
+    ".gitattributes",
     ".gitignore",
     "prototype/scripts/placeholder-scan.mjs",
     "benchmark-artifacts/repo-hygiene/latest.json",
@@ -1422,6 +1423,31 @@ test("data handling guide lists dataset and artifact boundary surfaces", () => {
   );
 
   assert.deepEqual(missingSurfaces, []);
+});
+
+test("repository tooling preserves normalization and ignore boundaries", () => {
+  const gitattributes = readFileSync(".gitattributes", "utf8");
+  const gitignore = readFileSync(".gitignore", "utf8");
+  const editorconfig = readFileSync(".editorconfig", "utf8");
+  const requiredEntries = [
+    "* text=auto eol=lf",
+    "*.md text eol=lf",
+    "*.mjs text eol=lf",
+    "*.json text eol=lf",
+    "*.yml text eol=lf",
+    "*.pdf binary",
+    "*.docx binary",
+    "node_modules/",
+    "prototype/tfhe-rs/target/",
+    "end_of_line = lf",
+    "insert_final_newline = true",
+  ];
+  const combined = [gitattributes, gitignore, editorconfig].join("\n");
+  const missingEntries = requiredEntries.filter((entry) =>
+    !combined.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
 });
 
 test("claim evidence ledger maps every weak-claim area to evidence and caveats", () => {

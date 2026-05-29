@@ -11,6 +11,7 @@ deployment, side-channel, identity-protection, or stable-performance claims.
 
 | Surface | Rule |
 | --- | --- |
+| `.gitattributes` | Keeps source, docs, JSON, YAML, native code, and HTML normalized with LF line endings while marking packaged binary artifacts as binary. |
 | `.gitignore` | Keeps local caches, build outputs, Node dependencies, and native build targets out of git. |
 | `prototype/scripts/placeholder-scan.mjs` | Scans tracked source for placeholder text, token-shaped secrets, and raw-data path mistakes during `npm run validate`. |
 | `benchmark-artifacts/repo-hygiene/latest.json` | Records the latest redacted source-hygiene result without storing secret values or raw dataset rows. |
