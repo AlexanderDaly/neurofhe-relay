@@ -175,8 +175,8 @@ Current committed evidence:
 - `benchmark-artifacts/release-evidence/latest.json`
 - schema: `neurofhe.releaseEvidenceIndex.v1`
 - release gate: not satisfied.
-- hosted portable CI: blocked until a release-validation PR has green hosted
-  CI.
+- hosted portable CI: blocked; the open PR stack #17 through #22 has empty
+  hosted check rollups while the workflow remains `workflow_dispatch` only.
 - native measurement coverage: incomplete.
 - metadata leakage: caveated taxonomy proxy only.
 - reconstruction risk: synthetic probe only; public-position linkage remains a

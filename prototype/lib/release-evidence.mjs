@@ -97,7 +97,7 @@ export function buildReleaseEvidenceIndex(options = {}) {
     sourceArtifacts,
     nextReleaseStep:
       hostedPortableCi.status === "blocked"
-        ? "Open a release-validation PR and obtain green portable hosted CI before tagging."
+        ? hostedPortableCi.smallestNextStep
         : "Rerun RELEASE.md commands on the release machine, refresh artifacts or blocker reports, and update VALIDATION.md.",
     caveats: [
       "This index is a dashboard artifact, not benchmark evidence by itself.",
@@ -168,6 +168,9 @@ function summarizeHostedPortableCi(artifact) {
       status: "pass",
       reason: "CI blocker artifact reports the release gate satisfied.",
       artifactId: artifact.artifactId,
+      openPullRequestCount: artifact.observedRepositoryState?.openPullRequests?.length ?? null,
+      workflowTrigger: artifact.workflowState?.currentTrigger ?? null,
+      isCodeFailure: artifact.blocker?.isCodeFailure ?? null,
       smallestNextStep: "Continue through RELEASE.md.",
     };
   }
@@ -179,6 +182,9 @@ function summarizeHostedPortableCi(artifact) {
       artifact.blocker?.category ??
       "Hosted portable CI is not green.",
     artifactId: artifact.artifactId,
+    openPullRequestCount: artifact.observedRepositoryState?.openPullRequests?.length ?? null,
+    workflowTrigger: artifact.workflowState?.currentTrigger ?? null,
+    isCodeFailure: artifact.blocker?.isCodeFailure ?? null,
     smallestNextStep:
       artifact.smallestNextStep ??
       artifact.nextStep ??

@@ -933,9 +933,30 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
       {
         schema: "neurofhe.ciBlocker.v1",
         artifactId: "ci-blocker-test",
+        observedRepositoryState: {
+          openPullRequests: [
+            {
+              number: 17,
+              title: "Define discreet spike sorting proof gate",
+              mergeStateStatus: "BLOCKED",
+            },
+            {
+              number: 22,
+              title: "Add real N-MNIST release evidence",
+              mergeStateStatus: "CLEAN",
+            },
+          ],
+        },
+        workflowState: {
+          currentTrigger: "workflow_dispatch",
+          automaticPullRequestTriggersEnabled: false,
+        },
+        blocker: {
+          isCodeFailure: false,
+        },
         reason: "workflow remains manual-only",
         releaseGateSatisfied: false,
-        smallestNextStep: "Open a release-validation PR and obtain green hosted CI.",
+        smallestNextStep: "Run or manually dispatch portable CI on the release-validation PR.",
         productionClaim: false,
       },
     ],
@@ -1085,6 +1106,9 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
   assert.equal(index.releaseGateSatisfied, false);
   assert.equal(index.productionClaim, false);
   assert.equal(index.gateChecks.hostedPortableCi.status, "blocked");
+  assert.equal(index.gateChecks.hostedPortableCi.openPullRequestCount, 2);
+  assert.equal(index.gateChecks.hostedPortableCi.workflowTrigger, "workflow_dispatch");
+  assert.equal(index.gateChecks.hostedPortableCi.isCodeFailure, false);
   assert.equal(index.gateChecks.repositoryHygiene.status, "pass");
   assert.equal(index.gateChecks.nativeMeasurementCoverage.status, "incomplete");
   assert.equal(index.gateChecks.nativeMeasurementCoverage.measurementGapCount, 5);
@@ -1108,7 +1132,7 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
     ],
   );
   assert.equal(index.sourceArtifacts.every((artifact) => artifact.productionClaim === false), true);
-  assert.match(index.nextReleaseStep, /release-validation PR/i);
+  assert.match(index.nextReleaseStep, /manually dispatch/);
 });
 
 test("release evidence index prefers real N-MNIST baseline over stale blocker", () => {

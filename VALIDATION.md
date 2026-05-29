@@ -408,12 +408,14 @@ npm run release:evidence -- --artifact --artifact-id release-evidence-with-tfhe-
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-tfhe-realdata-blocker-2026-05-28 --generated-at 2026-05-28T08:28:49.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-nmnist-blocker-2026-05-28 --generated-at 2026-05-28T16:36:00.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-real-nmnist-2026-05-28 --generated-at 2026-05-28T18:20:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-open-pr-stack-2026-05-29 --generated-at 2026-05-29T02:24:30.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-open-pr-stack-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-real-nmnist-2026-05-28.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-nmnist-blocker-2026-05-28.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-tfhe-realdata-blocker-2026-05-28.json
@@ -429,7 +431,12 @@ Result summary:
   "releaseTarget": "v0.1.0-research-alpha",
   "releaseGateSatisfied": false,
   "gateChecks": {
-    "hostedPortableCi": {"status": "blocked"},
+    "hostedPortableCi": {
+      "status": "blocked",
+      "openPullRequestCount": 6,
+      "workflowTrigger": "workflow_dispatch",
+      "isCodeFailure": false
+    },
     "repositoryHygiene": {"status": "pass"},
     "nativeMeasurementCoverage": {
       "status": "incomplete",
@@ -451,9 +458,11 @@ Result summary:
 
 The index is a dashboard artifact over already committed blocker, hygiene,
 native-evidence, privacy-mode, reconstruction-risk, real N-MNIST baseline, and
-TFHE real-data blocker artifacts. It does not create encrypted benchmark
-measurements, cryptographic/privacy proof, clinical evidence, or release
-approval.
+TFHE real-data blocker artifacts. The current CI blocker reflects the open
+stacked PR train (#17 through #22): PR #17 is mergeable but blocked with an
+empty hosted check rollup, and PRs #18 through #22 are mergeable/clean with
+empty hosted check rollups. It does not create encrypted benchmark measurements,
+cryptographic/privacy proof, clinical evidence, or release approval.
 
 ### Public N-MNIST Real-Data Plaintext Baseline
 
@@ -1365,23 +1374,22 @@ gh api repos/AlexanderDaly/neurofhe-relay/branches/main/protection --jq '{requir
 Result:
 
 ```text
-Open pull requests: []
-Recent completion-loop PRs #7, #8, #9, #11, and #12: MERGED
+Open pull requests: #17, #18, #19, #20, #21, #22
+Stack head: 0e60e6b on codex/nmnist-release-evidence-blocker
 CI workflow: active, workflow_dispatch only
 Latest hosted CI runs: stale failures from old branch heads
 Branch protection API: 404 Branch not protected
 ```
 
 The workflow is currently `workflow_dispatch` only, following the earlier
-GitHub Actions billing/account lock. There is no open release PR with a green
-portable hosted CI run, so the release checklist is still not satisfied even
-though local validation passes and the earlier completion-loop PRs have merged.
-This is release-gate availability evidence, not code-failure evidence. The
-current blocker artifact is:
+GitHub Actions billing/account lock. The open stacked PR train has empty hosted
+check rollups, so the release checklist is still not satisfied even though
+local validation passes. This is release-gate availability evidence, not
+code-failure evidence. The current blocker artifact is:
 
 ```text
 benchmark-artifacts/ci-blockers/latest.json
-benchmark-artifacts/ci-blockers/runs/github-actions-post-merge-no-open-prs-2026-05-26.json
+benchmark-artifacts/ci-blockers/runs/github-actions-open-pr-stack-2026-05-29.json
 ```
 
 ## Scope Note
