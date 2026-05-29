@@ -935,6 +935,14 @@ test("GitHub Actions CI workflow runs automatically for pushes and pull requests
   assert.match(workflow, /^\s*pull_request:\s*$/m);
 });
 
+test("GitHub Actions CI workflow uses Node 24-ready action majors", () => {
+  const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
+
+  assert.match(workflow, /uses:\s*actions\/checkout@v6\b/);
+  assert.match(workflow, /uses:\s*actions\/setup-node@v6\b/);
+  assert.match(workflow, /uses:\s*actions\/upload-artifact@v7\b/);
+});
+
 test("release evidence index summarizes blocker, hygiene, native, and privacy evidence without satisfying the gate", () => {
   const artifacts = new Map([
     [
