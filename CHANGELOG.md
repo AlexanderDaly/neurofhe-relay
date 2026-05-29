@@ -47,6 +47,8 @@ Release target: `v0.1.0-research-alpha`.
   report handling.
 - Added a guarded, role-based root README first path for reviewers,
   contributors, maintainers, and evidence reviewers.
+- Added a guarded root README current-status table for release target,
+  portable validation, merge policy, release gate, and claim-boundary posture.
 - Added a guarded, concise root README repository layout that defers the
   exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Added a guarded, concise root README quick-command table that defers detailed
