@@ -1,7 +1,7 @@
 # Briefing Sequence
 
 The root `01-` through `12-` Markdown files are the public briefing sequence.
-Read them in order when you want the full presentation package; use the shorter
+Read them in order when you want the full public briefing path; use the shorter
 docs in `docs/` when you need navigation, commands, evidence review, or
 maintainer checklists.
 

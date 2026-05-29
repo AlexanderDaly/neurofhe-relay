@@ -1071,9 +1071,11 @@ test("briefing sequence guide lists every numbered root brief", () => {
   const missingRoutes = requiredRouteEntries.filter((entry) =>
     !briefingGuide.includes(entry),
   );
+  const stalePackageFraming = briefingGuide.includes("presentation package");
 
   assert.deepEqual(missingBriefs, []);
   assert.deepEqual(missingRoutes, []);
+  assert.equal(stalePackageFraming, false);
 });
 
 test("prototype map lists every library module", () => {
