@@ -242,6 +242,8 @@ Release target: `v0.1.0-research-alpha`.
   bio-digital caveats stay measured, bounded, and research-alpha framed.
 - Tightened encrypted-thoughts roadmap caveats so the whitepaper keeps
   non-medical research-alpha framing instead of research-grade phrasing.
+- Tightened validation and evidence-source scope notes so current boundaries
+  use research-alpha framing instead of research-grade wording.
 - Tightened presentation-output coverage so packaged slide review,
   claim/caveat checks, evidence/release-readiness review, and export refreshes
   route through source docs before generated files.

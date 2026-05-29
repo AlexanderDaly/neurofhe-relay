@@ -18,7 +18,7 @@ Useful takeaways:
 - Neural data is moving from speculative ethics issue into explicit law and policy. Colorado added biological data, including neural data, to sensitive-data treatment in 2024. California added neural data to CCPA sensitive personal information in 2024.
 - UNESCO's 2025 neurotechnology recommendation places mental privacy, personal identity, autonomy, human dignity, consent, transparency, and safeguards against manipulation near the center of the governance problem.
 - BCI and neural-decoding research already demonstrates useful language and speech reconstruction workflows. The responsible public claim is not that arbitrary thoughts are readable today; it is that decode-capable neural and biosignal features deserve stronger privacy defaults before the technology becomes routine.
-- FDA's implanted BCI guidance confirms that clinical BCI devices are a serious regulated device category. NeuroFHE Relay should keep its current non-medical, research-grade boundary unless a real regulated use case, dataset, validation plan, and legal review exist.
+- FDA's implanted BCI guidance confirms that clinical BCI devices are a serious regulated device category. NeuroFHE Relay should keep its current non-medical, research-alpha boundary unless a real regulated use case, dataset, validation plan, and legal review exist.
 - These sources support the encrypted-thoughts whitepaper's architecture claim: raw neural signals should stay local by default, and selected event features should remain encrypted during external computation.
 
 ## Octra

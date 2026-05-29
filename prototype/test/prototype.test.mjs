@@ -1062,6 +1062,7 @@ test("briefing sequence guide lists every numbered root brief", () => {
   const technicalArchitecture = readFileSync("03-technical-architecture.md", "utf8");
   const demoRoadmap = readFileSync("04-demo-roadmap.md", "utf8");
   const riskRegister = readFileSync("05-risk-register.md", "utf8");
+  const evidenceSources = readFileSync("06-evidence-and-sources.md", "utf8");
   const encryptedThoughtsWhitepaper = readFileSync(
     "08-encrypted-thoughts-whitepaper.md",
     "utf8",
@@ -1159,6 +1160,11 @@ test("briefing sequence guide lists every numbered root brief", () => {
   assert.equal(riskRegister.includes("operation family is proven"), false);
   assert.equal(riskRegister.includes("Use research-grade language."), false);
   assert.equal(riskRegister.includes("research-grade caveats"), false);
+  assert.equal(
+    evidenceSources.includes("current non-medical, research-alpha boundary"),
+    true,
+  );
+  assert.equal(evidenceSources.includes("research-grade boundary"), false);
   assert.equal(
     encryptedThoughtsWhitepaper.includes("The current research-alpha package is deliberately small"),
     true,
@@ -1929,12 +1935,14 @@ test("validation history points TFHE readers to the current native artifact", ()
     '"rssBytes": 259096576',
     '"latencyMs": 5900.8',
     "research-alpha TFHE-rs native lane only",
+    "The runnable dependency-free research-alpha scaffold uses educational additive HE only.",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !validation.includes(entry),
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(validation.includes("prototype is still research-grade"), false);
 });
 
 test("troubleshooting guide routes common repo blockers without weakening caveats", () => {
