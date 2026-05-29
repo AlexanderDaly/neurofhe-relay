@@ -2086,6 +2086,9 @@ test("validation history distinguishes historical CI blockers from current PR st
     "Historical PR #7 Runner-Startup Blocker",
     "historical PR #7",
     "PR #23",
+    "0feaa65",
+    "github-actions-green-pr23-current-head-2026-05-29",
+    "release-evidence-current-ci-head-2026-05-29",
     "hostedPortableCiSatisfied: true",
     "repository ruleset/admin policy, not a CI or check-rollup failure",
   ];
@@ -2343,7 +2346,7 @@ test("evidence dashboard summarizes release gate status without upgrading claims
   const dashboard = readFileSync("docs/evidence-dashboard.md", "utf8");
   const requiredEntries = [
     "benchmark-artifacts/release-evidence/latest.json",
-    "release-evidence-tfhe-alpha-lane-framing-2026-05-29",
+    "release-evidence-current-ci-head-2026-05-29",
     "subject.releaseGateSatisfied: false",
     "subject.gateChecks",
     "subject.productionClaim: false",
@@ -3411,6 +3414,14 @@ test("hosted CI evidence keeps the release gate false when check rollup is green
   assert.equal(artifact.hostedPortableCiSatisfied, true);
   assert.equal(artifact.releaseGateSatisfied, false);
   assert.equal(artifact.productionClaim, false);
+  assert.equal(artifact.artifactId, "github-actions-green-pr23-current-head-2026-05-29");
+  assert.equal(
+    artifact.observedRepositoryState.releaseValidationPullRequest.headSha,
+    "0feaa65b3dd4e80a6dd10ad67fd95446398520ed",
+  );
+  assert.equal(artifact.hostedRuns[0].runId, 26649946474);
+  assert.equal(artifact.hostedRuns[1].runId, 26649944049);
+  assert.match(artifact.localParityValidation.resultSummary, /139 passing tests/);
   assert.equal(artifact.blocker?.category, "resolved-check-rollup");
   assert.match(artifact.smallestNextStep, /repository ruleset\/admin merge path/);
 });

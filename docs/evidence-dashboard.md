@@ -15,8 +15,8 @@ Source artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
-artifactId: release-evidence-tfhe-alpha-lane-framing-2026-05-29
-generatedAt: 2026-05-29T14:19:00.000Z
+artifactId: release-evidence-current-ci-head-2026-05-29
+generatedAt: 2026-05-29T16:47:00.000Z
 subject.releaseGateSatisfied: false
 subject.productionClaim: false
 productionClaim: false
