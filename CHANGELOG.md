@@ -168,6 +168,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened patent-package-map coverage so provisional drafting, counsel/IP
   review, public briefing, evidence-gap, and diagram reuse paths are routed
   before the full source inventory.
+- Tightened presentation-output coverage so packaged slide review,
+  claim/caveat checks, evidence/release-readiness review, and export refreshes
+  route through source docs before generated files.
 
 ### Changed
 

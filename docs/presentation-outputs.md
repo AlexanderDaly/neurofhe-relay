@@ -10,6 +10,17 @@ committed benchmark artifacts remain the authoritative source material. If a
 presentation export disagrees with the repository sources, refresh or replace
 the export rather than changing evidence claims to match the slide file.
 
+## Presentation Output Routes
+
+Use this table before opening or refreshing generated presentation files.
+
+| Review Need | Start With | Confirm Against |
+| --- | --- | --- |
+| Packaged slide review | `outputs/019e4b94-fd4a-79c3-b707-77404ef5f0b9/presentations/neurofhe-vc-pitch/output/neurofhe-relay-vc-pitch-deck.pptx` | `02-pitch-deck.md`, `docs/briefing-sequence.md`, and `README.md`. |
+| Claim or caveat check | Slide text and speaker-facing assertions | `docs/faq.md`, `docs/policy-boundary.md`, and `docs/evidence-guide.md` before accepting stronger wording. |
+| Evidence or release readiness | Any benchmark, CI, native-lane, or release statement in the export | `VALIDATION.md`, `RELEASE.md`, `docs/evidence-dashboard.md`, and `benchmark-artifacts/README.md`. |
+| Refresh or replace an export | Source Markdown, `index.html`, and maintained briefing maps | Keep generated files out of benchmark counts and preserve CC0, research-alpha, raw-data, and production-claim caveats. |
+
 ## Generated Files
 
 - [`outputs/019e4b94-fd4a-79c3-b707-77404ef5f0b9/presentations/neurofhe-vc-pitch/output/neurofhe-relay-vc-pitch-deck.pptx`](../outputs/019e4b94-fd4a-79c3-b707-77404ef5f0b9/presentations/neurofhe-vc-pitch/output/neurofhe-relay-vc-pitch-deck.pptx)

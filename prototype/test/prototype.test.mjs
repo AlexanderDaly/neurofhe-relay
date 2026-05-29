@@ -1193,11 +1193,23 @@ test("presentation outputs map lists every tracked generated output file", () =>
   const outputFiles = listTrackedFiles("outputs")
     .filter((entry) => !entry.endsWith("/"))
     .sort();
+  const requiredRouteEntries = [
+    "## Presentation Output Routes",
+    "| Review Need | Start With | Confirm Against |",
+    "Packaged slide review",
+    "Claim or caveat check",
+    "Evidence or release readiness",
+    "Refresh or replace an export",
+  ];
   const missingOutputs = outputFiles.filter((outputPath) =>
     !outputsMap.includes(outputPath),
   );
+  const missingRoutes = requiredRouteEntries.filter((entry) =>
+    !outputsMap.includes(entry),
+  );
 
   assert.deepEqual(missingOutputs, []);
+  assert.deepEqual(missingRoutes, []);
 });
 
 test("benchmark artifacts README lists every tracked artifact directory", () => {

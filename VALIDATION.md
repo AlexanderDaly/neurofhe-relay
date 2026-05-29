@@ -75,7 +75,7 @@ Covered behaviours:
   module, top-level entrypoint, and native source map coverage, patent package
   review-route and source coverage,
   package manifest top-level, owner-route, inventory-review-route, and
-  native-evidence posture coverage, generated presentation output map coverage,
+  native-evidence posture coverage, generated presentation output-route and map coverage,
   benchmark artifact directory, artifact-review-route, and release-evidence routing coverage,
   contributor workflow surface coverage, policy boundary route and root-file
   coverage, status roadmap release-readiness and
