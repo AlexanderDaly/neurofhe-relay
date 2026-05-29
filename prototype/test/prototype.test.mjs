@@ -1816,6 +1816,7 @@ test("issue templates preserve evidence boundaries and release routing", () => {
     "unexpected scaffold behavior",
     "portable scaffold runtime",
     "prototype/ scaffold documentation",
+    "blank_issues_enabled: false",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !combined.includes(entry),
@@ -1824,6 +1825,7 @@ test("issue templates preserve evidence boundaries and release routing", () => {
   assert.deepEqual(missingEntries, []);
   assert.equal(combined.includes("unexpected prototype behavior"), false);
   assert.equal(combined.includes("prototype runtime"), false);
+  assert.equal(combined.includes("blank_issues_enabled: true"), false);
 });
 
 test("policy boundary map lists every policy and claim-boundary root file", () => {
@@ -1894,6 +1896,7 @@ test("support policy routes issues without weakening evidence boundaries", () =>
     "Release readiness, hosted-check, or repository ruleset blocker",
     "Documentation, packaging, navigation, or repository cleanup",
     "GitHub issue forms",
+    "Blank issues are disabled",
     "SECURITY.md",
     "CONTRIBUTING.md",
     "docs/contributor-workflow.md",

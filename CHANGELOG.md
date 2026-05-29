@@ -249,6 +249,8 @@ Release target: `v0.1.0-research-alpha`.
   treating a release-validation PR as merge-ready.
 - Added a repository-guide route for current status and next work so reviewers
   start from `docs/status-roadmap.md` before deciding what to inspect or improve.
+- Disabled blank GitHub issues so public reports start from structured forms
+  that preserve exact-command, raw-data, secret, and claim-boundary prompts.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

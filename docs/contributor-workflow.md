@@ -24,6 +24,9 @@ unsupported benchmark or cryptographic claims.
 
 Use `SUPPORT.md` first when deciding whether a report belongs in a public issue,
 private security report, pull request, validation note, or release blocker.
+Blank issues are disabled so public reports start from the structured forms
+that collect exact commands, observed results, boundaries, and smallest next
+steps.
 
 - [`.github/ISSUE_TEMPLATE/bug-report.yml`](../.github/ISSUE_TEMPLATE/bug-report.yml)
   - reproducible bug, failing command, CI job, script, scaffold behavior, or

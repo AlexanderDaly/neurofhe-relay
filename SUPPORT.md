@@ -27,6 +27,10 @@ Use the GitHub issue forms for public, non-sensitive reports:
 - Validation or evidence gaps where the current caveat must remain visible.
 - Documentation, packaging, navigation, or repository-cleanup requests.
 
+Blank issues are disabled so public reports keep the exact-command,
+smallest-next-step, raw-data, secret, private-payload, and claim-boundary
+prompts visible.
+
 Use `SECURITY.md` for sensitive security reports, suspected private data leaks,
 secret exposure, or issues that should not begin in a public thread.
 
