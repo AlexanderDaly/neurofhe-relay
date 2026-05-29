@@ -188,6 +188,9 @@ Release target: `v0.1.0-research-alpha`.
   blocker-report, no-merge, no-tag, and no-claim-upgrade boundaries visible.
 - Added developer-quickstart coverage so common change types point to focused
   validation before the full local gate.
+- Tightened development-guide release boundaries so green local and hosted
+  validation still require explicit user approval and the guarded rule stays
+  visible: do not merge, tag, or strengthen release-facing claims.
 - Tightened support-policy coverage so public issue, private security,
   release-blocker, and cleanup routes are visible in a compact table.
 - Tightened briefing-sequence coverage so external overview, architecture,

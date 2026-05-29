@@ -149,7 +149,8 @@ Covered behaviours:
   rejecting stale OpenFHE dependency-blocker language.
 - Development guide coverage requiring setup, native-lane, evidence-artifact,
   development-route, current N-MNIST plaintext baseline routing, hosted-CI,
-  release-gate, and repository ruleset/admin policy boundaries to stay visible.
+  release-gate, explicit user approval, no-merge/no-tag/no-claim-upgrade, and
+  repository ruleset/admin policy boundaries to stay visible.
 - Developer quickstart coverage requiring common change types to route to
   focused validation commands before the shared `npm run ci` and whitespace
   gates.

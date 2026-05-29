@@ -2092,6 +2092,8 @@ test("changelog records unreleased cleanup stack and release caveats", () => {
     "Portable validation",
     "repository ruleset/admin policy",
     "releaseGateSatisfied: false",
+    "explicit user approval",
+    "do not merge, tag, or strengthen release-facing claims",
     "productionClaim: false",
     "docs/release-gate-matrix.md",
     "docs/claim-evidence-ledger.md",

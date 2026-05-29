@@ -189,4 +189,6 @@ documented gate is satisfied. A green hosted `Portable validation` check is
 necessary, but a pull request can still be blocked by repository ruleset/admin
 policy. Treat that as `repository ruleset/admin policy`, separate from
 CI/check-rollup or code failures, and do not merge or tag without maintainer
-approval and the documented release gate.
+approval, explicit user approval, and the documented release gate.
+Do not merge, tag, or strengthen release-facing claims just because local and
+hosted validation are green.
