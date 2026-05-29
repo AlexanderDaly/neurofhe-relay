@@ -58,10 +58,18 @@ The cryptographic design target is:
 
 > Quantum-resistant by design, cryptographically agile by default.
 
+## Start Here
+
+New readers should begin with `docs/repository-guide.md`. It maps the public
+briefing sequence, prototype code, committed evidence artifacts, patent
+briefing material, and research-alpha release gate without upgrading any
+cryptographic, security, medical, or deployment claim.
+
 ## Package Contents
 
 - `LICENSE` - CC0 1.0 Universal public-domain dedication.
 - `PUBLIC_DOMAIN_NOTICE.md` - plain-English free-use notice.
+- `docs/repository-guide.md` - first-pass map for readers and contributors.
 - `01-one-pager.md` - executive one-page brief.
 - `02-pitch-deck.md` - 11-slide presentation narrative.
 - `03-technical-architecture.md` - system architecture and data flow.

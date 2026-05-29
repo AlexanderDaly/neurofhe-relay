@@ -9,6 +9,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `README.md` - project overview and recommended framing.
 - `LICENSE` - CC0 1.0 Universal public-domain dedication.
 - `PUBLIC_DOMAIN_NOTICE.md` - plain-English free-use notice.
+- `docs/repository-guide.md` - orientation map for the root briefs, prototype
+  code, evidence artifacts, patent materials, and release gate.
 - `01-one-pager.md` - concise executive brief.
 - `02-pitch-deck.md` - 11-slide presentation narrative.
 - `03-technical-architecture.md` - architecture, data flow, and boundaries.
