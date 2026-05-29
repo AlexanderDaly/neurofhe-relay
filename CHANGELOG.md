@@ -91,6 +91,9 @@ Release target: `v0.1.0-research-alpha`.
   blocker path for missing local datasets.
 - Added pull-request-template coverage so validation commands, release caveats,
   raw-data boundaries, and repository-policy routing remain in every PR.
+- Added pull-request-template change notes so docs, prototype/artifact, native,
+  real-data, and release-policy changes prompt the right evidence and caveat
+  details.
 - Added issue-template coverage so incoming reports preserve evidence
   boundaries, release-gate posture, raw-data exclusions, and CI/ruleset routing.
 - Added documentation-index concision coverage so `docs/README.md` stays a

@@ -80,7 +80,8 @@ Covered behaviours:
   package manifest top-level, owner-route, inventory-review-route, and
   native-evidence posture coverage, generated presentation output-route and map coverage,
   benchmark artifact directory, artifact-review-route, and release-evidence routing coverage,
-  contributor workflow surface coverage, policy boundary route and root-file
+  contributor workflow surface coverage, pull-request-template change-note
+  coverage, policy boundary route and root-file
   coverage, status roadmap release-readiness, review-route, and
   at-a-glance gate-posture coverage, glossary route and term coverage, testing strategy
   validation-route and validation-surface coverage, dependency matrix

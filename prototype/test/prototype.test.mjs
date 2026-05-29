@@ -1398,6 +1398,13 @@ test("Dependabot config covers package and workflow maintenance", () => {
 test("pull request template preserves validation and release caveats", () => {
   const pullRequestTemplate = readFileSync(".github/pull_request_template.md", "utf8");
   const requiredEntries = [
+    "## Change Notes",
+    "| Change Type | Note In This PR |",
+    "Docs or repository navigation",
+    "Prototype, benchmark, or gateway behavior",
+    "Native FHE lane",
+    "Real-data or dataset-adjacent artifact",
+    "Release-readiness or repository-policy posture",
     "npm run ci",
     "git diff --check",
     "Relevant artifact command",
@@ -1406,8 +1413,10 @@ test("pull request template preserves validation and release caveats", () => {
     "productionClaim: false",
     "releaseGateSatisfied: false",
     "repository ruleset/admin policy",
+    "exact command, error, and smallest next step",
     "raw datasets",
     "secrets",
+    "docs/data-handling.md",
     "docs/release-gate-matrix.md",
     "docs/evidence-dashboard.md",
     "Blockers And Caveats",
