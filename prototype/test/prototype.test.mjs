@@ -1074,6 +1074,16 @@ test("benchmark artifacts README lists every tracked artifact directory", () => 
   assert.deepEqual(missingDirectories, []);
 });
 
+test("contributor workflow map lists every tracked GitHub workflow surface", () => {
+  const workflowMap = readFileSync("docs/contributor-workflow.md", "utf8");
+  const githubFiles = listTrackedFiles(".github").sort();
+  const missingFiles = githubFiles.filter((filePath) =>
+    !workflowMap.includes(filePath),
+  );
+
+  assert.deepEqual(missingFiles, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

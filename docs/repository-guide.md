@@ -20,6 +20,8 @@ clinical validation, deployment evidence, or a security certification.
   Mermaid diagram sources.
 - `docs/presentation-outputs.md` - map of generated presentation exports kept
   for packaged review.
+- `docs/contributor-workflow.md` - map of issue forms, PR template, and hosted
+  CI workflow surfaces.
 - `docs/developer-quickstart.md` - compact local validation path for
   contributors.
 - `docs/command-reference.md` - grouped npm command reference for validation,
@@ -40,6 +42,7 @@ clinical validation, deployment evidence, or a security certification.
   gaps, and repository-cleanup requests.
 - `.github/pull_request_template.md` - PR checklist for validation and
   evidence-boundary notes.
+- `.github/workflows/ci.yml` - hosted portable validation workflow.
 
 ## Top-Level Package
 

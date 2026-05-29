@@ -17,6 +17,8 @@ changing the evidence boundary.
   for packaged review.
 - `repository-guide.md` - map of the root briefs, prototype code, committed
   evidence artifacts, patent materials, and release gate.
+- `contributor-workflow.md` - map of issue forms, PR template, and hosted CI
+  workflow surfaces.
 - `developer-quickstart.md` - first local commands for a contributor who wants
   to validate the package before opening an issue or PR.
 - `command-reference.md` - grouped npm commands for validation, demos,
@@ -45,7 +47,8 @@ root brief. It also checks that `prototype-map.md` lists every
 `prototype/lib/*.mjs` module, that `patent-package-map.md` lists every
 Markdown and Mermaid source under `patent/`, and that
 `presentation-outputs.md` lists every tracked generated output file under
-`outputs/`.
+`outputs/`. It also checks that `contributor-workflow.md` lists every tracked
+`.github` workflow, issue, and pull-request surface.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a
