@@ -2078,6 +2078,29 @@ test("development guide preserves setup, evidence, and release boundaries", () =
   assert.deepEqual(missingEntries, []);
 });
 
+test("developer quickstart routes common change types to focused validation", () => {
+  const quickstart = readFileSync("docs/developer-quickstart.md", "utf8");
+  const requiredEntries = [
+    "## Validation By Change Type",
+    "| Change Type | Run First | Then Run |",
+    "Docs-only navigation or wording",
+    "npm run check:docs",
+    "Prototype library or artifact behavior",
+    "npm test -- --test-name-pattern",
+    "GitHub Actions or repository policy",
+    "gh pr checks",
+    "Benchmark, dataset, native lane, or release evidence",
+    "temporary directory",
+    "npm run ci",
+    "git diff --check",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !quickstart.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

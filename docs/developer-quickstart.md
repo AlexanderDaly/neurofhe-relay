@@ -40,6 +40,18 @@ If your shell does not expose Homebrew's npm, use:
 PATH="/opt/homebrew/bin:$PATH" npm run ci
 ```
 
+## Validation By Change Type
+
+Use the narrowest check that proves the edit while you work, then run the
+common gate before committing.
+
+| Change Type | Run First | Then Run |
+| --- | --- | --- |
+| Docs-only navigation or wording | `npm run check:docs` | `npm run ci` and `git diff --check` |
+| Prototype library or artifact behavior | `npm test -- --test-name-pattern "<focused behavior>"` | `npm run ci` and `git diff --check` |
+| GitHub Actions or repository policy | `gh pr checks <number>` and `gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup` | `npm run ci` and `git diff --check` |
+| Benchmark, dataset, native lane, or release evidence | Run the relevant artifact command into a temporary directory | `npm run ci`, `git diff --check`, and the exact artifact command if committed output changed |
+
 ## Useful Local Commands
 
 For the full grouped command list, see `docs/command-reference.md`.

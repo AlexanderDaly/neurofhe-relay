@@ -102,10 +102,12 @@ Release target: `v0.1.0-research-alpha`.
   stays labeled as historical and does not confuse the current PR #23 state.
 - Tightened repository-guide coverage so the first map routes readers by task
   before showing the detailed package inventory.
+- Added developer-quickstart coverage so common change types point to focused
+  validation before the full local gate.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 132 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 133 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

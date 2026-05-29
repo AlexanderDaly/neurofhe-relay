@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 132
-pass 132
+tests 133
+pass 133
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 132
-pass 132
+tests 133
+pass 133
 fail 0
 ```
 
@@ -134,6 +134,9 @@ Covered behaviours:
 - Development guide coverage requiring setup, native-lane, evidence-artifact,
   current N-MNIST plaintext baseline routing, hosted-CI, release-gate, and
   repository ruleset/admin policy boundaries to stay visible.
+- Developer quickstart coverage requiring common change types to route to
+  focused validation commands before the shared `npm run ci` and whitespace
+  gates.
 - Support policy coverage requiring issue, security, support, and release
   blocker routing while preserving `releaseGateSatisfied: false`,
   `productionClaim: false`, and raw-data boundaries.
