@@ -15,6 +15,8 @@ changing the evidence boundary.
   benchmarks, native lanes, and release evidence.
 - `evidence-guide.md` - short map for reading committed evidence without
   upgrading research-alpha claims.
+- `maintainer-checklist.md` - merge, artifact, and release-review checklist for
+  maintainers.
 
 ## Related Top-Level Docs
 
@@ -29,7 +31,8 @@ changing the evidence boundary.
 The root `.editorconfig`, `.nvmrc`, and `.node-version` files provide a small
 tooling baseline for consistent local edits and CI-parity Node.js selection.
 `npm run check:docs` verifies local Markdown links and is part of
-`npm run validate`.
+`npm run validate`. The validation suite also checks that this index lists every
+Markdown page in `docs/`.
 
 Nothing in this documentation upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

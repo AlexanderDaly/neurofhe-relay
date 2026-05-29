@@ -62,7 +62,8 @@ The cryptographic design target is:
 
 New readers should begin with `docs/README.md`, `docs/repository-guide.md`,
 `docs/developer-quickstart.md`, `docs/command-reference.md`, and
-`docs/evidence-guide.md`. Together they map the public briefing sequence,
+`docs/evidence-guide.md`. Maintainers should also use
+`docs/maintainer-checklist.md`. Together they map the public briefing sequence,
 prototype code, committed evidence artifacts, patent briefing material,
 contributor workflow, runnable commands, and research-alpha release gate without
 upgrading any cryptographic, security, medical, or deployment claim.
@@ -78,6 +79,7 @@ upgrading any cryptographic, security, medical, or deployment claim.
 - `docs/developer-quickstart.md` - compact local validation path for contributors.
 - `docs/command-reference.md` - grouped npm command reference.
 - `docs/evidence-guide.md` - short evidence map for claim-safe artifact review.
+- `docs/maintainer-checklist.md` - merge, artifact, and release-review checklist.
 - `01-one-pager.md` - executive one-page brief.
 - `02-pitch-deck.md` - 11-slide presentation narrative.
 - `03-technical-architecture.md` - system architecture and data flow.

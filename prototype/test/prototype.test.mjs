@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -990,6 +990,18 @@ test("command reference documents every package script", () => {
   });
 
   assert.deepEqual(missingScripts, []);
+});
+
+test("documentation index lists every docs page", () => {
+  const docsIndex = readFileSync("docs/README.md", "utf8");
+  const docsPages = readdirSync("docs")
+    .filter((entry) => entry.endsWith(".md") && entry !== "README.md")
+    .sort();
+  const missingPages = docsPages.filter((page) =>
+    !new RegExp(`\\b${escapeRegExp(page)}\\b`).test(docsIndex),
+  );
+
+  assert.deepEqual(missingPages, []);
 });
 
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {

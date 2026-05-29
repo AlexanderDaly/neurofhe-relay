@@ -18,6 +18,8 @@ clinical validation, deployment evidence, or a security certification.
   demos, benchmarks, native lanes, and release evidence.
 - `docs/evidence-guide.md` - short map for reading committed evidence without
   upgrading research-alpha claims.
+- `docs/maintainer-checklist.md` - merge, artifact, and release-review
+  checklist for maintainers.
 - `DEVELOPMENT.md` - local setup, portable validation, native FHE commands, and
   artifact policy.
 - `CONTRIBUTING.md` - evidence-first contribution rules and PR expectations.

@@ -18,6 +18,7 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `docs/command-reference.md` - grouped npm command reference for validation,
   demos, benchmarks, native lanes, and release evidence.
 - `docs/evidence-guide.md` - short evidence map for claim-safe artifact review.
+- `docs/maintainer-checklist.md` - merge, artifact, and release-review checklist.
 - `01-one-pager.md` - concise executive brief.
 - `02-pitch-deck.md` - 11-slide presentation narrative.
 - `03-technical-architecture.md` - architecture, data flow, and boundaries.
