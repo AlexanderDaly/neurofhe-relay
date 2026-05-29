@@ -69,6 +69,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened documentation-index and presentation-output wording so retained
   slide exports are clearly derived legacy review artifacts, not source
   evidence or current claim authority.
+- Tightened the self-contained browser briefing so Octra, local scaffold, and
+  90-day plan copy use research-alpha evidence framing instead of prove,
+  research-grade, or pilot-package language.
 - Added a guarded, concise root README repository layout that defers the
   exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Added a guarded, concise root README quick-command table that defers detailed

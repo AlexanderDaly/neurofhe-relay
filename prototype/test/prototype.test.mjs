@@ -2604,6 +2604,29 @@ test("root README keeps first-read navigation role based", () => {
   assert.equal(readme.includes("The current prototype is about"), false);
 });
 
+test("browser briefing deck keeps research-alpha evidence framing", () => {
+  const browserBriefing = readFileSync("index.html", "utf8");
+  const requiredEntries = [
+    "NeuroFHE Relay Briefing Deck",
+    "first test and bound compact encrypted event inference locally",
+    "The current research-alpha scaffold classifies a synthetic 8 by 8 event window",
+    "It is deliberately small, research-alpha, and honest about what the compute side can still see.",
+    "Make one evidence package strong enough to decide the project.",
+    "review package",
+    "Do not claim quantum-proof production security before real libraries and review.",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !browserBriefing.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(browserBriefing.includes("first prove compact encrypted event inference locally"), false);
+  assert.equal(browserBriefing.includes("The current prototype classifies"), false);
+  assert.equal(browserBriefing.includes("It is research-grade"), false);
+  assert.equal(browserBriefing.includes("Make one proof strong enough to decide the project."), false);
+  assert.equal(browserBriefing.includes("pilot package"), false);
+});
+
 test("root README keeps repository layout concise", () => {
   const readme = readFileSync("README.md", "utf8");
   const requiredEntries = [
