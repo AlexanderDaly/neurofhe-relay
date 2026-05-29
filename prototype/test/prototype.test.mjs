@@ -1680,6 +1680,32 @@ test("ENER weak-claims note reflects current native FHE evidence posture", () =>
   assert.equal(weakClaims.includes("once OpenFHE is installed"), false);
 });
 
+test("evidence guide routes evidence review without upgrading claims", () => {
+  const evidenceGuide = readFileSync("docs/evidence-guide.md", "utf8");
+  const requiredEntries = [
+    "## Review Routes",
+    "| Need | Start With | Then Use |",
+    "Artifact mechanics",
+    "Claim discipline",
+    "Release posture",
+    "Repository decisions",
+    "benchmark-artifacts/README.md",
+    "docs/data-handling.md",
+    "docs/claim-evidence-ledger.md",
+    "docs/release-gate-matrix.md",
+    "docs/evidence-dashboard.md",
+    "docs/operations-runbook.md",
+    "production cryptography",
+    "identity-protection",
+    "stable-performance claims",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !evidenceGuide.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("evidence dashboard summarizes release gate status without upgrading claims", () => {
   const dashboard = readFileSync("docs/evidence-dashboard.md", "utf8");
   const requiredEntries = [

@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 133
-pass 133
+tests 134
+pass 134
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 133
-pass 133
+tests 134
+pass 134
 fail 0
 ```
 
@@ -80,9 +80,9 @@ Covered behaviours:
   coverage, policy boundary map coverage, status roadmap release-readiness and
   at-a-glance gate-posture coverage, glossary term coverage, testing strategy
   validation-surface coverage, dependency matrix setup-surface coverage,
-  data-handling boundary-surface coverage, repository tooling
-  normalization/ignore-boundary coverage, and GitHub Actions trigger and
-  action-major checks.
+  data-handling boundary-surface coverage, evidence-guide review-route
+  coverage, repository tooling normalization/ignore-boundary coverage, and
+  GitHub Actions trigger and action-major checks.
 - Troubleshooting coverage requiring common local npm, hosted-CI, native-lane,
   dataset, and release-gate blockers to route to exact-command/error/next-step
   recording without weakening `productionClaim: false`.

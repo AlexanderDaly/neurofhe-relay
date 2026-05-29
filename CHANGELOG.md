@@ -68,6 +68,9 @@ Release target: `v0.1.0-research-alpha`.
   release or maintainer review.
 - Tightened status-roadmap coverage so current hosted-CI, release-gate, and
   ruleset/admin merge posture is visible in an at-a-glance table.
+- Added evidence-guide coverage so artifact mechanics, claim discipline,
+  release posture, and repository decisions route through a compact review
+  table without upgrading claims.
 - Added repository-tooling coverage so `.gitattributes`, `.gitignore`, and
   `.editorconfig` preserve line-ending and local-ignore boundaries.
 - Expanded local ignore boundaries for env files, logs, coverage output, and
@@ -114,7 +117,7 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 133 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 134 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

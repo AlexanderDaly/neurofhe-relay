@@ -1,20 +1,20 @@
 # Evidence Guide
 
 Use this as the short map for reading committed evidence before making claims.
-The detailed artifact mechanics live in `benchmark-artifacts/README.md`.
-Raw-data and derived-artifact boundaries live in `docs/data-handling.md`.
-Weak-claim evidence posture lives in `docs/claim-evidence-ledger.md`.
-Release command evidence posture lives in `docs/release-gate-matrix.md`.
-Human-readable release dashboard status lives in `docs/evidence-dashboard.md`.
-Unreleased review history lives in `CHANGELOG.md`.
-Reviewer entrypoints live in `docs/reviewer-quickstart.md`.
-Accepted repository decisions live in `docs/architecture-decisions.md`.
-Routine PR and blocker handling lives in `docs/operations-runbook.md`.
+
+## Review Routes
+
+| Need | Start With | Then Use |
+| --- | --- | --- |
+| Artifact mechanics | `benchmark-artifacts/README.md` | `docs/data-handling.md`, `docs/evidence-dashboard.md` |
+| Claim discipline | `docs/claim-evidence-ledger.md` | `patent/briefing/ENER_weak_claims_evidence_gaps.md`, `CHANGELOG.md` |
+| Release posture | `docs/release-gate-matrix.md` | `RELEASE.md`, `benchmark-artifacts/release-evidence/latest.json` |
+| Repository decisions | `docs/architecture-decisions.md` | `docs/reviewer-quickstart.md`, `docs/operations-runbook.md` |
 
 NeuroFHE Relay is a research-alpha package. Evidence in this repository can
-support scoped prototype statements, but it does not support production
-cryptography, medical, clinical, surveillance, deployment, side-channel,
-identity-protection, or stable-performance claims.
+support scoped prototype statements, but it does not support production cryptography,
+medical, clinical, surveillance, deployment, side-channel, identity-protection,
+or stable-performance claims.
 
 ## Evidence Classes
 
