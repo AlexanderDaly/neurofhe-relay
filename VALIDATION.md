@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 110
-pass 110
+tests 111
+pass 111
 fail 0
 json ok
 markdown link scan ok (70 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 110
-pass 110
+tests 111
+pass 111
 fail 0
 ```
 
@@ -106,6 +106,8 @@ Covered behaviours:
   `productionClaim: false`, and raw-data boundaries.
 - CODEOWNERS coverage requiring review ownership routing for root, GitHub,
   docs, prototype, benchmark-artifacts, and patent surfaces.
+- Dependabot coverage requiring weekly dependency update routing for GitHub
+  Actions and npm metadata without treating update prompts as release evidence.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene
   status, native measurement gaps, metadata-leakage caveats, reconstruction-risk
   caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker

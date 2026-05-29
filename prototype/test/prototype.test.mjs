@@ -1132,6 +1132,25 @@ test("CODEOWNERS maps repository review ownership", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("Dependabot config covers package and workflow maintenance", () => {
+  const dependabot = readFileSync(".github/dependabot.yml", "utf8");
+  const requiredEntries = [
+    "version: 2",
+    "package-ecosystem: \"github-actions\"",
+    "package-ecosystem: \"npm\"",
+    "directory: \"/\"",
+    "interval: \"weekly\"",
+    "open-pull-requests-limit: 5",
+    "labels:",
+    "\"enhancement\"",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !dependabot.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("policy boundary map lists every policy and claim-boundary root file", () => {
   const policyMap = readFileSync("docs/policy-boundary.md", "utf8");
   const policyFiles = [
@@ -1235,6 +1254,7 @@ test("dependency matrix lists portable and native setup surfaces", () => {
     ".node-version",
     ".nvmrc",
     "package.json",
+    ".github/dependabot.yml",
     ".github/workflows/ci.yml",
     "prototype/openfhe/",
     "prototype/openfhe-ckks/",

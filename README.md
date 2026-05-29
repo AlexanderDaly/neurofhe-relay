@@ -85,7 +85,7 @@ actually present and documented.
 | `prototype/` | Portable demo code, test suite, artifact publishers, and native lane adapters. |
 | `benchmark-artifacts/` | Committed derived evidence, blocker reports, and release dashboards. |
 | `patent/` | ENER provisional drafting package, drawings, prior-art plan, and briefing material. |
-| `.github/` | Issue templates, PR template, and hosted portable CI workflow. |
+| `.github/` | Issue templates, PR template, dependency-update routing, and hosted portable CI workflow. |
 | Root policy files | `LICENSE`, `PUBLIC_DOMAIN_NOTICE.md`, `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `RELEASE.md`, and `VALIDATION.md`. |
 
 Use `PACKAGE_MANIFEST.md` when you need the exhaustive packaged-review

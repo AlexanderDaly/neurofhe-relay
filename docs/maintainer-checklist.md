@@ -77,4 +77,5 @@ git diff --check
 - `docs/testing-strategy.md` - portable validation and guard-family map.
 - `benchmark-artifacts/README.md` - artifact mechanics and output locations.
 - `.github/CODEOWNERS` - repository review ownership routing.
+- `.github/dependabot.yml` - weekly dependency update routing.
 - `RELEASE.md` - research-alpha release gate.

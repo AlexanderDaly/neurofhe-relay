@@ -34,12 +34,14 @@ Release target: `v0.1.0-research-alpha`.
   reports, release blockers, and cleanup requests.
 - Added `.github/CODEOWNERS` and a review-ownership guard for repository
   change routing.
+- Added `.github/dependabot.yml` and a dependency-update guard for weekly
+  GitHub Actions and npm maintenance routing.
 - Added guarded documentation coverage in the Node test suite so the repository
   maps stay synchronized with tracked surfaces.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 110 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 111 tests, Markdown
   link scan over 70 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
