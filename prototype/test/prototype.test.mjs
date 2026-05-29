@@ -1732,6 +1732,13 @@ test("troubleshooting guide routes common repo blockers without weakening caveat
   const requiredEntries = [
     "## Troubleshooting Routes",
     "| Symptom | Check First | Record Or Route |",
+    "## Blocker Record Fields",
+    "| Field | Capture | Why It Matters |",
+    "Command attempted",
+    "Observed error or check conclusion",
+    "Smallest next step",
+    "Evidence boundary",
+    "Affected artifact or PR",
     "Local portable gate fails",
     "Hosted CI is green but PR is blocked",
     "Native OpenFHE or TFHE-rs command fails",

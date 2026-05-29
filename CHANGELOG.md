@@ -38,6 +38,9 @@ Release target: `v0.1.0-research-alpha`.
   dataset, and release-gate blockers.
 - Added troubleshooting routes for local validation, hosted CI, native
   dependencies, dataset paths, and release-gate confusion.
+- Added troubleshooting blocker-record fields so failed commands capture exact
+  command, error or check conclusion, smallest next step, evidence boundary,
+  and affected artifact or PR.
 - Added `CODE_OF_CONDUCT.md` for public collaboration expectations and
   reporting boundaries.
 - Added `MAINTAINERS.md` for current maintainer routing, review ownership, and

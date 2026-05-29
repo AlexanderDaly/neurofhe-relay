@@ -18,6 +18,20 @@ privacy-proof claims, or stable-performance claims.
 | Dataset path is missing or malformed | Local dataset shape, especially public N-MNIST `Train/` and `Test/` directories | Keep raw datasets outside git and write only derived artifacts or blocker reports under `benchmark-artifacts/`. |
 | Release evidence looks green but gate is false | `RELEASE.md`, `docs/release-gate-matrix.md`, and `benchmark-artifacts/release-evidence/latest.json` | Preserve `releaseGateSatisfied: false` until all gates are satisfied and the user explicitly approves the final release action. |
 
+## Blocker Record Fields
+
+Use this table when a command, hosted check, native dependency, dataset path, or
+release-gate step cannot run. It keeps blocker notes complete enough for the
+next maintainer to resume without guessing.
+
+| Field | Capture | Why It Matters |
+| --- | --- | --- |
+| Command attempted | Exact shell command, script name, or GitHub Actions job URL. | Prevents vague blocker reports and keeps reruns reproducible. |
+| Observed error or check conclusion | The exact error text, failing assertion, missing dependency, or check status. | Separates code failures from dependency, dataset, hosted-CI, and repository-policy blockers. |
+| Smallest next step | The narrowest setup, rerun, adapter, or policy action that would advance the blocker. | Avoids substituting toy, stale, or synthetic results for missing evidence. |
+| Evidence boundary | Whether the failed lane is synthetic, plaintext real-data, native FHE, release dashboard, hygiene, or hosted CI. | Keeps `productionClaim: false`, `privacyBoundary`, `cryptoInventory`, and `releaseGateSatisfied: false` caveats attached. |
+| Affected artifact or PR | The artifact path, blocker report, PR number, or dashboard surface that should carry the note. | Gives reviewers one place to confirm the current blocker state. |
+
 ## Portable Validation
 
 Start from the repository root:
