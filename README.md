@@ -97,7 +97,7 @@ linked source before making release, merge, or public-claim decisions.
 | Path | Purpose |
 | --- | --- |
 | `docs/` | Reader, contributor, maintainer, evidence, and release navigation. |
-| `prototype/` | Portable demo code, test suite, artifact publishers, and native lane adapters. |
+| `prototype/` | Portable scaffold code, test suite, artifact publishers, and native lane adapters. |
 | `benchmark-artifacts/` | Committed derived evidence, blocker reports, and release dashboards. |
 | `patent/` | ENER provisional drafting package, drawings, prior-art plan, and briefing material. |
 | `.github/` | Issue templates, PR template, dependency-update routing, and hosted portable CI workflow. |

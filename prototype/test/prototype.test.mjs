@@ -2688,6 +2688,7 @@ test("root README keeps repository layout concise", () => {
     "PACKAGE_MANIFEST.md",
     "docs/",
     "prototype/",
+    "Portable scaffold code, test suite, artifact publishers, and native lane adapters.",
     "benchmark-artifacts/",
     "patent/",
     ".github/",
@@ -2699,6 +2700,7 @@ test("root README keeps repository layout concise", () => {
 
   assert.deepEqual(missingEntries, []);
   assert.equal(readme.includes("## Package Contents"), false);
+  assert.equal(readme.includes("Portable demo code, test suite"), false);
 });
 
 test("root README keeps command surface concise", () => {
