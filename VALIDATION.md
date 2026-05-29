@@ -152,8 +152,9 @@ Covered behaviours:
   visible.
 - TFHE-rs integration-note coverage requiring native evidence, real-data
   blocker, dependency, dashboard, release-gate, `privacyBoundary`,
-  `cryptoInventory`, and `productionClaim: false` routes to stay visible while
-  rejecting stale OpenFHE dependency-blocker language.
+  `cryptoInventory`, `productionClaim: false`, and research-alpha native-lane
+  framing routes to stay visible while rejecting stale OpenFHE
+  dependency-blocker language.
 - Development guide coverage requiring setup, native-lane, evidence-artifact,
   development-route, CC0 research-alpha repository framing, current N-MNIST
   plaintext baseline routing, hosted-CI, release-gate, explicit user approval,
@@ -576,12 +577,14 @@ npm run release:evidence -- --artifact --artifact-id release-evidence-with-nmnis
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-real-nmnist-2026-05-28 --generated-at 2026-05-28T18:20:00.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-open-pr-stack-2026-05-29 --generated-at 2026-05-29T02:24:30.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-green-ci-2026-05-29 --generated-at 2026-05-29T04:33:30.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:19:00.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-tfhe-alpha-lane-framing-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-green-ci-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-open-pr-stack-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-real-nmnist-2026-05-28.json
@@ -1571,6 +1574,44 @@ evidence artifact is:
 benchmark-artifacts/ci-blockers/latest.json
 benchmark-artifacts/ci-blockers/runs/github-actions-green-release-stack-2026-05-29.json
 ```
+
+### TFHE-rs Native-Lane Framing Refresh
+
+Commands:
+
+```sh
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:15:00.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:18:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:19:00.000Z
+```
+
+Result summary:
+
+```json
+{
+  "tfheArtifactId": "tfhe-rs-alpha-lane-framing-2026-05-29",
+  "nativeEvidenceArtifactId": "native-evidence-tfhe-alpha-lane-framing-2026-05-29",
+  "releaseEvidenceArtifactId": "release-evidence-tfhe-alpha-lane-framing-2026-05-29",
+  "tfheCaveat": "research-alpha TFHE-rs native lane only; not production cryptography, not clinical validation, and not side-channel reviewed.",
+  "productionClaim": false,
+  "releaseGateSatisfied": false
+}
+```
+
+Published artifacts:
+
+```text
+benchmark-artifacts/comparisons/tfhe-rs/latest.json
+benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-alpha-lane-framing-2026-05-29.json
+benchmark-artifacts/native-evidence/latest.json
+benchmark-artifacts/native-evidence/runs/native-evidence-tfhe-alpha-lane-framing-2026-05-29.json
+benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-tfhe-alpha-lane-framing-2026-05-29.json
+```
+
+This refresh updates native-lane wording and evidence indexes only. It does not
+close the TFHE-rs real-data blocker, OpenFHE measurement gaps, native
+multi-window sweep gap, or release gate.
 
 ## Scope Note
 

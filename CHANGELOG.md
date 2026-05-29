@@ -243,6 +243,8 @@ Release target: `v0.1.0-research-alpha`.
   research-alpha security scope instead of research-prototype policy framing.
 - Command reference and prototype-map wording now use research-alpha package and
   scaffold framing instead of legacy evidence/prototype framing.
+- TFHE-rs integration note and native result caveat now use research-alpha
+  native-lane framing instead of legacy prototype framing.
 - Public demo naming now uses `Relay-2 Research Demo` instead of diagnostic
   framing across the portable benchmark and research assumptions.
 

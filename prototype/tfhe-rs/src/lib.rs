@@ -303,7 +303,7 @@ pub fn run_tfhe_sparse_classifier_json() -> DemoResult<Value> {
         "latencyMs": elapsed_ms(started),
         "memoryUsage": memory_usage,
         "productionClaim": false,
-        "caveat": "TFHE-rs research prototype path only; not production cryptography, not clinical validation, and not side-channel reviewed."
+        "caveat": "research-alpha TFHE-rs native lane only; not production cryptography, not clinical validation, and not side-channel reviewed."
     }))
 }
 

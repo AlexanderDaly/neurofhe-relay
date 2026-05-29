@@ -11,7 +11,7 @@ path. The concrete approach is hybrid:
 This is the most practical first TFHE-rs shape for NeuroFHE Relay because it
 keeps the same sorted-event task as OpenFHE while demonstrating the comparison
 and threshold-gate family where TFHE-style schemes are a natural fit. It is a
-research and educational prototype only. It is not production cryptography.
+research-alpha native comparison lane only. It is not production cryptography.
 
 ## Review Routes
 

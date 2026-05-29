@@ -2027,6 +2027,7 @@ test("evidence dashboard summarizes release gate status without upgrading claims
   const dashboard = readFileSync("docs/evidence-dashboard.md", "utf8");
   const requiredEntries = [
     "benchmark-artifacts/release-evidence/latest.json",
+    "release-evidence-tfhe-alpha-lane-framing-2026-05-29",
     "subject.releaseGateSatisfied: false",
     "subject.gateChecks",
     "subject.productionClaim: false",
@@ -2470,6 +2471,7 @@ test("TFHE-rs integration note routes native evidence and blockers", () => {
     "single local synthetic run",
     "not stable performance",
     "native measurement gaps",
+    "research-alpha native comparison lane",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !tfheNote.includes(entry),
@@ -2479,6 +2481,7 @@ test("TFHE-rs integration note routes native evidence and blockers", () => {
   assert.equal(tfheNote.includes("OpenFHE not installed on this machine"), false);
   assert.equal(tfheNote.includes("requires local OpenFHE run"), false);
   assert.equal(tfheNote.includes("Current Synthetic Result"), false);
+  assert.equal(tfheNote.includes("research and educational prototype"), false);
 });
 
 test("development guide preserves setup, evidence, and release boundaries", () => {
@@ -3889,6 +3892,8 @@ test("native TFHE-rs source uses real TFHE-rs integer and Boolean APIs", async (
   assert.match(source, /\.gt\(&encrypted_scores\.normal\)/);
   assert.match(source, /FheBool/);
   assert.match(source, /productionClaim/);
+  assert.match(source, /research-alpha TFHE-rs native lane only/);
+  assert.equal(source.includes("TFHE-rs research prototype path only"), false);
 });
 
 test("research assumptions are falsifiable and preserve clean-room guardrails", async () => {
