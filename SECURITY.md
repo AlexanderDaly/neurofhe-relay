@@ -18,7 +18,7 @@ threads and research limitations remain separate from vulnerabilities.
 
 ## Supported Scope
 
-Security reports are useful when they identify issues in the public prototype
+Security reports are useful when they identify issues in the public scaffold
 itself, such as:
 
 - raw signal, raw dataset, secret, or private payload leakage into committed

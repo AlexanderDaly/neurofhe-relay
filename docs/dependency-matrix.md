@@ -27,7 +27,7 @@ that can answer it.
 | `.nvmrc` | Node version hint for `nvm` users. | Local parity with hosted validation. |
 | `package.json` | Defines `npm run validate`, `npm test`, docs checks, hygiene scan, demos, and artifact commands. | Portable local work and CI. |
 | `.github/dependabot.yml` | Weekly dependency update routing for GitHub Actions and npm metadata. | Maintenance PR prompts; not release evidence by themselves. |
-| `prototype/test/prototype.test.mjs` | Node test suite for prototype contracts, artifacts, docs guards, CI checks, and caveats. | `npm test` and `npm run validate`. |
+| `prototype/test/prototype.test.mjs` | Node test suite for scaffold contracts, artifacts, docs guards, CI checks, and caveats. | `npm test` and `npm run validate`. |
 | `prototype/scripts/check-docs.mjs` | Local Markdown link checker. | `npm run check:docs` and `npm run validate`. |
 | `prototype/scripts/placeholder-scan.mjs` | Source hygiene scan for placeholders, token-shaped secrets, and raw-data path mistakes. | `npm run validate`. |
 

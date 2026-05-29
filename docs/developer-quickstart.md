@@ -28,7 +28,7 @@ the PR notes point to the right evidence boundary.
 | Goal | Start With | Confirm Before PR |
 | --- | --- | --- |
 | Small docs cleanup | `npm run check:docs` | Reader routes still point to maintained owners and `productionClaim: false` remains intact. |
-| Prototype or gateway behavior | `npm test -- --test-name-pattern "<focused behavior>"` | `docs/command-reference.md`, `prototype/README.md`, and the relevant boundary caveats still match the code. |
+| Scaffold or gateway behavior | `npm test -- --test-name-pattern "<focused behavior>"` | `docs/command-reference.md`, `prototype/README.md`, and the relevant boundary caveats still match the code. |
 | Artifact or real-data update | The exact artifact command in a temporary directory first. | `docs/data-handling.md`, provenance, raw-data exclusion, `privacyBoundary`, and `cryptoInventory`. |
 | Native dependency work | `npm run native:doctor` or the relevant OpenFHE/TFHE-rs command. | `docs/troubleshooting.md`, exact command/error/smallest next step, and no toy substitute for native evidence. |
 | Release-readiness or PR-policy review | `gh pr checks <number>` and `gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup`. | `docs/operations-runbook.md`, `docs/release-gate-matrix.md`, and `releaseGateSatisfied: false` unless every documented gate is satisfied. |
@@ -61,7 +61,7 @@ common gate before committing.
 | Change Type | Run First | Then Run |
 | --- | --- | --- |
 | Docs-only navigation or wording | `npm run check:docs` | `npm run ci` and `git diff --check` |
-| Prototype library or artifact behavior | `npm test -- --test-name-pattern "<focused behavior>"` | `npm run ci` and `git diff --check` |
+| Scaffold library or artifact behavior | `npm test -- --test-name-pattern "<focused behavior>"` | `npm run ci` and `git diff --check` |
 | GitHub Actions or repository policy | `gh pr checks <number>` and `gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup` | `npm run ci` and `git diff --check` |
 | Benchmark, dataset, native lane, or release evidence | Run the relevant artifact command into a temporary directory | `npm run ci`, `git diff --check`, and the exact artifact command if committed output changed |
 

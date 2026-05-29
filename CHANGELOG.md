@@ -136,6 +136,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened GitHub issue and PR templates plus contribution routing so public
   report surfaces use scaffold wording instead of broader prototype/runtime
   wording.
+- Tightened developer, security, dependency, and repository-map wording so
+  public guidance uses scaffold or `prototype/` path framing instead of broad
+  prototype surface labels.
 - Added documentation-index concision coverage so `docs/README.md` stays a
   reader-facing map instead of becoming a validation transcript.
 - Added documentation-index repository-baseline routing for CC0/license files,

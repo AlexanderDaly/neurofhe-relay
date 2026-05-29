@@ -86,7 +86,7 @@ evidence.
 
 ## Supporting Notes
 
-- [`prototype/README.md`](../prototype/README.md) - detailed prototype tutorial
+- [`prototype/README.md`](../prototype/README.md) - detailed scaffold tutorial
   and command notes.
 - [`prototype/PLAINTEXT_BASELINE.md`](../prototype/PLAINTEXT_BASELINE.md) -
   real-event-data baseline notes.

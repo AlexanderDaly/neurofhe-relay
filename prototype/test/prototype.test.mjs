@@ -1062,6 +1062,7 @@ test("documentation index stays concise and reader-facing", () => {
   assert.equal(validationLitanyMatches.length, 0);
   assert.equal(docsIndex.includes("public presentation sequence"), false);
   assert.equal(docsIndex.includes("prototype code, committed"), false);
+  assert.equal(docsIndex.includes("code navigation map for prototype entrypoints"), false);
 });
 
 test("briefing sequence guide lists every numbered root brief", () => {
@@ -1282,6 +1283,7 @@ test("prototype map lists every library module", () => {
   const prototypeMap = readFileSync("docs/prototype-map.md", "utf8");
   assert.equal(prototypeMap.includes("research-alpha scaffold code"), true);
   assert.equal(prototypeMap.includes("runnable prototype code"), false);
+  assert.equal(prototypeMap.includes("detailed prototype tutorial"), false);
 
   const libraryModules = readdirSync("prototype/lib")
     .filter((entry) => entry.endsWith(".mjs"))
@@ -1451,6 +1453,7 @@ test("package manifest lists every tracked top-level package entry", () => {
     "staged prototype and pilot plan",
     "dependency-free educational sparse encrypted spike-count prototype",
     "The included JavaScript prototype demonstrates",
+    "code navigation map for prototype surfaces",
   ].filter((entry) => packageManifest.includes(entry));
 
   assert.deepEqual(missingRouting, []);
@@ -1899,6 +1902,7 @@ test("security policy preserves research-alpha reporting boundaries", () => {
     "All current cryptographic lanes are research-alpha and caveated:",
     "exact command",
     "smallest next step",
+    "public scaffold",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !securityPolicy.includes(entry),
@@ -1907,6 +1911,7 @@ test("security policy preserves research-alpha reporting boundaries", () => {
   assert.deepEqual(missingEntries, []);
   assert.equal(securityPolicy.includes("research prototype"), false);
   assert.equal(securityPolicy.includes("research-grade"), false);
+  assert.equal(securityPolicy.includes("public prototype"), false);
 });
 
 test("contributing guide routes evidence and release-boundary work", () => {
@@ -2140,12 +2145,14 @@ test("dependency matrix lists portable and native setup surfaces", () => {
     "prototype/tfhe-rs/",
     "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
     "benchmark-artifacts/native-evidence/latest.json",
+    "scaffold contracts",
   ];
   const missingSurfaces = requiredSurfaces.filter((filePath) =>
     !dependencyMatrix.includes(filePath),
   );
 
   assert.deepEqual(missingSurfaces, []);
+  assert.equal(dependencyMatrix.includes("prototype contracts"), false);
 });
 
 test("data handling guide lists dataset and artifact boundary surfaces", () => {
@@ -2401,6 +2408,8 @@ test("repository guide maps current reader, maintainer, and GitHub surfaces", ()
   assert.deepEqual(missingEntries, []);
   assert.equal(guide.includes("pitch narrative, architecture, and prototype path"), false);
   assert.equal(guide.includes("portable prototype code"), false);
+  assert.equal(guide.includes("code navigation map for prototype entrypoints"), false);
+  assert.equal(guide.includes("Important prototype surfaces"), false);
 });
 
 test("release gate matrix lists every minimum evidence command", () => {
@@ -2844,7 +2853,7 @@ test("developer quickstart routes common change types to focused validation", ()
     "## Change Routes",
     "| Goal | Start With | Confirm Before PR |",
     "Small docs cleanup",
-    "Prototype or gateway behavior",
+    "Scaffold or gateway behavior",
     "Artifact or real-data update",
     "Native dependency work",
     "Release-readiness or PR-policy review",
@@ -2852,7 +2861,7 @@ test("developer quickstart routes common change types to focused validation", ()
     "| Change Type | Run First | Then Run |",
     "Docs-only navigation or wording",
     "npm run check:docs",
-    "Prototype library or artifact behavior",
+    "Scaffold library or artifact behavior",
     "npm test -- --test-name-pattern",
     "GitHub Actions or repository policy",
     "gh pr checks",
@@ -2871,6 +2880,8 @@ test("developer quickstart routes common change types to focused validation", ()
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(quickstart.includes("Prototype or gateway behavior"), false);
+  assert.equal(quickstart.includes("Prototype library or artifact behavior"), false);
 });
 
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {

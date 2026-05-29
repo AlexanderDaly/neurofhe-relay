@@ -49,7 +49,7 @@ the full package inventory.
   and next evidence-work queue.
 - `docs/policy-boundary.md` - map of the license, security, contribution,
   validation, and release files that define the claim boundary.
-- `docs/prototype-map.md` - code navigation map for prototype entrypoints,
+- `docs/prototype-map.md` - code navigation map for prototype/ entrypoints,
   library modules, native lanes, and support notes.
 - `docs/patent-package-map.md` - navigation map for ENER patent, briefing, and
   Mermaid diagram sources.
@@ -147,7 +147,7 @@ dataset path, or release-gate command fails.
 orchestration and validation layer. Treat native OpenFHE and TFHE-rs code as
 comparison lanes that require local dependencies and explicit caveats.
 
-Important prototype surfaces:
+Important prototype/ surfaces:
 
 - `prototype/lib/` - event encoding, gateway policy, linear scoring, artifact
   publishing, real-data preprocessing, native-adapter manifests, and evidence
