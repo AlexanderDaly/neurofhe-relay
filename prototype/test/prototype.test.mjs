@@ -1691,6 +1691,28 @@ test("release gate matrix lists every minimum evidence command", () => {
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("release plan states no-tag gate and approval boundaries", () => {
+  const releasePlan = readFileSync("RELEASE.md", "utf8");
+  const requiredEntries = [
+    "v0.1.0-research-alpha",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "repository ruleset/admin policy",
+    "explicit user approval",
+    "docs/release-gate-matrix.md",
+    "docs/evidence-dashboard.md",
+    "benchmark-artifacts/release-evidence/latest.json",
+    "not release approval",
+    "not production cryptography",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !releasePlan.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(releasePlan.includes("Yes:"), false);
+});
+
 test("changelog records unreleased cleanup stack and release caveats", () => {
   const changelog = readFileSync("CHANGELOG.md", "utf8");
   const requiredEntries = [

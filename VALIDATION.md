@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 126
-pass 126
+tests 127
+pass 127
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 126
-pass 126
+tests 127
+pass 127
 fail 0
 ```
 
@@ -97,6 +97,9 @@ Covered behaviours:
   maintainer, GitHub, CI, release-gate, and ruleset-policy surfaces.
 - Release-gate matrix coverage requiring every minimum evidence command in
   `RELEASE.md` to map to expected artifacts, caveats, and blocker posture.
+- Release-plan coverage requiring no-tag, release-gate false, repository
+  ruleset/admin policy, evidence-dashboard, and explicit-approval boundaries to
+  stay visible.
 - Changelog coverage requiring the unreleased cleanup stack, release caveats,
   hosted-CI status, and PR #23 blocker posture to stay visible.
 - Reviewer quickstart coverage requiring diligence entrypoints, evidence

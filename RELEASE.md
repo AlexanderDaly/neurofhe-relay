@@ -1,7 +1,7 @@
 # Release Plan
 
-Yes: the first release should be a research-alpha release, not a production
-cryptography release. A good initial tag is:
+The first release target is a research-alpha snapshot, not a production
+cryptography release:
 
 ```text
 v0.1.0-research-alpha
@@ -22,6 +22,12 @@ research prototype:
 
 It must not claim production cryptography, clinical validity, medical utility,
 side-channel resistance, or stable performance.
+
+The current release posture remains `releaseGateSatisfied: false`. This file is
+the controlling no-tag gate, but it is not release approval by itself.
+Release tagging still requires green current validation, satisfied evidence
+gates, the repository ruleset/admin policy merge path, and explicit user approval
+for the final action.
 
 ## Minimum Evidence Gate
 
@@ -46,7 +52,8 @@ If OpenFHE or TFHE-rs cannot run on the release machine, publish the generated
 blocker artifact instead of inventing substitute results. Record the exact
 command, error, and smallest next step.
 
-For a command-by-command review map, use `docs/release-gate-matrix.md`.
+For a command-by-command review map, use `docs/release-gate-matrix.md`. For the
+current human-readable evidence posture, use `docs/evidence-dashboard.md`.
 
 ## Release Checklist
 
@@ -85,7 +92,9 @@ For a command-by-command review map, use `docs/release-gate-matrix.md`.
   claims.
 - Confirm the portable GitHub Actions CI workflow is green on the release PR.
 - Confirm `git diff --check` and `npm run validate` pass.
-- Tag only after the validation PR is merged.
+- Confirm the repository ruleset/admin policy merge path is satisfied.
+- Tag only after the validation PR is merged, every gate above is satisfied,
+  and the user gives explicit approval for the final release action.
 
 ## Suggested GitHub Release Notes
 
