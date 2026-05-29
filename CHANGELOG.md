@@ -147,6 +147,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened contributing-guide coverage so docs cleanup, prototype/artifact,
   native FHE, real-data, and release-readiness work route through a compact
   contribution table.
+- Tightened contributing-guide PR boundaries so green validation does not imply
+  merge, tag, or release-claim approval without the documented gate and
+  explicit user approval.
 - Added maintainer-checklist coverage so review routing stays aligned with the
   current evidence, policy, support, contributor, and GitHub-template surfaces.
 - Expanded reviewer-quickstart coverage so diligence review routes through the

@@ -1606,6 +1606,8 @@ test("contributing guide routes evidence and release-boundary work", () => {
     "productionClaim: false",
     "exact command",
     "smallest next step",
+    "explicit user approval",
+    "do not merge, tag, or strengthen release-facing claims",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !contributing.includes(entry),

@@ -166,7 +166,8 @@ Covered behaviours:
 - Contributing-guide coverage requiring contribution-route, developer
   quickstart, command reference, data-handling, evidence-dashboard,
   release-gate matrix, troubleshooting, release-gate, repository-policy, and
-  artifact-boundary routing to stay visible.
+  artifact-boundary routing to stay visible, including explicit user approval
+  and no-merge/no-tag/no-claim-upgrade boundaries.
 - Code of conduct coverage requiring conduct-report routing, public
   collaboration boundaries, raw-data/private-payload limits,
   `productionClaim: false`, and `releaseGateSatisfied: false`.

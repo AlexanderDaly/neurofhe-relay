@@ -98,5 +98,9 @@ Maintainers should use `MAINTAINERS.md` before asserting release authority and
 `docs/maintainer-checklist.md` before merging, committing evidence artifacts,
 or preparing release review.
 
+Passing local validation and hosted CI does not make a cleanup PR release-ready
+by itself; do not merge, tag, or strengthen release-facing claims without the
+documented release gate, maintainer approval, and explicit user approval.
+
 Do not include secrets, private datasets, raw neural/EEG rows, or proprietary
 partner material in issues, pull requests, committed artifacts, or screenshots.
