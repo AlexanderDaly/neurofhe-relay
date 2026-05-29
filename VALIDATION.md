@@ -164,9 +164,10 @@ Covered behaviours:
 - Issue-template coverage requiring incoming reports to preserve evidence
   boundaries, release-gate posture, raw-data exclusions, and
   CI-versus-ruleset routing.
-- Maintainers-file coverage requiring the current maintainer route, release
-  authority boundary, repository ruleset/admin policy, explicit user approval,
-  `releaseGateSatisfied: false`, and `productionClaim: false`.
+- Maintainers-file coverage requiring maintainer-route, review-mode, evidence,
+  hosted-check, repository ruleset/admin policy, sensitive-report, release
+  authority, explicit user approval, `releaseGateSatisfied: false`, and
+  `productionClaim: false` boundaries.
 - Maintainer-checklist coverage requiring review-mode routing, current
   evidence-dashboard, FAQ, security, support, contribution, GitHub-template,
   release-gate, and repository-policy routing to stay visible.

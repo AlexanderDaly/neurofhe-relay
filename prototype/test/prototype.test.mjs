@@ -1256,6 +1256,13 @@ test("CODEOWNERS maps repository review ownership", () => {
 test("maintainers file defines release authority and evidence boundaries", () => {
   const maintainers = readFileSync("MAINTAINERS.md", "utf8");
   const requiredEntries = [
+    "## Maintainer Routes",
+    "| Decision Or Review Need | Start With | Boundary |",
+    "Ordinary code or documentation review",
+    "Evidence artifact or benchmark review",
+    "Hosted CI or repository-policy blocker review",
+    "Release merge or tag decision",
+    "Sensitive security, raw-data, or conduct concern",
     "@AlexanderDaly",
     ".github/CODEOWNERS",
     "docs/maintainer-checklist.md",

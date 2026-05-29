@@ -34,6 +34,9 @@ Release target: `v0.1.0-research-alpha`.
   reporting boundaries.
 - Added `MAINTAINERS.md` for current maintainer routing, review ownership, and
   release authority boundaries.
+- Added maintainer decision routes for ordinary review, evidence artifacts,
+  hosted-check/repository-policy blockers, release decisions, and sensitive
+  report handling.
 - Added a guarded, role-based root README first path for reviewers,
   contributors, maintainers, and evidence reviewers.
 - Added a guarded, concise root README repository layout that defers the

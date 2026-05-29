@@ -11,6 +11,20 @@ Review ownership is routed in `.github/CODEOWNERS`. Operational review should
 use `docs/maintainer-checklist.md`, `docs/operations-runbook.md`, and
 `RELEASE.md` before merging, refreshing artifacts, or preparing release review.
 
+## Maintainer Routes
+
+Use this table before treating a maintainer review as approval. It keeps routine
+review, evidence work, hosted-check state, release authority, and sensitive
+reports on their proper surfaces.
+
+| Decision Or Review Need | Start With | Boundary |
+| --- | --- | --- |
+| Ordinary code or documentation review | `.github/CODEOWNERS` and `docs/maintainer-checklist.md`. | Review ownership is not release approval. |
+| Evidence artifact or benchmark review | `docs/evidence-dashboard.md`, `docs/evidence-guide.md`, and `benchmark-artifacts/README.md`. | Preserve provenance, caveats, and `productionClaim: false`. |
+| Hosted CI or repository-policy blocker review | `docs/operations-runbook.md`, `VALIDATION.md`, and PR check-rollup evidence. | Keep CI/check-rollup failures separate from repository ruleset/admin policy. |
+| Release merge or tag decision | `RELEASE.md` and `docs/release-gate-matrix.md`. | Requires satisfied gates, green hosted validation, allowed merge policy, and explicit user approval. |
+| Sensitive security, raw-data, or conduct concern | `SECURITY.md`, `SUPPORT.md`, and `CODE_OF_CONDUCT.md`. | Do not put secrets, private payloads, raw datasets, or sensitive reports in public threads. |
+
 ## Maintainer Responsibilities
 
 - Keep CC0/public-domain framing intact unless the project posture is
