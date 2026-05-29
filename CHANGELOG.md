@@ -240,6 +240,8 @@ Release target: `v0.1.0-research-alpha`.
   rollup while keeping `releaseGateSatisfied: false`.
 - Clarified the evidence dashboard snapshot wording so committed release
   evidence is not confused with live PR head or merge-policy status.
+- Clarified the status roadmap so committed hosted-CI evidence snapshots stay
+  separate from live PR head, check-rollup, and merge-policy review.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

@@ -40,11 +40,15 @@ to the artifact or boundary file that should confirm the claim.
 
 - Portable validation and Markdown link checking are part of `npm run validate`.
 - Hosted `Portable validation` is green on the release-validation PR head.
-- The release evidence dashboard indexes the current hosted CI, repository
-  hygiene, native evidence, metadata-leakage, reconstruction-risk, real N-MNIST
-  baseline, TFHE-rs real-data blocker, and `productionClaim: false` posture.
+- The release evidence dashboard indexes a committed hosted-CI evidence
+  snapshot, repository hygiene, native evidence, metadata-leakage,
+  reconstruction-risk, real N-MNIST baseline, TFHE-rs real-data blocker, and
+  `productionClaim: false` posture.
 - `docs/evidence-dashboard.md` gives reviewers the same dashboard posture in a
   short human-readable form before they inspect the JSON artifact.
+- Live PR head, hosted check rollup, and merge-policy status still need
+  `gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup`
+  before merge or release review.
 - The repository now has reader maps for docs, briefs, prototype/ scaffold code, native
   sources, patent materials, generated outputs, contributor workflow, policy
   boundaries, evidence artifacts, operations, and maintainer checks.
