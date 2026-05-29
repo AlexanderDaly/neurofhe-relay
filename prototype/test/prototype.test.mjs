@@ -1028,6 +1028,18 @@ test("prototype map lists every library module", () => {
   assert.deepEqual(missingModules, []);
 });
 
+test("patent package map lists every patent markdown and mermaid source", () => {
+  const patentMap = readFileSync("docs/patent-package-map.md", "utf8");
+  const patentSources = listFilesRecursive("patent")
+    .filter((entry) => /\.(md|mmd)$/.test(entry))
+    .sort();
+  const missingSources = patentSources.filter((sourcePath) =>
+    !new RegExp(`\\b${escapeRegExp(sourcePath)}\\b`).test(patentMap),
+  );
+
+  assert.deepEqual(missingSources, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
@@ -1038,6 +1050,15 @@ test("GitHub Actions CI workflow runs automatically for pushes and pull requests
 
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function listFilesRecursive(dir) {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const path = `${dir}/${entry.name}`;
+    if (entry.isDirectory()) return listFilesRecursive(path);
+    if (!entry.isFile()) return [];
+    return [path];
+  });
 }
 
 test("GitHub Actions CI workflow uses Node 24-ready action majors", () => {

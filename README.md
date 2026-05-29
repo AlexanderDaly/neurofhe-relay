@@ -61,7 +61,7 @@ The cryptographic design target is:
 ## Start Here
 
 New readers should begin with `docs/README.md`, `docs/briefing-sequence.md`,
-`docs/repository-guide.md`, `docs/prototype-map.md`, `docs/developer-quickstart.md`,
+`docs/repository-guide.md`, `docs/prototype-map.md`, `docs/patent-package-map.md`, `docs/developer-quickstart.md`,
 `docs/command-reference.md`, and `docs/evidence-guide.md`. Maintainers should also use
 `docs/maintainer-checklist.md`. Together they map the public briefing sequence,
 prototype code, committed evidence artifacts, patent briefing material,
@@ -78,6 +78,7 @@ upgrading any cryptographic, security, medical, or deployment claim.
 - `docs/briefing-sequence.md` - reading order for the numbered public briefs.
 - `docs/repository-guide.md` - first-pass map for readers and contributors.
 - `docs/prototype-map.md` - code navigation map for prototype surfaces.
+- `docs/patent-package-map.md` - navigation map for patent and briefing sources.
 - `docs/developer-quickstart.md` - compact local validation path for contributors.
 - `docs/command-reference.md` - grouped npm command reference.
 - `docs/evidence-guide.md` - short evidence map for claim-safe artifact review.

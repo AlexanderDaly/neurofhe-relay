@@ -16,6 +16,8 @@ clinical validation, deployment evidence, or a security certification.
   public briefing files.
 - `docs/prototype-map.md` - code navigation map for prototype entrypoints,
   library modules, native lanes, and support notes.
+- `docs/patent-package-map.md` - navigation map for ENER patent, briefing, and
+  Mermaid diagram sources.
 - `docs/developer-quickstart.md` - compact local validation path for
   contributors.
 - `docs/command-reference.md` - grouped npm command reference for validation,
@@ -103,6 +105,8 @@ aligned with the same public boundary as the rest of the repository: no
 production cryptography claims, no medical-device claims, and no invented
 benchmark results.
 
+Use `docs/patent-package-map.md` to navigate the patent and briefing source
+files.
 Use `patent/briefing/ENER_weak_claims_evidence_gaps.md` when selecting the next
 evidence gap to close.
 
