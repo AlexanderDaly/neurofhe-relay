@@ -22,6 +22,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
   native-lane terms.
 - `docs/testing-strategy.md` - portable validation, hosted CI, docs-link,
   hygiene, and guard-family map.
+- `docs/dependency-matrix.md` - portable, hosted, native-lane, dataset, and
+  release dependency map.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - license, security, contribution, validation, and

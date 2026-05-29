@@ -60,6 +60,7 @@ git diff --check
 - `docs/command-reference.md` - grouped command list.
 - `docs/evidence-guide.md` - claim-safe evidence map.
 - `docs/glossary.md` - recurring project and artifact terms.
+- `docs/dependency-matrix.md` - portable and native dependency map.
 - `docs/policy-boundary.md` - root policy and claim-boundary map.
 - `docs/status-roadmap.md` - current readiness and next-work map.
 - `docs/testing-strategy.md` - portable validation and guard-family map.

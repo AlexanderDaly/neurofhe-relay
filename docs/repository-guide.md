@@ -18,6 +18,8 @@ clinical validation, deployment evidence, or a security certification.
   gateway, and native-lane terms.
 - `docs/testing-strategy.md` - portable validation, hosted CI, docs-link,
   hygiene, and guard-family map.
+- `docs/dependency-matrix.md` - portable, hosted, native-lane, dataset, and
+  release dependency map.
 - `docs/status-roadmap.md` - current review state, remaining release blockers,
   and next evidence-work queue.
 - `docs/policy-boundary.md` - map of the license, security, contribution,
@@ -78,6 +80,8 @@ deciding what to review or improve next.
 Use `docs/glossary.md` when project vocabulary is unclear.
 Use `docs/testing-strategy.md` before changing checks, CI, validation wording,
 or repository-readability guards.
+Use `docs/dependency-matrix.md` before changing runtime versions, native lanes,
+dataset inputs, or hosted validation requirements.
 
 ## Prototype Code
 

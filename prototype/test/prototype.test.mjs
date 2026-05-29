@@ -1190,6 +1190,26 @@ test("testing strategy maps every portable validation surface", () => {
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("dependency matrix lists portable and native setup surfaces", () => {
+  const dependencyMatrix = readFileSync("docs/dependency-matrix.md", "utf8");
+  const requiredSurfaces = [
+    ".node-version",
+    ".nvmrc",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "prototype/openfhe/",
+    "prototype/openfhe-ckks/",
+    "prototype/tfhe-rs/",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+  ];
+  const missingSurfaces = requiredSurfaces.filter((filePath) =>
+    !dependencyMatrix.includes(filePath),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
