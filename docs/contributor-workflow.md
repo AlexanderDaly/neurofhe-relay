@@ -30,13 +30,13 @@ steps.
 
 - [`.github/ISSUE_TEMPLATE/bug-report.yml`](../.github/ISSUE_TEMPLATE/bug-report.yml)
   - reproducible bug, failing command, CI job, script, scaffold behavior, or
-    artifact-generation report.
+    artifact-generation report, routed with the existing `bug` label.
 - [`.github/ISSUE_TEMPLATE/validation-gap.yml`](../.github/ISSUE_TEMPLATE/validation-gap.yml)
   - missing or incomplete evidence report where the current caveat must remain
-    visible.
+    visible, routed with the existing `enhancement` label.
 - [`.github/ISSUE_TEMPLATE/repository-cleanup.yml`](../.github/ISSUE_TEMPLATE/repository-cleanup.yml)
   - documentation, packaging, navigation, or contributor-workflow cleanup
-    request.
+    request, routed with the existing `documentation` label.
 - [`.github/ISSUE_TEMPLATE/config.yml`](../.github/ISSUE_TEMPLATE/config.yml)
   - GitHub issue-template chooser configuration.
 

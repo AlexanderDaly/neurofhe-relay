@@ -253,6 +253,8 @@ Release target: `v0.1.0-research-alpha`.
   that preserve exact-command, raw-data, secret, and claim-boundary prompts.
 - Grouped weekly Dependabot maintenance prompts for GitHub Actions and npm
   metadata so dependency upkeep arrives in reviewable batches.
+- Routed structured issue forms to existing GitHub labels for bug,
+  documentation, and enhancement triage.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

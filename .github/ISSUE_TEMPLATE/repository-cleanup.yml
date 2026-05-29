@@ -1,6 +1,8 @@
 name: Documentation or repository cleanup
 description: Propose a readability, navigation, documentation, or packaging cleanup.
 title: "[cleanup]: "
+labels:
+  - documentation
 body:
   - type: markdown
     attributes:

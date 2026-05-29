@@ -1,6 +1,8 @@
 name: Reproducible bug or validation failure
 description: Report a failing command, broken workflow, or unexpected scaffold behavior with enough evidence to reproduce it.
 title: "[bug]: "
+labels:
+  - bug
 body:
   - type: markdown
     attributes:

@@ -1,6 +1,8 @@
 name: Validation or evidence gap
 description: Track a reproducible research-alpha evidence gap without upgrading claims.
 title: "[evidence]: "
+labels:
+  - enhancement
 body:
   - type: markdown
     attributes:

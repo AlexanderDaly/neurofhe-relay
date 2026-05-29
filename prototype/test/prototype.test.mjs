@@ -1820,6 +1820,9 @@ test("issue templates preserve evidence boundaries and release routing", () => {
     "portable scaffold runtime",
     "prototype/ scaffold documentation",
     "blank_issues_enabled: false",
+    "labels:\n  - bug",
+    "labels:\n  - enhancement",
+    "labels:\n  - documentation",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !combined.includes(entry),
