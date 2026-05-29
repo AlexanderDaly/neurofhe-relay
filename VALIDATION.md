@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 127
-pass 127
+tests 128
+pass 128
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 127
-pass 127
+tests 128
+pass 128
 fail 0
 ```
 
@@ -121,6 +121,9 @@ Covered behaviours:
 - Prototype README coverage requiring the prototype entrypoint to stay concise,
   route detailed command and module inventory to repository maps, and preserve
   toy/native/raw-data/release caveats.
+- Plaintext-baseline note coverage requiring real-data evidence routes,
+  raw-dataset boundaries, release posture, and plaintext-only caveats to stay
+  visible.
 - Development guide coverage requiring setup, native-lane, evidence-artifact,
   hosted-CI, release-gate, and repository ruleset/admin policy boundaries to
   stay visible.

@@ -78,10 +78,12 @@ Release target: `v0.1.0-research-alpha`.
   routes commands, evidence artifacts, and release gates to maintained owners.
 - Added release-plan coverage so the no-tag gate, evidence-dashboard route,
   repository-policy merge path, and explicit approval boundary stay visible.
+- Added plaintext-baseline note coverage so real-data evidence routes,
+  raw-dataset boundaries, and plaintext-only caveats stay visible.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 127 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 128 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

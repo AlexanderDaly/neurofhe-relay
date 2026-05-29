@@ -1911,6 +1911,31 @@ test("prototype README stays a concise entrypoint instead of a command wall", ()
   assert.equal(prototypeReadme.includes("Print the real OpenFHE BFVrns integration plan"), false);
 });
 
+test("plaintext baseline note routes real-data evidence and caveats", () => {
+  const baselineNote = readFileSync("prototype/PLAINTEXT_BASELINE.md", "utf8");
+  const requiredEntries = [
+    "docs/command-reference.md",
+    "docs/data-handling.md",
+    "docs/evidence-dashboard.md",
+    "docs/release-gate-matrix.md",
+    "benchmark-artifacts/README.md",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "raw public datasets stay outside git",
+    "not encrypted-compute evidence",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !baselineNote.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(baselineNote.includes("first real-event-data lane"), false);
+});
+
 test("development guide preserves setup, evidence, and release boundaries", () => {
   const development = readFileSync("DEVELOPMENT.md", "utf8");
   const requiredEntries = [
