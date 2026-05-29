@@ -161,7 +161,7 @@ lane. It does not satisfy the remaining native-evidence gap: OpenFHE still
 needs fuller serialized ciphertext byte reporting and RSS or peak-memory
 measurements before memory or stable performance claims are defensible.
 
-The release-evidence index now summarizes the current CI blocker, repository
+The release-evidence index now summarizes the current hosted-CI evidence, repository
 hygiene result, native measurement coverage, metadata-leakage caveat, synthetic
 reconstruction-risk probe caveat, real N-MNIST plaintext baseline, and TFHE-rs
 real-data blocker in one dashboard artifact:
@@ -175,8 +175,9 @@ Current committed evidence:
 - `benchmark-artifacts/release-evidence/latest.json`
 - schema: `neurofhe.releaseEvidenceIndex.v1`
 - release gate: not satisfied.
-- hosted portable CI: blocked; the open PR stack #17 through #22 has empty
-  hosted check rollups while the workflow remains `workflow_dispatch` only.
+- hosted portable CI: passing on PR #23 after restoring automatic `push` and
+  `pull_request` triggers; remaining PR blocked state is repository ruleset
+  policy, not CI/check-rollup.
 - native measurement coverage: incomplete.
 - metadata leakage: caveated taxonomy proxy only.
 - reconstruction risk: synthetic probe only; public-position linkage remains a

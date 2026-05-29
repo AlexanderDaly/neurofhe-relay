@@ -61,7 +61,7 @@ command, error, and smallest next step.
   remaining gaps, including ciphertext-byte and RSS/peak-memory measurement
   coverage plus the per-lane measurement gap index.
 - Confirm `benchmark-artifacts/release-evidence/latest.json` indexes the
-  current CI blocker, repository hygiene result, native measurement coverage,
+  current hosted-CI evidence, repository hygiene result, native measurement coverage,
   metadata-leakage caveat, reconstruction-risk probe caveat, and
   real N-MNIST plaintext baseline plus the TFHE-rs real-data input blocker,
   with `productionClaim: false` status without marking the release gate

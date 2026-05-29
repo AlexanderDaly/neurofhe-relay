@@ -1296,6 +1296,53 @@ test("release evidence index prefers real N-MNIST baseline over stale blocker", 
   );
 });
 
+test("release evidence index carries green hosted CI details when check rollup is fixed", () => {
+  const artifacts = new Map([
+    [
+      "benchmark-artifacts/ci-blockers/latest.json",
+      {
+        schema: "neurofhe.hostedCiEvidence.v1",
+        artifactId: "ci-green-test",
+        releaseGateSatisfied: true,
+        observedRepositoryState: {
+          openPullRequests: [{ number: 23 }],
+        },
+        workflowState: {
+          currentTrigger: "push,pull_request,workflow_dispatch",
+        },
+        blocker: {
+          isCodeFailure: false,
+          currentObservation: "PR #23 has successful hosted CI check runs.",
+        },
+        smallestNextStep:
+          "Use the repository ruleset/admin merge path after review.",
+        productionClaim: false,
+      },
+    ],
+  ]);
+
+  const index = buildReleaseEvidenceIndex({
+    generatedAt: "2026-05-29T04:33:30.000Z",
+    artifactReader: (path) => artifacts.get(path),
+  });
+
+  assert.equal(index.gateChecks.hostedPortableCi.status, "pass");
+  assert.equal(
+    index.gateChecks.hostedPortableCi.reason,
+    "PR #23 has successful hosted CI check runs.",
+  );
+  assert.equal(index.gateChecks.hostedPortableCi.openPullRequestCount, 1);
+  assert.equal(
+    index.gateChecks.hostedPortableCi.workflowTrigger,
+    "push,pull_request,workflow_dispatch",
+  );
+  assert.equal(index.gateChecks.hostedPortableCi.isCodeFailure, false);
+  assert.equal(
+    index.gateChecks.hostedPortableCi.smallestNextStep,
+    "Use the repository ruleset/admin merge path after review.",
+  );
+});
+
 test("privacy mode benchmark compares speed against sparsity metadata protection", () => {
   const comparison = buildPrivacyModeComparison(buildSparseEventWindow(), 2);
   const [publicSparse, publicNeurons, paddedSparse, dense] = comparison.modes;

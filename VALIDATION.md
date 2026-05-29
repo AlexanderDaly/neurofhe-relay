@@ -409,12 +409,14 @@ npm run release:evidence -- --artifact --artifact-id release-evidence-with-tfhe-
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-nmnist-blocker-2026-05-28 --generated-at 2026-05-28T16:36:00.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-real-nmnist-2026-05-28 --generated-at 2026-05-28T18:20:00.000Z
 npm run release:evidence -- --artifact --artifact-id release-evidence-with-open-pr-stack-2026-05-29 --generated-at 2026-05-29T02:24:30.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-green-ci-2026-05-29 --generated-at 2026-05-29T04:33:30.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-green-ci-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-open-pr-stack-2026-05-29.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-real-nmnist-2026-05-28.json
 benchmark-artifacts/release-evidence/runs/release-evidence-with-nmnist-blocker-2026-05-28.json
@@ -432,9 +434,9 @@ Result summary:
   "releaseGateSatisfied": false,
   "gateChecks": {
     "hostedPortableCi": {
-      "status": "blocked",
-      "openPullRequestCount": 6,
-      "workflowTrigger": "workflow_dispatch",
+      "status": "pass",
+      "openPullRequestCount": 1,
+      "workflowTrigger": "push,pull_request,workflow_dispatch",
       "isCodeFailure": false
     },
     "repositoryHygiene": {"status": "pass"},
@@ -456,13 +458,15 @@ Result summary:
 }
 ```
 
-The index is a dashboard artifact over already committed blocker, hygiene,
+The index is a dashboard artifact over already committed hosted-CI, hygiene,
 native-evidence, privacy-mode, reconstruction-risk, real N-MNIST baseline, and
-TFHE real-data blocker artifacts. The current CI blocker reflects the open
-stacked PR train (#17 through #22): PR #17 is mergeable but blocked with an
-empty hosted check rollup, and PRs #18 through #22 are mergeable/clean with
-empty hosted check rollups. It does not create encrypted benchmark measurements,
-cryptographic/privacy proof, clinical evidence, or release approval.
+TFHE real-data blocker artifacts. The current hosted-CI artifact records PR #23
+against `main` with successful `pull_request` and `push` `Portable validation`
+check runs after automatic triggers were restored. Manual dispatch CI also
+passed on the superseded stacked branch heads #17 through #22, but GitHub does
+not attach those manual runs to the old stacked PR rollups. It does not create
+encrypted benchmark measurements, cryptographic/privacy proof, clinical
+evidence, or release approval.
 
 ### Public N-MNIST Real-Data Plaintext Baseline
 
@@ -1374,22 +1378,23 @@ gh api repos/AlexanderDaly/neurofhe-relay/branches/main/protection --jq '{requir
 Result:
 
 ```text
-Open pull requests: #17, #18, #19, #20, #21, #22
-Stack head: 0e60e6b on codex/nmnist-release-evidence-blocker
-CI workflow: active, workflow_dispatch only
-Latest hosted CI runs: stale failures from old branch heads
-Branch protection API: 404 Branch not protected
+Open pull requests: #23, with #17 through #22 superseded by the collapsed stack
+Stack head: 5392018 on codex/open-pr-stack-ci-blocker
+CI workflow: active, push, pull_request, and workflow_dispatch
+Latest hosted CI runs: green on PR #23 pull_request and push events
+Ruleset API: active default-branch ruleset iamthelaw includes an update rule
 ```
 
-The workflow is currently `workflow_dispatch` only, following the earlier
-GitHub Actions billing/account lock. The open stacked PR train has empty hosted
-check rollups, so the release checklist is still not satisfied even though
-local validation passes. This is release-gate availability evidence, not
-code-failure evidence. The current blocker artifact is:
+The workflow now runs automatically on push and pull request events, and PR #23
+has successful hosted `Portable validation` check runs. PR #23 still reports
+`mergeStateStatus: BLOCKED` because the active default-branch ruleset
+`iamthelaw` applies an update rule to `main`; that is a repository
+ruleset/admin merge policy, not a CI or check-rollup failure. The current
+hosted-CI evidence artifact is:
 
 ```text
 benchmark-artifacts/ci-blockers/latest.json
-benchmark-artifacts/ci-blockers/runs/github-actions-open-pr-stack-2026-05-29.json
+benchmark-artifacts/ci-blockers/runs/github-actions-green-release-stack-2026-05-29.json
 ```
 
 ## Scope Note

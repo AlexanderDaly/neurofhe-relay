@@ -88,16 +88,16 @@ anonymity, side-channel, or reconstruction-resistance proof. Runtime
 measurements in that artifact are local JavaScript toy-arithmetic timings only;
 use native OpenFHE or TFHE-rs artifacts for cryptographic-library timing.
 
-CI blocker artifacts are written under `benchmark-artifacts/ci-blockers/` when
-GitHub Actions cannot start or complete for account or host reasons outside the
-portable validation commands. The May 29 open-PR-stack refresh records PR #17
-as mergeable but blocked with an empty hosted check rollup, PRs #18 through #22
-as mergeable/clean with empty hosted check rollups, and the CI workflow as
-`workflow_dispatch` only after the prior GitHub Actions account/billing lock.
-This remains an Actions availability and release gate blocker, not evidence of
-a code or workflow-step failure. Before tagging, run or manually dispatch the
-portable workflow on the stacked release-validation PR train and require a
-green hosted run.
+CI blocker and hosted-CI evidence artifacts are written under
+`benchmark-artifacts/ci-blockers/` when GitHub Actions cannot start or complete
+for account or host reasons outside the portable validation commands, or when
+the release stack needs an auditable hosted-CI snapshot. The May 29 green-stack
+refresh records PR #23 against `main` with successful `pull_request` and `push`
+`Portable validation` check runs after automatic triggers were restored. Manual
+dispatch CI also passed on the superseded stacked branch heads #17 through #22,
+although GitHub does not attach those manual runs to the old stacked PR
+rollups. The remaining `mergeStateStatus: BLOCKED` on PR #23 is attributed to
+the active default-branch ruleset/admin merge policy, not CI/check-rollup.
 
 Repository hygiene artifacts are written under
 `benchmark-artifacts/repo-hygiene/`. They record the source scan result,
