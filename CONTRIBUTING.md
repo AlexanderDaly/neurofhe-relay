@@ -9,9 +9,16 @@ into production cryptography, medical, security, or performance claims.
 
 - Follow `CODE_OF_CONDUCT.md` for public collaboration expectations and report
   routing.
+- Use `docs/developer-quickstart.md` for the shortest local setup path,
+  `docs/command-reference.md` for command details, and `docs/troubleshooting.md`
+  when a local, hosted-CI, native-lane, dataset, or release-gate command fails.
 - Keep raw signals and raw public/private datasets out of git.
+- Use `docs/data-handling.md` before changing dataset paths, derived artifacts,
+  blocker reports, hygiene evidence, or local ignore rules.
 - Preserve `privacyBoundary`, `cryptoInventory`, provenance, and
   `productionClaim: false` in benchmark and adapter outputs.
+- Keep `releaseGateSatisfied: false` visible unless every documented release
+  gate is genuinely satisfied.
 - Clearly distinguish synthetic demos, plaintext real-data baselines, toy
   cryptography, native OpenFHE/TFHE-rs runs, and blocker reports.
 - Prefer small, reproducible changes with commands a reviewer can run locally.
@@ -34,6 +41,12 @@ pull-request, security-reporting, support-routing, and hosted CI surfaces.
 Every issue should include the relevant command, artifact path, observed result,
 and smallest next step when those details apply. Do not attach secrets, private
 payloads, raw datasets, raw signal rows, or proprietary material.
+
+If an issue is about release readiness, compare `docs/evidence-dashboard.md`
+and `docs/release-gate-matrix.md` before calling it ready or blocked. If hosted
+checks are green but GitHub still blocks the PR, distinguish policy blockers
+from CI/check-rollup or code failures. The repository ruleset/admin policy blockers
+are not benchmark, release-gate, or code-failure evidence by themselves.
 
 ## Before Opening a Pull Request
 

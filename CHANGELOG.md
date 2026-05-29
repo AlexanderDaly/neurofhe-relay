@@ -66,10 +66,12 @@ Release target: `v0.1.0-research-alpha`.
   accidental dataset/download scratch folders.
 - Added security-policy coverage so sensitive reports preserve raw-data,
   claim-boundary, exact-command, and hygiene-scan-limit language.
+- Added contributing-guide coverage so contributor entrypoints preserve
+  evidence, data-handling, release-gate, and repository-policy routing.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 124 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 125 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

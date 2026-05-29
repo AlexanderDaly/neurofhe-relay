@@ -1329,6 +1329,30 @@ test("security policy preserves research-alpha reporting boundaries", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("contributing guide routes evidence and release-boundary work", () => {
+  const contributing = readFileSync("CONTRIBUTING.md", "utf8");
+  const requiredEntries = [
+    "docs/developer-quickstart.md",
+    "docs/command-reference.md",
+    "docs/data-handling.md",
+    "docs/evidence-dashboard.md",
+    "docs/release-gate-matrix.md",
+    "docs/troubleshooting.md",
+    "releaseGateSatisfied: false",
+    "repository ruleset/admin policy",
+    "privacyBoundary",
+    "cryptoInventory",
+    "productionClaim: false",
+    "exact command",
+    "smallest next step",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !contributing.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("status roadmap lists every release-readiness evidence surface", () => {
   const statusRoadmap = readFileSync("docs/status-roadmap.md", "utf8");
   const releaseReadinessSurfaces = [
