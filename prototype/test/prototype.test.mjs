@@ -2511,7 +2511,7 @@ test("architecture decision log records repository boundary decisions", () => {
     "License and public-domain posture",
     "Claim, release, or production boundary",
     "Privacy, crypto inventory, or artifact metadata",
-    "Toy prototype versus native FHE lane",
+    "Research-alpha scaffold versus native FHE lane",
     "Raw-data and repository hygiene boundary",
     "Hosted CI versus repository-policy boundary",
     "CC0",
@@ -2520,10 +2520,10 @@ test("architecture decision log records repository boundary decisions", () => {
     "privacyBoundary",
     "cryptoInventory",
     "bio-digital event intelligence",
-    "toy additive",
+    "toy additive scaffold code",
     "native OpenFHE",
     "TFHE-rs",
-    "raw data stays outside git",
+    "raw data outside git",
     "repository ruleset/admin policy",
     "releaseGateSatisfied: false",
   ];
@@ -2532,6 +2532,8 @@ test("architecture decision log records repository boundary decisions", () => {
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(decisionLog.includes("Toy prototype versus native FHE lane"), false);
+  assert.equal(decisionLog.includes("Keep raw data stays outside git"), false);
 });
 
 test("operations runbook maps maintainer commands and blocker policy", () => {

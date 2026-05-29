@@ -82,6 +82,8 @@ Release target: `v0.1.0-research-alpha`.
   documentation navigation, source hygiene, and native/release evidence review.
 - Added architecture decision routes for license, claim, metadata, native-lane,
   raw-data, and hosted-CI/repository-policy boundary changes.
+- Tightened architecture decision wording so toy additive code is framed as a
+  research-alpha scaffold and raw-data exclusion reads cleanly.
 - Added policy-boundary routes for license, public-claim, contribution,
   security/raw-data, and release/validation posture changes.
 - Added `SUPPORT.md` and a support-routing guard for public issues, sensitive
