@@ -42,6 +42,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `docs/contributor-workflow.md` - map of issue forms, PR template, and hosted
   CI workflow surfaces.
 - `docs/architecture-decisions.md` - accepted repository boundary decisions.
+- `docs/operations-runbook.md` - routine PR, hosted-check, evidence refresh,
+  and blocker handling.
 - `docs/reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `docs/developer-quickstart.md` - compact local validation path for contributors.
 - `docs/command-reference.md` - grouped npm command reference for validation,

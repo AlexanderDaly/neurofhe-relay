@@ -40,6 +40,8 @@ clinical validation, deployment evidence, or a security certification.
 - `docs/contributor-workflow.md` - map of issue forms, PR template, and hosted
   CI workflow surfaces.
 - `docs/architecture-decisions.md` - accepted repository boundary decisions.
+- `docs/operations-runbook.md` - routine PR, hosted-check, evidence refresh,
+  and blocker handling.
 - `docs/reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `docs/developer-quickstart.md` - compact local validation path for
   contributors.
@@ -101,6 +103,8 @@ Use `docs/reviewer-quickstart.md` when reviewing the repository from a
 diligence, grant, patent, or maintainer perspective.
 Use `docs/architecture-decisions.md` before changing repository boundaries,
 license posture, raw-data policy, claim posture, or native/toy lane framing.
+Use `docs/operations-runbook.md` when checking PR rollups, refreshing evidence
+artifacts, or recording hosted-CI and repository-policy blockers.
 
 ## Prototype Code
 

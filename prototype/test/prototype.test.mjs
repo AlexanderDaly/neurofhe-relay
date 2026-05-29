@@ -1355,6 +1355,29 @@ test("architecture decision log records repository boundary decisions", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("operations runbook maps maintainer commands and blocker policy", () => {
+  const runbook = readFileSync("docs/operations-runbook.md", "utf8");
+  const requiredEntries = [
+    "npm run validate",
+    "git diff --check",
+    "Portable validation",
+    "benchmark-artifacts/ci-blockers/latest.json",
+    "npm run native:doctor -- --artifact",
+    "npm run release:evidence -- --artifact",
+    "npm run scan:hygiene -- --artifact",
+    "exact command, error, and smallest next step",
+    "repository ruleset/admin policy",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "RELEASE.md",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !runbook.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

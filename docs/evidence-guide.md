@@ -8,6 +8,7 @@ Release command evidence posture lives in `docs/release-gate-matrix.md`.
 Unreleased review history lives in `CHANGELOG.md`.
 Reviewer entrypoints live in `docs/reviewer-quickstart.md`.
 Accepted repository decisions live in `docs/architecture-decisions.md`.
+Routine PR and blocker handling lives in `docs/operations-runbook.md`.
 
 NeuroFHE Relay is a research-alpha package. Evidence in this repository can
 support scoped prototype statements, but it does not support production
@@ -61,4 +62,6 @@ when intentionally refreshing native-evidence manifests.
 
 If a command cannot run because a dataset, OpenFHE, TFHE-rs, GitHub Actions, or
 host setup is unavailable, record the exact command, error, and smallest next
-step in a structured blocker artifact or validation note.
+step in a structured blocker artifact or validation note. Use
+`docs/operations-runbook.md` when the blocker is a hosted-CI check-rollup,
+repository ruleset/admin policy, or routine release-validation PR issue.

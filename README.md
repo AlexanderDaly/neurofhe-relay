@@ -67,15 +67,15 @@ New readers should begin with `docs/README.md`, `docs/briefing-sequence.md`,
 `docs/data-handling.md`, `docs/claim-evidence-ledger.md`,
 `docs/release-gate-matrix.md`, `docs/status-roadmap.md`,
 `docs/policy-boundary.md`, `docs/contributor-workflow.md`,
-`docs/architecture-decisions.md`, `docs/reviewer-quickstart.md`,
-`docs/developer-quickstart.md`, `docs/command-reference.md`, and
-`docs/evidence-guide.md`. Maintainers should also use
-`docs/maintainer-checklist.md`. Together they map the public briefing sequence,
-prototype code, committed evidence artifacts, patent briefing material,
+`docs/architecture-decisions.md`, `docs/operations-runbook.md`,
+`docs/reviewer-quickstart.md`, `docs/developer-quickstart.md`,
+`docs/command-reference.md`, and `docs/evidence-guide.md`. Maintainers should
+also use `docs/maintainer-checklist.md`. Together they map the public briefing
+sequence, prototype code, committed evidence artifacts, patent briefing material,
 recurring vocabulary, testing strategy, dependency posture, data/artifact
 boundaries, claim evidence, release gate commands, architecture decisions,
-reviewer paths, current status, claim-boundary files, contributor workflow,
-runnable commands, and
+operations, reviewer paths, current status, claim-boundary files, contributor
+workflow, runnable commands, and
 research-alpha release gate without upgrading any cryptographic, security,
 medical, or deployment claim.
 
@@ -110,6 +110,7 @@ medical, or deployment claim.
 - `docs/presentation-outputs.md` - map of generated presentation exports.
 - `docs/contributor-workflow.md` - map of issue, PR, and hosted CI surfaces.
 - `docs/architecture-decisions.md` - accepted repository boundary decisions.
+- `docs/operations-runbook.md` - routine PR, hosted-check, and blocker handling.
 - `docs/reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `docs/developer-quickstart.md` - compact local validation path for contributors.
 - `docs/command-reference.md` - grouped npm command reference.

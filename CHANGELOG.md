@@ -22,13 +22,15 @@ Release target: `v0.1.0-research-alpha`.
 - Added `docs/claim-evidence-ledger.md` for weak-claim evidence posture.
 - Added `docs/release-gate-matrix.md` for release command, artifact, caveat,
   and blocker review.
+- Added `docs/operations-runbook.md` for routine PR checks, hosted check-rollup
+  review, evidence refresh commands, and blocker recording.
 - Added guarded documentation coverage in the Node test suite so the repository
   maps stay synchronized with tracked surfaces.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 102 tests, Markdown
-  link scan over 66 files, JSON parsing, and repository hygiene scan.
+- `VALIDATION.md` now records the current portable gate as 105 tests, Markdown
+  link scan over 69 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
 

@@ -24,6 +24,7 @@ below.
 - Claim-to-evidence posture: `docs/claim-evidence-ledger.md`.
 - Release command matrix: `docs/release-gate-matrix.md`.
 - Accepted repository decisions: `docs/architecture-decisions.md`.
+- Routine PR and blocker handling: `docs/operations-runbook.md`.
 
 ## What Is Ready To Review
 
@@ -34,7 +35,7 @@ below.
   baseline, TFHE-rs real-data blocker, and `productionClaim: false` posture.
 - The repository now has reader maps for docs, briefs, prototype code, native
   sources, patent materials, generated outputs, contributor workflow, policy
-  boundaries, evidence artifacts, and maintainer checks.
+  boundaries, evidence artifacts, operations, and maintainer checks.
 
 ## What Still Blocks Release
 
@@ -75,8 +76,8 @@ below.
   this file.
 - Contributor: read `docs/developer-quickstart.md`,
   `docs/command-reference.md`, and `CONTRIBUTING.md`.
-- Maintainer: use `docs/maintainer-checklist.md`, `RELEASE.md`, and
-  `VALIDATION.md`.
+- Maintainer: use `docs/maintainer-checklist.md`,
+  `docs/operations-runbook.md`, `RELEASE.md`, and `VALIDATION.md`.
 - Evidence reviewer: start with `docs/evidence-guide.md`,
   `docs/reviewer-quickstart.md`,
   `docs/architecture-decisions.md`,

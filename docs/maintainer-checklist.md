@@ -21,6 +21,8 @@ git diff --check
 ```
 
 - Confirm hosted `Portable validation` is green on the PR head.
+- Use `docs/operations-runbook.md` if the PR check rollup is empty, failing, or
+  green but still blocked by repository ruleset/admin policy.
 - Confirm raw datasets, raw signals, secrets, private payloads, and proprietary
   material are not staged or attached.
 - Confirm claim language still matches the research-alpha boundary.
@@ -62,6 +64,7 @@ git diff --check
 - `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `docs/reviewer-quickstart.md` - diligence and evidence-review entry path.
 - `docs/architecture-decisions.md` - accepted repository boundary decisions.
+- `docs/operations-runbook.md` - routine PR and blocker handling.
 - `docs/glossary.md` - recurring project and artifact terms.
 - `docs/dependency-matrix.md` - portable and native dependency map.
 - `docs/data-handling.md` - raw-data and derived-artifact boundary map.
