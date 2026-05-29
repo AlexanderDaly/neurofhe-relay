@@ -149,8 +149,8 @@ use native OpenFHE or TFHE-rs artifacts for cryptographic-library timing.
 CI blocker and hosted-CI evidence artifacts are written under
 `benchmark-artifacts/ci-blockers/` when GitHub Actions cannot start or complete
 for account or host reasons outside the portable validation commands, or when
-the release stack needs an auditable hosted-CI snapshot. The May 29 current-head
-refresh records PR #23 against `main` head `7317f11` with successful
+the release stack needs an auditable hosted-CI snapshot. The May 29 `0feaa65`
+snapshot records PR #23 against `main` head `7317f11` with successful
 `pull_request` and `push` `Portable validation` check runs on PR head
 `0feaa65` after automatic triggers were restored. It also records the
 Node 24-ready action major updates for checkout, setup-node, and

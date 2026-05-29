@@ -235,9 +235,9 @@ Release target: `v0.1.0-research-alpha`.
   Readiness Snapshot so authors report local validation, hosted
   `Portable validation`, merge state, release-gate posture, and remaining
   blockers consistently.
-- Refreshed hosted-CI and release-evidence artifacts for the current PR #23
-  head so the evidence dashboard points at the latest green `Portable
-  validation` rollup while keeping `releaseGateSatisfied: false`.
+- Refreshed hosted-CI and release-evidence artifacts for the PR #23 `0feaa65`
+  snapshot so the evidence dashboard points at a green `Portable validation`
+  rollup while keeping `releaseGateSatisfied: false`.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

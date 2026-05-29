@@ -1,11 +1,11 @@
 {
   "schema": "neurofhe.releaseEvidenceArtifact.v1",
-  "artifactId": "release-evidence-current-ci-head-2026-05-29",
-  "generatedAt": "2026-05-29T16:47:00.000Z",
+  "artifactId": "release-evidence-ci-head-0feaa65-2026-05-29",
+  "generatedAt": "2026-05-29T16:51:30.000Z",
   "subjectSchema": "neurofhe.releaseEvidenceIndex.v1",
   "subject": {
     "schema": "neurofhe.releaseEvidenceIndex.v1",
-    "generatedAt": "2026-05-29T16:47:00.000Z",
+    "generatedAt": "2026-05-29T16:51:30.000Z",
     "releaseTarget": "v0.1.0-research-alpha",
     "purpose": "Provide a compact index of the current release-gate evidence without upgrading caveated research artifacts into release approval.",
     "releaseGateSatisfied": false,
@@ -13,7 +13,7 @@
       "hostedPortableCi": {
         "status": "pass",
         "reason": "Automatic push and pull_request triggers remain restored on PR #23 at head 0feaa65, with successful hosted Portable validation check runs in the status check rollup and current Node 24-ready action majors.",
-        "artifactId": "github-actions-green-pr23-current-head-2026-05-29",
+        "artifactId": "github-actions-green-pr23-0feaa65-2026-05-29",
         "openPullRequestCount": 1,
         "workflowTrigger": "push,pull_request,workflow_dispatch",
         "isCodeFailure": false,
@@ -134,7 +134,7 @@
         "path": "benchmark-artifacts/ci-blockers/latest.json",
         "present": true,
         "schema": "neurofhe.hostedCiEvidence.v1",
-        "artifactId": "github-actions-green-pr23-current-head-2026-05-29",
+        "artifactId": "github-actions-green-pr23-0feaa65-2026-05-29",
         "subjectSchema": null,
         "productionClaim": false
       },

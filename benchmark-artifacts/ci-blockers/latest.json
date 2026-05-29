@@ -1,6 +1,6 @@
 {
   "schema": "neurofhe.hostedCiEvidence.v1",
-  "artifactId": "github-actions-green-pr23-current-head-2026-05-29",
+  "artifactId": "github-actions-green-pr23-0feaa65-2026-05-29",
   "generatedAt": "2026-05-29T16:46:23Z",
   "scope": "portable-github-actions-validation",
   "hostedPortableCiSatisfied": true,
