@@ -215,6 +215,8 @@ Release target: `v0.1.0-research-alpha`.
   as research-alpha briefing material, not pilot readiness.
 - Tightened the code-map front door so the reader-facing heading is scaffold
   code while preserving the literal `prototype/` path for file references.
+- Tightened adjacent docs-index, repository-guide, and manifest references so
+  they describe `docs/prototype-map.md` as the scaffold code map.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

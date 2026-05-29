@@ -31,7 +31,7 @@ public repository before opening the deeper inventories.
 
 - `briefing-sequence.md` - reading order for the root `01-` through `12-`
   public briefing files.
-- `prototype-map.md` - code navigation map for prototype/ entrypoints, library
+- `prototype-map.md` - scaffold code map for prototype/ entrypoints, library
   modules, native lanes, and support notes.
 - `patent-package-map.md` - navigation map for ENER patent, briefing, and
   Mermaid diagram sources.

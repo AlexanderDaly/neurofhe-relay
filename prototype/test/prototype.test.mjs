@@ -1050,6 +1050,7 @@ test("documentation index stays concise and reader-facing", () => {
     "docs/command-reference.md",
     "benchmark-artifacts/README.md",
     "top-level numbered briefs remain the public briefing sequence",
+    "scaffold code map for prototype/ entrypoints",
     "prototype/ scaffold code",
     "production cryptography",
   ];
@@ -1063,6 +1064,7 @@ test("documentation index stays concise and reader-facing", () => {
   assert.equal(docsIndex.includes("public presentation sequence"), false);
   assert.equal(docsIndex.includes("prototype code, committed"), false);
   assert.equal(docsIndex.includes("code navigation map for prototype entrypoints"), false);
+  assert.equal(docsIndex.includes("code navigation map for prototype/ entrypoints"), false);
 });
 
 test("briefing sequence guide lists every numbered root brief", () => {
@@ -1433,6 +1435,7 @@ test("package manifest lists every tracked top-level package entry", () => {
     "research-alpha security scope",
     "11-slide evidence narrative",
     "research-alpha evidence roadmap",
+    "scaffold code map for prototype/ entrypoints",
     "dependency-free educational sparse encrypted spike-count scaffold",
     "openfhe-bfvrns-eeg-eye-state-2026-05-21",
     "openfhe-ckks-eeg-eye-state-2026-05-21",
@@ -1456,6 +1459,7 @@ test("package manifest lists every tracked top-level package entry", () => {
     "dependency-free educational sparse encrypted spike-count prototype",
     "The included JavaScript prototype demonstrates",
     "code navigation map for prototype surfaces",
+    "code navigation map for prototype/ scaffold surfaces",
   ].filter((entry) => packageManifest.includes(entry));
 
   assert.deepEqual(missingRouting, []);
@@ -2403,6 +2407,7 @@ test("repository guide maps current reader, maintainer, and GitHub surfaces", ()
     "releaseGateSatisfied: false",
     "repository ruleset/admin policy",
     "evidence narrative, architecture, and research-alpha roadmap",
+    "scaffold code map for prototype/ entrypoints",
     "portable scaffold code",
     "## Scaffold Code",
     "Important scaffold surfaces",
@@ -2415,6 +2420,7 @@ test("repository guide maps current reader, maintainer, and GitHub surfaces", ()
   assert.equal(guide.includes("pitch narrative, architecture, and prototype path"), false);
   assert.equal(guide.includes("portable prototype code"), false);
   assert.equal(guide.includes("code navigation map for prototype entrypoints"), false);
+  assert.equal(guide.includes("code navigation map for prototype/ entrypoints"), false);
   assert.equal(guide.includes("Important prototype surfaces"), false);
   assert.equal(guide.includes("## Prototype Code"), false);
   assert.equal(guide.includes("Important prototype/ surfaces"), false);

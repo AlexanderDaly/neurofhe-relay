@@ -59,7 +59,8 @@ snapshot is readable, caveated, and ready for diligence review.
   and next evidence-work queue.
 - `docs/policy-boundary.md` - license, security, contribution, validation, and
   release boundary map.
-- `docs/prototype-map.md` - code navigation map for prototype/ scaffold surfaces.
+- `docs/prototype-map.md` - scaffold code map for prototype/ entrypoints,
+  library modules, native lanes, and support notes.
 - `docs/patent-package-map.md` - navigation map for patent and briefing sources.
 - `docs/presentation-outputs.md` - map of generated presentation exports kept
   for packaged review.
