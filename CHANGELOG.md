@@ -64,6 +64,8 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened demo-roadmap and briefing-sequence wording so Phase 5 stays framed
   as research-alpha review packaging instead of fundable or partner-ready
   project posture.
+- Tightened package-manifest and repository-guide briefing labels so the
+  inventory matches the evidence narrative and research-alpha roadmap framing.
 - Added a guarded, concise root README repository layout that defers the
   exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Added a guarded, concise root README quick-command table that defers detailed

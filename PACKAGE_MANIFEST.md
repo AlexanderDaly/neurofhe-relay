@@ -77,9 +77,9 @@ snapshot is readable, caveated, and ready for diligence review.
 - `docs/evidence-guide.md` - short evidence map for claim-safe artifact review.
 - `docs/maintainer-checklist.md` - merge, artifact, and release-review checklist.
 - `01-one-pager.md` - concise executive brief.
-- `02-pitch-deck.md` - 11-slide presentation narrative.
+- `02-pitch-deck.md` - 11-slide evidence narrative.
 - `03-technical-architecture.md` - architecture, data flow, and boundaries.
-- `04-demo-roadmap.md` - staged prototype and pilot plan.
+- `04-demo-roadmap.md` - research-alpha evidence roadmap.
 - `05-risk-register.md` - technical, market, and execution risks.
 - `06-evidence-and-sources.md` - research notes and sources.
 - `07-post-quantum-cryptography-track.md` - quantum-resistant design target, crypto agility plan, and standards baseline.

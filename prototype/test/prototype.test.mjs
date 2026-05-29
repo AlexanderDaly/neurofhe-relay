@@ -1423,6 +1423,8 @@ test("package manifest lists every tracked top-level package entry", () => {
     "cryptoInventory",
     "benchmark-artifacts/native-evidence/latest.json",
     "research-alpha security scope",
+    "11-slide evidence narrative",
+    "research-alpha evidence roadmap",
     "openfhe-bfvrns-eeg-eye-state-2026-05-21",
     "openfhe-ckks-eeg-eye-state-2026-05-21",
     "tfhe-rs-alpha-lane-framing-2026-05-29",
@@ -1440,6 +1442,8 @@ test("package manifest lists every tracked top-level package entry", () => {
     "Generate OpenFHE-ready EEG input contracts",
     "once OpenFHE is installed",
     "research-prototype security policy",
+    "11-slide presentation narrative",
+    "staged prototype and pilot plan",
   ].filter((entry) => packageManifest.includes(entry));
 
   assert.deepEqual(missingRouting, []);
@@ -2360,12 +2364,14 @@ test("repository guide maps current reader, maintainer, and GitHub surfaces", ()
     "productionClaim: false",
     "releaseGateSatisfied: false",
     "repository ruleset/admin policy",
+    "evidence narrative, architecture, and research-alpha roadmap",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !guide.includes(entry),
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(guide.includes("pitch narrative, architecture, and prototype path"), false);
 });
 
 test("release gate matrix lists every minimum evidence command", () => {

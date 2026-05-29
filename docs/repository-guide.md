@@ -100,7 +100,7 @@ The numbered Markdown files are the public briefing sequence:
 
 - `docs/briefing-sequence.md` lists the full recommended reading order.
 - `01-one-pager.md` through `04-demo-roadmap.md` cover the executive framing,
-  pitch narrative, architecture, and prototype path.
+  evidence narrative, architecture, and research-alpha roadmap.
 - `05-risk-register.md` and `06-evidence-and-sources.md` collect risk and
   source-backed research notes.
 - `07-post-quantum-cryptography-track.md` through
