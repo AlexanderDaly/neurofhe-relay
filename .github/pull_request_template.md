@@ -30,6 +30,14 @@
 
 ```
 
+## PR Readiness Snapshot
+
+- Local validation:
+- Hosted `Portable validation`:
+- Merge state:
+- Release-gate posture:
+- Remaining blocker, caveat, or next action:
+
 ## Blockers And Caveats
 
 - <remaining blocker, caveat, or "None">
