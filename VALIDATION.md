@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 119
-pass 119
+tests 120
+pass 120
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 119
-pass 119
+tests 120
+pass 120
 fail 0
 ```
 
@@ -126,6 +126,9 @@ Covered behaviours:
   `releaseGateSatisfied: false`.
 - CODEOWNERS coverage requiring review ownership routing for root, GitHub,
   docs, prototype, benchmark-artifacts, and patent surfaces.
+- Pull-request-template coverage requiring validation commands, release caveats,
+  raw-data boundaries, and repository ruleset/admin policy routing to stay
+  visible.
 - Maintainers-file coverage requiring the current maintainer route, release
   authority boundary, repository ruleset/admin policy, explicit user approval,
   `releaseGateSatisfied: false`, and `productionClaim: false`.

@@ -1172,6 +1172,30 @@ test("Dependabot config covers package and workflow maintenance", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("pull request template preserves validation and release caveats", () => {
+  const pullRequestTemplate = readFileSync(".github/pull_request_template.md", "utf8");
+  const requiredEntries = [
+    "npm run ci",
+    "git diff --check",
+    "Relevant artifact command",
+    "privacyBoundary",
+    "cryptoInventory",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "repository ruleset/admin policy",
+    "raw datasets",
+    "secrets",
+    "docs/release-gate-matrix.md",
+    "docs/evidence-dashboard.md",
+    "Blockers And Caveats",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !pullRequestTemplate.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("policy boundary map lists every policy and claim-boundary root file", () => {
   const policyMap = readFileSync("docs/policy-boundary.md", "utf8");
   const policyFiles = [

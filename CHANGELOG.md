@@ -54,10 +54,12 @@ Release target: `v0.1.0-research-alpha`.
   and routes detailed command/module inventory to the maintained maps.
 - Added development guide coverage so setup, native-lane, evidence-artifact,
   hosted-CI, release-gate, and repository-policy boundaries stay visible.
+- Added pull-request-template coverage so validation commands, release caveats,
+  raw-data boundaries, and repository-policy routing remain in every PR.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 119 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 120 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
