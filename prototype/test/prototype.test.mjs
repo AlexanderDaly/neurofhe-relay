@@ -1738,6 +1738,9 @@ test("Dependabot config covers package and workflow maintenance", () => {
     "directory: \"/\"",
     "interval: \"weekly\"",
     "open-pull-requests-limit: 5",
+    "github-actions-maintenance",
+    "npm-maintenance",
+    "patterns:",
     "labels:",
     "\"enhancement\"",
   ];

@@ -5,6 +5,10 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      github-actions-maintenance:
+        patterns:
+          - "*"
     labels:
       - "enhancement"
 
@@ -13,5 +17,9 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      npm-maintenance:
+        patterns:
+          - "*"
     labels:
       - "enhancement"

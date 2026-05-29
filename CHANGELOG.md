@@ -251,6 +251,8 @@ Release target: `v0.1.0-research-alpha`.
   start from `docs/status-roadmap.md` before deciding what to inspect or improve.
 - Disabled blank GitHub issues so public reports start from structured forms
   that preserve exact-command, raw-data, secret, and claim-boundary prompts.
+- Grouped weekly Dependabot maintenance prompts for GitHub Actions and npm
+  metadata so dependency upkeep arrives in reviewable batches.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.

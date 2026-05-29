@@ -45,7 +45,7 @@ steps.
 - [`.github/CODEOWNERS`](../.github/CODEOWNERS)
   - review ownership routing for repository changes.
 - [`.github/dependabot.yml`](../.github/dependabot.yml)
-  - weekly dependency update routing for GitHub Actions and npm package
+  - weekly grouped dependency update routing for GitHub Actions and npm package
     metadata.
 - [`.github/pull_request_template.md`](../.github/pull_request_template.md)
   - evidence-boundary and validation checklist for proposed changes.
@@ -75,9 +75,9 @@ Hosted `Portable validation` proves the portable repository gate on GitHub. It
 does not prove native OpenFHE or TFHE-rs availability, release approval,
 production readiness, medical utility, or stable performance.
 
-Dependabot pull requests are maintenance prompts only. They still require the
-same evidence boundaries, local validation, and hosted `Portable validation`
-review as any other change.
+Dependabot pull requests are grouped maintenance prompts only. They still
+require the same evidence boundaries, local validation, and hosted
+`Portable validation` review as any other change.
 
 Validation checks that every tracked `.github` workflow, issue, and pull-request
 surface is represented on this page.
