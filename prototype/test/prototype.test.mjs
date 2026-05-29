@@ -1062,6 +1062,18 @@ test("presentation outputs map lists every tracked generated output file", () =>
   assert.deepEqual(missingOutputs, []);
 });
 
+test("benchmark artifacts README lists every tracked artifact directory", () => {
+  const artifactsReadme = readFileSync("benchmark-artifacts/README.md", "utf8");
+  const artifactDirectories = listTrackedDirectories("benchmark-artifacts")
+    .filter((entry) => entry !== "benchmark-artifacts")
+    .sort();
+  const missingDirectories = artifactDirectories.filter((dirPath) =>
+    !artifactsReadme.includes(`${dirPath}/`),
+  );
+
+  assert.deepEqual(missingDirectories, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
@@ -1103,6 +1115,18 @@ function listTrackedFiles(prefix) {
     .split("\n")
     .filter(Boolean)
     .filter((filePath) => !prefix || filePath === prefix || filePath.startsWith(`${prefix}/`));
+}
+
+function listTrackedDirectories(prefix) {
+  const directories = new Set();
+  for (const filePath of listTrackedFiles(prefix)) {
+    const parts = filePath.split("/");
+    for (let index = 1; index < parts.length; index += 1) {
+      directories.add(parts.slice(0, index).join("/"));
+    }
+  }
+
+  return [...directories].sort();
 }
 
 test("GitHub Actions CI workflow uses Node 24-ready action majors", () => {

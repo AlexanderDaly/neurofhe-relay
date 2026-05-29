@@ -17,6 +17,47 @@ The publisher writes:
 - `latest.json` - the most recent benchmark artifact.
 - `runs/*.json` - timestamped run artifacts.
 
+## Directory Map
+
+Use this map to navigate the committed derived evidence without upgrading any
+artifact into a broader claim than its schema and caveats support.
+
+| Directory | Contents |
+| --- | --- |
+| `benchmark-artifacts/runs/` | timestamped synthetic benchmark runs for the top-level `latest.json` artifact. |
+| `benchmark-artifacts/ci-blockers/` | hosted CI blocker and green hosted-CI snapshots. |
+| `benchmark-artifacts/ci-blockers/runs/` | timestamped CI blocker and hosted-CI evidence snapshots. |
+| `benchmark-artifacts/comparisons/` | native comparison lane artifacts and blockers. |
+| `benchmark-artifacts/comparisons/openfhe/` | OpenFHE BFVrns adapter, blocker, and native run artifacts. |
+| `benchmark-artifacts/comparisons/openfhe/runs/` | timestamped OpenFHE BFVrns comparison records. |
+| `benchmark-artifacts/comparisons/openfhe-ckks/` | OpenFHE CKKS adapter, blocker, and native run artifacts. |
+| `benchmark-artifacts/comparisons/openfhe-ckks/runs/` | timestamped OpenFHE CKKS comparison records. |
+| `benchmark-artifacts/comparisons/tfhe-rs/` | TFHE-rs synthetic native comparison artifacts. |
+| `benchmark-artifacts/comparisons/tfhe-rs/runs/` | timestamped TFHE-rs synthetic comparison records. |
+| `benchmark-artifacts/comparisons/tfhe-rs-realdata/` | TFHE-rs real-data input blocker artifacts. |
+| `benchmark-artifacts/comparisons/tfhe-rs-realdata/runs/` | timestamped TFHE-rs real-data blocker records. |
+| `benchmark-artifacts/native-evidence/` | native-lane manifest artifacts and measurement gap indexes. |
+| `benchmark-artifacts/native-evidence/runs/` | timestamped native evidence manifests. |
+| `benchmark-artifacts/plaintext-baselines/` | plaintext real-data, fixture, and blocker baselines. |
+| `benchmark-artifacts/plaintext-baselines/eeg-eye-state/` | UCI EEG Eye State derived plaintext baseline artifacts. |
+| `benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/` | derived BFVrns and CKKS sparse input contracts. |
+| `benchmark-artifacts/plaintext-baselines/eeg-eye-state/runs/` | timestamped UCI EEG Eye State plaintext baseline records. |
+| `benchmark-artifacts/plaintext-baselines/nmnist-local/` | sampled real public N-MNIST plaintext baseline artifacts. |
+| `benchmark-artifacts/plaintext-baselines/nmnist-local/runs/` | timestamped real N-MNIST local baseline records. |
+| `benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/` | blocker artifacts for missing local N-MNIST data. |
+| `benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/runs/` | timestamped N-MNIST local dataset blocker records. |
+| `benchmark-artifacts/plaintext-baselines/nmnist-smoke/` | deterministic N-MNIST-format fixture artifacts. |
+| `benchmark-artifacts/plaintext-baselines/nmnist-smoke/runs/` | timestamped N-MNIST smoke fixture records. |
+| `benchmark-artifacts/privacy-modes/` | privacy-mode comparison artifacts. |
+| `benchmark-artifacts/privacy-modes/padding-ablation/` | sparse metadata versus padding overhead ablation artifacts. |
+| `benchmark-artifacts/privacy-modes/padding-ablation/runs/` | timestamped padding ablation records. |
+| `benchmark-artifacts/reconstruction-risk/` | synthetic reconstruction-risk probe artifacts. |
+| `benchmark-artifacts/reconstruction-risk/runs/` | timestamped reconstruction-risk probe records. |
+| `benchmark-artifacts/release-evidence/` | caveated release-evidence dashboard artifacts. |
+| `benchmark-artifacts/release-evidence/runs/` | timestamped release-evidence index records. |
+| `benchmark-artifacts/repo-hygiene/` | redacted repository hygiene scan artifacts. |
+| `benchmark-artifacts/repo-hygiene/runs/` | timestamped repository hygiene scan records. |
+
 Optional comparison artifacts can also be written for adapter plans or native
 library runs:
 
