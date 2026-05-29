@@ -1592,6 +1592,10 @@ test("benchmark artifacts README lists every tracked artifact directory", () => 
     "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
     "release-evidence index artifacts",
     "dashboard artifacts only",
+    "May 29 `609b48c`",
+    "PR head\n`609b48c`",
+    "committed hosted-CI snapshots are evidence\nrecords",
+    "gh pr view 23",
   ];
   const missingPosture = requiredPosture.filter((entry) =>
     !artifactsReadme.includes(entry),
@@ -1600,6 +1604,8 @@ test("benchmark artifacts README lists every tracked artifact directory", () => 
     "runnable prototype",
     "real N-MNIST dataset blocker",
     "N-MNIST-compatible fixture, real public UCI EEG Eye State baseline, and real public dataset blocker reports",
+    "May 29 `0feaa65`",
+    "PR head\n`0feaa65`",
   ].filter((entry) => artifactsReadme.includes(entry));
 
   assert.deepEqual(missingDirectories, []);

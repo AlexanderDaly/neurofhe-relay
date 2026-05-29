@@ -241,6 +241,9 @@ Release target: `v0.1.0-research-alpha`.
 - Refreshed hosted-CI and release-evidence artifacts again for the PR #23
   `609b48c` snapshot so committed CI evidence records a recent green
   check-rollup while live PR head review remains a separate check.
+- Updated the benchmark-artifact guide so hosted-CI artifact review points at
+  the `609b48c` snapshot and still requires live PR status review before merge
+  or release decisions.
 - Clarified the evidence dashboard snapshot wording so committed release
   evidence is not confused with live PR head or merge-policy status.
 - Clarified the status roadmap so committed hosted-CI evidence snapshots stay
