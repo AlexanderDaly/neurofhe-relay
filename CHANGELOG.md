@@ -50,6 +50,8 @@ Release target: `v0.1.0-research-alpha`.
   report handling.
 - Added a guarded, role-based root README first path for reviewers,
   contributors, maintainers, and evidence reviewers.
+- Tightened the root README opening line so the front door presents NeuroFHE
+  Relay as a CC0 research-alpha repository rather than a presentation package.
 - Added a guarded root README current-status table for release target,
   portable validation, merge policy, release gate, and claim-boundary posture.
 - Added a guarded, concise root README repository layout that defers the

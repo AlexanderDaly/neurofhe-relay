@@ -126,9 +126,10 @@ Covered behaviours:
 - Operations runbook coverage requiring routine maintainer commands,
   hosted-check handling, situation routing, blocker policy, release gate
   posture, and production-claim caveats.
-- Root README first-path coverage requiring role-based navigation for reviewers,
-  contributors, maintainers, and evidence reviewers while preserving
-  `productionClaim: false`.
+- Root README first-path coverage requiring front-door research-alpha
+  repository framing plus role-based navigation for reviewers, contributors,
+  maintainers, and evidence reviewers while preserving `productionClaim:
+  false`.
 - Root README repository-layout coverage requiring a concise layout table that
   defers exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Root README command-surface coverage requiring a quick-command table that

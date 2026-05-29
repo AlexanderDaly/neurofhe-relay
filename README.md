@@ -1,6 +1,8 @@
 # NeuroFHE Relay
 
-Presentation package for a privacy-preserving neuromorphic + homomorphic-encryption project.
+CC0 research-alpha repository for privacy-preserving event intelligence:
+neuromorphic sparse-event preprocessing, local relay policy, and caveated
+homomorphic-encryption evidence.
 
 ```text
                  NEUROFHE RELAY

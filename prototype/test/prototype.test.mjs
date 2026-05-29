@@ -2205,6 +2205,8 @@ test("operations runbook maps maintainer commands and blocker policy", () => {
 test("root README keeps first-read navigation role based", () => {
   const readme = readFileSync("README.md", "utf8");
   const requiredEntries = [
+    "CC0 research-alpha repository",
+    "privacy-preserving event intelligence",
     "## First Paths",
     "## Current Status",
     "| Status Item | Current Posture | Confirm In |",
@@ -2238,6 +2240,7 @@ test("root README keeps first-read navigation role based", () => {
 
   assert.deepEqual(missingEntries, []);
   assert.equal(readme.includes("New readers should begin with"), false);
+  assert.equal(readme.includes("Presentation package"), false);
 });
 
 test("root README keeps repository layout concise", () => {
