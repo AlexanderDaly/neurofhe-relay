@@ -460,6 +460,11 @@ test("gateway demo exports a minimal model event without raw signal leakage", ()
   assert.equal(modelEvent.plaintext.sparseMetrics.densityBucket, "0.25-0.5");
   assert.equal(modelEvent.plaintext.activePositions.length, 18);
   assert.equal(modelEvent.encrypted.activeSpikeValues.length, 18);
+  assert.equal(
+    modelEvent.encrypted.currentScaffold,
+    "research-alpha encrypted references only; no production cryptography claim",
+  );
+  assert.equal(Object.hasOwn(modelEvent.encrypted, "currentPrototype"), false);
   assert.equal(demo.auditLog.every((record) => record.containsRawPayload === false), true);
   assert.equal(demo.sanitizedReplayStream.containsRawPayload, false);
   assert.equal(serialized.includes("SIM-DEVICE-LOCAL-ONLY"), false);
@@ -1067,6 +1072,7 @@ test("briefing sequence guide lists every numbered root brief", () => {
     "08-encrypted-thoughts-whitepaper.md",
     "utf8",
   );
+  const relayGatewayPattern = readFileSync("09-relay-gateway-pattern.md", "utf8");
   const numberedBriefs = readdirSync(".")
     .filter((entry) => /^[0-9]{2}-.+\.md$/.test(entry))
     .sort();
@@ -1175,6 +1181,28 @@ test("briefing sequence guide lists every numbered root brief", () => {
   );
   assert.equal(encryptedThoughtsWhitepaper.includes("The current prototype is"), false);
   assert.equal(encryptedThoughtsWhitepaper.includes("research-grade caveats"), false);
+  assert.equal(
+    relayGatewayPattern.includes(
+      '"currentScaffold": "research-alpha encrypted references only; no production cryptography claim"',
+    ),
+    true,
+  );
+  assert.equal(
+    relayGatewayPattern.includes(
+      "Consider Octra/HFHE only after local operation families are measured and benchmarked.",
+    ),
+    true,
+  );
+  assert.equal(
+    relayGatewayPattern.includes(
+      "Connect the model-facing event to the existing sparse linear score contract by replacing research-alpha encrypted references with the reviewed OpenFHE or equivalent adapter.",
+    ),
+    true,
+  );
+  assert.equal(relayGatewayPattern.includes('"currentPrototype"'), false);
+  assert.equal(relayGatewayPattern.includes("placeholder references"), false);
+  assert.equal(relayGatewayPattern.includes("operation families are proven"), false);
+  assert.equal(relayGatewayPattern.includes("placeholder ciphertext references"), false);
 });
 
 test("prototype map lists every library module", () => {
@@ -1396,10 +1424,11 @@ test("project brief preserves agent-readable repository posture", () => {
     "Do not merge, tag, or strengthen release-facing claims without the documented release gate, maintainer approval, and explicit user approval.",
   );
   assert.equal(
-    projectBrief.currentPrototype.caveat,
+    projectBrief.currentScaffold.caveat,
     "The current package is educational and not production cryptography.",
   );
-  assert.equal(projectBrief.currentPrototype.caveat.includes("current prototype"), false);
+  assert.equal(projectBrief.currentScaffold.caveat.includes("current prototype"), false);
+  assert.equal(Object.hasOwn(projectBrief, "currentPrototype"), false);
 });
 
 test("presentation outputs map lists every tracked generated output file", () => {

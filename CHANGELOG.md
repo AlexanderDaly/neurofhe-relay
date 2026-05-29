@@ -244,6 +244,10 @@ Release target: `v0.1.0-research-alpha`.
   non-medical research-alpha framing instead of research-grade phrasing.
 - Tightened validation and evidence-source scope notes so current boundaries
   use research-alpha framing instead of research-grade wording.
+- Tightened relay-gateway pattern wording so encrypted references, Octra/HFHE
+  timing, and downstream trust assumptions read as research-alpha boundaries.
+- Renamed gateway and agent-readable metadata from `currentPrototype` to
+  `currentScaffold` so runtime exports match the research-alpha package frame.
 - Tightened presentation-output coverage so packaged slide review,
   claim/caveat checks, evidence/release-readiness review, and export refreshes
   route through source docs before generated files.

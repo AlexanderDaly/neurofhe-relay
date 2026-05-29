@@ -343,7 +343,7 @@ export function buildModelFacingEvent(normalizedEvent, policy = buildDefaultGate
         ? { neuralContextTags: buildEncryptedNeuralContextTags(neuralContext) }
         : {}),
       targetPath: "BFV/BGV integer scoring or compatible FHE-style adapter after review",
-      currentPrototype: "placeholder references only; no production cryptography claim",
+      currentScaffold: "research-alpha encrypted references only; no production cryptography claim",
     },
     aggregated: {
       spikeCountBucket: countBucket(metrics.spikeCount),

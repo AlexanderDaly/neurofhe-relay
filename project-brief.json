@@ -57,7 +57,7 @@
       "privacyBoundary"
     ]
   },
-  "currentPrototype": {
+  "currentScaffold": {
     "commands": {
       "demo": "npm run demo",
       "gatewayDemo": "npm run gateway:demo",
