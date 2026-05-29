@@ -149,10 +149,10 @@ Covered behaviours:
   private-payload exclusions, `privacyBoundary`, `cryptoInventory`,
   `releaseGateSatisfied: false`, `productionClaim: false`, exact-command and
   smallest-next-step reporting, and repository-hygiene-scan limits.
-- Contributing-guide coverage requiring developer quickstart, command
-  reference, data-handling, evidence-dashboard, release-gate matrix,
-  troubleshooting, release-gate, repository-policy, and artifact-boundary
-  routing to stay visible.
+- Contributing-guide coverage requiring contribution-route, developer
+  quickstart, command reference, data-handling, evidence-dashboard,
+  release-gate matrix, troubleshooting, release-gate, repository-policy, and
+  artifact-boundary routing to stay visible.
 - Code of conduct coverage requiring public collaboration boundaries, report
   routing, raw-data/private-payload limits, `productionClaim: false`, and
   `releaseGateSatisfied: false`.

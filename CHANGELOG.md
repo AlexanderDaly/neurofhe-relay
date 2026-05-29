@@ -93,6 +93,9 @@ Release target: `v0.1.0-research-alpha`.
   claim-boundary, exact-command, and hygiene-scan-limit language.
 - Added contributing-guide coverage so contributor entrypoints preserve
   evidence, data-handling, release-gate, and repository-policy routing.
+- Tightened contributing-guide coverage so docs cleanup, prototype/artifact,
+  native FHE, real-data, and release-readiness work route through a compact
+  contribution table.
 - Added maintainer-checklist coverage so review routing stays aligned with the
   current evidence, policy, support, contributor, and GitHub-template surfaces.
 - Expanded reviewer-quickstart coverage so diligence review routes through the

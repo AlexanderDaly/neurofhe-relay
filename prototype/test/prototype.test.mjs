@@ -1472,6 +1472,13 @@ test("security policy preserves research-alpha reporting boundaries", () => {
 test("contributing guide routes evidence and release-boundary work", () => {
   const contributing = readFileSync("CONTRIBUTING.md", "utf8");
   const requiredEntries = [
+    "## Contribution Routes",
+    "| Change Type | Start With | Keep Visible |",
+    "Docs, packaging, or navigation cleanup",
+    "Prototype or artifact behavior",
+    "Native FHE lane work",
+    "Real-data baseline or dataset-adjacent work",
+    "Release-readiness or hosted-check work",
     "docs/developer-quickstart.md",
     "docs/command-reference.md",
     "docs/data-handling.md",

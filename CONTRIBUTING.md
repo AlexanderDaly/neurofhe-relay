@@ -5,6 +5,19 @@ inference. Contributions are welcome when they keep the evidence boundary clear:
 do not turn toy arithmetic, single-window native demos, or plaintext baselines
 into production cryptography, medical, security, or performance claims.
 
+## Contribution Routes
+
+Use this table before editing so the change starts from the right owner
+document and keeps the relevant caveat visible.
+
+| Change Type | Start With | Keep Visible |
+| --- | --- | --- |
+| Docs, packaging, or navigation cleanup | `docs/developer-quickstart.md`, then `docs/command-reference.md` | Reader route, exact validation command, and `productionClaim: false` caveats. |
+| Prototype or artifact behavior | `docs/command-reference.md`, then `benchmark-artifacts/README.md` | Artifact command, provenance, `privacyBoundary`, and `cryptoInventory`. |
+| Native FHE lane work | `docs/dependency-matrix.md`, then `benchmark-artifacts/native-evidence/latest.json` | Local dependency state, exact command, error, and smallest next step when blocked. |
+| Real-data baseline or dataset-adjacent work | `docs/data-handling.md`, then `docs/evidence-dashboard.md` | Raw datasets stay out of git; commit only derived artifacts or blocker reports. |
+| Release-readiness or hosted-check work | `docs/release-gate-matrix.md`, then `docs/troubleshooting.md` | `releaseGateSatisfied: false`, repository ruleset/admin policy, and CI/check-rollup separation. |
+
 ## Ground Rules
 
 - Follow `CODE_OF_CONDUCT.md` for public collaboration expectations and report
