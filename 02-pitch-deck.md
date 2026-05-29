@@ -43,17 +43,18 @@ It takes spike/event windows, packs and encrypts them, evaluates selected infere
 
 Octra is relevant as an encrypted-compute network, not as the whole product.
 
-Its docs frame Octra as an FHE blockchain network with isolated execution environments and HFHE. The integration lane is to express compact encrypted event computations as Octra programs once local benchmarks prove the workload shape.
+Its docs frame Octra as an FHE blockchain network with isolated execution environments and HFHE. The integration lane is to express compact encrypted event computations as Octra programs once local benchmarks test and bound the workload shape.
 
 ## Slide 8 - First Demo
 
-The first demo should be deliberately small:
+The current demo path is deliberately small:
 
 - N-MNIST or synthetic event stream.
-- Tiny SNN classifier.
-- Plaintext baseline.
-- Encrypted inference prototype.
-- Benchmark table for latency, ciphertext size, accuracy, and operation count.
+- Toy sparse encrypted scorer and local relay gateway demo.
+- Plaintext baseline and derived evidence artifacts.
+- OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs comparison lanes where dependencies are available.
+- Structured blocker reports when dependencies or input adapters are missing.
+- Benchmark table for latency, ciphertext size, accuracy, operation count, and caveats.
 - Visual privacy boundary showing what each party can and cannot see.
 
 ## Slide 9 - Wedge Markets

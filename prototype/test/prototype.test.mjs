@@ -1058,6 +1058,7 @@ test("documentation index stays concise and reader-facing", () => {
 test("briefing sequence guide lists every numbered root brief", () => {
   const briefingGuide = readFileSync("docs/briefing-sequence.md", "utf8");
   const onePager = readFileSync("01-one-pager.md", "utf8");
+  const pitchDeck = readFileSync("02-pitch-deck.md", "utf8");
   const technicalArchitecture = readFileSync("03-technical-architecture.md", "utf8");
   const encryptedThoughtsWhitepaper = readFileSync(
     "08-encrypted-thoughts-whitepaper.md",
@@ -1093,6 +1094,12 @@ test("briefing sequence guide lists every numbered root brief", () => {
   assert.equal(onePager.includes("browser/CLI demo"), false);
   assert.equal(onePager.includes("CKKS/BFV/TFHE library prototype"), false);
   assert.equal(onePager.includes("proves whether sparse spiking inference"), false);
+  assert.equal(
+    pitchDeck.includes("The current demo path is deliberately small"),
+    true,
+  );
+  assert.equal(pitchDeck.includes("once local benchmarks prove the workload shape"), false);
+  assert.equal(pitchDeck.includes("Encrypted inference prototype"), false);
   assert.equal(
     technicalArchitecture.includes("current research-alpha sparse-score contract"),
     true,
