@@ -1117,11 +1117,24 @@ test("patent package map lists every patent markdown and mermaid source", () => 
   const patentSources = listFilesRecursive("patent")
     .filter((entry) => /\.(md|mmd)$/.test(entry))
     .sort();
+  const requiredRouteEntries = [
+    "## Patent Review Routes",
+    "| Review Need | Start With | Confirm Before Use |",
+    "Provisional drafting review",
+    "Counsel or IP-risk review",
+    "Public, investor, or policy briefing",
+    "Evidence-gap prioritization",
+    "Diagram or figure reuse",
+  ];
   const missingSources = patentSources.filter((sourcePath) =>
     !new RegExp(`\\b${escapeRegExp(sourcePath)}\\b`).test(patentMap),
   );
+  const missingRoutes = requiredRouteEntries.filter((entry) =>
+    !patentMap.includes(entry),
+  );
 
   assert.deepEqual(missingSources, []);
+  assert.deepEqual(missingRoutes, []);
 });
 
 test("package manifest lists every tracked top-level package entry", () => {

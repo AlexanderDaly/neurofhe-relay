@@ -165,6 +165,9 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened briefing-sequence coverage so external overview, architecture,
   evidence, native-performance, and patent/weak-claim readers start from a
   compact route table before the numbered brief list.
+- Tightened patent-package-map coverage so provisional drafting, counsel/IP
+  review, public briefing, evidence-gap, and diagram reuse paths are routed
+  before the full source inventory.
 
 ### Changed
 

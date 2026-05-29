@@ -10,6 +10,18 @@ Use `docs/evidence-guide.md`, `docs/maintainer-checklist.md`, and
 `patent/briefing/ENER_weak_claims_evidence_gaps.md` before turning any patent
 or briefing language into public claims.
 
+## Patent Review Routes
+
+Use this table before opening the full source list.
+
+| Review Need | Start With | Confirm Before Use |
+| --- | --- | --- |
+| Provisional drafting review | `patent/ENER_provisional_specification.md`, `patent/ENER_claim_seed_set.md`, and `patent/ENER_drawings_descriptions.md` | `patent/ENER_submission_checklist.md` and counsel review before filing or relying on legal effect. |
+| Counsel or IP-risk review | `patent/ENER_prior_art_search_plan.md`, `patent/ENER_fto_extraction_summary.md`, and `patent/briefing/ENER_attorney_ip_review.md` | Treat all FTO and patentability language as review input, not an opinion or clearance. |
+| Public, investor, or policy briefing | `patent/briefing/ENER_investor_safe_brief.md`, `patent/briefing/ENER_executive_summary.md`, and `patent/briefing/ENER_policy_whitepaper.md` | Check `docs/policy-boundary.md`, `docs/evidence-guide.md`, and `docs/faq.md` so claims stay caveated. |
+| Evidence-gap prioritization | `patent/briefing/ENER_weak_claims_evidence_gaps.md` | Confirm current artifacts in `benchmark-artifacts/README.md` and `docs/evidence-dashboard.md` before marking a gap narrowed. |
+| Diagram or figure reuse | `patent/briefing/diagrams/`, `patent/figures/`, and `patent/ENER_figures/` | Keep duplicate Mermaid layouts synchronized until one figure source tree is intentionally retired. |
+
 ## Provisional Drafting Materials
 
 - [`patent/ENER_provisional_specification.md`](../patent/ENER_provisional_specification.md)

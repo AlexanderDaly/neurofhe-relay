@@ -73,7 +73,7 @@ Covered behaviours:
   reference script and command-route coverage, documentation index coverage, documentation-index
   role routing and concision, numbered briefing sequence and briefing-route coverage, prototype
   module, top-level entrypoint, and native source map coverage, patent package
-  source coverage,
+  review-route and source coverage,
   package manifest top-level, owner-route, inventory-review-route, and
   native-evidence posture coverage, generated presentation output map coverage,
   benchmark artifact directory, artifact-review-route, and release-evidence routing coverage,
