@@ -30,7 +30,7 @@ tied to the files that must stay aligned.
   intelligence boundary, and explicit caveats.
 - `CODE_OF_CONDUCT.md` - public collaboration expectations and reporting
   boundaries.
-- `SECURITY.md` - research-prototype security scope and responsible reporting
+- `SECURITY.md` - research-alpha security scope and responsible reporting
   guidance.
 - `SUPPORT.md` - routing for public issues, security reports, release blockers,
   and cleanup/support requests.

@@ -1,8 +1,8 @@
 # Security Policy
 
-NeuroFHE Relay is a research prototype. It is not production cryptography, a
-medical device, a clinical decision system, a surveillance system, or a
-deployment-ready privacy product.
+NeuroFHE Relay is a CC0 research-alpha package. It is not production
+cryptography, a medical device, a clinical decision system, a surveillance
+system, or a deployment-ready privacy product.
 
 ## Security Report Routes
 

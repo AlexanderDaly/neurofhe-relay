@@ -239,6 +239,8 @@ Release target: `v0.1.0-research-alpha`.
 - Root README, benchmark-artifact README, and project-brief evidence wording now
   use research-alpha package/scaffold framing instead of generic runnable
   prototype posture.
+- Security policy, policy-boundary, and package-manifest wording now use
+  research-alpha security scope instead of research-prototype policy framing.
 - Public demo naming now uses `Relay-2 Research Demo` instead of diagnostic
   framing across the portable benchmark and research assumptions.
 

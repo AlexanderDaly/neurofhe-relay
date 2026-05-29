@@ -1201,6 +1201,7 @@ test("package manifest lists every tracked top-level package entry", () => {
     "privacyBoundary",
     "cryptoInventory",
     "benchmark-artifacts/native-evidence/latest.json",
+    "research-alpha security scope",
     "openfhe-bfvrns-eeg-eye-state-2026-05-21",
     "openfhe-ckks-eeg-eye-state-2026-05-21",
     "tfhe-rs-memory-rss-2026-05-28",
@@ -1217,6 +1218,7 @@ test("package manifest lists every tracked top-level package entry", () => {
     "Run the TFHE-rs comparison lane:",
     "Generate OpenFHE-ready EEG input contracts",
     "once OpenFHE is installed",
+    "research-prototype security policy",
   ].filter((entry) => packageManifest.includes(entry));
 
   assert.deepEqual(missingRouting, []);
@@ -1626,6 +1628,7 @@ test("support policy routes issues without weakening evidence boundaries", () =>
 test("security policy preserves research-alpha reporting boundaries", () => {
   const securityPolicy = readFileSync("SECURITY.md", "utf8");
   const requiredEntries = [
+    "CC0 research-alpha package",
     "## Security Report Routes",
     "| Report Type | Route | Keep Out Of Public Threads |",
     "Raw data, secret, or private payload exposure",
@@ -1651,6 +1654,7 @@ test("security policy preserves research-alpha reporting boundaries", () => {
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(securityPolicy.includes("research prototype"), false);
 });
 
 test("contributing guide routes evidence and release-boundary work", () => {

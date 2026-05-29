@@ -91,7 +91,8 @@ snapshot is readable, caveated, and ready for diligence review.
 - `CONTRIBUTING.md` - evidence-first contribution expectations and validation commands.
 - `DEVELOPMENT.md` - setup notes, CI parity checks, native FHE commands, and artifact policy.
 - `RELEASE.md` - research-alpha release checklist and evidence gates.
-- `SECURITY.md` - research-prototype security policy and reporting scope.
+- `SECURITY.md` - research-alpha security scope and responsible reporting
+  guidance.
 - `SUPPORT.md` - support routing for bugs, evidence gaps, security reports,
   release blockers, and cleanup requests.
 - `.github/ISSUE_TEMPLATE/` - guided bug, validation-gap, and repository-cleanup issue forms.
