@@ -52,10 +52,12 @@ Release target: `v0.1.0-research-alpha`.
   reader, maintainer, GitHub, CI, release-gate, and ruleset-policy surfaces.
 - Added prototype README coverage so the runnable-code entrypoint stays concise
   and routes detailed command/module inventory to the maintained maps.
+- Added development guide coverage so setup, native-lane, evidence-artifact,
+  hosted-CI, release-gate, and repository-policy boundaries stay visible.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 118 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 119 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

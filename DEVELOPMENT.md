@@ -9,6 +9,8 @@ security certification.
 
 For the short first-pass contributor path, see `docs/developer-quickstart.md`.
 For a grouped script list, see `docs/command-reference.md`.
+For common local, hosted-CI, native-lane, dataset, or release-gate failures,
+see `docs/troubleshooting.md`.
 
 ## Prerequisites
 
@@ -62,7 +64,8 @@ npm run scan:hygiene -- --artifact
 
 The artifact records pass/fail status, scanned file count, blocked raw-data
 patterns, and redacted findings only. It must not include secret values or raw
-dataset rows.
+dataset rows. The committed latest hygiene surface is
+`benchmark-artifacts/repo-hygiene/latest.json`.
 
 ## Native OpenFHE Checks
 
@@ -91,8 +94,8 @@ npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-ba
 ```
 
 If the native library cannot be found, keep the generated blocker artifact and
-record the exact command and error. Do not substitute toy results for FHE
-security evidence.
+record the exact command, error, and smallest next step. Do not substitute toy
+results for FHE security evidence.
 
 ## TFHE-rs Checks
 
@@ -120,6 +123,8 @@ The manifest does not rerun OpenFHE or TFHE-rs benchmarks. It indexes the
 latest committed artifacts and records whether each lane is a real native run,
 dependency blocker, adapter plan, or missing artifact. Use it before release
 review to make local native evidence easier to reproduce on another host.
+The committed latest native summary is
+`benchmark-artifacts/native-evidence/latest.json`.
 
 ## Real Data
 
@@ -156,3 +161,15 @@ the portable CI workflow is green and that any native FHE evidence is either a
 real local-library run or a structured blocker artifact. Refresh
 `npm run native:doctor -- --artifact` after native runs or blockers so reviewers
 can see the exact host and rerun commands behind the latest evidence.
+
+Use `docs/release-gate-matrix.md` for the command-by-command gate map and
+`docs/evidence-dashboard.md` for the current human-readable evidence posture.
+The machine-readable release dashboard is
+`benchmark-artifacts/release-evidence/latest.json`.
+
+The current cleanup branch keeps `releaseGateSatisfied: false` until every
+documented gate is satisfied. A green hosted `Portable validation` check is
+necessary, but a pull request can still be blocked by repository ruleset/admin
+policy. Treat that as `repository ruleset/admin policy`, separate from
+CI/check-rollup or code failures, and do not merge or tag without maintainer
+approval and the documented release gate.

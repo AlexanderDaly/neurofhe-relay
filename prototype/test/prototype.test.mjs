@@ -1671,6 +1671,34 @@ test("prototype README stays a concise entrypoint instead of a command wall", ()
   assert.equal(prototypeReadme.includes("Print the real OpenFHE BFVrns integration plan"), false);
 });
 
+test("development guide preserves setup, evidence, and release boundaries", () => {
+  const development = readFileSync("DEVELOPMENT.md", "utf8");
+  const requiredEntries = [
+    "docs/developer-quickstart.md",
+    "docs/command-reference.md",
+    "docs/troubleshooting.md",
+    "docs/release-gate-matrix.md",
+    "docs/evidence-dashboard.md",
+    "benchmark-artifacts/release-evidence/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "benchmark-artifacts/repo-hygiene/latest.json",
+    "repository ruleset/admin policy",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "raw datasets",
+    "OpenFHE",
+    "TFHE-rs",
+    "exact command, error, and smallest next step",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !development.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
