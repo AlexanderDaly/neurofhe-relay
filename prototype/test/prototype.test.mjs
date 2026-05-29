@@ -1936,6 +1936,36 @@ test("plaintext baseline note routes real-data evidence and caveats", () => {
   assert.equal(baselineNote.includes("first real-event-data lane"), false);
 });
 
+test("TFHE-rs integration note routes native evidence and blockers", () => {
+  const tfheNote = readFileSync("prototype/TFHE_RS_INTEGRATION.md", "utf8");
+  const requiredEntries = [
+    "docs/command-reference.md",
+    "docs/dependency-matrix.md",
+    "docs/evidence-dashboard.md",
+    "docs/release-gate-matrix.md",
+    "benchmark-artifacts/README.md",
+    "benchmark-artifacts/comparisons/tfhe-rs/latest.json",
+    "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "TFHE-rs real-data path remains blocked",
+    "single local synthetic run",
+    "not stable performance",
+    "native measurement gaps",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !tfheNote.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(tfheNote.includes("OpenFHE not installed on this machine"), false);
+  assert.equal(tfheNote.includes("requires local OpenFHE run"), false);
+  assert.equal(tfheNote.includes("Current Synthetic Result"), false);
+});
+
 test("development guide preserves setup, evidence, and release boundaries", () => {
   const development = readFileSync("DEVELOPMENT.md", "utf8");
   const requiredEntries = [

@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 128
-pass 128
+tests 129
+pass 129
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 128
-pass 128
+tests 129
+pass 129
 fail 0
 ```
 
@@ -124,6 +124,10 @@ Covered behaviours:
 - Plaintext-baseline note coverage requiring real-data evidence routes,
   raw-dataset boundaries, release posture, and plaintext-only caveats to stay
   visible.
+- TFHE-rs integration-note coverage requiring native evidence, real-data
+  blocker, dependency, dashboard, release-gate, `privacyBoundary`,
+  `cryptoInventory`, and `productionClaim: false` routes to stay visible while
+  rejecting stale OpenFHE dependency-blocker language.
 - Development guide coverage requiring setup, native-lane, evidence-artifact,
   hosted-CI, release-gate, and repository ruleset/admin policy boundaries to
   stay visible.

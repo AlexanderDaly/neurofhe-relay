@@ -80,10 +80,13 @@ Release target: `v0.1.0-research-alpha`.
   repository-policy merge path, and explicit approval boundary stay visible.
 - Added plaintext-baseline note coverage so real-data evidence routes,
   raw-dataset boundaries, and plaintext-only caveats stay visible.
+- Added TFHE-rs integration-note coverage so native evidence routes,
+  real-data blockers, dependency posture, release-gate caveats, and stale
+  OpenFHE dependency wording stay guarded.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 128 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 129 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
