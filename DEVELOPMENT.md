@@ -12,6 +12,19 @@ For a grouped script list, see `docs/command-reference.md`.
 For common local, hosted-CI, native-lane, dataset, or release-gate failures,
 see `docs/troubleshooting.md`.
 
+## Development Routes
+
+Use this table before choosing commands so local work stays tied to the right
+evidence and claim boundary.
+
+| Need | Start With | Keep In View |
+| --- | --- | --- |
+| First local validation | `docs/developer-quickstart.md` | `npm run ci`, `git diff --check`, and the portable gate limits in `VALIDATION.md`. |
+| Docs or navigation change | `docs/README.md` and `docs/command-reference.md` | Markdown link coverage, reader routes, and `productionClaim: false` caveats. |
+| Native FHE lane work | `docs/dependency-matrix.md` and `benchmark-artifacts/native-evidence/latest.json` | OpenFHE/TFHE-rs dependency state, exact command, error, and smallest next step. |
+| Real-data or artifact work | `docs/data-handling.md` and `benchmark-artifacts/README.md` | Raw datasets stay outside git; commit only derived artifacts or a structured blocker report. |
+| Release-readiness review | `RELEASE.md` and `docs/release-gate-matrix.md` | `releaseGateSatisfied: false`, hosted CI, repository ruleset/admin policy, and explicit approval. |
+
 ## Prerequisites
 
 - Node.js 20 or newer.

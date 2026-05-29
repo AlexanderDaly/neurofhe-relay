@@ -2150,6 +2150,13 @@ test("TFHE-rs integration note routes native evidence and blockers", () => {
 test("development guide preserves setup, evidence, and release boundaries", () => {
   const development = readFileSync("DEVELOPMENT.md", "utf8");
   const requiredEntries = [
+    "## Development Routes",
+    "| Need | Start With | Keep In View |",
+    "First local validation",
+    "Docs or navigation change",
+    "Native FHE lane work",
+    "Real-data or artifact work",
+    "Release-readiness review",
     "docs/developer-quickstart.md",
     "docs/command-reference.md",
     "docs/troubleshooting.md",
