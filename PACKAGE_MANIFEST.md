@@ -106,7 +106,7 @@ snapshot is readable, caveated, and ready for diligence review.
 - `patent/` - ENER provisional drafting package, revised claim seeds, drawings, prior-art search plan, submission checklist, and policy/commercial briefing materials.
 - `project-brief.json` - agent-readable structured project summary.
 - `index.html` - self-contained browser briefing deck.
-- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, spatial spike sorter, local relay gateway scaffold, benchmark runner, plaintext baseline, synthetic reconstruction-risk probes, OpenFHE BFVrns lane, OpenFHE CKKS approximate-real lane, TFHE-rs integer/Boolean lane, tests, handoffs, and research assumptions.
+- `prototype/` - dependency-free educational sparse encrypted spike-count scaffold, spatial spike sorter, local relay gateway scaffold, benchmark runner, plaintext baseline, synthetic reconstruction-risk probes, OpenFHE BFVrns lane, OpenFHE CKKS approximate-real lane, TFHE-rs integer/Boolean lane, tests, handoffs, and research assumptions.
 - `package.json` - local demo, benchmark, documentation-link, test, and validation commands. `private: true` prevents accidental npm publication; it is not a proprietary-license declaration.
 - `VALIDATION.md` - local validation commands and results.
 - `.github/workflows/ci.yml` - portable CI for tests, metadata parsing, placeholder scanning, and smoke artifact generation/upload.
@@ -133,7 +133,7 @@ certification.
 
 ## Caveat
 
-The included JavaScript prototype demonstrates the privacy boundary with toy
+The included JavaScript scaffold demonstrates the privacy boundary with toy
 additive homomorphic encryption. It is not production cryptography, not full
 FHE, and not the low-level runtime target. It uses public active neuron
 positions plus encrypted active feature values for the sorted-event path, so

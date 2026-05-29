@@ -66,6 +66,8 @@ Release target: `v0.1.0-research-alpha`.
   project posture.
 - Tightened package-manifest and repository-guide briefing labels so the
   inventory matches the evidence narrative and research-alpha roadmap framing.
+- Tightened package-manifest runtime wording so the runnable JavaScript package
+  is framed as a scaffold rather than a broader prototype claim.
 - Tightened documentation-index and presentation-output wording so retained
   slide exports are clearly derived legacy review artifacts, not source
   evidence or current claim authority.

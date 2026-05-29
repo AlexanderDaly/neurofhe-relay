@@ -1427,6 +1427,7 @@ test("package manifest lists every tracked top-level package entry", () => {
     "research-alpha security scope",
     "11-slide evidence narrative",
     "research-alpha evidence roadmap",
+    "dependency-free educational sparse encrypted spike-count scaffold",
     "openfhe-bfvrns-eeg-eye-state-2026-05-21",
     "openfhe-ckks-eeg-eye-state-2026-05-21",
     "tfhe-rs-alpha-lane-framing-2026-05-29",
@@ -1446,6 +1447,8 @@ test("package manifest lists every tracked top-level package entry", () => {
     "research-prototype security policy",
     "11-slide presentation narrative",
     "staged prototype and pilot plan",
+    "dependency-free educational sparse encrypted spike-count prototype",
+    "The included JavaScript prototype demonstrates",
   ].filter((entry) => packageManifest.includes(entry));
 
   assert.deepEqual(missingRouting, []);
