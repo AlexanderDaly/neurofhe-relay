@@ -1,8 +1,8 @@
 # Contributor Workflow
 
 This page maps the GitHub-facing contribution surfaces. Use it with
-`CONTRIBUTING.md`, `SUPPORT.md`, `docs/developer-quickstart.md`, and
-`docs/maintainer-checklist.md`.
+`CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SUPPORT.md`,
+`docs/developer-quickstart.md`, and `docs/maintainer-checklist.md`.
 
 Nothing in these templates upgrades NeuroFHE Relay into production
 cryptography, medical software, clinical validation, deployment evidence, or a

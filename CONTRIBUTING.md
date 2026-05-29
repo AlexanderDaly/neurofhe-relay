@@ -7,6 +7,8 @@ into production cryptography, medical, security, or performance claims.
 
 ## Ground Rules
 
+- Follow `CODE_OF_CONDUCT.md` for public collaboration expectations and report
+  routing.
 - Keep raw signals and raw public/private datasets out of git.
 - Preserve `privacyBoundary`, `cryptoInventory`, provenance, and
   `productionClaim: false` in benchmark and adapter outputs.

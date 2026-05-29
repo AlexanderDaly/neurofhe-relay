@@ -1154,6 +1154,7 @@ test("Dependabot config covers package and workflow maintenance", () => {
 test("policy boundary map lists every policy and claim-boundary root file", () => {
   const policyMap = readFileSync("docs/policy-boundary.md", "utf8");
   const policyFiles = [
+    "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "DEVELOPMENT.md",
     "LICENSE",
@@ -1169,6 +1170,28 @@ test("policy boundary map lists every policy and claim-boundary root file", () =
   );
 
   assert.deepEqual(missingFiles, []);
+});
+
+test("code of conduct sets public collaboration boundaries without upgrading claims", () => {
+  const conduct = readFileSync("CODE_OF_CONDUCT.md", "utf8");
+  const requiredEntries = [
+    "CC0",
+    "research-alpha",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "CONTRIBUTING.md",
+    "raw datasets",
+    "private payloads",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "not production cryptography",
+    "not medical",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !conduct.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
 });
 
 test("support policy routes issues without weakening evidence boundaries", () => {

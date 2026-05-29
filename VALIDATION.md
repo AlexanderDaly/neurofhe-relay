@@ -17,11 +17,11 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 113
-pass 113
+tests 114
+pass 114
 fail 0
 json ok
-markdown link scan ok (72 files)
+markdown link scan ok (73 files)
 repository hygiene scan ok
 ```
 
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 113
-pass 113
+tests 114
+pass 114
 fail 0
 ```
 
@@ -110,6 +110,9 @@ Covered behaviours:
 - Support policy coverage requiring issue, security, support, and release
   blocker routing while preserving `releaseGateSatisfied: false`,
   `productionClaim: false`, and raw-data boundaries.
+- Code of conduct coverage requiring public collaboration boundaries, report
+  routing, raw-data/private-payload limits, `productionClaim: false`, and
+  `releaseGateSatisfied: false`.
 - CODEOWNERS coverage requiring review ownership routing for root, GitHub,
   docs, prototype, benchmark-artifacts, and patent surfaces.
 - Dependabot coverage requiring weekly dependency update routing for GitHub

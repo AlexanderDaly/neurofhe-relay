@@ -21,6 +21,9 @@ request. Use `docs/operations-runbook.md` when the issue is a hosted-check,
 repository ruleset/admin policy, artifact-refresh, or release-validation
 blocker.
 
+Use `CODE_OF_CONDUCT.md` for public collaboration expectations and conduct
+report routing.
+
 Use `docs/troubleshooting.md` first for common local npm, hosted-CI,
 native-lane, dataset, or release-gate blockers.
 

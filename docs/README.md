@@ -56,6 +56,8 @@ changing the evidence boundary.
 
 - `README.md` - project thesis, public framing, demos, and caveats.
 - `CHANGELOG.md` - unreleased review history and release-caveat summary.
+- `CODE_OF_CONDUCT.md` - public collaboration expectations and reporting
+  boundaries.
 - `DEVELOPMENT.md` - fuller setup notes, native FHE commands, and artifact
   policy.
 - `CONTRIBUTING.md` - evidence-first contribution rules and issue/PR workflow.

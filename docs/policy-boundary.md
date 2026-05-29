@@ -15,6 +15,8 @@ review, release approval, or benchmark evidence.
 - `PUBLIC_DOMAIN_NOTICE.md` - plain-English public-domain and free-use notice.
 - `README.md` - public thesis, recommended phrasing, bio-digital event
   intelligence boundary, and explicit caveats.
+- `CODE_OF_CONDUCT.md` - public collaboration expectations and reporting
+  boundaries.
 - `SECURITY.md` - research-prototype security scope and responsible reporting
   guidance.
 - `SUPPORT.md` - routing for public issues, security reports, release blockers,

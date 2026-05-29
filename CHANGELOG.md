@@ -28,6 +28,8 @@ Release target: `v0.1.0-research-alpha`.
   review, evidence refresh commands, and blocker recording.
 - Added `docs/troubleshooting.md` for common local npm, hosted-CI, native-lane,
   dataset, and release-gate blockers.
+- Added `CODE_OF_CONDUCT.md` for public collaboration expectations and
+  reporting boundaries.
 - Added a guarded, role-based root README first path for reviewers,
   contributors, maintainers, and evidence reviewers.
 - Added a guarded, concise root README repository layout that defers the
@@ -45,8 +47,8 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 113 tests, Markdown
-  link scan over 72 files, JSON parsing, and repository hygiene scan.
+- `VALIDATION.md` now records the current portable gate as 114 tests, Markdown
+  link scan over 73 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
 
