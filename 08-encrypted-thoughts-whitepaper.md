@@ -385,7 +385,7 @@ From there, the research path is clear:
 
 ### Phase 0: Whitepaper and Threat Model
 
-Publish the ethical and technical argument. Define "encrypted thoughts" as a privacy-preserving computation architecture. Keep non-medical and research-grade caveats visible.
+Publish the ethical and technical argument. Define "encrypted thoughts" as a privacy-preserving computation architecture. Keep non-medical and research-alpha caveats visible.
 
 ### Phase 1: Event Contract
 

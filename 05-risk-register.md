@@ -30,7 +30,7 @@ Mitigation:
 
 - Keep Octra as an integration lane.
 - Use mature HE libraries for the first local demo.
-- Add Octra only after a compact operation family is proven.
+- Add Octra only after a compact operation family is measured and bounded.
 
 ### R4 - Misleading Security Claims
 
@@ -38,7 +38,7 @@ Risk: overstating privacy guarantees before cryptographic review.
 
 Mitigation:
 
-- Use research-grade language.
+- Use research-alpha evidence language.
 - State key ownership and threat model explicitly.
 - Avoid production or compliance claims until audited.
 
@@ -70,7 +70,7 @@ Risk: bio-digital framing is mistaken for medical diagnosis, treatment, regulate
 Mitigation:
 
 - Use privacy-preserving event intelligence language.
-- Keep synthetic and research-grade caveats visible.
+- Keep synthetic and research-alpha caveats visible.
 - Do not make diagnostic or treatment claims.
 - Require real datasets, clinical validation, regulatory strategy, and legal review before any medical-adjacent deployment language.
 

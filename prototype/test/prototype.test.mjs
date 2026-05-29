@@ -1061,6 +1061,7 @@ test("briefing sequence guide lists every numbered root brief", () => {
   const pitchDeck = readFileSync("02-pitch-deck.md", "utf8");
   const technicalArchitecture = readFileSync("03-technical-architecture.md", "utf8");
   const demoRoadmap = readFileSync("04-demo-roadmap.md", "utf8");
+  const riskRegister = readFileSync("05-risk-register.md", "utf8");
   const encryptedThoughtsWhitepaper = readFileSync(
     "08-encrypted-thoughts-whitepaper.md",
     "utf8",
@@ -1118,10 +1119,29 @@ test("briefing sequence guide lists every numbered root brief", () => {
   assert.equal(demoRoadmap.includes("Current prototype foothold:"), false);
   assert.equal(demoRoadmap.includes("Goal: prove that the project can turn rights-clean real data"), false);
   assert.equal(
+    riskRegister.includes(
+      "Add Octra only after a compact operation family is measured and bounded.",
+    ),
+    true,
+  );
+  assert.equal(riskRegister.includes("Use research-alpha evidence language."), true);
+  assert.equal(
+    riskRegister.includes("Keep synthetic and research-alpha caveats visible."),
+    true,
+  );
+  assert.equal(riskRegister.includes("operation family is proven"), false);
+  assert.equal(riskRegister.includes("Use research-grade language."), false);
+  assert.equal(riskRegister.includes("research-grade caveats"), false);
+  assert.equal(
     encryptedThoughtsWhitepaper.includes("The current research-alpha package is deliberately small"),
     true,
   );
+  assert.equal(
+    encryptedThoughtsWhitepaper.includes("Keep non-medical and research-alpha caveats visible."),
+    true,
+  );
   assert.equal(encryptedThoughtsWhitepaper.includes("The current prototype is"), false);
+  assert.equal(encryptedThoughtsWhitepaper.includes("research-grade caveats"), false);
 });
 
 test("prototype map lists every library module", () => {
