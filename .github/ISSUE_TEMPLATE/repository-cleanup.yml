@@ -22,6 +22,13 @@ body:
     validations:
       required: true
   - type: textarea
+    id: affected_surface
+    attributes:
+      label: Affected file or workflow
+      description: Name the file, documentation route, GitHub surface, or workflow that feels hard to use.
+    validations:
+      required: true
+  - type: textarea
     id: current_friction
     attributes:
       label: Current friction

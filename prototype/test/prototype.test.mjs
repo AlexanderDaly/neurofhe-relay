@@ -1795,6 +1795,8 @@ test("issue templates preserve evidence boundaries and release routing", () => {
     "private payloads",
     "exact command",
     "smallest next step",
+    "Affected file or workflow",
+    "Name the file, documentation route, GitHub surface, or workflow",
     "unexpected scaffold behavior",
     "portable scaffold runtime",
     "prototype/ scaffold documentation",

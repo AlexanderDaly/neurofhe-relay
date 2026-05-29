@@ -226,6 +226,8 @@ Release target: `v0.1.0-research-alpha`.
 - Added a guarded PR readiness snapshot to the maintainer checklist so review
   notes report local validation, hosted checks, merge policy, release posture,
   and remaining blockers consistently.
+- Tightened the repository-cleanup issue form so cleanup requests name the
+  affected file, documentation route, GitHub surface, or workflow.
 - Tightened package-manifest native-evidence coverage so stale OpenFHE
   dependency wording is rejected and current native artifact IDs plus
   measurement gaps stay visible.
