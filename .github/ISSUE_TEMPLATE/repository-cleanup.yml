@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Use this for changes that make the repository easier to read, review, validate, or maintain. Keep requests scoped and preserve the research-alpha evidence boundary.
+        Use this for changes that make the repository easier to read, review, validate, or maintain. Keep requests scoped and preserve the research-alpha evidence boundary, including `releaseGateSatisfied: false` unless the documented release gate is actually satisfied.
   - type: dropdown
     id: cleanup_area
     attributes:
@@ -54,4 +54,5 @@ body:
           required: true
         - label: This cleanup keeps raw datasets, raw signals, secrets, private payloads, and proprietary material out of git.
           required: true
-
+        - label: "This cleanup preserves `privacyBoundary`, `cryptoInventory`, and `productionClaim: false` where artifact metadata is involved."
+          required: true

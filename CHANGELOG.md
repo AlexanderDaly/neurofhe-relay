@@ -56,10 +56,12 @@ Release target: `v0.1.0-research-alpha`.
   hosted-CI, release-gate, and repository-policy boundaries stay visible.
 - Added pull-request-template coverage so validation commands, release caveats,
   raw-data boundaries, and repository-policy routing remain in every PR.
+- Added issue-template coverage so incoming reports preserve evidence
+  boundaries, release-gate posture, raw-data exclusions, and CI/ruleset routing.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 120 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 121 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.

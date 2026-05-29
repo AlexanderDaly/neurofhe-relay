@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 120
-pass 120
+tests 121
+pass 121
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 120
-pass 120
+tests 121
+pass 121
 fail 0
 ```
 
@@ -129,6 +129,9 @@ Covered behaviours:
 - Pull-request-template coverage requiring validation commands, release caveats,
   raw-data boundaries, and repository ruleset/admin policy routing to stay
   visible.
+- Issue-template coverage requiring incoming reports to preserve evidence
+  boundaries, release-gate posture, raw-data exclusions, and
+  CI-versus-ruleset routing.
 - Maintainers-file coverage requiring the current maintainer route, release
   authority boundary, repository ruleset/admin policy, explicit user approval,
   `releaseGateSatisfied: false`, and `productionClaim: false`.

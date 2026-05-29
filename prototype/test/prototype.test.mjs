@@ -1196,6 +1196,32 @@ test("pull request template preserves validation and release caveats", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("issue templates preserve evidence boundaries and release routing", () => {
+  const bugReport = readFileSync(".github/ISSUE_TEMPLATE/bug-report.yml", "utf8");
+  const validationGap = readFileSync(".github/ISSUE_TEMPLATE/validation-gap.yml", "utf8");
+  const cleanupRequest = readFileSync(".github/ISSUE_TEMPLATE/repository-cleanup.yml", "utf8");
+  const issueConfig = readFileSync(".github/ISSUE_TEMPLATE/config.yml", "utf8");
+  const combined = [bugReport, validationGap, cleanupRequest, issueConfig].join("\n");
+  const requiredEntries = [
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "repository ruleset/admin policy",
+    "docs/evidence-dashboard.md",
+    "docs/release-gate-matrix.md",
+    "raw datasets",
+    "secrets",
+    "exact command",
+    "smallest next step",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !combined.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("policy boundary map lists every policy and claim-boundary root file", () => {
   const policyMap = readFileSync("docs/policy-boundary.md", "utf8");
   const policyFiles = [
