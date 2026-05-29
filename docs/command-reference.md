@@ -66,7 +66,7 @@ npm run reconstruction:risk
 
 These commands cover the synthetic sparse scorer, optional benchmark artifact
 publishing, padded-sparse privacy-mode overhead, and synthetic
-reconstruction-risk probes. Treat them as research-prototype evidence, not
+reconstruction-risk probes. Treat them as research-alpha package evidence, not
 production security or privacy proof.
 
 ## Plaintext Baselines And Input Contracts

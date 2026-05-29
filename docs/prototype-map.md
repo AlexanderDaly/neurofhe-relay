@@ -1,9 +1,9 @@
 # Prototype Map
 
-This map explains the runnable prototype code by ownership area. The JavaScript
-harness is portable validation and artifact orchestration, not the low-level
-production runtime. Native OpenFHE and TFHE-rs paths remain local dependency
-lanes with explicit caveats.
+This map explains the research-alpha scaffold code by ownership area. The
+JavaScript harness is portable validation and artifact orchestration, not the
+low-level production runtime. Native OpenFHE and TFHE-rs paths remain local
+dependency lanes with explicit caveats.
 
 Nothing in `prototype/` is production cryptography, medical software, clinical
 validation, deployment evidence, side-channel evidence, or stable-performance

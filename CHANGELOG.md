@@ -241,6 +241,8 @@ Release target: `v0.1.0-research-alpha`.
   prototype posture.
 - Security policy, policy-boundary, and package-manifest wording now use
   research-alpha security scope instead of research-prototype policy framing.
+- Command reference and prototype-map wording now use research-alpha package and
+  scaffold framing instead of legacy evidence/prototype framing.
 - Public demo naming now uses `Relay-2 Research Demo` instead of diagnostic
   framing across the portable benchmark and research assumptions.
 

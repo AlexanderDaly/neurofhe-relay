@@ -995,6 +995,7 @@ test("command reference documents every package script", () => {
     "npm run ci",
     "npm run release:evidence",
     "npm run native:doctor",
+    "research-alpha package evidence",
   ];
   const missingScripts = Object.keys(packageJson.scripts).filter((scriptName) => {
     const expected = scriptName === "test"
@@ -1008,6 +1009,7 @@ test("command reference documents every package script", () => {
 
   assert.deepEqual(missingScripts, []);
   assert.deepEqual(missingRoutes, []);
+  assert.equal(commandReference.includes("research-prototype evidence"), false);
 });
 
 test("documentation index lists every docs page", () => {
@@ -1082,6 +1084,9 @@ test("briefing sequence guide lists every numbered root brief", () => {
 
 test("prototype map lists every library module", () => {
   const prototypeMap = readFileSync("docs/prototype-map.md", "utf8");
+  assert.equal(prototypeMap.includes("research-alpha scaffold code"), true);
+  assert.equal(prototypeMap.includes("runnable prototype code"), false);
+
   const libraryModules = readdirSync("prototype/lib")
     .filter((entry) => entry.endsWith(".mjs"))
     .sort();
