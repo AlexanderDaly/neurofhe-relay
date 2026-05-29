@@ -139,6 +139,8 @@ Release target: `v0.1.0-research-alpha`.
 - Tightened developer, security, dependency, and repository-map wording so
   public guidance uses scaffold or `prototype/` path framing instead of broad
   prototype surface labels.
+- Tightened the `prototype/README.md` front door so it presents the runnable
+  package surface as a scaffold while preserving the literal `prototype/` path.
 - Added documentation-index concision coverage so `docs/README.md` stays a
   reader-facing map instead of becoming a validation transcript.
 - Added documentation-index repository-baseline routing for CC0/license files,

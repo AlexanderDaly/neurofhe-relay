@@ -1,4 +1,4 @@
-# NeuroFHE Relay Prototype
+# NeuroFHE Relay Scaffold
 
 `prototype/` is the runnable contract harness for NeuroFHE Relay. It keeps the
 research-alpha boundary executable with portable Node.js tests, toy arithmetic,
@@ -17,7 +17,7 @@ local setup or blocker handling, use
 [`../docs/troubleshooting.md`](../docs/troubleshooting.md) and
 [`../benchmark-artifacts/README.md`](../benchmark-artifacts/README.md).
 
-## Prototype Routes
+## Scaffold Routes
 
 Use this table before expanding command detail here. It keeps `prototype/` as a
 short runnable entrypoint and routes longer workflows to the maintained maps.
@@ -94,4 +94,4 @@ local-only inputs, and commit only derived metrics, provenance, caveats, or
 blocker reports.
 
 Use the release gate in [`../RELEASE.md`](../RELEASE.md) before treating any
-prototype artifact as release evidence.
+scaffold artifact as release evidence.

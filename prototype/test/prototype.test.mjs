@@ -2710,7 +2710,8 @@ test("root README keeps command surface concise", () => {
 test("prototype README stays a concise entrypoint instead of a command wall", () => {
   const prototypeReadme = readFileSync("prototype/README.md", "utf8");
   const requiredEntries = [
-    "## Prototype Routes",
+    "# NeuroFHE Relay Scaffold",
+    "## Scaffold Routes",
     "| Goal | Start With | Confirm Or Continue In |",
     "Validate portable contract",
     "Run the toy scorer or gateway",
@@ -2746,6 +2747,9 @@ test("prototype README stays a concise entrypoint instead of a command wall", ()
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(prototypeReadme.includes("# NeuroFHE Relay Prototype"), false);
+  assert.equal(prototypeReadme.includes("## Prototype Routes"), false);
+  assert.equal(prototypeReadme.includes("prototype artifact as release evidence"), false);
   assert.equal(prototypeReadme.includes("Current modules:"), false);
   assert.equal(prototypeReadme.includes("Print the real OpenFHE BFVrns integration plan"), false);
 });
