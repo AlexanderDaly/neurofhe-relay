@@ -1049,6 +1049,7 @@ test("documentation index stays concise and reader-facing", () => {
     "docs/testing-strategy.md",
     "docs/command-reference.md",
     "benchmark-artifacts/README.md",
+    "top-level numbered briefs remain the public briefing sequence",
     "production cryptography",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
@@ -1058,6 +1059,7 @@ test("documentation index stays concise and reader-facing", () => {
 
   assert.deepEqual(missingEntries, []);
   assert.equal(validationLitanyMatches.length, 0);
+  assert.equal(docsIndex.includes("public presentation sequence"), false);
 });
 
 test("briefing sequence guide lists every numbered root brief", () => {
@@ -1526,6 +1528,9 @@ test("presentation outputs map lists every tracked generated output file", () =>
     "Claim or caveat check",
     "Evidence or release readiness",
     "Refresh or replace an export",
+    "legacy generated slide export",
+    "NeuroFHE Relay",
+    "evidence narrative",
   ];
   const missingOutputs = outputFiles.filter((outputPath) =>
     !outputsMap.includes(outputPath),
@@ -1536,6 +1541,7 @@ test("presentation outputs map lists every tracked generated output file", () =>
 
   assert.deepEqual(missingOutputs, []);
   assert.deepEqual(missingRoutes, []);
+  assert.equal(outputsMap.includes("VC\n    pitch deck"), false);
 });
 
 test("benchmark artifacts README lists every tracked artifact directory", () => {

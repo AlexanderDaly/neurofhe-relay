@@ -24,8 +24,8 @@ Use this table before opening or refreshing generated presentation files.
 ## Generated Files
 
 - [`outputs/019e4b94-fd4a-79c3-b707-77404ef5f0b9/presentations/neurofhe-vc-pitch/output/neurofhe-relay-vc-pitch-deck.pptx`](../outputs/019e4b94-fd4a-79c3-b707-77404ef5f0b9/presentations/neurofhe-vc-pitch/output/neurofhe-relay-vc-pitch-deck.pptx)
-  - generated PowerPoint export for packaged review of the NeuroFHE Relay VC
-    pitch deck.
+  - legacy generated slide export for packaged review of the NeuroFHE Relay
+    evidence narrative.
 
 ## Handling Rules
 

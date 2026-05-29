@@ -1,7 +1,7 @@
 # Documentation
 
 This directory holds orientation material for readers and contributors. The
-top-level numbered briefs remain the public presentation sequence; these docs
+top-level numbered briefs remain the public briefing sequence; these docs
 help people navigate the repository and run the research-alpha checks without
 changing the evidence boundary.
 
