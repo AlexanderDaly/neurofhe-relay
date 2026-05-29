@@ -17,6 +17,20 @@ local setup or blocker handling, use
 [`../docs/troubleshooting.md`](../docs/troubleshooting.md) and
 [`../benchmark-artifacts/README.md`](../benchmark-artifacts/README.md).
 
+## Prototype Routes
+
+Use this table before expanding command detail here. It keeps `prototype/` as a
+short runnable entrypoint and routes longer workflows to the maintained maps.
+
+| Goal | Start With | Confirm Or Continue In |
+| --- | --- | --- |
+| Validate portable contract | `npm run validate` | [`../VALIDATION.md`](../VALIDATION.md) and [`../docs/testing-strategy.md`](../docs/testing-strategy.md) |
+| Run the toy scorer or gateway | `npm run demo` and `npm run gateway:demo` | [`../docs/prototype-map.md`](../docs/prototype-map.md) |
+| Publish derived artifacts | `npm run benchmark:artifact` | [`../benchmark-artifacts/README.md`](../benchmark-artifacts/README.md) and [`../docs/data-handling.md`](../docs/data-handling.md) |
+| Work on native lanes | `npm run native:doctor` | [`../docs/dependency-matrix.md`](../docs/dependency-matrix.md) and [`../docs/troubleshooting.md`](../docs/troubleshooting.md) |
+| Work on real-data baselines | `npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact` | [`../docs/data-handling.md`](../docs/data-handling.md) and [`PLAINTEXT_BASELINE.md`](PLAINTEXT_BASELINE.md) |
+| Review release evidence | `npm run release:evidence -- --artifact` | [`../docs/release-gate-matrix.md`](../docs/release-gate-matrix.md) and [`../docs/evidence-dashboard.md`](../docs/evidence-dashboard.md) |
+
 ## First Commands
 
 Run the portable validation gate:

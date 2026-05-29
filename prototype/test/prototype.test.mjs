@@ -2253,6 +2253,14 @@ test("root README keeps command surface concise", () => {
 test("prototype README stays a concise entrypoint instead of a command wall", () => {
   const prototypeReadme = readFileSync("prototype/README.md", "utf8");
   const requiredEntries = [
+    "## Prototype Routes",
+    "| Goal | Start With | Confirm Or Continue In |",
+    "Validate portable contract",
+    "Run the toy scorer or gateway",
+    "Publish derived artifacts",
+    "Work on native lanes",
+    "Work on real-data baselines",
+    "Review release evidence",
     "## First Commands",
     "## Evidence Boundaries",
     "../docs/prototype-map.md",
@@ -2263,6 +2271,10 @@ test("prototype README stays a concise entrypoint instead of a command wall", ()
     "npm run gateway:demo",
     "npm run benchmark:artifact",
     "npm run validate",
+    "npm run native:doctor",
+    "npm run release:evidence -- --artifact",
+    "../docs/data-handling.md",
+    "../docs/release-gate-matrix.md",
     "toy additive",
     "productionClaim: false",
     "releaseGateSatisfied: false",

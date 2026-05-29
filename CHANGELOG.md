@@ -76,6 +76,8 @@ Release target: `v0.1.0-research-alpha`.
   reader, maintainer, GitHub, CI, release-gate, and ruleset-policy surfaces.
 - Added prototype README coverage so the runnable-code entrypoint stays concise
   and routes detailed command/module inventory to the maintained maps.
+- Added prototype README route coverage so validation, demo, artifact, native,
+  real-data, and release-evidence work start from compact command routes.
 - Added development guide coverage so setup, native-lane, evidence-artifact,
   hosted-CI, release-gate, and repository-policy boundaries stay visible.
 - Tightened development guide coverage so first validation, docs navigation,
