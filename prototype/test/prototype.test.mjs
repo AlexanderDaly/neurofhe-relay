@@ -1050,11 +1050,24 @@ test("briefing sequence guide lists every numbered root brief", () => {
   const numberedBriefs = readdirSync(".")
     .filter((entry) => /^[0-9]{2}-.+\.md$/.test(entry))
     .sort();
+  const requiredRouteEntries = [
+    "## Briefing Routes",
+    "| Reader Need | Start With | Confirm In |",
+    "Fast external overview",
+    "Architecture or boundary review",
+    "Evidence or claim diligence",
+    "Native performance planning",
+    "Patent or weak-claim gap planning",
+  ];
   const missingBriefs = numberedBriefs.filter((brief) =>
     !new RegExp(`\\b${escapeRegExp(brief)}\\b`).test(briefingGuide),
   );
+  const missingRoutes = requiredRouteEntries.filter((entry) =>
+    !briefingGuide.includes(entry),
+  );
 
   assert.deepEqual(missingBriefs, []);
+  assert.deepEqual(missingRoutes, []);
 });
 
 test("prototype map lists every library module", () => {

@@ -9,6 +9,18 @@ This sequence is still research-alpha material. It should not be read as
 production cryptography, medical, clinical, surveillance, deployment,
 side-channel, identity-protection, or stable-performance evidence.
 
+## Briefing Routes
+
+Use the table before reading the full sequence end to end.
+
+| Reader Need | Start With | Confirm In |
+| --- | --- | --- |
+| Fast external overview | `01-one-pager.md` and `02-pitch-deck.md` | `README.md`, `docs/faq.md`, and `docs/status-roadmap.md` for current caveats. |
+| Architecture or boundary review | `03-technical-architecture.md`, `09-relay-gateway-pattern.md`, and `11-architecture-visuals.md` | `docs/policy-boundary.md` and `docs/architecture-decisions.md` before changing public framing. |
+| Evidence or claim diligence | `05-risk-register.md` and `06-evidence-and-sources.md` | `docs/evidence-guide.md`, `docs/evidence-dashboard.md`, and `docs/claim-evidence-ledger.md` before making claims. |
+| Native performance planning | `10-native-performance-track.md` and `12-discreet-spike-sorting-proof.md` | `benchmark-artifacts/native-evidence/latest.json` and `docs/release-gate-matrix.md` before treating evidence gaps as closed. |
+| Patent or weak-claim gap planning | `07-post-quantum-cryptography-track.md`, `08-encrypted-thoughts-whitepaper.md`, and `12-discreet-spike-sorting-proof.md` | `docs/patent-package-map.md` and `patent/briefing/ENER_weak_claims_evidence_gaps.md` before publication, grant, or conversion work. |
+
 ## Recommended Reading Order
 
 | File | Purpose | Best For |

@@ -162,6 +162,9 @@ Release target: `v0.1.0-research-alpha`.
   validation before the full local gate.
 - Tightened support-policy coverage so public issue, private security,
   release-blocker, and cleanup routes are visible in a compact table.
+- Tightened briefing-sequence coverage so external overview, architecture,
+  evidence, native-performance, and patent/weak-claim readers start from a
+  compact route table before the numbered brief list.
 
 ### Changed
 
