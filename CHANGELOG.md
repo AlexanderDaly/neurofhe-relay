@@ -58,6 +58,12 @@ Release target: `v0.1.0-research-alpha`.
   138-test portable gate.
 - Tightened post-quantum and linear-algebra handoff wording so prototype
   language uses research-alpha lane and contract framing.
+- Tightened security policy and agent-readable whitepaper metadata so BCI and
+  cryptographic posture use research-alpha caveats instead of research-grade
+  framing.
+- Tightened demo-roadmap and briefing-sequence wording so Phase 5 stays framed
+  as research-alpha review packaging instead of fundable or partner-ready
+  project posture.
 - Added a guarded, concise root README repository layout that defers the
   exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Added a guarded, concise root README quick-command table that defers detailed

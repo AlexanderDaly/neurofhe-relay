@@ -26,9 +26,9 @@ Use the table before reading the full sequence end to end.
 | File | Purpose | Best For |
 | --- | --- | --- |
 | [`01-one-pager.md`](../01-one-pager.md) | Executive one-page brief | Fast project overview |
-| [`02-pitch-deck.md`](../02-pitch-deck.md) | 11-slide narrative | Presentation flow and fundable story |
+| [`02-pitch-deck.md`](../02-pitch-deck.md) | 11-slide evidence narrative | Presentation flow and evidence story |
 | [`03-technical-architecture.md`](../03-technical-architecture.md) | System architecture and data flow | Boundary and component review |
-| [`04-demo-roadmap.md`](../04-demo-roadmap.md) | Prototype and pilot plan | Roadmap discussion |
+| [`04-demo-roadmap.md`](../04-demo-roadmap.md) | Research-alpha evidence roadmap | Roadmap discussion |
 | [`05-risk-register.md`](../05-risk-register.md) | Technical, market, and execution risks | Diligence and objection handling |
 | [`06-evidence-and-sources.md`](../06-evidence-and-sources.md) | Source-backed research notes | Research grounding |
 | [`07-post-quantum-cryptography-track.md`](../07-post-quantum-cryptography-track.md) | PQC direction and crypto agility | Cryptographic roadmap review |

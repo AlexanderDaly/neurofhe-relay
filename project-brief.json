@@ -198,7 +198,7 @@
       "file": "08-encrypted-thoughts-whitepaper.md",
       "title": "Why We Need Encrypted Thoughts for Brain-Computer Interfaces",
       "position": "Encrypted thoughts is an architecture phrase: raw neural and biosignal streams stay local by default, selected event features are minimized and encrypted, external compute operates on ciphertext, and only authorized parties decrypt the result.",
-      "boundary": "Non-medical, research-grade argument for BCI privacy architecture. Do not imply arbitrary thought reading, diagnosis, treatment, or production cryptographic assurance."
+      "boundary": "Non-medical, research-alpha privacy-architecture argument for BCI-adjacent event intelligence. Do not imply arbitrary thought reading, diagnosis, treatment, or production cryptographic assurance."
     }
   ],
   "patentPackage": {

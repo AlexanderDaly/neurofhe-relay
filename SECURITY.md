@@ -61,7 +61,7 @@ private-dataset review.
 
 ## Cryptographic Posture
 
-All current cryptographic lanes are research-grade:
+All current cryptographic lanes are research-alpha and caveated:
 
 - toy additive arithmetic is educational only;
 - OpenFHE BFVrns and CKKS lanes are native-library comparison targets;

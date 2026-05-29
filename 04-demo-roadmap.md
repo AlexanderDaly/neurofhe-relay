@@ -158,19 +158,19 @@ Decision gate:
 - If Octra tooling cannot support the needed operations yet, position it as future decentralized encrypted-compute integration.
 - If it can, add a small Octra-connected demo step.
 
-## Phase 5 - Pilot Package
+## Phase 5 - Research-Alpha Review Package
 
-Goal: turn demo into a fundable or partner-ready project.
+Goal: turn the evidence package into a reviewer-ready research-alpha path.
 
 Deliverables:
 
 - One-page brief.
 - Technical memo.
-- Benchmark CSV/JSON.
+- Caveated benchmark JSON/CSV.
 - Live local demo.
 - Reviewer-facing briefing deck.
 - Risk register.
-- Partner list.
+- Potential reviewer or collaborator list.
 
 ## Candidate Pilot Domains
 

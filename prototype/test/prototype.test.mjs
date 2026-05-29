@@ -1175,11 +1175,21 @@ test("briefing sequence guide lists every numbered root brief", () => {
   assert.equal(demoRoadmap.includes("Goal: validate that the concept is coherent enough to demo."), true);
   assert.equal(demoRoadmap.includes("Current research-alpha foothold:"), true);
   assert.equal(demoRoadmap.includes("Goal: validate that the project can turn rights-clean real data"), true);
+  assert.equal(demoRoadmap.includes("## Phase 5 - Research-Alpha Review Package"), true);
+  assert.equal(
+    demoRoadmap.includes("Goal: turn the evidence package into a reviewer-ready research-alpha path."),
+    true,
+  );
+  assert.equal(demoRoadmap.includes("Potential reviewer or collaborator list."), true);
   assert.equal(demoRoadmap.includes("Reviewer-facing briefing deck."), true);
   assert.equal(demoRoadmap.includes("Goal: prove the concept"), false);
   assert.equal(demoRoadmap.includes("Current prototype foothold:"), false);
   assert.equal(demoRoadmap.includes("Goal: prove that the project can turn rights-clean real data"), false);
   assert.equal(demoRoadmap.includes("8-12 slide pitch deck."), false);
+  assert.equal(demoRoadmap.includes("Goal: turn demo into a fundable or partner-ready project."), false);
+  assert.equal(demoRoadmap.includes("Partner list."), false);
+  assert.equal(briefingGuide.includes("Presentation flow and evidence story"), true);
+  assert.equal(briefingGuide.includes("Presentation flow and fundable story"), false);
   assert.equal(
     riskRegister.includes(
       "Add Octra only after a compact operation family is measured and bounded.",
@@ -1491,8 +1501,13 @@ test("project brief preserves agent-readable repository posture", () => {
     projectBrief.currentScaffold.caveat,
     "The current package is educational and not production cryptography.",
   );
+  assert.equal(
+    projectBrief.whitepapers[0].boundary,
+    "Non-medical, research-alpha privacy-architecture argument for BCI-adjacent event intelligence. Do not imply arbitrary thought reading, diagnosis, treatment, or production cryptographic assurance.",
+  );
   assert.equal(projectBrief.currentScaffold.caveat.includes("current prototype"), false);
   assert.equal(Object.hasOwn(projectBrief, "currentPrototype"), false);
+  assert.equal(projectBrief.whitepapers[0].boundary.includes("research-grade"), false);
 });
 
 test("presentation outputs map lists every tracked generated output file", () => {
@@ -1858,6 +1873,7 @@ test("security policy preserves research-alpha reporting boundaries", () => {
     "releaseGateSatisfied: false",
     "repository hygiene scan",
     "not a security audit",
+    "All current cryptographic lanes are research-alpha and caveated:",
     "exact command",
     "smallest next step",
   ];
@@ -1867,6 +1883,7 @@ test("security policy preserves research-alpha reporting boundaries", () => {
 
   assert.deepEqual(missingEntries, []);
   assert.equal(securityPolicy.includes("research prototype"), false);
+  assert.equal(securityPolicy.includes("research-grade"), false);
 });
 
 test("contributing guide routes evidence and release-boundary work", () => {
