@@ -5,6 +5,7 @@ The detailed artifact mechanics live in `benchmark-artifacts/README.md`.
 Raw-data and derived-artifact boundaries live in `docs/data-handling.md`.
 Weak-claim evidence posture lives in `docs/claim-evidence-ledger.md`.
 Release command evidence posture lives in `docs/release-gate-matrix.md`.
+Unreleased review history lives in `CHANGELOG.md`.
 
 NeuroFHE Relay is a research-alpha package. Evidence in this repository can
 support scoped prototype statements, but it does not support production

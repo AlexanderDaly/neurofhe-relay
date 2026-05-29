@@ -1,0 +1,41 @@
+# Changelog
+
+This changelog tracks repository, evidence, and documentation changes that
+matter for reviewers. It does not mark a release complete and does not upgrade
+NeuroFHE Relay into production cryptography, medical software, clinical
+validation, deployment evidence, a privacy proof, or a security certification.
+
+## Unreleased
+
+Release target: `v0.1.0-research-alpha`.
+
+### Added
+
+- Restored the release-validation stack on PR #23 with automatic
+  `Portable validation` checks for push and pull request events.
+- Added repository readability maps for docs, prototype sources, native lanes,
+  patent materials, presentation outputs, contributor workflow, policy
+  boundaries, status, terminology, testing strategy, dependency posture, data
+  handling, claim evidence, and release gate commands.
+- Added `docs/data-handling.md` for raw-data, derived-artifact, blocker, and
+  hygiene boundaries.
+- Added `docs/claim-evidence-ledger.md` for weak-claim evidence posture.
+- Added `docs/release-gate-matrix.md` for release command, artifact, caveat,
+  and blocker review.
+- Added guarded documentation coverage in the Node test suite so the repository
+  maps stay synchronized with tracked surfaces.
+
+### Changed
+
+- `VALIDATION.md` now records the current portable gate as 102 tests, Markdown
+  link scan over 66 files, JSON parsing, and repository hygiene scan.
+- `RELEASE.md` now points release reviewers to the command-by-command gate
+  matrix before tagging.
+
+### Caveats
+
+- The current release dashboard remains `releaseGateSatisfied: false`.
+- Artifact and lane metadata must preserve `productionClaim: false`.
+- PR #23 remains blocked by repository ruleset/admin policy, not code or hosted
+  CI failure.
+- No release tag has been created.

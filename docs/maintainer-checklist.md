@@ -59,6 +59,7 @@ git diff --check
 
 - `docs/command-reference.md` - grouped command list.
 - `docs/evidence-guide.md` - claim-safe evidence map.
+- `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `docs/glossary.md` - recurring project and artifact terms.
 - `docs/dependency-matrix.md` - portable and native dependency map.
 - `docs/data-handling.md` - raw-data and derived-artifact boundary map.

@@ -11,6 +11,7 @@ clinical validation, deployment evidence, or a security certification.
 ## Start Here
 
 - `README.md` - project thesis, public framing, demos, and caveats.
+- `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `docs/README.md` - documentation index for reader and contributor paths.
 - `docs/briefing-sequence.md` - reading order for the root `01-` through `12-`
   public briefing files.

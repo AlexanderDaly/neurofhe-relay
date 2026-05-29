@@ -47,6 +47,7 @@ changing the evidence boundary.
 ## Related Top-Level Docs
 
 - `README.md` - project thesis, public framing, demos, and caveats.
+- `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `DEVELOPMENT.md` - fuller setup notes, native FHE commands, and artifact
   policy.
 - `CONTRIBUTING.md` - evidence-first contribution rules and issue/PR workflow.

@@ -17,11 +17,11 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 101
-pass 101
+tests 102
+pass 102
 fail 0
 json ok
-markdown link scan ok (65 files)
+markdown link scan ok (66 files)
 repository hygiene scan ok
 ```
 
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 101
-pass 101
+tests 102
+pass 102
 fail 0
 ```
 
@@ -84,6 +84,8 @@ Covered behaviours:
   evidence surfaces and caveats.
 - Release-gate matrix coverage requiring every minimum evidence command in
   `RELEASE.md` to map to expected artifacts, caveats, and blocker posture.
+- Changelog coverage requiring the unreleased cleanup stack, release caveats,
+  hosted-CI status, and PR #23 blocker posture to stay visible.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene
   status, native measurement gaps, metadata-leakage caveats, reconstruction-risk
   caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker

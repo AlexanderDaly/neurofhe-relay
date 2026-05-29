@@ -13,6 +13,7 @@ below.
 
 - Release target: `v0.1.0-research-alpha`, governed by `RELEASE.md`.
 - Current local portable gate: recorded in `VALIDATION.md`.
+- Current review history: `CHANGELOG.md`.
 - Hosted CI/check-rollup evidence: `benchmark-artifacts/ci-blockers/latest.json`.
 - Release dashboard artifact: `benchmark-artifacts/release-evidence/latest.json`.
 - Repository hygiene evidence: `benchmark-artifacts/repo-hygiene/latest.json`.

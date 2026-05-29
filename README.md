@@ -81,6 +81,7 @@ medical, or deployment claim.
 
 - `LICENSE` - CC0 1.0 Universal public-domain dedication.
 - `PUBLIC_DOMAIN_NOTICE.md` - plain-English free-use notice.
+- `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `.editorconfig`, `.nvmrc`, and `.node-version` - editor and Node.js version
   hints for consistent local work.
 - `docs/README.md` - documentation index for reader and contributor paths.

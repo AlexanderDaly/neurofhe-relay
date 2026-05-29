@@ -1287,6 +1287,27 @@ test("release gate matrix lists every minimum evidence command", () => {
   assert.deepEqual(missingSurfaces, []);
 });
 
+test("changelog records unreleased cleanup stack and release caveats", () => {
+  const changelog = readFileSync("CHANGELOG.md", "utf8");
+  const requiredEntries = [
+    "## Unreleased",
+    "v0.1.0-research-alpha",
+    "PR #23",
+    "Portable validation",
+    "repository ruleset/admin policy",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "docs/release-gate-matrix.md",
+    "docs/claim-evidence-ledger.md",
+    "docs/data-handling.md",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !changelog.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
