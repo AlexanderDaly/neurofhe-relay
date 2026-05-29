@@ -1385,6 +1385,13 @@ test("issue templates preserve evidence boundaries and release routing", () => {
 test("policy boundary map lists every policy and claim-boundary root file", () => {
   const policyMap = readFileSync("docs/policy-boundary.md", "utf8");
   const policyFiles = [
+    "## Boundary Routes",
+    "| Boundary Change | Start With | Must Preserve |",
+    "License or public-domain framing",
+    "Public claim or README framing",
+    "Contribution, support, or conduct routing",
+    "Security, raw-data, or private-payload reporting",
+    "Release, validation, or hosted-CI posture",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "DEVELOPMENT.md",

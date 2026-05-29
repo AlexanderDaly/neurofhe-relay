@@ -51,6 +51,8 @@ Release target: `v0.1.0-research-alpha`.
   documentation navigation, source hygiene, and native/release evidence review.
 - Added architecture decision routes for license, claim, metadata, native-lane,
   raw-data, and hosted-CI/repository-policy boundary changes.
+- Added policy-boundary routes for license, public-claim, contribution,
+  security/raw-data, and release/validation posture changes.
 - Added `SUPPORT.md` and a support-routing guard for public issues, sensitive
   reports, release blockers, and cleanup requests.
 - Added code-of-conduct report routing so public collaboration, sensitive

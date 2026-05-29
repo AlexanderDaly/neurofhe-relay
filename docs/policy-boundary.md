@@ -9,6 +9,19 @@ public framing.
 This page is navigation only. It is not legal advice, security review, medical
 review, release approval, or benchmark evidence.
 
+## Boundary Routes
+
+Use this table before changing boundary language. It keeps common policy edits
+tied to the files that must stay aligned.
+
+| Boundary Change | Start With | Must Preserve |
+| --- | --- | --- |
+| License or public-domain framing | `LICENSE`, `PUBLIC_DOMAIN_NOTICE.md`, and `MAINTAINERS.md`. | CC0/public-domain posture unless a deliberate maintainer-reviewed change is made. |
+| Public claim or README framing | `README.md`, `docs/architecture-decisions.md`, and `docs/claim-evidence-ledger.md`. | Research-alpha caveats, bio-digital event intelligence boundary, and evidence-backed language. |
+| Contribution, support, or conduct routing | `CONTRIBUTING.md`, `SUPPORT.md`, and `CODE_OF_CONDUCT.md`. | Public/private report separation, exact-command blocker notes, and raw-data exclusions. |
+| Security, raw-data, or private-payload reporting | `SECURITY.md`, `docs/data-handling.md`, and `benchmark-artifacts/repo-hygiene/latest.json`. | No secrets, private payloads, raw datasets, or exploit details in public threads. |
+| Release, validation, or hosted-CI posture | `RELEASE.md`, `VALIDATION.md`, and `docs/operations-runbook.md`. | `releaseGateSatisfied: false`, `productionClaim: false`, and CI/check-rollup versus repository-policy separation. |
+
 ## Root Boundary Files
 
 - `LICENSE` - CC0 1.0 Universal public-domain dedication.
