@@ -115,7 +115,7 @@ Add `cryptoInventory` to benchmark outputs:
 
 ### Phase PQ-2 - Real Library Migration
 
-Replace the toy additive demo with one real encrypted-compute prototype:
+Replace the toy additive demo with one research-alpha encrypted-compute lane:
 
 - OpenFHE BFV or CKKS for arithmetic spike-count inference, or
 - TFHE/Concrete/TFHE-rs for binary threshold logic, or
@@ -137,14 +137,14 @@ Publish a security note with:
 - algorithm choices,
 - parameter assumptions,
 - what remains visible to each party,
-- why the prototype is not production cryptography,
+- why the research-alpha package is not production cryptography,
 - and what review would be required before deployment.
 
 ## Recommended Language
 
 Use:
 
-> NeuroFHE Relay is designed toward post-quantum cryptographic agility: FHE for encrypted computation, NIST-standard PQC for key establishment and signatures, and explicit crypto inventory for every prototype.
+> NeuroFHE Relay is designed toward post-quantum cryptographic agility: FHE for encrypted computation, NIST-standard PQC for key establishment and signatures, and explicit crypto inventory for every research-alpha lane.
 
 Avoid:
 
@@ -152,7 +152,7 @@ Avoid:
 
 Better:
 
-> This is a research prototype with a post-quantum design target. Production claims require audited implementations, concrete parameter sets, and migration-ready cryptographic interfaces.
+> This is a research-alpha package with a post-quantum design target. Production claims require audited implementations, concrete parameter sets, and migration-ready cryptographic interfaces.
 
 ## Sources
 
@@ -161,4 +161,3 @@ Better:
 - NIST NCCoE Migration to Post-Quantum Cryptography: https://www.nccoe.nist.gov/applied-cryptography/migration-to-pqc
 - NIST PQC migration FAQ: https://pages.nist.gov/nccoe-migration-post-quantum-cryptography/FAQ/
 - NIST IR 8547 transition plan: https://csrc.nist.gov/pubs/ir/8547/ipd
-

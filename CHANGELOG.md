@@ -56,6 +56,8 @@ Release target: `v0.1.0-research-alpha`.
   portable validation, merge policy, release gate, and claim-boundary posture.
 - Updated the root README current-status snapshot to track the current
   138-test portable gate.
+- Tightened post-quantum and linear-algebra handoff wording so prototype
+  language uses research-alpha lane and contract framing.
 - Added a guarded, concise root README repository layout that defers the
   exhaustive inventory to `PACKAGE_MANIFEST.md`.
 - Added a guarded, concise root README quick-command table that defers detailed

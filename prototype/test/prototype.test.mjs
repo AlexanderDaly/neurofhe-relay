@@ -1068,6 +1068,10 @@ test("briefing sequence guide lists every numbered root brief", () => {
   const demoRoadmap = readFileSync("04-demo-roadmap.md", "utf8");
   const riskRegister = readFileSync("05-risk-register.md", "utf8");
   const evidenceSources = readFileSync("06-evidence-and-sources.md", "utf8");
+  const postQuantumTrack = readFileSync(
+    "07-post-quantum-cryptography-track.md",
+    "utf8",
+  );
   const encryptedThoughtsWhitepaper = readFileSync(
     "08-encrypted-thoughts-whitepaper.md",
     "utf8",
@@ -1196,6 +1200,30 @@ test("briefing sequence guide lists every numbered root brief", () => {
   );
   assert.equal(evidenceSources.includes("research-grade boundary"), false);
   assert.equal(
+    postQuantumTrack.includes(
+      "Replace the toy additive demo with one research-alpha encrypted-compute lane:",
+    ),
+    true,
+  );
+  assert.equal(
+    postQuantumTrack.includes("why the research-alpha package is not production cryptography"),
+    true,
+  );
+  assert.equal(
+    postQuantumTrack.includes("explicit crypto inventory for every research-alpha lane."),
+    true,
+  );
+  assert.equal(
+    postQuantumTrack.includes(
+      "This is a research-alpha package with a post-quantum design target.",
+    ),
+    true,
+  );
+  assert.equal(postQuantumTrack.includes("one real encrypted-compute prototype"), false);
+  assert.equal(postQuantumTrack.includes("why the prototype is not production cryptography"), false);
+  assert.equal(postQuantumTrack.includes("explicit crypto inventory for every prototype"), false);
+  assert.equal(postQuantumTrack.includes("This is a research prototype"), false);
+  assert.equal(
     encryptedThoughtsWhitepaper.includes("The current research-alpha package is deliberately small"),
     true,
   );
@@ -1298,12 +1326,17 @@ test("linear algebra handoff routes sparse contract review", () => {
     "benchmark-artifacts/native-evidence/latest.json",
     "docs/evidence-guide.md",
     "docs/release-gate-matrix.md",
+    "The research-alpha scaffold currently computes the same score through an active-event list",
+    "Bias is public",
+    "for the current research-alpha contract.",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !handoff.includes(entry),
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(handoff.includes("The prototype currently computes"), false);
+  assert.equal(handoff.includes("for the first prototype"), false);
 });
 
 test("patent package map lists every patent markdown and mermaid source", () => {

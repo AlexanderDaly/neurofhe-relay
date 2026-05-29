@@ -55,7 +55,7 @@ For the current synthetic window:
 
 ## Sparse Form
 
-The prototype currently computes the same score through an active-event list:
+The research-alpha scaffold currently computes the same score through an active-event list:
 
 ```text
 S = {(index, time, channel, value) where x_index > 0}
@@ -91,7 +91,7 @@ windows.
 3. Add bias handling.
 
    Plaintext and encrypted score paths start with `bias[class]`. Bias is public
-   for the first prototype.
+   for the current research-alpha contract.
 
 4. Add matrix-vector helper functions.
 
