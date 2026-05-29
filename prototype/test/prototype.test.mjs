@@ -1004,6 +1004,18 @@ test("documentation index lists every docs page", () => {
   assert.deepEqual(missingPages, []);
 });
 
+test("briefing sequence guide lists every numbered root brief", () => {
+  const briefingGuide = readFileSync("docs/briefing-sequence.md", "utf8");
+  const numberedBriefs = readdirSync(".")
+    .filter((entry) => /^[0-9]{2}-.+\.md$/.test(entry))
+    .sort();
+  const missingBriefs = numberedBriefs.filter((brief) =>
+    !new RegExp(`\\b${escapeRegExp(brief)}\\b`).test(briefingGuide),
+  );
+
+  assert.deepEqual(missingBriefs, []);
+});
+
 test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 

@@ -12,6 +12,8 @@ clinical validation, deployment evidence, or a security certification.
 
 - `README.md` - project thesis, public framing, demos, and caveats.
 - `docs/README.md` - documentation index for reader and contributor paths.
+- `docs/briefing-sequence.md` - reading order for the root `01-` through `12-`
+  public briefing files.
 - `docs/developer-quickstart.md` - compact local validation path for
   contributors.
 - `docs/command-reference.md` - grouped npm command reference for validation,
@@ -37,6 +39,7 @@ clinical validation, deployment evidence, or a security certification.
 
 The numbered Markdown files are the public briefing sequence:
 
+- `docs/briefing-sequence.md` lists the full recommended reading order.
 - `01-one-pager.md` through `04-demo-roadmap.md` cover the executive framing,
   pitch narrative, architecture, and prototype path.
 - `05-risk-register.md` and `06-evidence-and-sources.md` collect risk and

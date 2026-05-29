@@ -12,6 +12,7 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `.editorconfig`, `.nvmrc`, and `.node-version` - editor and Node.js version
   hints for consistent local work.
 - `docs/README.md` - documentation index for reader and contributor paths.
+- `docs/briefing-sequence.md` - reading order for the numbered public briefs.
 - `docs/repository-guide.md` - orientation map for the root briefs, prototype
   code, evidence artifacts, patent materials, and release gate.
 - `docs/developer-quickstart.md` - compact local validation path for contributors.
