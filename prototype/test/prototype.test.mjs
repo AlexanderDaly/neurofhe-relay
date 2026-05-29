@@ -1660,6 +1660,13 @@ test("dependency matrix lists portable and native setup surfaces", () => {
 test("data handling guide lists dataset and artifact boundary surfaces", () => {
   const dataGuide = readFileSync("docs/data-handling.md", "utf8");
   const requiredSurfaces = [
+    "## Data Routes",
+    "| Data-Adjacent Need | Start With | Keep Out Of Git |",
+    "Raw dataset, signal, partner, or private payload",
+    "Derived plaintext baseline artifact",
+    "Native input contract or comparison artifact",
+    "Unavailable dataset, dependency, hosted CI, or release-machine input",
+    "Repository hygiene evidence",
     ".gitattributes",
     ".gitignore",
     "prototype/scripts/placeholder-scan.mjs",

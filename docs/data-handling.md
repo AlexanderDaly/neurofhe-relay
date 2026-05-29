@@ -7,6 +7,20 @@ readable, reproducible, and free of raw private material.
 Nothing here authorizes production cryptography, medical, clinical,
 deployment, side-channel, identity-protection, or stable-performance claims.
 
+## Data Routes
+
+Use this table before adding or refreshing any data-adjacent file. It keeps raw
+material outside git and routes derived evidence, blockers, and hygiene records
+to the correct public surfaces.
+
+| Data-Adjacent Need | Start With | Keep Out Of Git |
+| --- | --- | --- |
+| Raw dataset, signal, partner, or private payload | Local scratch storage outside the repository and `SECURITY.md` when exposure is suspected. | Raw EEG rows, neural recordings, sensor logs, partner material, secrets, and private payloads. |
+| Derived plaintext baseline artifact | `benchmark-artifacts/plaintext-baselines/` and the matching artifact command. | Raw event files, raw dataset directory contents, private labels, or unsupported accuracy claims. |
+| Native input contract or comparison artifact | `benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/` and `benchmark-artifacts/comparisons/`. | Raw EEG rows, private feature vectors, proprietary adapters, or production cryptography claims. |
+| Unavailable dataset, dependency, hosted CI, or release-machine input | Structured blocker artifacts plus `docs/troubleshooting.md` and `docs/operations-runbook.md`. | Synthetic substitutes presented as real evidence, stale benchmark numbers, or hidden local-only fixes. |
+| Repository hygiene evidence | `benchmark-artifacts/repo-hygiene/latest.json` and `prototype/scripts/placeholder-scan.mjs`. | Secret values, private payload excerpts, raw data samples, or security-certification claims. |
+
 ## Storage Boundary
 
 | Surface | Rule |

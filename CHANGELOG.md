@@ -19,6 +19,8 @@ Release target: `v0.1.0-research-alpha`.
   handling, claim evidence, and release gate commands.
 - Added `docs/data-handling.md` for raw-data, derived-artifact, blocker, and
   hygiene boundaries.
+- Added data-route guidance for raw material, derived plaintext artifacts,
+  native input contracts, blocker reports, and repository hygiene evidence.
 - Added `docs/claim-evidence-ledger.md` for weak-claim evidence posture.
 - Added `docs/evidence-dashboard.md` for human-readable release-evidence
   dashboard status and caveats.
