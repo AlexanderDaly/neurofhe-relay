@@ -1057,6 +1057,11 @@ test("documentation index stays concise and reader-facing", () => {
 
 test("briefing sequence guide lists every numbered root brief", () => {
   const briefingGuide = readFileSync("docs/briefing-sequence.md", "utf8");
+  const technicalArchitecture = readFileSync("03-technical-architecture.md", "utf8");
+  const encryptedThoughtsWhitepaper = readFileSync(
+    "08-encrypted-thoughts-whitepaper.md",
+    "utf8",
+  );
   const numberedBriefs = readdirSync(".")
     .filter((entry) => /^[0-9]{2}-.+\.md$/.test(entry))
     .sort();
@@ -1080,6 +1085,16 @@ test("briefing sequence guide lists every numbered root brief", () => {
   assert.deepEqual(missingBriefs, []);
   assert.deepEqual(missingRoutes, []);
   assert.equal(stalePackageFraming, false);
+  assert.equal(
+    technicalArchitecture.includes("current research-alpha sparse-score contract"),
+    true,
+  );
+  assert.equal(technicalArchitecture.includes("The current prototype uses"), false);
+  assert.equal(
+    encryptedThoughtsWhitepaper.includes("The current research-alpha package is deliberately small"),
+    true,
+  );
+  assert.equal(encryptedThoughtsWhitepaper.includes("The current prototype is"), false);
 });
 
 test("prototype map lists every library module", () => {
