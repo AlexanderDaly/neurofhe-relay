@@ -2165,6 +2165,8 @@ test("troubleshooting guide routes common repo blockers without weakening caveat
     "PATH=\"/opt/homebrew/bin:$PATH\" npm run ci",
     "Node.js 22",
     "gh pr checks",
+    "gh pr view <number> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "reviewed head SHA",
     "repository ruleset/admin policy",
     "OpenFHEConfig.cmake not found",
     "Train/",
@@ -2179,6 +2181,10 @@ test("troubleshooting guide routes common repo blockers without weakening caveat
   );
 
   assert.deepEqual(missingEntries, []);
+  assert.equal(
+    troubleshooting.includes("gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup"),
+    false,
+  );
 });
 
 test("dependency matrix lists portable and native setup surfaces", () => {

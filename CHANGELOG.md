@@ -250,6 +250,8 @@ Release target: `v0.1.0-research-alpha`.
 - Aligned the developer quickstart PR-policy route with the same live-head
   review command so contributors include `headRefOid` when checking hosted
   CI and repository-policy state.
+- Aligned the troubleshooting PR-state route with the same live-head command so
+  blocked-green-CI investigations keep the reviewed head SHA visible.
 - Clarified the evidence dashboard snapshot wording so committed release
   evidence is not confused with live PR head or merge-policy status.
 - Clarified the status roadmap so committed hosted-CI evidence snapshots stay

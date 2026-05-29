@@ -13,7 +13,7 @@ privacy-proof claims, or stable-performance claims.
 | Symptom | Check First | Record Or Route |
 | --- | --- | --- |
 | Local portable gate fails | `npm run ci`, `git diff --check`, Node.js version, and Homebrew `PATH` visibility | Record the exact failing command and local error before changing evidence artifacts. |
-| Hosted CI is green but PR is blocked | `gh pr checks <number>` and `gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup` | Separate repository ruleset/admin policy from hosted check-rollup, GitHub Actions billing/account, code, or workflow failures. |
+| Hosted CI is green but PR is blocked | `gh pr checks <number>` and `gh pr view <number> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup` | Separate repository ruleset/admin policy from hosted check-rollup, GitHub Actions billing/account, code, or workflow failures while keeping the reviewed head SHA visible. |
 | Native OpenFHE or TFHE-rs command fails | Dependency discovery, build output, and lane-specific comparison artifact command | Publish or update the blocker artifact with the exact command, error, and smallest next step rather than substituting toy arithmetic. |
 | Dataset path is missing or malformed | Local dataset shape, especially public N-MNIST `Train/` and `Test/` directories | Keep raw datasets outside git and write only derived artifacts or blocker reports under `benchmark-artifacts/`. |
 | Release evidence looks green but gate is false | `RELEASE.md`, `docs/release-gate-matrix.md`, and `benchmark-artifacts/release-evidence/latest.json` | Preserve `releaseGateSatisfied: false` until all gates are satisfied and the user explicitly approves the final release action. |
@@ -57,14 +57,15 @@ Inspect PR checks with:
 
 ```sh
 gh pr checks <number>
-gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup
+gh pr view <number> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
 ```
 
 If hosted `Portable validation` is green but the PR is still blocked, record
-whether the remaining state is repository ruleset/admin policy rather than a
-code or workflow failure. Use `docs/operations-runbook.md` for the maintainer
-loop and `benchmark-artifacts/ci-blockers/latest.json` for the current hosted
-CI evidence snapshot.
+the reviewed head SHA and whether the remaining state is repository
+ruleset/admin policy rather than a code or workflow failure. Use
+`docs/operations-runbook.md` for the maintainer loop and
+`benchmark-artifacts/ci-blockers/latest.json` for the current hosted CI evidence
+snapshot.
 
 ## Native OpenFHE Or TFHE-rs Lanes
 
