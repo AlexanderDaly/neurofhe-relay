@@ -68,8 +68,9 @@ Good PR descriptions include:
 - Any blocker reports.
 - Any remaining caveats or follow-up validation needed.
 
-Maintainers should also use `docs/maintainer-checklist.md` before merging,
-committing evidence artifacts, or preparing release review.
+Maintainers should use `MAINTAINERS.md` before asserting release authority and
+`docs/maintainer-checklist.md` before merging, committing evidence artifacts,
+or preparing release review.
 
 Do not include secrets, private datasets, raw neural/EEG rows, or proprietary
 partner material in issues, pull requests, committed artifacts, or screenshots.

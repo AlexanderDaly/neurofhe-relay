@@ -17,11 +17,11 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 114
-pass 114
+tests 115
+pass 115
 fail 0
 json ok
-markdown link scan ok (73 files)
+markdown link scan ok (74 files)
 repository hygiene scan ok
 ```
 
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 114
-pass 114
+tests 115
+pass 115
 fail 0
 ```
 
@@ -115,6 +115,9 @@ Covered behaviours:
   `releaseGateSatisfied: false`.
 - CODEOWNERS coverage requiring review ownership routing for root, GitHub,
   docs, prototype, benchmark-artifacts, and patent surfaces.
+- Maintainers-file coverage requiring the current maintainer route, release
+  authority boundary, repository ruleset/admin policy, explicit user approval,
+  `releaseGateSatisfied: false`, and `productionClaim: false`.
 - Dependabot coverage requiring weekly dependency update routing for GitHub
   Actions and npm metadata without treating update prompts as release evidence.
 - Release-evidence indexing that preserves hosted-CI status, repository hygiene

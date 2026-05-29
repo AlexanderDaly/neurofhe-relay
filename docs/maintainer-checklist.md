@@ -2,7 +2,8 @@
 
 Use this checklist when preparing a PR for review, updating committed evidence,
 or considering a research-alpha release. It consolidates the routine checks from
-`CONTRIBUTING.md`, `DEVELOPMENT.md`, `RELEASE.md`, and `docs/evidence-guide.md`.
+`MAINTAINERS.md`, `CONTRIBUTING.md`, `DEVELOPMENT.md`, `RELEASE.md`, and
+`docs/evidence-guide.md`.
 
 Nothing here authorizes a production cryptography, medical, clinical,
 surveillance, deployment, side-channel, identity-protection, or
@@ -76,6 +77,7 @@ git diff --check
 - `docs/status-roadmap.md` - current readiness and next-work map.
 - `docs/testing-strategy.md` - portable validation and guard-family map.
 - `benchmark-artifacts/README.md` - artifact mechanics and output locations.
+- `MAINTAINERS.md` - current maintainer route and release authority boundary.
 - `.github/CODEOWNERS` - repository review ownership routing.
 - `.github/dependabot.yml` - weekly dependency update routing.
 - `RELEASE.md` - research-alpha release gate.

@@ -13,6 +13,8 @@ This repository packages the first presentation-ready version of NeuroFHE Relay:
 - `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `CODE_OF_CONDUCT.md` - public collaboration expectations and reporting
   boundaries.
+- `MAINTAINERS.md` - current maintainer route, review ownership, and release
+  authority boundary.
 - `.editorconfig`, `.nvmrc`, and `.node-version` - editor and Node.js version
   hints for consistent local work.
 - `.gitattributes` and `.gitignore` - repository file-normalization and

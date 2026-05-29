@@ -67,7 +67,7 @@ complete documentation index:
 | --- | --- | --- |
 | New reviewer | `docs/reviewer-quickstart.md` | `docs/status-roadmap.md`, `CHANGELOG.md`, `VALIDATION.md` |
 | Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md` |
-| Maintainer | `docs/maintainer-checklist.md` | `docs/operations-runbook.md`, `RELEASE.md` |
+| Maintainer | `MAINTAINERS.md` | `docs/maintainer-checklist.md`, `docs/operations-runbook.md`, `RELEASE.md` |
 | Evidence reviewer | `docs/evidence-guide.md` | `docs/evidence-dashboard.md`, `docs/claim-evidence-ledger.md`, `docs/release-gate-matrix.md` |
 
 The repository remains a research-alpha package. Keep `productionClaim: false`,
@@ -86,7 +86,7 @@ actually present and documented.
 | `benchmark-artifacts/` | Committed derived evidence, blocker reports, and release dashboards. |
 | `patent/` | ENER provisional drafting package, drawings, prior-art plan, and briefing material. |
 | `.github/` | Issue templates, PR template, dependency-update routing, and hosted portable CI workflow. |
-| Root policy files | `LICENSE`, `PUBLIC_DOMAIN_NOTICE.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `RELEASE.md`, and `VALIDATION.md`. |
+| Root policy files | `LICENSE`, `PUBLIC_DOMAIN_NOTICE.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `MAINTAINERS.md`, `RELEASE.md`, and `VALIDATION.md`. |
 
 Use `PACKAGE_MANIFEST.md` when you need the exhaustive packaged-review
 inventory; keep this README focused on orientation, claims, and commands.

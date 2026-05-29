@@ -21,6 +21,8 @@ review, release approval, or benchmark evidence.
   guidance.
 - `SUPPORT.md` - routing for public issues, security reports, release blockers,
   and cleanup/support requests.
+- `MAINTAINERS.md` - current maintainer route, review ownership, and release
+  authority boundary.
 - `CONTRIBUTING.md` - evidence-first contribution rules, including
   `privacyBoundary`, `cryptoInventory`, provenance, and `productionClaim: false`
   expectations.

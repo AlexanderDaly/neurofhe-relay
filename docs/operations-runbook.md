@@ -4,6 +4,9 @@ Use this runbook for the routine maintainer loop on a release-validation PR:
 confirm local evidence, confirm hosted checks, separate repository-policy
 blockers from code failures, and leave a caveated record.
 
+Use `MAINTAINERS.md` for the current maintainer route and release authority
+boundary before treating a PR as merge-ready.
+
 Nothing here authorizes a production cryptography, medical, clinical,
 deployment, privacy-proof, side-channel, identity-protection, or
 stable-performance claim.

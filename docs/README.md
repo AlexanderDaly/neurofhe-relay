@@ -58,6 +58,8 @@ changing the evidence boundary.
 - `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `CODE_OF_CONDUCT.md` - public collaboration expectations and reporting
   boundaries.
+- `MAINTAINERS.md` - current maintainer route, review ownership, and release
+  authority boundary.
 - `DEVELOPMENT.md` - fuller setup notes, native FHE commands, and artifact
   policy.
 - `CONTRIBUTING.md` - evidence-first contribution rules and issue/PR workflow.

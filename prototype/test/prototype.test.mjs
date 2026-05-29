@@ -1132,6 +1132,27 @@ test("CODEOWNERS maps repository review ownership", () => {
   assert.deepEqual(missingEntries, []);
 });
 
+test("maintainers file defines release authority and evidence boundaries", () => {
+  const maintainers = readFileSync("MAINTAINERS.md", "utf8");
+  const requiredEntries = [
+    "@AlexanderDaly",
+    ".github/CODEOWNERS",
+    "docs/maintainer-checklist.md",
+    "docs/operations-runbook.md",
+    "RELEASE.md",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "repository ruleset/admin policy",
+    "explicit user approval",
+    "no release tag",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !maintainers.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
 test("Dependabot config covers package and workflow maintenance", () => {
   const dependabot = readFileSync(".github/dependabot.yml", "utf8");
   const requiredEntries = [
@@ -1158,6 +1179,7 @@ test("policy boundary map lists every policy and claim-boundary root file", () =
     "CONTRIBUTING.md",
     "DEVELOPMENT.md",
     "LICENSE",
+    "MAINTAINERS.md",
     "PUBLIC_DOMAIN_NOTICE.md",
     "README.md",
     "RELEASE.md",
