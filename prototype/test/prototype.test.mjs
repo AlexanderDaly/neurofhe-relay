@@ -2484,7 +2484,8 @@ test("release evidence index carries green hosted CI details when check rollup i
       {
         schema: "neurofhe.hostedCiEvidence.v1",
         artifactId: "ci-green-test",
-        releaseGateSatisfied: true,
+        hostedPortableCiSatisfied: true,
+        releaseGateSatisfied: false,
         observedRepositoryState: {
           openPullRequests: [{ number: 23 }],
         },
@@ -2507,6 +2508,7 @@ test("release evidence index carries green hosted CI details when check rollup i
     artifactReader: (path) => artifacts.get(path),
   });
 
+  assert.equal(index.releaseGateSatisfied, false);
   assert.equal(index.gateChecks.hostedPortableCi.status, "pass");
   assert.equal(
     index.gateChecks.hostedPortableCi.reason,
@@ -2522,6 +2524,19 @@ test("release evidence index carries green hosted CI details when check rollup i
     index.gateChecks.hostedPortableCi.smallestNextStep,
     "Use the repository ruleset/admin merge path after review.",
   );
+});
+
+test("hosted CI evidence keeps the release gate false when check rollup is green", () => {
+  const artifact = JSON.parse(
+    readFileSync("benchmark-artifacts/ci-blockers/latest.json", "utf8"),
+  );
+
+  assert.equal(artifact.schema, "neurofhe.hostedCiEvidence.v1");
+  assert.equal(artifact.hostedPortableCiSatisfied, true);
+  assert.equal(artifact.releaseGateSatisfied, false);
+  assert.equal(artifact.productionClaim, false);
+  assert.equal(artifact.blocker?.category, "resolved-check-rollup");
+  assert.match(artifact.smallestNextStep, /repository ruleset\/admin merge path/);
 });
 
 test("privacy mode benchmark compares speed against sparsity metadata protection", () => {

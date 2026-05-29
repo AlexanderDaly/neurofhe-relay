@@ -1,8 +1,9 @@
 {
   "schema": "neurofhe.hostedCiEvidence.v1",
   "artifactId": "github-actions-green-release-stack-2026-05-29",
-  "generatedAt": "2026-05-29T04:33:09Z",
+  "generatedAt": "2026-05-29T10:08:00Z",
   "scope": "portable-github-actions-validation",
+  "hostedPortableCiSatisfied": true,
   "observedRepositoryState": {
     "defaultBranch": "main",
     "mainHeadSha": "7317f11",
@@ -11,7 +12,7 @@
       "title": "Release validation stack with green CI",
       "headRef": "codex/open-pr-stack-ci-blocker",
       "baseRef": "main",
-      "headSha": "5022211c724c49552ff82f0e371e02cc574f83b8",
+      "headSha": "d2f8eee6bb670992cd41bae7718d90d7c2ee6fdd",
       "mergeable": "MERGEABLE",
       "mergeStateStatus": "BLOCKED",
       "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/23"
@@ -37,13 +38,13 @@
             "name": "Portable validation",
             "event": "pull_request",
             "conclusion": "SUCCESS",
-            "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26618352763"
+            "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26631253238"
           },
           {
             "name": "Portable validation",
             "event": "push",
             "conclusion": "SUCCESS",
-            "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26618350871"
+            "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26631250657"
           }
         ],
         "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/23"
@@ -66,26 +67,26 @@
   },
   "hostedRuns": [
     {
-      "runId": 26618352763,
+      "runId": 26631253238,
       "workflowName": "CI",
       "event": "pull_request",
       "headBranch": "codex/open-pr-stack-ci-blocker",
-      "headSha": "5022211c724c49552ff82f0e371e02cc574f83b8",
-      "createdAt": "2026-05-29T04:40:17Z",
+      "headSha": "d2f8eee6bb670992cd41bae7718d90d7c2ee6fdd",
+      "createdAt": "2026-05-29T10:07:26Z",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26618352763"
+      "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26631253238"
     },
     {
-      "runId": 26618350871,
+      "runId": 26631250657,
       "workflowName": "CI",
       "event": "push",
       "headBranch": "codex/open-pr-stack-ci-blocker",
-      "headSha": "5022211c724c49552ff82f0e371e02cc574f83b8",
-      "createdAt": "2026-05-29T04:40:14Z",
+      "headSha": "d2f8eee6bb670992cd41bae7718d90d7c2ee6fdd",
+      "createdAt": "2026-05-29T10:07:22Z",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26618350871"
+      "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26631250657"
     },
     {
       "runId": 26618052788,
@@ -161,13 +162,13 @@
     "remainingBlockedObservation": "PR #23 still reports mergeStateStatus BLOCKED despite successful check rollup because the active default-branch ruleset named iamthelaw includes an update rule for the default branch. That is a repository rule/admin merge policy, not a CI or check-rollup failure.",
     "branchProtectionObservation": "GitHub REST branch protection endpoint returned 404 Branch not protected, but repository rulesets are active for the default branch.",
     "evidence": {
-      "openPullRequestCheckRollups": "PR #23 has two successful Portable validation check runs from pull_request and push events on head 5022211.",
+      "openPullRequestCheckRollups": "PR #23 has two successful Portable validation check runs from pull_request and push events on head d2f8eee.",
       "node20DeprecationAnnotation": "Resolved by updating actions/checkout to v6, actions/setup-node to v6, and actions/upload-artifact to v7.",
       "supersededStackDispatches": "PR branch heads #17 through #22 each received a successful manual workflow_dispatch CI run, though GitHub does not attach those manual runs to the old stacked PR rollups.",
       "sourceCommands": [
         "gh pr view 23 --json number,headRefOid,mergeable,mergeStateStatus,statusCheckRollup,url",
-        "gh run watch 26618352763 --exit-status",
-        "gh run watch 26618350871 --exit-status",
+        "gh run watch 26631253238 --exit-status",
+        "gh run watch 26631250657 --exit-status",
         "gh run watch 26618052788 --exit-status",
         "gh run watch 26618053475 --exit-status",
         "gh run watch 26618054162 --exit-status",
@@ -179,7 +180,7 @@
     }
   },
   "localParityValidation": {
-    "observedAt": "2026-05-29T04:33:09Z",
+    "observedAt": "2026-05-29T10:08:00Z",
     "commandsRun": [
       "npm test -- --test-name-pattern \"GitHub Actions CI workflow runs automatically\"",
       "npm test -- --test-name-pattern \"Node 24-ready action majors\"",
@@ -187,10 +188,10 @@
       "git diff --check"
     ],
     "result": "pass",
-    "resultSummary": "80 passing tests, json ok, repository hygiene scan ok, whitespace check clean",
+    "resultSummary": "131 passing tests, json ok, markdown link scan ok, repository hygiene scan ok, whitespace check clean",
     "productionClaim": false
   },
   "smallestNextStep": "Use the repository ruleset/admin merge path for PR #23 after review; CI/check-rollup is green and no longer the release gate blocker.",
-  "releaseGateSatisfied": true,
+  "releaseGateSatisfied": false,
   "productionClaim": false
 }

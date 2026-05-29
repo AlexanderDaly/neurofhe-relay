@@ -16,7 +16,7 @@ Source artifact:
 ```text
 benchmark-artifacts/release-evidence/latest.json
 artifactId: release-evidence-with-green-ci-2026-05-29
-generatedAt: 2026-05-29T04:40:53.000Z
+generatedAt: 2026-05-29T10:08:00.000Z
 subject.releaseGateSatisfied: false
 subject.productionClaim: false
 productionClaim: false

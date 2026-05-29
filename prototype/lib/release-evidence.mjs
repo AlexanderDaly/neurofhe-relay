@@ -163,13 +163,13 @@ function summarizeHostedPortableCi(artifact) {
       smallestNextStep: "Refresh the CI blocker artifact or run hosted portable CI.",
     };
   }
-  if (artifact.releaseGateSatisfied === true) {
+  if (artifact.hostedPortableCiSatisfied === true) {
     return {
       status: "pass",
       reason:
         artifact.reason ??
         artifact.blocker?.currentObservation ??
-        "Hosted portable CI reports the release check satisfied.",
+        "Hosted portable CI reports the hosted check satisfied.",
       artifactId: artifact.artifactId,
       openPullRequestCount: artifact.observedRepositoryState?.openPullRequests?.length ?? null,
       workflowTrigger: artifact.workflowState?.currentTrigger ?? null,

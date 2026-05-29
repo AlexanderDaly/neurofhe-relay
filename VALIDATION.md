@@ -17,8 +17,8 @@ npm run validate
 Result summary from the 2026-05-29 cleanup branch:
 
 ```text
-tests 130
-pass 130
+tests 131
+pass 131
 fail 0
 json ok
 markdown link scan ok (75 files)
@@ -44,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 130
-pass 130
+tests 131
+pass 131
 fail 0
 ```
 
@@ -169,6 +169,8 @@ Covered behaviours:
   caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker
   status, and `productionClaim: false` without satisfying the release gate by
   itself.
+- Hosted-CI evidence coverage requiring green check-rollup status to stay
+  separate from the overall `releaseGateSatisfied: false` release boundary.
 - Research assumptions with clean-room and naming guardrails.
 
 ### Desk Demo
@@ -1506,7 +1508,7 @@ Result:
 
 ```text
 Open pull requests: #23, with #17 through #22 superseded by the collapsed stack
-Stack head: 5392018 on codex/open-pr-stack-ci-blocker
+Stack head: d2f8eee on codex/open-pr-stack-ci-blocker
 CI workflow: active, push, pull_request, and workflow_dispatch
 Latest hosted CI runs: green on PR #23 pull_request and push events
 Ruleset API: active default-branch ruleset iamthelaw includes an update rule
@@ -1519,7 +1521,9 @@ and `actions/upload-artifact@v7`) to clear the prior Node 20 action-runtime
 annotation. PR #23 still reports `mergeStateStatus: BLOCKED` because the active
 default-branch ruleset `iamthelaw` applies an update rule to `main`; that is a
 repository ruleset/admin merge policy, not a CI or check-rollup failure. The
-current hosted-CI evidence artifact is:
+hosted-CI snapshot now uses `hostedPortableCiSatisfied: true` for the CI gate
+while preserving overall `releaseGateSatisfied: false`. The current hosted-CI
+evidence artifact is:
 
 ```text
 benchmark-artifacts/ci-blockers/latest.json

@@ -1,11 +1,11 @@
 {
   "schema": "neurofhe.releaseEvidenceArtifact.v1",
   "artifactId": "release-evidence-with-green-ci-2026-05-29",
-  "generatedAt": "2026-05-29T04:40:53.000Z",
+  "generatedAt": "2026-05-29T10:08:00.000Z",
   "subjectSchema": "neurofhe.releaseEvidenceIndex.v1",
   "subject": {
     "schema": "neurofhe.releaseEvidenceIndex.v1",
-    "generatedAt": "2026-05-29T04:40:53.000Z",
+    "generatedAt": "2026-05-29T10:08:00.000Z",
     "releaseTarget": "v0.1.0-research-alpha",
     "purpose": "Provide a compact index of the current release-gate evidence without upgrading caveated research artifacts into release approval.",
     "releaseGateSatisfied": false,

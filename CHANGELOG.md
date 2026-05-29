@@ -95,10 +95,13 @@ Release target: `v0.1.0-research-alpha`.
 - Added ENER weak-claims coverage so the patent briefing native-FHE evidence
   note reflects current OpenFHE/TFHE real-native-run artifacts while keeping
   native measurement gaps caveated.
+- Added hosted-CI evidence coverage so a green PR check rollup is tracked as
+  `hostedPortableCiSatisfied: true` without setting the overall
+  `releaseGateSatisfied` release boundary to true.
 
 ### Changed
 
-- `VALIDATION.md` now records the current portable gate as 130 tests, Markdown
+- `VALIDATION.md` now records the current portable gate as 131 tests, Markdown
   link scan over 75 files, JSON parsing, and repository hygiene scan.
 - `RELEASE.md` now points release reviewers to the command-by-command gate
   matrix before tagging.
