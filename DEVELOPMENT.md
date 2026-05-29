@@ -136,8 +136,12 @@ rows.
 npm run baseline:eeg-eye-state -- --artifact
 ```
 
-The N-MNIST path expects a local extracted dataset and records a blocker report
-when the dataset is absent.
+The N-MNIST path expects a local extracted dataset. The current committed
+real public N-MNIST plaintext baseline is
+`benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json`; it contains
+derived sampled metrics and provenance only, not raw event files. When the local
+dataset is absent, rerun with `--artifact` to record a structured blocker report
+instead of losing the exact command, error, and smallest next step.
 
 ## Artifact Policy
 

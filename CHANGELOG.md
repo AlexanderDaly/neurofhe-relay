@@ -54,6 +54,9 @@ Release target: `v0.1.0-research-alpha`.
   and routes detailed command/module inventory to the maintained maps.
 - Added development guide coverage so setup, native-lane, evidence-artifact,
   hosted-CI, release-gate, and repository-policy boundaries stay visible.
+- Tightened development guide real-data coverage so the current real public
+  N-MNIST plaintext baseline route stays visible alongside the structured
+  blocker path for missing local datasets.
 - Added pull-request-template coverage so validation commands, release caveats,
   raw-data boundaries, and repository-policy routing remain in every PR.
 - Added issue-template coverage so incoming reports preserve evidence

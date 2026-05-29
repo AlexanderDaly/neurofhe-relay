@@ -2033,6 +2033,8 @@ test("development guide preserves setup, evidence, and release boundaries", () =
     "benchmark-artifacts/release-evidence/latest.json",
     "benchmark-artifacts/native-evidence/latest.json",
     "benchmark-artifacts/repo-hygiene/latest.json",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "real public N-MNIST plaintext baseline",
     "repository ruleset/admin policy",
     "releaseGateSatisfied: false",
     "productionClaim: false",
@@ -2042,6 +2044,7 @@ test("development guide preserves setup, evidence, and release boundaries", () =
     "OpenFHE",
     "TFHE-rs",
     "exact command, error, and smallest next step",
+    "structured blocker report",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !development.includes(entry),

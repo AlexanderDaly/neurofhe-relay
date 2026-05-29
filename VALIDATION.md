@@ -132,8 +132,8 @@ Covered behaviours:
   `cryptoInventory`, and `productionClaim: false` routes to stay visible while
   rejecting stale OpenFHE dependency-blocker language.
 - Development guide coverage requiring setup, native-lane, evidence-artifact,
-  hosted-CI, release-gate, and repository ruleset/admin policy boundaries to
-  stay visible.
+  current N-MNIST plaintext baseline routing, hosted-CI, release-gate, and
+  repository ruleset/admin policy boundaries to stay visible.
 - Support policy coverage requiring issue, security, support, and release
   blocker routing while preserving `releaseGateSatisfied: false`,
   `productionClaim: false`, and raw-data boundaries.
