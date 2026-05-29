@@ -37,8 +37,9 @@ snapshot is readable, caveated, and ready for diligence review.
   ignore rules.
 - `docs/README.md` - documentation index for reader and contributor paths.
 - `docs/briefing-sequence.md` - reading order for the numbered public briefs.
-- `docs/repository-guide.md` - orientation map for the root briefs, prototype
-  code, evidence artifacts, patent materials, and release gate.
+- `docs/repository-guide.md` - orientation map for the root briefs,
+  prototype/ scaffold code, evidence artifacts, patent materials, and release
+  gate.
 - `docs/faq.md` - short answers to common claim, evidence, raw-data, CI,
   release, and CC0 questions.
 - `docs/glossary.md` - recurring project, artifact, release, gateway, and

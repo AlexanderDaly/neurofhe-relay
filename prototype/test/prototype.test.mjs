@@ -1435,6 +1435,7 @@ test("package manifest lists every tracked top-level package entry", () => {
     "research-alpha security scope",
     "11-slide evidence narrative",
     "research-alpha evidence roadmap",
+    "prototype/ scaffold code, evidence artifacts",
     "scaffold code map for prototype/ entrypoints",
     "dependency-free educational sparse encrypted spike-count scaffold",
     "openfhe-bfvrns-eeg-eye-state-2026-05-21",
@@ -1458,6 +1459,7 @@ test("package manifest lists every tracked top-level package entry", () => {
     "staged prototype and pilot plan",
     "dependency-free educational sparse encrypted spike-count prototype",
     "The included JavaScript prototype demonstrates",
+    "prototype code, evidence artifacts",
     "code navigation map for prototype surfaces",
     "code navigation map for prototype/ scaffold surfaces",
   ].filter((entry) => packageManifest.includes(entry));
