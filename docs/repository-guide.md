@@ -16,6 +16,8 @@ clinical validation, deployment evidence, or a security certification.
   contributors.
 - `docs/command-reference.md` - grouped npm command reference for validation,
   demos, benchmarks, native lanes, and release evidence.
+- `docs/evidence-guide.md` - short map for reading committed evidence without
+  upgrading research-alpha claims.
 - `DEVELOPMENT.md` - local setup, portable validation, native FHE commands, and
   artifact policy.
 - `CONTRIBUTING.md` - evidence-first contribution rules and PR expectations.

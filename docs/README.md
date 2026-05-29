@@ -13,6 +13,8 @@ changing the evidence boundary.
   to validate the package before opening an issue or PR.
 - `command-reference.md` - grouped npm commands for validation, demos,
   benchmarks, native lanes, and release evidence.
+- `evidence-guide.md` - short map for reading committed evidence without
+  upgrading research-alpha claims.
 
 ## Related Top-Level Docs
 

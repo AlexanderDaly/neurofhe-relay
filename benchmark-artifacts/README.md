@@ -3,6 +3,9 @@
 This directory contains published benchmark JSON artifacts for the runnable
 prototype.
 
+For a shorter claim-safety map of the evidence classes, start with
+`docs/evidence-guide.md`.
+
 Generate or refresh the current artifact:
 
 ```sh
