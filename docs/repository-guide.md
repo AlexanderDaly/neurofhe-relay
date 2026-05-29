@@ -89,8 +89,8 @@ the full package inventory.
 - `.github/ISSUE_TEMPLATE/` - guided forms for reproducible bugs, evidence
   gaps, and repository-cleanup requests.
 - `.github/CODEOWNERS` - repository review ownership routing.
-- `.github/dependabot.yml` - dependency-update routing for GitHub Actions and
-  npm metadata.
+- `.github/dependabot.yml` - grouped dependency-update routing for GitHub
+  Actions and npm metadata.
 - `.github/pull_request_template.md` - PR checklist for validation and
   evidence-boundary notes.
 - `.github/workflows/ci.yml` - hosted portable validation workflow.
