@@ -5,15 +5,21 @@ import { spawnSync } from "node:child_process";
 import { publishComparisonArtifact } from "./lib/artifacts.mjs";
 import {
   buildTfheRsRealLibraryAdapter,
+  buildTfheRsRealDataUnavailableReport,
   tfheRsIntegrationPlan,
 } from "./lib/tfhe-rs-adapter.mjs";
 
 const rawArgs = process.argv.slice(2);
 const args = new Set(rawArgs);
 const shouldPublishArtifact = args.has("--artifact") || args.has("--publish");
-const outputDir = readOption(rawArgs, "--out") ?? "benchmark-artifacts/comparisons/tfhe-rs";
 const artifactId = readOption(rawArgs, "--artifact-id");
 const generatedAt = readOption(rawArgs, "--generated-at");
+const inputPath = readOption(rawArgs, "--input");
+const outputDir =
+  readOption(rawArgs, "--out") ??
+  (inputPath
+    ? "benchmark-artifacts/comparisons/tfhe-rs-realdata"
+    : "benchmark-artifacts/comparisons/tfhe-rs");
 
 if (args.has("--help")) {
   console.log([
@@ -22,15 +28,33 @@ if (args.has("--help")) {
     "  node prototype/tfhe-rs-benchmark.mjs --adapter",
     "  node prototype/tfhe-rs-benchmark.mjs --artifact",
     "  node prototype/tfhe-rs-benchmark.mjs --run",
+    "  node prototype/tfhe-rs-benchmark.mjs --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact --out benchmark-artifacts/comparisons/tfhe-rs-realdata",
     "  node prototype/tfhe-rs-benchmark.mjs --run --artifact",
     "",
     "--plan prints the native TFHE-rs build plan.",
     "--adapter prints the digest-bound adapter contract.",
     "--artifact writes the adapter plan or native run result as a comparison artifact.",
     "--artifact-id <id> and --generated-at <iso> make artifact output reproducible.",
+    "--input <json> records a blocker artifact for real-data TFHE-rs input support.",
     "--run builds and executes the TFHE-rs demo with Cargo.",
   ].join("\n"));
   process.exit(0);
+}
+
+if (inputPath) {
+  const subject = buildTfheRsRealDataUnavailableReport({ inputPath });
+  if (shouldPublishArtifact) {
+    const published = await publishComparisonArtifact({
+      outputDir,
+      subject,
+      artifactId,
+      generatedAt,
+    });
+    console.log(JSON.stringify(published, null, 2));
+  } else {
+    console.log(JSON.stringify(subject, null, 2));
+  }
+  process.exit(2);
 }
 
 if (!args.has("--run")) {

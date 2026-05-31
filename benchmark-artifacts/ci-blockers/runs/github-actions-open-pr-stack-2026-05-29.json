@@ -1,0 +1,155 @@
+{
+  "schema": "neurofhe.ciBlocker.v1",
+  "artifactId": "github-actions-open-pr-stack-2026-05-29",
+  "generatedAt": "2026-05-29T02:23:53Z",
+  "scope": "portable-github-actions-validation",
+  "observedRepositoryState": {
+    "defaultBranch": "main",
+    "mainHeadSha": "7317f11",
+    "stackHeadSha": "0e60e6b",
+    "openPullRequests": [
+      {
+        "number": 17,
+        "title": "Define discreet spike sorting proof gate",
+        "headRef": "codex/discreet-spike-sorting-proof",
+        "baseRef": "main",
+        "mergeable": "MERGEABLE",
+        "mergeStateStatus": "BLOCKED",
+        "statusCheckRollup": [],
+        "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/17"
+      },
+      {
+        "number": 18,
+        "title": "Add reconstruction risk probe artifact",
+        "headRef": "codex/reconstruction-risk-probes",
+        "baseRef": "codex/discreet-spike-sorting-proof",
+        "mergeable": "MERGEABLE",
+        "mergeStateStatus": "CLEAN",
+        "statusCheckRollup": [],
+        "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/18"
+      },
+      {
+        "number": 19,
+        "title": "Add native measurement gap index",
+        "headRef": "codex/native-measurement-gap-index",
+        "baseRef": "codex/reconstruction-risk-probes",
+        "mergeable": "MERGEABLE",
+        "mergeStateStatus": "CLEAN",
+        "statusCheckRollup": [],
+        "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/19"
+      },
+      {
+        "number": 20,
+        "title": "Add TFHE-rs RSS measurement evidence",
+        "headRef": "codex/tfhe-rs-memory-measurement",
+        "baseRef": "codex/native-measurement-gap-index",
+        "mergeable": "MERGEABLE",
+        "mergeStateStatus": "CLEAN",
+        "statusCheckRollup": [],
+        "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/20"
+      },
+      {
+        "number": 21,
+        "title": "Add TFHE-rs real-data blocker artifact",
+        "headRef": "codex/tfhe-realdata-blocker",
+        "baseRef": "codex/tfhe-rs-memory-measurement",
+        "mergeable": "MERGEABLE",
+        "mergeStateStatus": "CLEAN",
+        "statusCheckRollup": [],
+        "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/21"
+      },
+      {
+        "number": 22,
+        "title": "Add real N-MNIST release evidence",
+        "headRef": "codex/nmnist-release-evidence-blocker",
+        "baseRef": "codex/tfhe-realdata-blocker",
+        "mergeable": "MERGEABLE",
+        "mergeStateStatus": "CLEAN",
+        "statusCheckRollup": [],
+        "url": "https://github.com/AlexanderDaly/neurofhe-relay/pull/22"
+      }
+    ]
+  },
+  "workflowState": {
+    "workflowId": 279863867,
+    "workflowName": "CI",
+    "workflowPath": ".github/workflows/ci.yml",
+    "githubState": "active",
+    "currentTrigger": "workflow_dispatch",
+    "automaticPushTriggersEnabled": false,
+    "automaticPullRequestTriggersEnabled": false
+  },
+  "latestHostedRuns": [
+    {
+      "runId": 26328106934,
+      "workflowName": "CI",
+      "event": "pull_request",
+      "headBranch": "codex/evidence-templates",
+      "headSha": "1a0359db63b75ce038cd35a01ed41663ef62439f",
+      "createdAt": "2026-05-23T08:27:58Z",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26328106934"
+    },
+    {
+      "runId": 26328098363,
+      "workflowName": "CI",
+      "event": "push",
+      "headBranch": "codex/evidence-templates",
+      "headSha": "1a0359db63b75ce038cd35a01ed41663ef62439f",
+      "createdAt": "2026-05-23T08:27:32Z",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26328098363"
+    },
+    {
+      "runId": 26321021816,
+      "workflowName": "CI",
+      "event": "pull_request",
+      "headBranch": "codex/eeg-boundary-validation",
+      "headSha": "c1450bebec5242e9f82d342641ccc06e586356f7",
+      "createdAt": "2026-05-23T02:25:38Z",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/AlexanderDaly/neurofhe-relay/actions/runs/26321021816"
+    }
+  ],
+  "blocker": {
+    "category": "github-actions-account-billing-and-manual-only-workflow",
+    "isCodeFailure": false,
+    "githubAnnotation": "Previous hosted runner attempts failed before any runner steps with: The job was not started because your account is locked due to a billing issue.",
+    "currentObservation": "There is now an open stacked PR train (#17 through #22). PR #17 is mergeable but BLOCKED with an empty status check rollup; PRs #18 through #22 are mergeable/CLEAN with empty status check rollups. The CI workflow remains active but manual-only, so there is still no green hosted release-PR check satisfying the release checklist.",
+    "branchProtectionObservation": "GitHub REST branch protection endpoint returned 404 Branch not protected for main; the repository release gate still requires a green portable hosted CI run on the release PR before tagging.",
+    "evidence": {
+      "openPullRequestCheckRollups": "all six open PRs returned empty statusCheckRollup arrays",
+      "latestHostedRuns": "stale failures from old branch heads before runner-step logs were available",
+      "previousRunArtifacts": [
+        "benchmark-artifacts/ci-blockers/runs/github-actions-billing-lock-2026-05-22.json",
+        "benchmark-artifacts/ci-blockers/runs/github-actions-runner-startup-block-2026-05-23-pr7.json",
+        "benchmark-artifacts/ci-blockers/runs/github-actions-manual-only-open-prs-2026-05-25.json",
+        "benchmark-artifacts/ci-blockers/runs/github-actions-post-merge-no-open-prs-2026-05-26.json"
+      ],
+      "sourceCommands": [
+        "gh pr list --state open --json number,title,headRefName,baseRefName,isDraft,mergeStateStatus,mergeable,statusCheckRollup,updatedAt,url",
+        "gh pr list --state all --limit 20 --json number,title,headRefName,baseRefName,state,isDraft,mergeStateStatus,mergedAt,updatedAt,url",
+        "gh run list --limit 10 --json databaseId,workflowName,event,status,conclusion,headBranch,headSha,createdAt,url",
+        "gh api repos/AlexanderDaly/neurofhe-relay/actions/workflows --jq '.workflows[] | select(.name==\"CI\") | {id,name,state,path,html_url}'",
+        "gh api repos/AlexanderDaly/neurofhe-relay/branches/main/protection --jq '{required_status_checks:.required_status_checks, enforce_admins:.enforce_admins.enabled, required_pull_request_reviews:.required_pull_request_reviews}'"
+      ]
+    }
+  },
+  "localParityValidation": {
+    "observedAt": "2026-05-29T02:23:53Z",
+    "commandsRun": [
+      "npm run validate",
+      "node -e \"const fs=require('fs'); for (const p of ['benchmark-artifacts/ci-blockers/latest.json','benchmark-artifacts/ci-blockers/runs/github-actions-open-pr-stack-2026-05-29.json','benchmark-artifacts/release-evidence/latest.json']) JSON.parse(fs.readFileSync(p,'utf8')); console.log('release blocker json ok')\"",
+      "git diff --check"
+    ],
+    "result": "pass",
+    "resultSummary": "77 passing tests, json ok, repository hygiene scan ok, release blocker json ok, whitespace check clean",
+    "productionClaim": false
+  },
+  "smallestNextStep": "Run or manually dispatch the portable CI workflow on the stacked release-validation PR train, then require a green hosted run before tagging v0.1.0-research-alpha.",
+  "releaseGateSatisfied": false,
+  "productionClaim": false
+}

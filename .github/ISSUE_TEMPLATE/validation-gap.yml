@@ -1,11 +1,13 @@
 name: Validation or evidence gap
 description: Track a reproducible research-alpha evidence gap without upgrading claims.
 title: "[evidence]: "
+labels:
+  - enhancement
 body:
   - type: markdown
     attributes:
       value: |
-        Use this for missing or incomplete validation evidence. Do not include secrets, raw neural/EEG rows, private datasets, proprietary weights, or screenshots with sensitive payloads.
+        Use this for missing or incomplete validation evidence. Check docs/evidence-dashboard.md and docs/release-gate-matrix.md before treating a gap as release-blocking or release-ready. Use docs/data-handling.md for raw-data or derived-artifact boundaries and docs/troubleshooting.md when a command cannot run. Do not include secrets, raw neural/EEG rows, private datasets, proprietary weights, private payloads, or screenshots with sensitive payloads; use SECURITY.md for sensitive reports and SUPPORT.md for routing questions.
   - type: dropdown
     id: evidence_class
     attributes:
@@ -50,7 +52,7 @@ body:
     id: smallest_next_step
     attributes:
       label: Smallest next step
-      description: What is the smallest reproducible action that would advance this evidence?
+      description: What is the smallest reproducible action that would advance this evidence? Include the smallest next step in plain language.
     validations:
       required: true
   - type: checkboxes
@@ -62,5 +64,9 @@ body:
           required: true
         - label: Raw datasets, raw signals, secrets, and private payloads are not attached or committed.
           required: true
-        - label: The evidence keeps `productionClaim: false` where artifact metadata is involved.
+        - label: "The evidence keeps `productionClaim: false` where artifact metadata is involved."
+          required: true
+        - label: "The evidence keeps `releaseGateSatisfied: false` unless every documented release gate is actually satisfied."
+          required: true
+        - label: "The evidence preserves `privacyBoundary` and `cryptoInventory` where artifact metadata is involved."
           required: true

@@ -1,7 +1,7 @@
 # Release Plan
 
-Yes: the first release should be a research-alpha release, not a production
-cryptography release. A good initial tag is:
+The first release target is a research-alpha snapshot, not a production
+cryptography release:
 
 ```text
 v0.1.0-research-alpha
@@ -9,8 +9,8 @@ v0.1.0-research-alpha
 
 ## Release Purpose
 
-The first release should freeze a diligence-ready public snapshot of the
-research prototype:
+The first release should freeze a diligence-ready public snapshot of the CC0
+research-alpha repository:
 
 - boundary-first architecture for privacy-preserving event intelligence
 - dependency-free toy arithmetic demo for schema and workflow education
@@ -22,6 +22,12 @@ research prototype:
 
 It must not claim production cryptography, clinical validity, medical utility,
 side-channel resistance, or stable performance.
+
+The current release posture remains `releaseGateSatisfied: false`. This file is
+the controlling no-tag gate, but it is not release approval by itself.
+Release tagging still requires green current validation, satisfied evidence
+gates, the repository ruleset/admin policy merge path, and explicit user approval
+for the final action.
 
 ## Minimum Evidence Gate
 
@@ -35,14 +41,19 @@ npm run benchmark:privacy-modes -- --artifact
 npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
 npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
 npm run benchmark:tfhe -- --run --artifact
+npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
 npm run native:doctor -- --artifact
 npm run scan:hygiene -- --artifact
+npm run reconstruction:risk -- --artifact
 npm run release:evidence -- --artifact
 ```
 
 If OpenFHE or TFHE-rs cannot run on the release machine, publish the generated
 blocker artifact instead of inventing substitute results. Record the exact
 command, error, and smallest next step.
+
+For a command-by-command review map, use `docs/release-gate-matrix.md`. For the
+current human-readable evidence posture, use `docs/evidence-dashboard.md`.
 
 ## Release Checklist
 
@@ -57,11 +68,23 @@ command, error, and smallest next step.
 - Confirm `benchmark-artifacts/native-evidence/latest.json` identifies the
   host/toolchain, latest native lane artifacts, exact rerun commands, and
   remaining gaps, including ciphertext-byte and RSS/peak-memory measurement
-  coverage.
+  coverage plus the per-lane measurement gap index.
 - Confirm `benchmark-artifacts/release-evidence/latest.json` indexes the
-  current CI blocker, repository hygiene result, native measurement coverage,
-  metadata-leakage caveat, and `productionClaim: false` status without marking
-  the release gate satisfied.
+  current hosted-CI evidence, repository hygiene result, native measurement coverage,
+  metadata-leakage caveat, reconstruction-risk probe caveat, and
+  real N-MNIST plaintext baseline plus the TFHE-rs real-data input blocker,
+  with `productionClaim: false` status without marking the release gate
+  satisfied.
+- Confirm `benchmark-artifacts/reconstruction-risk/latest.json` keeps
+  `privacyProofClaim: false`, blocks raw payload replay and active-value
+  recovery in the synthetic probe, and records public-position residual risk.
+- Confirm `benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`
+  records the exact unsupported EEG-derived input command and smallest next
+  step until a real-data TFHE-rs adapter exists.
+- Confirm `benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json`
+  records the real public N-MNIST sampled plaintext baseline, including
+  provenance, compression curve, and caveat that it is not encrypted-compute or
+  deployment evidence.
 - Confirm `VALIDATION.md` includes the commands that produced committed
   artifacts.
 - Confirm every crypto lane keeps `productionClaim: false`.
@@ -69,7 +92,9 @@ command, error, and smallest next step.
   claims.
 - Confirm the portable GitHub Actions CI workflow is green on the release PR.
 - Confirm `git diff --check` and `npm run validate` pass.
-- Tag only after the validation PR is merged.
+- Confirm the repository ruleset/admin policy merge path is satisfied.
+- Tag only after the validation PR is merged, every gate above is satisfied,
+  and the user gives explicit approval for the final release action.
 
 ## Suggested GitHub Release Notes
 
@@ -88,6 +113,7 @@ Included evidence:
 - educational toy additive encrypted sparse scorer
 - real public UCI EEG Eye State plaintext baseline
 - metadata leakage versus padded-sparse overhead ablation
+- synthetic reconstruction-risk probe report
 - OpenFHE BFVrns native single-window real-data-derived input run
 - OpenFHE CKKS native single-window real-data-derived input run
 - TFHE-rs synthetic threshold comparison lane

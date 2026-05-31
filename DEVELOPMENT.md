@@ -1,11 +1,29 @@
 # Development
 
-NeuroFHE Relay is a CC0 research prototype. The default development loop is
-portable Node.js validation plus optional native FHE checks when OpenFHE or
-Rust/TFHE-rs are installed locally.
+NeuroFHE Relay is a CC0 research-alpha repository for privacy-preserving event intelligence.
+The default development loop is portable Node.js validation plus optional native
+FHE checks when OpenFHE or Rust/TFHE-rs are installed locally.
 
 Nothing in this repository is production cryptography, medical software, or a
 security certification.
+
+For the short first-pass contributor path, see `docs/developer-quickstart.md`.
+For a grouped script list, see `docs/command-reference.md`.
+For common local, hosted-CI, native-lane, dataset, or release-gate failures,
+see `docs/troubleshooting.md`.
+
+## Development Routes
+
+Use this table before choosing commands so local work stays tied to the right
+evidence and claim boundary.
+
+| Need | Start With | Keep In View |
+| --- | --- | --- |
+| First local validation | `docs/developer-quickstart.md` | `npm run ci`, `git diff --check`, and the portable gate limits in `VALIDATION.md`. |
+| Docs or navigation change | `docs/README.md` and `docs/command-reference.md` | Markdown link coverage, reader routes, and `productionClaim: false` caveats. |
+| Native FHE lane work | `docs/dependency-matrix.md` and `benchmark-artifacts/native-evidence/latest.json` | OpenFHE/TFHE-rs dependency state, exact command, error, and smallest next step. |
+| Real-data or artifact work | `docs/data-handling.md` and `benchmark-artifacts/README.md` | Raw datasets stay outside git; commit only derived artifacts or a structured blocker report. |
+| Release-readiness review | `RELEASE.md` and `docs/release-gate-matrix.md` | `releaseGateSatisfied: false`, hosted CI, repository ruleset/admin policy, and explicit approval. |
 
 ## Prerequisites
 
@@ -14,6 +32,9 @@ security certification.
 - Optional: CMake, a C++17 compiler, and a local OpenFHE install for the BFVrns
   and CKKS native lanes.
 - Optional: Rust stable and Cargo for the TFHE-rs comparison lane.
+
+For CI parity, `.nvmrc` and `.node-version` point to Node.js 22. The package
+engine remains `>=20` until a specific runtime feature requires a higher floor.
 
 The JavaScript harness has no npm dependencies today. If dependencies are added
 later, commit the lockfile and update the CI workflow before relying on
@@ -28,8 +49,15 @@ npm run ci
 ```
 
 That command runs the Node test suite, parses the core JSON metadata files, and
-scans for placeholder text, common secret tokens, and committed raw dataset
-paths. `npm run ci` currently aliases `npm run validate`.
+checks local Markdown links before scanning for placeholder text, common secret
+tokens, and committed raw dataset paths. `npm run ci` currently aliases
+`npm run validate`.
+
+Run only the documentation link check:
+
+```sh
+npm run check:docs
+```
 
 Run smoke artifact generation without touching committed artifacts:
 
@@ -49,7 +77,8 @@ npm run scan:hygiene -- --artifact
 
 The artifact records pass/fail status, scanned file count, blocked raw-data
 patterns, and redacted findings only. It must not include secret values or raw
-dataset rows.
+dataset rows. The committed latest hygiene surface is
+`benchmark-artifacts/repo-hygiene/latest.json`.
 
 ## Native OpenFHE Checks
 
@@ -78,8 +107,8 @@ npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-ba
 ```
 
 If the native library cannot be found, keep the generated blocker artifact and
-record the exact command and error. Do not substitute toy results for FHE
-security evidence.
+record the exact command, error, and smallest next step. Do not substitute toy
+results for FHE security evidence.
 
 ## TFHE-rs Checks
 
@@ -107,6 +136,8 @@ The manifest does not rerun OpenFHE or TFHE-rs benchmarks. It indexes the
 latest committed artifacts and records whether each lane is a real native run,
 dependency blocker, adapter plan, or missing artifact. Use it before release
 review to make local native evidence easier to reproduce on another host.
+The committed latest native summary is
+`benchmark-artifacts/native-evidence/latest.json`.
 
 ## Real Data
 
@@ -118,8 +149,12 @@ rows.
 npm run baseline:eeg-eye-state -- --artifact
 ```
 
-The N-MNIST path expects a local extracted dataset and records a blocker report
-when the dataset is absent.
+The N-MNIST path expects a local extracted dataset. The current committed
+real public N-MNIST plaintext baseline is
+`benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json`; it contains
+derived sampled metrics and provenance only, not raw event files. When the local
+dataset is absent, rerun with `--artifact` to record a structured blocker report
+instead of losing the exact command, error, and smallest next step.
 
 ## Artifact Policy
 
@@ -143,3 +178,17 @@ the portable CI workflow is green and that any native FHE evidence is either a
 real local-library run or a structured blocker artifact. Refresh
 `npm run native:doctor -- --artifact` after native runs or blockers so reviewers
 can see the exact host and rerun commands behind the latest evidence.
+
+Use `docs/release-gate-matrix.md` for the command-by-command gate map and
+`docs/evidence-dashboard.md` for the current human-readable evidence posture.
+The machine-readable release dashboard is
+`benchmark-artifacts/release-evidence/latest.json`.
+
+The current cleanup branch keeps `releaseGateSatisfied: false` until every
+documented gate is satisfied. A green hosted `Portable validation` check is
+necessary, but a pull request can still be blocked by repository ruleset/admin
+policy. Treat that as `repository ruleset/admin policy`, separate from
+CI/check-rollup or code failures, and do not merge or tag without maintainer
+approval, explicit user approval, and the documented release gate.
+Do not merge, tag, or strengthen release-facing claims just because local and
+hosted validation are green.

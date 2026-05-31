@@ -1,0 +1,20 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Research-alpha release gate
+    url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/RELEASE.md
+    about: Review release evidence requirements before requesting a tag or release.
+  - name: Evidence dashboard
+    url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/docs/evidence-dashboard.md
+    about: Review docs/evidence-dashboard.md before treating artifacts as release-ready evidence.
+  - name: Release gate matrix
+    url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/docs/release-gate-matrix.md
+    about: Review docs/release-gate-matrix.md for command-by-command gate expectations.
+  - name: Contribution guide
+    url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/CONTRIBUTING.md
+    about: Read the evidence boundary and validation expectations before opening an issue.
+  - name: Support routing
+    url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/SUPPORT.md
+    about: Decide whether a report belongs in a public issue, private report, PR, or validation note.
+  - name: Security policy
+    url: https://github.com/AlexanderDaly/neurofhe-relay/blob/main/SECURITY.md
+    about: Use private reporting for secrets, raw data exposure, private payloads, or exploit details.

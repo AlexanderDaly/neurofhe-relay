@@ -1,12 +1,24 @@
 # Security Policy
 
-NeuroFHE Relay is a research prototype. It is not production cryptography, a
-medical device, a clinical decision system, a surveillance system, or a
-deployment-ready privacy product.
+NeuroFHE Relay is a CC0 research-alpha package. It is not production
+cryptography, a medical device, a clinical decision system, a surveillance
+system, or a deployment-ready privacy product.
+
+## Security Report Routes
+
+Use this table before reporting so sensitive material stays out of public
+threads and research limitations remain separate from vulnerabilities.
+
+| Report Type | Route | Keep Out Of Public Threads |
+| --- | --- | --- |
+| Raw data, secret, or private payload exposure | Use GitHub private vulnerability reporting if enabled; otherwise avoid public detail and contact the maintainer route in `MAINTAINERS.md`. | Secrets, raw signal rows, raw dataset files, private payloads, and exploit payloads. |
+| Claim-boundary or cryptography-posture issue | Public issue is acceptable when no sensitive material is involved. | Any language that upgrades toy arithmetic or local native runs into production cryptography. |
+| Unsafe CLI or malformed input behavior | Public issue with exact command, affected file, observed behavior, and smallest next step. | Private paths, proprietary files, raw datasets, and secret values. |
+| Release posture or evidence-gate concern | Use `RELEASE.md`, `docs/release-gate-matrix.md`, and `docs/evidence-dashboard.md` before calling it ready. | Private repository settings, sensitive CI details, or unsupported release claims. |
 
 ## Supported Scope
 
-Security reports are useful when they identify issues in the public prototype
+Security reports are useful when they identify issues in the public scaffold
 itself, such as:
 
 - raw signal, raw dataset, secret, or private payload leakage into committed
@@ -15,7 +27,8 @@ itself, such as:
   cryptographic security evidence;
 - unsafe CLI behavior that could overwrite files unexpectedly;
 - malformed input handling that breaks the documented privacy boundary;
-- incorrect crypto inventory, parameter, or provenance reporting.
+- incorrect `privacyBoundary`, `cryptoInventory`, parameter, or provenance
+  reporting.
 
 Known research limitations, such as the toy additive scheme being insecure or
 metadata leakage from public active positions, are documented caveats rather
@@ -30,16 +43,25 @@ GitHub issue is fine.
 Do not post secrets, private data, raw neural/EEG records, proprietary model
 weights, or exploit payloads in public issues or pull requests.
 
+If the report concerns release posture rather than a vulnerability, preserve
+`releaseGateSatisfied: false` unless every documented release gate is actually
+satisfied.
+
 ## Response Expectations
 
 This is a public-domain research package maintained as time permits, not a
-commercial security product with an SLA. Reports that include reproducible
-commands, affected files, expected behavior, and observed behavior are easiest
-to validate.
+commercial security product with an SLA. Reports that include the exact command,
+affected files, expected behavior, observed behavior, and the smallest next step
+are easiest to validate.
+
+The repository hygiene scan can help identify common placeholder text,
+token-shaped secrets, and raw-data path mistakes. It is not a security audit,
+secret-manager review, malware scan, dependency audit, penetration test, or
+private-dataset review.
 
 ## Cryptographic Posture
 
-All current cryptographic lanes are research-grade:
+All current cryptographic lanes are research-alpha and caveated:
 
 - toy additive arithmetic is educational only;
 - OpenFHE BFVrns and CKKS lanes are native-library comparison targets;

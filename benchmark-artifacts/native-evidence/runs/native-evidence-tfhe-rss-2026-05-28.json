@@ -1,0 +1,325 @@
+{
+  "schema": "neurofhe.nativeEvidenceArtifact.v1",
+  "artifactId": "native-evidence-tfhe-rss-2026-05-28",
+  "generatedAt": "2026-05-28T02:26:18.000Z",
+  "subjectSchema": "neurofhe.nativeEvidence.manifest.v1",
+  "subject": {
+    "schema": "neurofhe.nativeEvidence.manifest.v1",
+    "generatedAt": "2026-05-28T02:26:18.000Z",
+    "purpose": "Make native OpenFHE and TFHE-rs evidence reproducible by indexing the latest committed artifacts, host/toolchain fingerprint, exact rerun commands, and remaining blockers.",
+    "hostFingerprint": {
+      "schema": "neurofhe.nativeEvidence.hostFingerprint.v1",
+      "platform": "darwin",
+      "arch": "arm64",
+      "osRelease": "25.5.0",
+      "node": "v25.2.0",
+      "toolchain": {
+        "npm": {
+          "command": "npm --version",
+          "available": true,
+          "status": 0,
+          "stdout": "11.6.2",
+          "stderr": ""
+        },
+        "cmake": {
+          "command": "cmake --version",
+          "available": true,
+          "status": 0,
+          "stdout": "cmake version 4.1.2",
+          "stderr": ""
+        },
+        "cxx": {
+          "command": "c++ --version",
+          "available": true,
+          "status": 0,
+          "stdout": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+          "stderr": ""
+        },
+        "cargo": {
+          "command": "cargo --version",
+          "available": true,
+          "status": 0,
+          "stdout": "cargo 1.92.0 (344c4567c 2025-10-21)",
+          "stderr": ""
+        },
+        "rustc": {
+          "command": "rustc --version",
+          "available": true,
+          "status": 0,
+          "stdout": "rustc 1.92.0 (ded5c06cf 2025-12-08)",
+          "stderr": ""
+        }
+      }
+    },
+    "summary": {
+      "laneCount": 3,
+      "realNativeRunCount": 3,
+      "dependencyBlockerCount": 0,
+      "adapterPlanOnlyCount": 0,
+      "missingArtifactCount": 0,
+      "otherEvidenceCount": 0,
+      "measurementCoverage": {
+        "ciphertextBytesReportedCount": 1,
+        "ciphertextBytesPartialCount": 1,
+        "ciphertextBytesMissingCount": 1,
+        "rssOrPeakMemoryReportedCount": 1,
+        "rssOrPeakMemoryPartialCount": 1,
+        "rssOrPeakMemoryMissingCount": 1
+      },
+      "measurementGaps": {
+        "schema": "neurofhe.nativeEvidence.measurementGapIndex.v1",
+        "gapCount": 4,
+        "lanes": [
+          {
+            "laneId": "openfhe-bfvrns",
+            "latestArtifactId": "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+            "evidenceStatus": "real-native-run",
+            "missingMeasurements": [
+              "ciphertextBytes",
+              "rssOrPeakMemory"
+            ],
+            "partialMeasurements": [],
+            "measurementReasons": {
+              "ciphertextBytes": "ciphertext byte measurement not reported",
+              "rssOrPeakMemory": "RSS or peak memory measurement not reported"
+            },
+            "exactCommands": [
+              "npm run contract:eeg-openfhe -- --generated-at <ISO_TIMESTAMP>",
+              "npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+            ],
+            "smallestNextStep": "Repeat BFVrns on multiple EEG-derived windows and add serialized ciphertext byte or RSS measurements.",
+            "productionClaim": false
+          },
+          {
+            "laneId": "openfhe-ckks",
+            "latestArtifactId": "openfhe-ckks-eeg-eye-state-2026-05-21",
+            "evidenceStatus": "real-native-run",
+            "missingMeasurements": [],
+            "partialMeasurements": [
+              "ciphertextBytes",
+              "rssOrPeakMemory"
+            ],
+            "measurementReasons": {
+              "ciphertextBytes": "portable demo reports ciphertext count; enable OpenFHE serialization for exact byte sizes",
+              "rssOrPeakMemory": "portable demo reports ciphertext count; enable OpenFHE serialization for exact byte sizes"
+            },
+            "exactCommands": [
+              "npm run contract:eeg-openfhe -- --generated-at <ISO_TIMESTAMP>",
+              "npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+            ],
+            "smallestNextStep": "Repeat CKKS on multiple EEG-derived windows and compare score drift across the sweep.",
+            "productionClaim": false
+          }
+        ],
+        "caveat": "These entries identify missing or partial measurement classes only; they do not create substitute benchmark, memory, or ciphertext-size evidence.",
+        "productionClaim": false
+      }
+    },
+    "lanes": [
+      {
+        "schema": "neurofhe.nativeEvidence.lane.v1",
+        "id": "openfhe-bfvrns",
+        "library": "OpenFHE",
+        "scheme": "BFVrns",
+        "latestArtifactPath": "benchmark-artifacts/comparisons/openfhe/latest.json",
+        "latestArtifactId": "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+        "latestArtifactGeneratedAt": "2026-05-21T18:22:00.000Z",
+        "dependencyDetection": {
+          "available": true,
+          "cmakeConfigDir": "/opt/homebrew/lib/cmake/OpenFHE"
+        },
+        "evidence": {
+          "status": "real-native-run",
+          "reason": "latest artifact records a native-library run",
+          "subjectSchema": "neurofhe.openfhe.runComparison.v1",
+          "resultSchema": "neurofhe.openfhe.result.v1",
+          "datasetKind": "public-uci-eeg-eye-state-arff",
+          "inputSource": "external-contract",
+          "activeEventCount": 32,
+          "productionClaim": false
+        },
+        "measurements": {
+          "schema": "neurofhe.nativeEvidence.measurements.v1",
+          "ciphertextBytes": {
+            "status": "missing",
+            "reason": "ciphertext byte measurement not reported"
+          },
+          "rssOrPeakMemory": {
+            "status": "missing",
+            "reason": "RSS or peak memory measurement not reported"
+          }
+        },
+        "reproducibility": {
+          "hostSpecific": true,
+          "requiresLocalDependency": true,
+          "commands": [
+            "npm run contract:eeg-openfhe -- --generated-at <ISO_TIMESTAMP>",
+            "npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+          ],
+          "artifactRefreshCommand": "npm run native:doctor -- --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+        },
+        "gaps": [
+          "Repeat BFVrns on multiple EEG-derived windows and add serialized ciphertext byte or RSS measurements.",
+          "Ciphertext byte measurements are absent or only partially reported.",
+          "RSS or peak memory measurements are not reported."
+        ],
+        "smallestNextStep": "Repeat BFVrns on multiple EEG-derived windows and add serialized ciphertext byte or RSS measurements.",
+        "productionClaim": false
+      },
+      {
+        "schema": "neurofhe.nativeEvidence.lane.v1",
+        "id": "openfhe-ckks",
+        "library": "OpenFHE",
+        "scheme": "CKKS",
+        "latestArtifactPath": "benchmark-artifacts/comparisons/openfhe-ckks/latest.json",
+        "latestArtifactId": "openfhe-ckks-eeg-eye-state-2026-05-21",
+        "latestArtifactGeneratedAt": "2026-05-21T18:20:00.000Z",
+        "dependencyDetection": {
+          "available": true,
+          "cmakeConfigDir": "/opt/homebrew/lib/cmake/OpenFHE"
+        },
+        "evidence": {
+          "status": "real-native-run",
+          "reason": "latest artifact records a native-library run",
+          "subjectSchema": "neurofhe.openfheCkks.runComparison.v1",
+          "resultSchema": "neurofhe.openfheCkks.result.v1",
+          "datasetKind": "public-uci-eeg-eye-state-arff",
+          "inputSource": "external-contract",
+          "activeEventCount": 32,
+          "productionClaim": false
+        },
+        "measurements": {
+          "schema": "neurofhe.nativeEvidence.measurements.v1",
+          "ciphertextBytes": {
+            "status": "partial",
+            "sourceField": "memoryUsage.serializedCiphertextBytes",
+            "totalBytes": null,
+            "measurement": "portable demo reports ciphertext count; enable OpenFHE serialization for exact byte sizes",
+            "availableFields": [
+              "ciphertextCount",
+              "serializedCiphertextBytes",
+              "measurement"
+            ]
+          },
+          "rssOrPeakMemory": {
+            "status": "partial",
+            "sourceField": "memoryUsage",
+            "bytes": null,
+            "measurement": "portable demo reports ciphertext count; enable OpenFHE serialization for exact byte sizes",
+            "availableFields": [
+              "ciphertextCount",
+              "serializedCiphertextBytes",
+              "measurement"
+            ]
+          }
+        },
+        "reproducibility": {
+          "hostSpecific": true,
+          "requiresLocalDependency": true,
+          "commands": [
+            "npm run contract:eeg-openfhe -- --generated-at <ISO_TIMESTAMP>",
+            "npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+          ],
+          "artifactRefreshCommand": "npm run native:doctor -- --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+        },
+        "gaps": [
+          "Repeat CKKS on multiple EEG-derived windows and compare score drift across the sweep.",
+          "Ciphertext byte measurements are absent or only partially reported.",
+          "RSS or peak memory measurements are not reported."
+        ],
+        "smallestNextStep": "Repeat CKKS on multiple EEG-derived windows and compare score drift across the sweep.",
+        "productionClaim": false
+      },
+      {
+        "schema": "neurofhe.nativeEvidence.lane.v1",
+        "id": "tfhe-rs",
+        "library": "TFHE-rs",
+        "scheme": "integer-threshold",
+        "latestArtifactPath": "benchmark-artifacts/comparisons/tfhe-rs/latest.json",
+        "latestArtifactId": "tfhe-rs-memory-rss-2026-05-28",
+        "latestArtifactGeneratedAt": "2026-05-28T02:26:18.000Z",
+        "dependencyDetection": {
+          "available": true,
+          "manifestPath": "prototype/tfhe-rs/Cargo.toml",
+          "manifestExists": true,
+          "cargo": "cargo 1.92.0 (344c4567c 2025-10-21)",
+          "reason": null
+        },
+        "evidence": {
+          "status": "real-native-run",
+          "reason": "latest artifact records a native-library run",
+          "subjectSchema": "neurofhe.tfheRs.runComparison.v1",
+          "resultSchema": "neurofhe.tfheRs.result.v1",
+          "datasetKind": null,
+          "inputSource": null,
+          "activeEventCount": 18,
+          "productionClaim": false
+        },
+        "measurements": {
+          "schema": "neurofhe.nativeEvidence.measurements.v1",
+          "ciphertextBytes": {
+            "status": "reported",
+            "sourceField": "ciphertextBytes",
+            "totalBytes": 2658613,
+            "measurement": "TFHE-rs safe_serialized_size"
+          },
+          "rssOrPeakMemory": {
+            "status": "reported",
+            "sourceField": "rssBytes-or-peakRssBytes",
+            "bytes": 259309568,
+            "measurement": "current process RSS via ps -o rss= -p <pid>; KiB converted to bytes"
+          }
+        },
+        "reproducibility": {
+          "hostSpecific": true,
+          "requiresLocalDependency": true,
+          "commands": [
+            "cargo test --manifest-path prototype/tfhe-rs/Cargo.toml",
+            "npm run benchmark:tfhe -- --run --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+          ],
+          "artifactRefreshCommand": "npm run native:doctor -- --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+        },
+        "gaps": [
+          "Add a real-data-derived TFHE-rs input path or publish a blocker if the integer threshold contract needs a new adapter."
+        ],
+        "smallestNextStep": "Add a real-data-derived TFHE-rs input path or publish a blocker if the integer threshold contract needs a new adapter.",
+        "productionClaim": false
+      }
+    ],
+    "releaseUse": {
+      "releaseGateSatisfied": false,
+      "reason": "This manifest improves reproducibility, but it is not sufficient by itself for the release gate; hosted CI must be green and release commands in RELEASE.md must still be rerun or explicitly blocked on the release machine.",
+      "requiredBeforeTagging": [
+        "green hosted portable CI",
+        "fresh release-machine native runs or blocker artifacts",
+        "VALIDATION.md updated with the exact commands and artifacts"
+      ]
+    },
+    "caveats": [
+      "Native timings are host-specific local-machine evidence.",
+      "OpenFHE must be installed and discoverable by CMake on reviewer machines.",
+      "TFHE-rs results depend on the local Rust toolchain, crate lockfile, CPU, and build profile.",
+      "No production cryptography, clinical, medical, side-channel, or stable performance claim is made."
+    ],
+    "framingGuardrail": {
+      "schema": "neurofhe.framingGuardrail.v1",
+      "preferredFrame": "privacy-preserving event intelligence",
+      "boundaryDomain": "bio-digital-event-intelligence",
+      "useLanguage": [
+        "sensitive signals stay local",
+        "approved event features cross the boundary under privacy and cryptographic controls",
+        "encrypted scoring over a bounded event representation"
+      ],
+      "avoidClaims": [
+        "medical diagnosis",
+        "treatment",
+        "clinical validation",
+        "mind reading",
+        "production cryptography"
+      ],
+      "note": "Bio-digital language is used here for privacy-preserving event intelligence, not medical diagnosis or treatment."
+    },
+    "productionClaim": false
+  },
+  "productionClaim": false
+}

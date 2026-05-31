@@ -1,8 +1,35 @@
 # Validation
 
-Validated locally on 2026-05-21.
+Current portable gate validated locally on 2026-05-29. Historical artifact
+sections below retain the exact commands and outputs that produced specific
+committed evidence snapshots.
 
 Commands below are written for the standalone package root.
+
+## Current Portable Gate
+
+Command:
+
+```sh
+npm run validate
+```
+
+Result summary from the 2026-05-29 cleanup branch:
+
+```text
+tests 139
+pass 139
+fail 0
+json ok
+markdown link scan ok (75 files)
+repository hygiene scan ok
+```
+
+`npm run validate` currently runs the Node test suite, parses
+`project-brief.json` and `prototype/research-assumptions.json`, checks local
+Markdown links, and runs the repository hygiene scan. This portable gate is
+necessary release evidence, but it is not production-cryptography, medical,
+deployment, privacy-proof, or native-library performance evidence.
 
 ## Checks Run
 
@@ -17,8 +44,8 @@ npm test
 Result summary:
 
 ```text
-tests 55
-pass 55
+tests 139
+pass 139
 fail 0
 ```
 
@@ -42,6 +69,146 @@ Covered behaviours:
 - Native evidence manifest generation that fingerprints the current host/toolchain, classifies latest OpenFHE and TFHE-rs artifacts, records exact rerun commands, and preserves remaining native evidence gaps.
 - N-MNIST 40-bit event parsing, feature extraction, plaintext baseline evaluation, smoke fixture generation, and compression-curve output.
 - UCI EEG Eye State ARFF parsing, sparse latent event projection, plaintext baseline evaluation, OpenFHE-ready input-contract emission, bounded sample-index selection, real-data privacy caveats, and active-budget compression-curve output.
+- Linear-algebra handoff routing for sparse-score contract, operation-count and
+  metadata tradeoff, native BFVrns adapter, privacy-mode, and future
+  implementation-boundary review.
+- Documentation and repository-readability guards for Markdown links, command
+  reference script, command-route, and research-alpha package evidence coverage,
+  documentation index coverage, documentation-index role routing,
+  repository-baseline routing, and concision, numbered briefing sequence,
+  briefing-route coverage, and rejection of stale presentation-package framing,
+  prototype module, top-level entrypoint, prototype route table, research-alpha
+  scaffold map framing, root README current-status snapshot, and native source map coverage, patent package
+  review-route and source coverage,
+  package manifest top-level, owner-route, inventory-review-route, and
+  native-evidence posture coverage, package metadata posture coverage,
+  agent-readable project-brief repository posture and package-caveat coverage,
+  generated presentation output-route and map coverage,
+  benchmark artifact directory, artifact-review-route, research-alpha package
+  framing, and release-evidence routing coverage,
+  contributor workflow surface coverage, pull-request-template change-note
+  coverage, policy boundary route and root-file
+  coverage, status roadmap release-readiness, review-route, and
+  at-a-glance gate-posture coverage, glossary route and term coverage, testing strategy
+  validation-route and validation-surface coverage, dependency matrix
+  dependency-route and setup-surface coverage,
+  data-handling data-route and boundary-surface coverage, developer-quickstart
+  change-route coverage, evidence-guide review-route
+  coverage, contributor-workflow route coverage, repository tooling
+  normalization/ignore-boundary coverage, and GitHub Actions trigger and
+  action-major checks.
+- Troubleshooting coverage requiring troubleshooting-route guidance plus common
+  local npm, hosted-CI, native-lane, dataset, and release-gate blockers to
+  route to exact-command/error/next-step blocker-field recording without weakening
+  `productionClaim: false`.
+- Claim-evidence ledger coverage requiring every weak-claim area from
+  `patent/briefing/ENER_weak_claims_evidence_gaps.md` to map to current
+  evidence surfaces and caveats.
+- ENER weak-claims coverage requiring the patent briefing native-FHE evidence
+  note to distinguish current OpenFHE/TFHE real-native-run artifacts from
+  remaining ciphertext-byte and RSS or peak-memory measurement gaps.
+- Evidence-dashboard coverage requiring the human-readable dashboard to map the
+  current release-evidence artifact wrapper, subject index, gate status,
+  blockers, and caveats without upgrading claims.
+- FAQ coverage requiring question-route guidance and common reader questions to
+  preserve `releaseGateSatisfied: false`, `productionClaim: false`, CC0,
+  raw-data, CI/ruleset, and evidence caveats.
+- Repository-guide coverage requiring the first map and change-discipline
+  footer to list current reader, maintainer, GitHub, CI, release-gate,
+  ruleset-policy, blocker-report, and no-merge/no-tag/no-claim-upgrade
+  surfaces.
+- Release-gate matrix coverage requiring every minimum evidence command in
+  `RELEASE.md` to map to expected artifacts, caveats, and blocker posture.
+- Release-plan coverage requiring no-tag, release-gate false, repository
+  ruleset/admin policy, evidence-dashboard, and explicit-approval boundaries to
+  stay visible while preserving CC0 research-alpha repository snapshot
+  framing.
+- Changelog coverage requiring the unreleased cleanup stack, release caveats,
+  hosted-CI status, and PR #23 blocker posture to stay visible.
+- Reviewer quickstart coverage requiring review-route guidance, diligence
+  entrypoints, evidence surfaces, support/security/contribution routing,
+  exact-command blocker recording, release caveats, and PR blocker posture to
+  stay visible.
+- Architecture decision coverage requiring decision-route guidance, accepted
+  repository boundary decisions, claim posture, raw-data policy, and
+  native/toy lane framing.
+- Operations runbook coverage requiring routine maintainer commands,
+  hosted-check handling, situation routing, blocker policy, release gate
+  posture, and production-claim caveats.
+- Root README first-path coverage requiring front-door research-alpha
+  repository framing plus role-based navigation for reviewers, contributors,
+  maintainers, and evidence reviewers while preserving `productionClaim:
+  false`.
+- Root README repository-layout coverage requiring a concise layout table that
+  defers exhaustive inventory to `PACKAGE_MANIFEST.md`.
+- Root README command-surface coverage requiring a quick-command table that
+  defers detailed native and release commands to `docs/command-reference.md`
+  and `RELEASE.md`.
+- Prototype README coverage requiring the prototype entrypoint to stay concise,
+  route detailed command and module inventory to repository maps, and preserve
+  toy/native/raw-data/release caveats.
+- Plaintext-baseline note coverage requiring real-data evidence routes,
+  raw-dataset boundaries, release posture, and plaintext-only caveats to stay
+  visible.
+- TFHE-rs integration-note coverage requiring native evidence, real-data
+  blocker, dependency, dashboard, release-gate, `privacyBoundary`,
+  `cryptoInventory`, `productionClaim: false`, and research-alpha native-lane
+  framing routes to stay visible while rejecting stale OpenFHE
+  dependency-blocker language.
+- Development guide coverage requiring setup, native-lane, evidence-artifact,
+  development-route, CC0 research-alpha repository framing, current N-MNIST
+  plaintext baseline routing, hosted-CI, release-gate, explicit user approval,
+  no-merge/no-tag/no-claim-upgrade, and repository ruleset/admin policy
+  boundaries to stay visible.
+- Developer quickstart coverage requiring common change types to route to
+  focused validation commands before the shared `npm run ci` and whitespace
+  gates.
+- Support policy coverage requiring a single support-route table for issue,
+  security, support, conduct, cleanup, and release blocker routing, including
+  a public-versus-private report routing table, while preserving
+  `releaseGateSatisfied: false`, `productionClaim: false`, and raw-data
+  boundaries.
+- Security policy coverage requiring CC0 research-alpha package framing,
+  security-report routing, raw-data and private-payload exclusions,
+  `privacyBoundary`, `cryptoInventory`,
+  `releaseGateSatisfied: false`, `productionClaim: false`, exact-command and
+  smallest-next-step reporting, and repository-hygiene-scan limits.
+- Contributing-guide coverage requiring contribution-route, developer
+  quickstart, command reference, data-handling, evidence-dashboard,
+  release-gate matrix, troubleshooting, release-gate, repository-policy, and
+  artifact-boundary routing to stay visible, including CC0 research-alpha
+  repository framing, explicit user approval, and no-merge/no-tag/no-claim-upgrade
+  boundaries.
+- Code of conduct coverage requiring conduct-report routing, public
+  collaboration boundaries, raw-data/private-payload limits,
+  `productionClaim: false`, and `releaseGateSatisfied: false`.
+- CODEOWNERS coverage requiring review ownership routing for root, GitHub,
+  docs, prototype, benchmark-artifacts, and patent surfaces.
+- Pull-request-template coverage requiring validation commands, release caveats,
+  raw-data boundaries, and repository ruleset/admin policy routing to stay
+  visible.
+- Issue-template coverage requiring incoming reports to preserve evidence
+  boundaries, release-gate posture, raw-data exclusions, troubleshooting,
+  data-handling, support/security, and CI-versus-ruleset routing.
+- Maintainers-file coverage requiring maintainer-route, review-mode, evidence,
+  hosted-check, repository ruleset/admin policy, sensitive-report, release
+  authority, explicit user approval, `releaseGateSatisfied: false`, and
+  `productionClaim: false` boundaries.
+- Maintainer-checklist coverage requiring review-mode routing, current
+  evidence-dashboard, FAQ, security, support, contribution, GitHub-template,
+  pre-merge local/hosted validation, raw-data, claim-boundary, release-gate,
+  and repository-policy routing to stay visible.
+- Dependabot coverage requiring weekly dependency update routing for GitHub
+  Actions and npm metadata without treating update prompts as release evidence.
+- Release-evidence indexing that preserves hosted-CI status, repository hygiene
+  status, native measurement gaps, metadata-leakage caveats, reconstruction-risk
+  caveats, real N-MNIST plaintext baseline status, TFHE-rs real-data blocker
+  status, and `productionClaim: false` without satisfying the release gate by
+  itself.
+- Hosted-CI evidence coverage requiring green check-rollup status to stay
+  separate from the overall `releaseGateSatisfied: false` release boundary.
+- Validation-history coverage requiring historical CI blockers to stay labeled
+  as historical and separate from the current PR #23 hosted-check state.
 - Research assumptions with clean-room and naming guardrails.
 
 ### Desk Demo
@@ -57,7 +224,7 @@ Result summary:
 ```json
 {
   "demo": "toy encrypted sparse spike-count classifier",
-  "prototypeCodename": "Relay-2 Diagnostic Demo",
+  "prototypeCodename": "Relay-2 Research Demo",
   "boundaryDomain": "bio-digital-event-intelligence",
   "eventWindow": {
     "schema": "neurofhe.events.v1.demo",
@@ -403,14 +570,32 @@ Dataset provenance for the intended real-data lane:
 Command:
 
 ```sh
-npm run release:evidence -- --artifact --artifact-id release-evidence-index-2026-05-27 --generated-at 2026-05-27T05:00:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-native-gap-index-2026-05-27 --generated-at 2026-05-27T20:26:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-tfhe-realdata-blocker-2026-05-28 --generated-at 2026-05-28T08:28:49.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-nmnist-blocker-2026-05-28 --generated-at 2026-05-28T16:36:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-real-nmnist-2026-05-28 --generated-at 2026-05-28T18:20:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-open-pr-stack-2026-05-29 --generated-at 2026-05-29T02:24:30.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-with-green-ci-2026-05-29 --generated-at 2026-05-29T04:33:30.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:19:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-ci-head-0feaa65-2026-05-29 --generated-at 2026-05-29T16:51:30.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-ci-head-609b48c-2026-05-29 --generated-at 2026-05-29T17:28:00.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
-benchmark-artifacts/release-evidence/runs/release-evidence-index-2026-05-27.json
+benchmark-artifacts/release-evidence/runs/release-evidence-ci-head-609b48c-2026-05-29.json
+benchmark-artifacts/release-evidence/runs/release-evidence-ci-head-0feaa65-2026-05-29.json
+benchmark-artifacts/release-evidence/runs/release-evidence-tfhe-alpha-lane-framing-2026-05-29.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-green-ci-2026-05-29.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-open-pr-stack-2026-05-29.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-real-nmnist-2026-05-28.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-nmnist-blocker-2026-05-28.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-tfhe-realdata-blocker-2026-05-28.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-tfhe-rss-2026-05-28.json
+benchmark-artifacts/release-evidence/runs/release-evidence-with-native-gap-index-2026-05-27.json
 ```
 
 Result summary:
@@ -421,20 +606,121 @@ Result summary:
   "releaseTarget": "v0.1.0-research-alpha",
   "releaseGateSatisfied": false,
   "gateChecks": {
-    "hostedPortableCi": {"status": "blocked"},
+    "hostedPortableCi": {
+      "status": "pass",
+      "artifactId": "github-actions-green-pr23-609b48c-2026-05-29",
+      "openPullRequestCount": 1,
+      "workflowTrigger": "push,pull_request,workflow_dispatch",
+      "isCodeFailure": false
+    },
     "repositoryHygiene": {"status": "pass"},
-    "nativeMeasurementCoverage": {"status": "incomplete"},
+    "nativeMeasurementCoverage": {
+      "status": "incomplete",
+      "measurementGapCount": 4
+    },
     "metadataLeakage": {"status": "caveated"},
+    "reconstructionRisk": {"status": "caveated"},
+    "realNmnistBaseline": {
+      "status": "pass",
+      "accuracy": 0.66,
+      "sampleCount": 100
+    },
+    "tfheRealDataPath": {"status": "blocked"},
     "productionClaim": {"status": "pass"}
   },
   "productionClaim": false
 }
 ```
 
-The index is a dashboard artifact over already committed blocker, hygiene,
-native-evidence, and privacy-mode artifacts. It does not create new benchmark
-measurements, cryptographic/privacy proof, clinical evidence, or release
-approval.
+The index is a dashboard artifact over already committed hosted-CI, hygiene,
+native-evidence, privacy-mode, reconstruction-risk, real N-MNIST baseline, and
+TFHE real-data blocker artifacts. The committed hosted-CI snapshot records PR #23
+against `main` head `7317f11` with successful `pull_request` and `push`
+`Portable validation` check runs on PR head `609b48c` after automatic triggers
+were restored. Manual dispatch CI also passed on the superseded stacked branch
+heads #17 through #22, but GitHub does not attach those manual runs to the old
+stacked PR rollups. It does not create encrypted benchmark measurements,
+cryptographic/privacy proof, clinical evidence, or release approval.
+
+### Public N-MNIST Real-Data Plaintext Baseline
+
+Command:
+
+```sh
+npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --artifact --artifact-id nmnist-local-real-2026-05-28 --generated-at 2026-05-28T18:15:00.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json
+benchmark-artifacts/plaintext-baselines/nmnist-local/runs/nmnist-local-real-2026-05-28.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.plaintextBaseline.v1",
+  "evidenceClass": "real-public-dataset-plaintext-baseline",
+  "source": {
+    "datasetKind": "public-nmnist-local-copy",
+    "isRealDataset": true,
+    "limitPerClass": 10
+  },
+  "metrics": {
+    "accuracy": 0.66,
+    "correct": 66,
+    "total": 100,
+    "averageActiveEvents": 1420.68,
+    "averageNonZeroFeatures": 137.86
+  }
+}
+```
+
+The raw public N-MNIST archives and extracted `Train/` and `Test/` directories
+remain outside git under `/Users/alexanderdaly/Downloads/N-MNIST`. This
+artifact is plaintext preprocessing/model evidence with a sampled nearest-
+centroid baseline and compression curve. It is not encrypted-compute,
+production, medical, or deployment evidence.
+
+### Reconstruction-Risk Probe Artifact
+
+Command:
+
+```sh
+npm run reconstruction:risk -- --artifact --artifact-id reconstruction-risk-probes-2026-05-27 --generated-at 2026-05-27T16:00:00.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/reconstruction-risk/latest.json
+benchmark-artifacts/reconstruction-risk/runs/reconstruction-risk-probes-2026-05-27.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.reconstructionRiskProbes.v1",
+  "measurementBasis": "deterministic gateway policy probes over synthetic sorted-event input with raw sentinel payloads",
+  "summary": {
+    "rawPayloadReplay": {"status": "blocked"},
+    "activeValueRecovery": {"status": "blocked", "plaintextValueCount": 0},
+    "publicPositionLinkage": {"status": "residual-risk"}
+  },
+  "privacyProofClaim": false,
+  "productionClaim": false
+}
+```
+
+The probe verifies that raw sentinel payloads and active values do not appear in
+the synthetic model-facing event. It deliberately leaves public active neuron
+positions, coarse timestep buckets, active event count, density bucket, and
+encoder summary as residual metadata risk. It is not a formal reconstruction
+attack, identity-linkage test, mutual-information estimate, side-channel test,
+or privacy proof.
 
 ### Privacy-Mode Padding Ablation Artifact
 
@@ -829,6 +1115,8 @@ Command:
 
 ```sh
 npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-validation-2026-05-21 --generated-at 2026-05-21T12:15:00.000Z
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-memory-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:15:00.000Z
 ```
 
 Result summary:
@@ -860,7 +1148,12 @@ Result summary:
     "thresholdDecisionBit": 16593,
     "total": 2658613
   },
-  "latencyMs": 7200.658,
+  "memoryUsage": {
+    "rssBytes": 259096576,
+    "measurement": "current process RSS via ps -o rss= -p <pid>; KiB converted to bytes"
+  },
+  "latencyMs": 5900.8,
+  "caveat": "research-alpha TFHE-rs native lane only; not production cryptography, not clinical validation, and not side-channel reviewed.",
   "productionClaim": false
 }
 ```
@@ -869,25 +1162,71 @@ Published artifact:
 
 ```text
 benchmark-artifacts/comparisons/tfhe-rs/latest.json
+benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-alpha-lane-framing-2026-05-29.json
+benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-memory-rss-2026-05-28.json
 benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-validation-2026-05-21.json
 ```
 
 The TFHE-rs result is a single local synthetic 8x8 run. The latency is not a
-stable performance claim; use it only as a research-grade comparison record.
+stable performance claim; use it only as a research-alpha comparison record.
+The RSS value is a single end-of-run current process RSS sample from the local
+process table, not peak RSS, dataset-scale memory, side-channel evidence, or
+stable memory evidence.
+
+### TFHE-rs Real-Data Input Blocker
+
+Command:
+
+```sh
+npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact --artifact-id tfhe-rs-realdata-blocker-2026-05-28 --generated-at 2026-05-28T08:28:49.000Z
+```
+
+Published artifact:
+
+```text
+benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json
+benchmark-artifacts/comparisons/tfhe-rs-realdata/runs/tfhe-rs-realdata-blocker-2026-05-28.json
+```
+
+Result summary:
+
+```json
+{
+  "schema": "neurofhe.tfheRs.realDataUnavailable.v1",
+  "inputContract": {
+    "datasetKind": "public-uci-eeg-eye-state-arff",
+    "scoreDomain": "approximate-real",
+    "activeEventCount": 32
+  },
+  "blocker": {
+    "category": "unsupported-real-data-input-contract"
+  },
+  "smallestNextStep": "Add an integer/Boolean TFHE-rs adapter for EEG-derived sparse contracts, or publish a narrower transformer from the EEG OpenFHE contract into a validated TFHE-rs score-domain contract.",
+  "productionClaim": false
+}
+```
+
+This is a blocker artifact, not a failed silent benchmark and not replacement
+evidence for the synthetic TFHE-rs native run. It records that the current
+native TFHE-rs target does not yet accept the EEG-derived OpenFHE input
+contract, and it keeps the exact unsupported command visible for the release
+evidence index.
 
 ### Native Evidence Manifest
 
 Command:
 
 ```sh
-npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-coverage-2026-05-26 --generated-at 2026-05-26T10:45:00.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-gap-index-2026-05-27 --generated-at 2026-05-27T20:25:00.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
 ```
 
 Published artifact:
 
 ```text
 benchmark-artifacts/native-evidence/latest.json
-benchmark-artifacts/native-evidence/runs/native-evidence-measurement-coverage-2026-05-26.json
+benchmark-artifacts/native-evidence/runs/native-evidence-tfhe-rss-2026-05-28.json
+benchmark-artifacts/native-evidence/runs/native-evidence-measurement-gap-index-2026-05-27.json
 ```
 
 Result summary:
@@ -917,9 +1256,13 @@ Result summary:
       "ciphertextBytesReportedCount": 1,
       "ciphertextBytesPartialCount": 1,
       "ciphertextBytesMissingCount": 1,
-      "rssOrPeakMemoryReportedCount": 0,
+      "rssOrPeakMemoryReportedCount": 1,
       "rssOrPeakMemoryPartialCount": 1,
-      "rssOrPeakMemoryMissingCount": 2
+      "rssOrPeakMemoryMissingCount": 1
+    },
+    "measurementGaps": {
+      "schema": "neurofhe.nativeEvidence.measurementGapIndex.v1",
+      "gapCount": 4
     }
   },
   "lanes": [
@@ -959,7 +1302,7 @@ Result summary:
     },
     {
       "id": "tfhe-rs",
-      "latestArtifactId": "tfhe-validation-2026-05-21",
+      "latestArtifactId": "tfhe-rs-alpha-lane-framing-2026-05-29",
       "evidence": {
         "status": "real-native-run",
         "activeEventCount": 18
@@ -970,7 +1313,8 @@ Result summary:
           "totalBytes": 2658613
         },
         "rssOrPeakMemory": {
-          "status": "missing"
+          "status": "reported",
+          "bytes": 259096576
         }
       }
     }
@@ -985,12 +1329,13 @@ Result summary:
 This manifest does not make the native evidence machine-independent. It makes
 the machine dependence explicit by recording the host/toolchain fingerprint,
 latest committed native artifact per lane, exact rerun commands, and remaining
-gaps. The May 26 manifest also classifies measurement coverage: TFHE-rs has
-reported serialized ciphertext bytes for the synthetic threshold run, OpenFHE
-CKKS has partial ciphertext-count metadata without serialized byte totals, and
-no lane yet reports RSS or peak memory bytes. The current gaps remain
-multi-window native sweeps, broader memory/RSS measurements, fuller ciphertext
-byte measurements for OpenFHE, and a real-data-derived TFHE-rs path or blocker.
+gaps. The May 28 manifest indexes four per-lane missing or partial
+measurement classes: BFVrns still lacks ciphertext-byte and RSS/peak-memory
+measurements, and CKKS has partial ciphertext-count metadata without serialized
+byte or RSS totals. TFHE-rs now reports ciphertext bytes and a single current
+RSS sample for the synthetic native run. The current gaps remain multi-window
+native sweeps, fuller ciphertext byte and RSS/peak-memory measurements for
+OpenFHE, and a real-data-derived TFHE-rs path or blocker.
 
 ### JSON Validation
 
@@ -1147,10 +1492,12 @@ Result:
 ascii scan complete
 ```
 
-### GitHub Actions CI Blocker
+### Historical PR #7 Runner-Startup Blocker
 
-PR #7 is the current draft PR using portable GitHub Actions validation. The
-latest remote checks still do not reach any runner steps.
+Historical PR #7 used portable GitHub Actions validation, but its remote checks
+did not reach any runner steps. This section is retained as a historical
+runner-startup/account blocker transcript; it is not the current release PR
+state.
 
 Observed metadata:
 
@@ -1189,7 +1536,7 @@ benchmark-artifacts/ci-blockers/runs/github-actions-runner-startup-block-2026-05
 ```
 
 This is tracked as an account or runner-startup blocker, not evidence of a test
-or workflow-step failure. The PR #7 local parity validation passed with
+or workflow-step failure. The historical PR #7 local parity validation passed with
 `npm run ci` (68/68 tests), smoke artifact generation into a temporary
 directory, and `git diff --check`. A prior matching PR #6 check exposed the
 GitHub annotation: "The job was not started because your account is locked due
@@ -1210,25 +1557,76 @@ gh api repos/AlexanderDaly/neurofhe-relay/branches/main/protection --jq '{requir
 Result:
 
 ```text
-Open pull requests: []
-Recent completion-loop PRs #7, #8, #9, #11, and #12: MERGED
-CI workflow: active, workflow_dispatch only
-Latest hosted CI runs: stale failures from old branch heads
-Branch protection API: 404 Branch not protected
+Open pull requests: #23, with #17 through #22 superseded by the collapsed stack
+Hosted-CI evidence snapshot head: 609b48c on codex/open-pr-stack-ci-blocker
+CI workflow: active, push, pull_request, and workflow_dispatch
+Latest hosted CI runs: green on PR #23 pull_request and push events
+Ruleset API: active default-branch ruleset iamthelaw includes an update rule
 ```
 
-The workflow is currently `workflow_dispatch` only, following the earlier
-GitHub Actions billing/account lock. There is no open release PR with a green
-portable hosted CI run, so the release checklist is still not satisfied even
-though local validation passes and the earlier completion-loop PRs have merged.
-This is release-gate availability evidence, not code-failure evidence. The
-current blocker artifact is:
+The workflow now runs automatically on push and pull request events, PR #23
+has successful hosted `Portable validation` check runs, and the workflow uses
+Node 24-ready action majors (`actions/checkout@v6`, `actions/setup-node@v6`,
+and `actions/upload-artifact@v7`) to clear the prior Node 20 action-runtime
+annotation. PR #23 still reports `mergeStateStatus: BLOCKED` because the active
+default-branch ruleset `iamthelaw` applies an update rule to `main`; that is a
+repository ruleset/admin merge policy, not a CI or check-rollup failure. The
+hosted-CI snapshot now uses `hostedPortableCiSatisfied: true` for the CI gate
+while preserving overall `releaseGateSatisfied: false`. The current live PR #23
+state should still be checked with `gh pr view 23` before merge or release
+work; when hosted checks are green but merge remains blocked, that is
+repository ruleset/admin policy, not a CI or check-rollup failure. The hosted-CI
+evidence artifact is:
 
 ```text
 benchmark-artifacts/ci-blockers/latest.json
-benchmark-artifacts/ci-blockers/runs/github-actions-post-merge-no-open-prs-2026-05-26.json
+benchmark-artifacts/ci-blockers/runs/github-actions-green-pr23-609b48c-2026-05-29.json
+benchmark-artifacts/ci-blockers/runs/github-actions-green-pr23-0feaa65-2026-05-29.json
+benchmark-artifacts/ci-blockers/runs/github-actions-green-release-stack-2026-05-29.json
 ```
+
+### TFHE-rs Native-Lane Framing Refresh
+
+Commands:
+
+```sh
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:15:00.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:18:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:19:00.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-ci-head-0feaa65-2026-05-29 --generated-at 2026-05-29T16:51:30.000Z
+npm run release:evidence -- --artifact --artifact-id release-evidence-ci-head-609b48c-2026-05-29 --generated-at 2026-05-29T17:28:00.000Z
+```
+
+Result summary:
+
+```json
+{
+  "tfheArtifactId": "tfhe-rs-alpha-lane-framing-2026-05-29",
+  "nativeEvidenceArtifactId": "native-evidence-tfhe-alpha-lane-framing-2026-05-29",
+  "releaseEvidenceArtifactId": "release-evidence-ci-head-609b48c-2026-05-29",
+  "tfheCaveat": "research-alpha TFHE-rs native lane only; not production cryptography, not clinical validation, and not side-channel reviewed.",
+  "productionClaim": false,
+  "releaseGateSatisfied": false
+}
+```
+
+Published artifacts:
+
+```text
+benchmark-artifacts/comparisons/tfhe-rs/latest.json
+benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-alpha-lane-framing-2026-05-29.json
+benchmark-artifacts/native-evidence/latest.json
+benchmark-artifacts/native-evidence/runs/native-evidence-tfhe-alpha-lane-framing-2026-05-29.json
+benchmark-artifacts/release-evidence/latest.json
+benchmark-artifacts/release-evidence/runs/release-evidence-ci-head-609b48c-2026-05-29.json
+benchmark-artifacts/release-evidence/runs/release-evidence-ci-head-0feaa65-2026-05-29.json
+benchmark-artifacts/release-evidence/runs/release-evidence-tfhe-alpha-lane-framing-2026-05-29.json
+```
+
+This refresh updates native-lane wording and evidence indexes only. It does not
+close the TFHE-rs real-data blocker, OpenFHE measurement gaps, native
+multi-window sweep gap, or release gate.
 
 ## Scope Note
 
-The runnable dependency-free prototype is still research-grade and uses educational additive HE only. The repository now also includes digest-bound real-library adapter manifests plus real OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs native integration targets for the same sparse sorted-event score contract. The committed OpenFHE native artifacts were produced on a local machine with OpenFHE installed under the CMake search path; other reviewers need a local OpenFHE install to reproduce them. TFHE-rs runs through Cargo with the `tfhe` crate. Bio-digital language remains scoped to privacy-preserving event intelligence, not medical diagnosis or treatment.
+The runnable dependency-free research-alpha scaffold uses educational additive HE only. The repository now also includes digest-bound real-library adapter manifests plus real OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs native integration targets for the same sparse sorted-event score contract. The committed OpenFHE native artifacts were produced on a local machine with OpenFHE installed under the CMake search path; other reviewers need a local OpenFHE install to reproduce them. TFHE-rs runs through Cargo with the `tfhe` crate. Bio-digital language remains scoped to privacy-preserving event intelligence, not medical diagnosis or treatment.

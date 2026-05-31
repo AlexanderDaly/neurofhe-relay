@@ -5,7 +5,7 @@ This file identifies claims or statements that need evidence before publication,
 | Area | Current Weakness | Evidence Needed |
 |---|---|---|
 | Latent compression performance | The specification describes bandwidth and compute reductions broadly. | Benchmarks comparing raw, dense feature, sparse feature, and compressed latent encrypted inference. |
-| Real neural modality validation | Current repo validation is a research-grade prototype and does not establish real EEG, ECoG, fNIRS, MEG, or implanted-array performance. | Experiments on public or collected datasets with documented preprocessing and model accuracy. |
+| Real neural modality validation | Current research-alpha package validation does not establish real EEG, ECoG, fNIRS, MEG, or implanted-array performance. | Experiments on public or collected datasets with documented preprocessing and model accuracy. |
 | Reconstruction resistance | The draft describes adversarial reconstruction defenses but does not prove them. | Reconstruction attack tests, identity leakage tests, mutual-information estimates, and acceptance criteria. |
 | Homomorphic feasibility | The prototype uses a toy additive path and OpenFHE integration plan, not a complete production FHE deployment. | Native OpenFHE, SEAL, Concrete, TFHE-rs, or equivalent benchmark with parameter reports. |
 | Adaptive compression controller | The controller is architected but not implemented as a verified module. | Control policy implementation, ablation studies, and tradeoff curves. |
@@ -18,7 +18,7 @@ This file identifies claims or statements that need evidence before publication,
 ## Validation Update May 21, 2026
 
 This update narrows three evidence gaps without upgrading the project beyond a
-research prototype.
+research-alpha repository snapshot.
 
 ### Real Neural/Event Modality Baseline
 
@@ -87,42 +87,59 @@ reconstruction-resistance proof.
 
 ### Real FHE Parameter Evidence
 
-The repo now produces explicit blocker artifacts for missing OpenFHE native
-runs instead of implying that toy Paillier timing is cryptographic evidence:
+The repo now separates real native-library evidence from remaining measurement
+gaps instead of implying that toy Paillier timing is cryptographic evidence:
 
 ```sh
 npm run benchmark:openfhe -- --run --artifact
 npm run benchmark:openfhe-ckks -- --run --artifact
+npm run benchmark:tfhe -- --run --artifact
+npm run native:doctor -- --artifact
 ```
 
-Current local blocker:
+Current committed native evidence:
 
-```text
-OpenFHEConfig.cmake not found
-```
-
-Committed blocker artifacts:
-
+- `benchmark-artifacts/native-evidence/latest.json`
 - `benchmark-artifacts/comparisons/openfhe/latest.json`
 - `benchmark-artifacts/comparisons/openfhe-ckks/latest.json`
+- `benchmark-artifacts/comparisons/tfhe-rs/latest.json`
+- `benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`
 
-The BFVrns blocker records the target `HEStd_128_classic` parameter posture,
-plaintext modulus 65537, multiplicative depth 1, and the exact native commands
-that should run once OpenFHE is installed. The CKKS blocker records
-`HEStd_128_classic`, multiplicative depth 2, scaling modulus size 50, first
-modulus size 60, batch size 64, and `FLEXIBLEAUTO`.
+The native evidence manifest currently records OpenFHE BFVrns, OpenFHE CKKS,
+and TFHE-rs as `real-native-run` lanes with `dependencyDetection.available: true`
+on the indexed host. The current artifact identifiers are:
 
-TFHE-rs remains the currently runnable real-library lane on this machine. Its
-artifacts are synthetic 8x8 event-window runs only and should not be used as
-real-data or production performance claims.
+- OpenFHE BFVrns: `openfhe-bfvrns-eeg-eye-state-2026-05-21`.
+- OpenFHE CKKS: `openfhe-ckks-eeg-eye-state-2026-05-21`.
+- TFHE-rs: `tfhe-rs-alpha-lane-framing-2026-05-29`.
 
-## Validation Update May 26, 2026
+This closes the old dependency-availability blocker for the indexed host, but
+it does not close the native measurement coverage gap. BFVrns still lacks
+serialized ciphertext byte measurements and RSS or peak-memory measurements.
+CKKS still has partial, not complete, ciphertext and memory measurements.
+TFHE-rs has a single synthetic run with ciphertext sizing and one current-RSS
+sample, but its real-data input path remains blocked by
+`benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`.
 
-The native evidence manifest now classifies measurement coverage without
-upgrading any performance claim:
+The current release posture remains `releaseGateSatisfied: false`, and all
+native-lane artifacts must preserve `productionClaim: false`. These artifacts
+are not stable performance claims, side-channel evidence, privacy proofs,
+medical evidence, clinical validation, or release approval.
+
+## Validation Update May 27, 2026
+
+The native evidence manifest now classifies measurement coverage and carries a
+per-lane measurement gap index without upgrading any performance claim:
 
 ```sh
-npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-coverage-2026-05-26 --generated-at 2026-05-26T10:45:00.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-measurement-gap-index-2026-05-27 --generated-at 2026-05-27T20:25:00.000Z
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-memory-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run benchmark:tfhe -- --run --artifact --artifact-id tfhe-rs-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:15:00.000Z
+npm run benchmark:tfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact --artifact-id tfhe-rs-realdata-blocker-2026-05-28 --generated-at 2026-05-28T08:28:49.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-rss-2026-05-28 --generated-at 2026-05-28T02:26:18.000Z
+npm run native:doctor -- --artifact --artifact-id native-evidence-tfhe-alpha-lane-framing-2026-05-29 --generated-at 2026-05-29T14:18:00.000Z
+npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --artifact --artifact-id nmnist-local-blocker-2026-05-28 --generated-at 2026-05-28T16:35:00.000Z
+npm run baseline:plaintext -- --dataset /Users/alexanderdaly/Downloads/N-MNIST --limit-per-class 10 --artifact --artifact-id nmnist-local-real-2026-05-28 --generated-at 2026-05-28T18:15:00.000Z
 ```
 
 Current committed evidence:
@@ -131,18 +148,35 @@ Current committed evidence:
 - schema: `neurofhe.nativeEvidence.manifest.v1`
 - ciphertext-byte coverage: one reported lane, one partial lane, one missing
   lane.
-- RSS or peak-memory coverage: zero reported lanes, one partial lane, two
-  missing lanes.
+- RSS or peak-memory coverage: one reported lane, one partial lane, one
+  missing lane.
+- measurement gap index: four missing or partial measurement classes across
+  BFVrns and CKKS, with exact rerun commands.
+- TFHE-rs reports a single end-of-run current RSS sample for the synthetic
+  native run, measured from the process table. It is not peak-memory,
+  dataset-scale, side-channel, or stable performance evidence.
+- TFHE-rs real-data input blocker: `benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`
+  records that the native TFHE-rs target does not yet accept the EEG-derived
+  OpenFHE input contract. The smallest next step is an integer/Boolean TFHE-rs
+  adapter or a validated transformer from the EEG contract into the TFHE-rs
+  score domain.
+- Public N-MNIST real-data plaintext baseline:
+  `benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json` records a
+  sampled nearest-centroid baseline over 10 examples per class from the local
+  public N-MNIST `Train/` and `Test/` directories. It reports 66/100 correct
+  examples, accuracy `0.66`, and a compression curve. This is plaintext
+  preprocessing/model evidence, not encrypted-compute, production, medical, or
+  deployment evidence.
 
-This narrows diligence risk by making missing measurement classes explicit. It
-does not satisfy the remaining native-evidence gap: OpenFHE still needs fuller
-serialized ciphertext byte reporting and all native lanes still need RSS or
-peak-memory measurements before memory or stable performance claims are
-defensible.
+This narrows diligence risk by making missing measurement classes explicit per
+lane. It does not satisfy the remaining native-evidence gap: OpenFHE still
+needs fuller serialized ciphertext byte reporting and RSS or peak-memory
+measurements before memory or stable performance claims are defensible.
 
-The release-evidence index now summarizes the current CI blocker, repository
-hygiene result, native measurement coverage, and metadata-leakage caveat in one
-dashboard artifact:
+The release-evidence index now summarizes the current hosted-CI evidence, repository
+hygiene result, native measurement coverage, metadata-leakage caveat, synthetic
+reconstruction-risk probe caveat, real N-MNIST plaintext baseline, and TFHE-rs
+real-data blocker in one dashboard artifact:
 
 ```sh
 npm run release:evidence -- --artifact
@@ -153,13 +187,41 @@ Current committed evidence:
 - `benchmark-artifacts/release-evidence/latest.json`
 - schema: `neurofhe.releaseEvidenceIndex.v1`
 - release gate: not satisfied.
-- hosted portable CI: blocked until a release-validation PR has green hosted
-  CI.
+- hosted portable CI: passing on PR #23 after restoring automatic `push` and
+  `pull_request` triggers and updating GitHub action majors for the Node 24
+  runner transition; remaining PR blocked state is repository ruleset policy,
+  not CI/check-rollup.
 - native measurement coverage: incomplete.
 - metadata leakage: caveated taxonomy proxy only.
+- reconstruction risk: synthetic probe only; public-position linkage remains a
+  residual risk.
+- real N-MNIST baseline: present as sampled plaintext evidence, accuracy
+  `0.66` over 100 test examples, not encrypted-compute evidence.
+- TFHE-rs real-data path: blocked with an explicit artifact and smallest next
+  step.
 
 This improves diligence navigation but is not new benchmark evidence, not a
 privacy proof, and not release approval.
+
+The repository also now publishes a synthetic reconstruction-risk probe artifact:
+
+```sh
+npm run reconstruction:risk -- --artifact
+```
+
+Current committed evidence:
+
+- `benchmark-artifacts/reconstruction-risk/latest.json`
+- schema: `neurofhe.reconstructionRiskProbes.v1`
+- raw-payload replay: blocked in the synthetic gateway sentinel probe.
+- active-value recovery: blocked from plaintext model-facing active positions.
+- public-position linkage: residual risk remains visible.
+- `privacyProofClaim: false`.
+
+This narrows a documentation and diligence gap by making the raw-withholding
+probe reproducible. It does not prove reconstruction resistance, identity
+obfuscation, mutual-information bounds, side-channel resistance, or
+membership/linkage safety.
 
 ## Examiner-Risk Notes Added May 21, 2026
 

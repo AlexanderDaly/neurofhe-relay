@@ -175,7 +175,7 @@ The first kernel should avoid the hardest operations:
 - Polynomial threshold approximation.
 - Optional encrypted argmax approximation or client-side decrypt-and-argmax.
 
-The current prototype uses a sparse active-event linear score. For an 8 by 8 window with 18 active spikes and two output classes, the toy encrypted path performs 36 public scalar multiplications and 36 homomorphic additions. A dense encrypted tensor path over all 64 features would perform 128 of each operation.
+The current research-alpha sparse-score contract uses a sparse active-event linear score. For an 8 by 8 window with 18 active spikes and two output classes, the toy encrypted path performs 36 public scalar multiplications and 36 homomorphic additions. A dense encrypted tensor path over all 64 features would perform 128 of each operation.
 
 The score equation is fixed as `scores = W x + bias`, with matrix rows as classes and columns as flattened event features. The current benchmark emits this matrix shape so future BFV/BGV, CKKS, TFHE, or HFHE experiments can compare the same contract rather than changing the task midstream.
 
@@ -184,7 +184,7 @@ The benchmark also emits `neurofhe.spatialClusterReadiness.v1`: SNN handoff is
 encrypted nonlinear scoring is `research-only` until real HE parameter sets and
 operation costs are measured.
 
-Non-goals for the first prototype:
+Non-goals for the current research-alpha contract:
 
 - Large transformer inference.
 - Full encrypted training.
@@ -193,7 +193,7 @@ Non-goals for the first prototype:
 
 ### 6. Octra Adapter
 
-Octra should enter after local feasibility is proven.
+Octra should enter after local feasibility is measured and bounded.
 
 Possible adapter responsibilities:
 
@@ -225,7 +225,7 @@ Every run should emit:
   "cryptoInventory": {
     "keyEstablishment": ["ML-KEM-768"],
     "signatures": ["ML-DSA-65"],
-    "encryptedComputation": ["bfv-or-ckks-prototype"],
+    "encryptedComputation": ["research-alpha BFV/BGV/CKKS adapter evidence"],
     "hybridMode": true,
     "productionClaim": false
   },
@@ -261,12 +261,12 @@ Raw signal
 
 ## Security Boundary
 
-The first prototype should claim only:
+The current research-alpha package should claim only:
 
 - Data is encrypted before external compute.
 - Compute layer receives ciphertext, public parameters, and public model metadata.
 - Secret key remains client-side.
-- Prototype is research-grade, not audited production cryptography.
+- The package is not audited production cryptography.
 - Post-quantum claims are design targets until concrete libraries, parameters, and reviews exist.
 
 ## Success Metrics

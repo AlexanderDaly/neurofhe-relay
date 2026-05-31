@@ -1,6 +1,8 @@
 # NeuroFHE Relay
 
-Presentation package for a privacy-preserving neuromorphic + homomorphic-encryption project.
+CC0 research-alpha repository for privacy-preserving event intelligence:
+neuromorphic sparse-event preprocessing, local relay policy, and caveated
+homomorphic-encryption evidence.
 
 ```text
                  NEUROFHE RELAY
@@ -58,32 +60,51 @@ The cryptographic design target is:
 
 > Quantum-resistant by design, cryptographically agile by default.
 
-## Package Contents
+## First Paths
 
-- `LICENSE` - CC0 1.0 Universal public-domain dedication.
-- `PUBLIC_DOMAIN_NOTICE.md` - plain-English free-use notice.
-- `01-one-pager.md` - executive one-page brief.
-- `02-pitch-deck.md` - 11-slide presentation narrative.
-- `03-technical-architecture.md` - system architecture and data flow.
-- `04-demo-roadmap.md` - prototype plan from desk demo to fundable pilot.
-- `05-risk-register.md` - technical, market, and execution risks.
-- `06-evidence-and-sources.md` - source-backed research notes.
-- `07-post-quantum-cryptography-track.md` - PQC design target and roadmap.
-- `08-encrypted-thoughts-whitepaper.md` - whitepaper on encrypted-thoughts architecture for BCI and neural-data privacy.
-- `09-relay-gateway-pattern.md` - local-first gateway pattern for raw-signal intake, privacy filtering, model-facing events, recommendations, audit, replay, and failure handling.
-- `10-native-performance-track.md` - native-first implementation boundary for low-latency and energy-aware execution.
-- `CONTRIBUTING.md` - evidence-first contribution rules and local validation expectations.
-- `DEVELOPMENT.md` - local setup, portable checks, native OpenFHE/TFHE-rs commands, and artifact policy.
-- `RELEASE.md` - research-alpha release checklist and evidence gates.
-- `SECURITY.md` - research-prototype security policy and reporting guidance.
-- `VALIDATION.md` - local validation commands, outputs, artifacts, and caveats.
-- `.github/workflows/ci.yml` - portable CI for tests, schema checks, repository hygiene scan, and smoke artifact generation/upload.
-- `benchmark-artifacts/` - intentionally committed derived benchmark evidence, repository hygiene scan evidence, and blocker reports.
-- `patent/` - ENER provisional drafting materials, claim seeds, drawings, prior-art search plan, filing checklist, and briefing package.
-- `project-brief.json` - structured project metadata for agents.
-- `index.html` - self-contained briefing deck for browser presentation.
-- `prototype/` - dependency-free educational sparse encrypted spike-count prototype, relay gateway scaffold, benchmark runner, real OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs integration lanes, tests, and research assumptions.
-- `package.json` - local command scripts. The package is marked private to prevent accidental npm publication; it does not change the repository's CC0 license.
+Use the path that matches your job, then fall back to `docs/README.md` for the
+complete documentation index:
+
+| Role | Start With | Then Use |
+| --- | --- | --- |
+| New reviewer | `docs/reviewer-quickstart.md` | `docs/faq.md`, `docs/status-roadmap.md`, `CHANGELOG.md`, `VALIDATION.md` |
+| Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md` |
+| Maintainer | `MAINTAINERS.md` | `docs/maintainer-checklist.md`, `docs/operations-runbook.md`, `RELEASE.md` |
+| Evidence reviewer | `docs/evidence-guide.md` | `docs/evidence-dashboard.md`, `docs/claim-evidence-ledger.md`, `docs/release-gate-matrix.md` |
+
+The repository remains a research-alpha package. Keep `productionClaim: false`,
+`privacyBoundary`, `cryptoInventory`, CC0/public-domain framing, and the
+bio-digital event intelligence boundary intact unless stronger evidence is
+actually present and documented.
+
+## Current Status
+
+Use this table for the front-door status read, then confirm details in the
+linked source before making release, merge, or public-claim decisions.
+
+| Status Item | Current Posture | Confirm In |
+| --- | --- | --- |
+| Research-alpha release target | `v0.1.0-research-alpha`; not tagged. | `RELEASE.md`, `docs/status-roadmap.md` |
+| Portable validation | Green on PR #23 and locally recorded with 139 passing tests. | `VALIDATION.md`, `docs/operations-runbook.md` |
+| Merge state | Hosted CI/check-rollup is green; merge remains blocked by repository ruleset/admin policy. | `docs/status-roadmap.md`, `docs/operations-runbook.md` |
+| Release gate | `releaseGateSatisfied: false`; dashboard evidence is not release approval. | `benchmark-artifacts/release-evidence/latest.json`, `docs/evidence-dashboard.md` |
+| Claim boundary | Preserve `productionClaim: false`, `privacyBoundary`, and `cryptoInventory`. | `docs/architecture-decisions.md`, `docs/evidence-guide.md` |
+
+## Repository Layout
+
+`PACKAGE_MANIFEST.md` is the detailed file inventory. The top-level layout is:
+
+| Path | Purpose |
+| --- | --- |
+| `docs/` | Reader, contributor, maintainer, evidence, and release navigation. |
+| `prototype/` | Portable scaffold code, test suite, artifact publishers, and native lane adapters. |
+| `benchmark-artifacts/` | Committed derived evidence, blocker reports, and release dashboards. |
+| `patent/` | ENER provisional drafting package, drawings, prior-art plan, and briefing material. |
+| `.github/` | Issue templates, PR template, dependency-update routing, and hosted portable CI workflow. |
+| Root policy files | `LICENSE`, `PUBLIC_DOMAIN_NOTICE.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `MAINTAINERS.md`, `RELEASE.md`, and `VALIDATION.md`. |
+
+Use `PACKAGE_MANIFEST.md` when you need the exhaustive packaged-review
+inventory; keep this README focused on orientation, claims, and commands.
 
 ## Recommended Framing
 
@@ -103,7 +124,7 @@ For the gateway framing, use:
 
 > The local gateway is the only trusted boundary allowed to inspect raw signals. Models receive only validated, transformed, permissioned event representations.
 
-Avoid medical-device language until a real regulated use case, dataset, clinical validation path, and legal review exist. The current prototype is about privacy-preserving event representation and encrypted scoring, not diagnosis or treatment.
+Avoid medical-device language until a real regulated use case, dataset, clinical validation path, and legal review exist. The current research-alpha package is about privacy-preserving event representation and encrypted scoring, not diagnosis or treatment.
 
 Avoid saying:
 
@@ -111,38 +132,22 @@ Avoid saying:
 
 That is not defensible today. The defensible near-term claim is a hybrid architecture: neuromorphic preprocessing plus FHE-protected inference/verification.
 
-## Development And CI
+## Quick Commands
 
-For the portable local gate, run:
+Use `docs/command-reference.md` for the full command list and `RELEASE.md` for
+release-gate commands. The common root commands are:
 
-```sh
-npm run ci
-git diff --check
-```
-
-`npm run ci` currently aliases `npm run validate`. GitHub Actions runs the same
-portable validation plus smoke artifact generation and upload for synthetic
-benchmarks, padded-sparse privacy modes, and the deterministic N-MNIST-format
-fixture. Native OpenFHE and TFHE-rs checks remain local/release gate commands
-because they require external libraries and heavier host setup.
-See `DEVELOPMENT.md` and `RELEASE.md` before making or tagging release claims.
-To persist a redacted source-hygiene evidence artifact without reading raw
-datasets into git, run:
-
-```sh
-npm run scan:hygiene -- --artifact
-```
-
-To build a compact release-evidence index from the current committed blocker,
-hygiene, native-evidence, and privacy-mode artifacts, run:
-
-```sh
-npm run release:evidence -- --artifact
-```
+| Job | Command |
+| --- | --- |
+| Portable local gate | `npm run ci` and `git diff --check` |
+| Educational sparse encrypted scorer | `npm run demo` |
+| Local relay gateway scaffold | `npm run gateway:demo` |
+| Publish the synthetic benchmark artifact | `npm run benchmark:artifact` |
+| Refresh the caveated release dashboard | `npm run release:evidence -- --artifact` |
 
 The release-evidence index is a dashboard artifact only. It does not satisfy the
-release gate or upgrade any caveated benchmark, privacy, native-library, or
-security claim.
+release gate or upgrade any caveated benchmark, privacy, native-library,
+real-data baseline, or security claim.
 
 ## Relay Gateway Pattern
 
@@ -161,142 +166,26 @@ The runnable scaffold demonstrates:
 
 The gateway is simulated and educational in this package. It is not a medical, surveillance, coercive-control, mind-reading, external-control, or production cryptography system.
 
-## Desk Demo
+## Evidence Snapshot
 
-Run the included educational prototype:
+The runnable research-alpha scaffold demonstrates active-event sparse scoring
+with toy additive homomorphic encryption over a fixed linear model contract:
+`scores = W x + bias`. The benchmark family keeps dense/raw, unsorted-spike,
+and spatial-sorted representations comparable while preserving
+`privacyBoundary`, `cryptoInventory`, and `productionClaim: false`.
 
-```sh
-npm run demo
-```
+Committed evidence includes derived UCI EEG Eye State plaintext artifacts,
+sampled public N-MNIST plaintext artifacts, synthetic reconstruction-risk
+probes, metadata-padding ablations, native OpenFHE and TFHE-rs comparison
+artifacts or blockers, repository hygiene evidence, and the caveated
+release-evidence dashboard. Use `docs/evidence-guide.md`,
+`docs/evidence-dashboard.md`,
+`benchmark-artifacts/README.md`, and `docs/release-gate-matrix.md` before
+turning any artifact into a public or release-facing claim.
 
-Emit the benchmark schema, including dense/raw, unsorted-spike, and spatial-sorted representation comparison plus SNN/encrypted-readiness evaluation:
+## Scaffold Boundary
 
-```sh
-npm run benchmark
-```
-
-The benchmark also carries the packed-vector plan, the privacy-mode decision
-between public active positions, padded sparse batches, and dense encrypted
-windows, and a framing guardrail that keeps bio-digital language scoped to
-privacy-preserving event intelligence rather than diagnosis or treatment.
-
-Publish a padding ablation for sparse metadata leakage versus overhead:
-
-```sh
-npm run benchmark:privacy-modes -- --artifact
-```
-
-Run the local-first relay gateway scaffold:
-
-```sh
-npm run gateway:demo
-```
-
-Print the real OpenFHE BFVrns integration plan:
-
-```sh
-npm run benchmark:openfhe
-```
-
-Persist an optional OpenFHE adapter comparison artifact:
-
-```sh
-npm run benchmark:openfhe -- --artifact
-```
-
-Run the real OpenFHE BFVrns C++ demo with the embedded synthetic contract:
-
-```sh
-npm run benchmark:openfhe -- --run
-```
-
-Print the OpenFHE CKKS approximate real-number comparison lane:
-
-```sh
-npm run benchmark:openfhe-ckks
-```
-
-Run the real OpenFHE CKKS C++ demo and optionally persist a comparison artifact:
-
-```sh
-npm run benchmark:openfhe-ckks -- --run
-npm run benchmark:openfhe-ckks -- --run --artifact
-```
-
-Print the TFHE-rs integer/Boolean threshold integration plan:
-
-```sh
-npm run benchmark:tfhe
-```
-
-Run the real TFHE-rs Rust demo and optionally persist a comparison artifact:
-
-```sh
-npm run benchmark:tfhe -- --run
-npm run benchmark:tfhe -- --run --artifact
-```
-
-Summarize native evidence reproducibility across OpenFHE BFVrns, OpenFHE CKKS,
-and TFHE-rs without rerunning benchmarks:
-
-```sh
-npm run native:doctor
-npm run native:doctor -- --artifact
-```
-
-Run a plaintext N-MNIST-compatible baseline against a local extracted dataset:
-
-```sh
-npm run baseline:plaintext -- --dataset /path/to/N-MNIST --limit-per-class 10
-```
-
-Run the real public UCI EEG Eye State baseline. The raw ARFF is downloaded into
-`.cache/` and is not committed; only the derived artifact is published:
-
-```sh
-npm run baseline:eeg-eye-state -- --artifact
-npm run baseline:plaintext -- --source eeg-eye-state --fetch --artifact
-```
-
-Generate OpenFHE-ready single-window input contracts from that EEG baseline and
-run BFVrns/CKKS against the derived sparse inputs:
-
-```sh
-npm run contract:eeg-openfhe
-npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact
-npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact
-```
-
-The committed EEG artifact at
-`benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json` uses a
-chronological 70/30 split, 8-row by 8-channel sparse latent event windows, and
-the same `scores = W x + bias` contract shape `[2, 64]`. It reports 301/561
-correct windows, accuracy `0.536542`, and a compression curve for active budgets
-of 8, 16, 32, and 64 values per window. This is real-data plaintext evidence,
-not encrypted-compute, medical, or generalization evidence.
-
-The committed native OpenFHE real-data artifacts consume one derived EEG sparse
-window from the generated input contract. BFVrns uses the fixed-point view and
-matches the expected quantized classification; CKKS uses approximate-real values
-and reports score drift against plaintext. These artifacts are local
-single-window integration evidence, not production cryptography or broad
-runtime claims. The native evidence manifest under
-`benchmark-artifacts/native-evidence/` records the host/toolchain fingerprint,
-latest artifact classification, exact rerun commands, and remaining gaps for
-the OpenFHE and TFHE-rs lanes.
-
-Run the deterministic N-MNIST-format smoke fixture and publish a compression
-curve artifact:
-
-```sh
-npm run baseline:plaintext -- --fixture nmnist-smoke --artifact
-```
-
-The prototype demonstrates active-event sparse scoring with toy additive homomorphic encryption over a fixed linear model contract: rows are classes, columns are flattened event features, and the public score equation is `scores = W x + bias`. The benchmark now compares dense/raw windows, unsorted spikes, and spatial-sorted events on that same task so representation cost and metadata leakage stay visible. Each spatial-sorted benchmark entry carries its own crypto inventory, sorted-event privacy boundary, reconstruction-resistance caveat, and explicit metadata-leakage list. The benchmark also emits `spatialClusterReadiness`: spatial-sorted events can feed a future SNN path after count-to-spike-train, neuron-index, timestep, and membrane/synapse adapters; the same representation can feed the current lightweight encrypted linear score path directly. The compute side can use the `public-active-neuron-positions-encrypted-features` mode: active neuron/time positions are public, feature values are encrypted, and raw samples remain local. It is deliberately marked as non-production. A real OpenFHE BFVrns C++ integration target is included under `prototype/openfhe/` for the same exact integer sparse scorer, and a real OpenFHE CKKS target is included under `prototype/openfhe-ckks/` for approximate neural/ML feature scoring with floating-point-style values and explicit score-drift reporting. A real TFHE-rs Rust target is also included under `prototype/tfhe-rs/`; it evaluates the same sparse integer scores with `FheUint16` and adds an encrypted `FheBool` threshold/comparison gate for `anomaly_score > normal_score`. BFV/BGV remains the default packed-vector lane for exact integer linear algebra; CKKS is the comparison lane for approximate real-valued neural/ML features; TFHE-rs is the comparison lane to prefer when the model becomes threshold-heavy, Boolean, decision-tree-like, or LUT-style. SEAL/TenSEAL, Concrete, or an Octra/HFHE experiment remain candidate follow-on lanes.
-
-## Prototype Boundary
-
-The JavaScript prototype is a portable contract harness, not the target runtime for low-level execution. Performance-critical paths should move to native HE libraries, systems code, or hardware-aware edge implementations, with Node kept for demos, artifact generation, schema checks, and orchestration. See `10-native-performance-track.md`.
+The JavaScript scaffold is a portable contract harness, not the target runtime for low-level execution. Performance-critical paths should move to native HE libraries, systems code, or hardware-aware edge implementations, with Node kept for demos, artifact generation, schema checks, and orchestration. See `10-native-performance-track.md`.
 
 This repository is CC0. If the project later needs proprietary implementation, keep partner-specific adapters, datasets, trained weights, deployment code, and non-public library integrations in a separate private repository with explicit dependency and license review. Do not import proprietary reverse-engineered code into this public reference package.
 

@@ -1,7 +1,7 @@
 {
   "name": "neurofhe-relay",
   "version": "0.1.0",
-  "description": "CC0 research prototype for privacy-preserving sparse event inference with homomorphic-encryption comparison lanes.",
+  "description": "CC0 research-alpha repository for privacy-preserving event intelligence with homomorphic-encryption comparison lanes.",
   "private": true,
   "type": "module",
   "license": "CC0-1.0",
@@ -14,6 +14,10 @@
   },
   "homepage": "https://github.com/AlexanderDaly/neurofhe-relay#readme",
   "keywords": [
+    "cc0",
+    "research-alpha",
+    "bio-digital-event-intelligence",
+    "event-intelligence",
     "homomorphic-encryption",
     "neuromorphic",
     "privacy-preserving-ml",
@@ -39,10 +43,12 @@
     "baseline:plaintext": "node prototype/plaintext-baseline.mjs",
     "contract:eeg-openfhe": "node prototype/openfhe-realdata-contract.mjs --fetch",
     "native:doctor": "node prototype/native-evidence.mjs",
+    "reconstruction:risk": "node prototype/reconstruction-risk.mjs",
     "release:evidence": "node prototype/release-evidence.mjs",
+    "check:docs": "node prototype/scripts/check-docs.mjs",
     "scan:hygiene": "node prototype/scripts/placeholder-scan.mjs",
     "test": "node --test prototype/test/*.test.mjs",
     "ci": "npm run validate",
-    "validate": "npm test && node -e \"JSON.parse(require('fs').readFileSync('project-brief.json','utf8')); JSON.parse(require('fs').readFileSync('prototype/research-assumptions.json','utf8')); console.log('json ok')\" && node prototype/scripts/placeholder-scan.mjs"
+    "validate": "npm test && node -e \"JSON.parse(require('fs').readFileSync('project-brief.json','utf8')); JSON.parse(require('fs').readFileSync('prototype/research-assumptions.json','utf8')); console.log('json ok')\" && npm run check:docs && node prototype/scripts/placeholder-scan.mjs"
   }
 }

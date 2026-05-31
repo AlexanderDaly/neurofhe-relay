@@ -220,7 +220,7 @@ The model-facing event is the only event object that downstream services may rec
       }
     ],
     "targetPath": "BFV/BGV integer scoring or compatible FHE-style adapter after review",
-    "currentPrototype": "placeholder references only; no production cryptography claim"
+    "currentScaffold": "research-alpha encrypted references only; no production cryptography claim"
   },
   "aggregated": {
     "spikeCountBucket": "17-32",
@@ -493,7 +493,7 @@ Later:
 - Route approved event features into BFV/BGV-style integer scoring for spike counts.
 - Evaluate CKKS only where approximate real-valued features are justified.
 - Evaluate TFHE-style paths for binary threshold or lookup workloads.
-- Consider Octra/HFHE only after local operation families are proven and benchmarked.
+- Consider Octra/HFHE only after local operation families are measured and benchmarked.
 - Add cryptographic parameter inventory, key ownership, library version, review status, and side-channel assumptions to every exported benchmark.
 
 Honest claim boundary:
@@ -528,7 +528,7 @@ Replay should operate from `neurofhe.gateway.sanitizedReplay.v1`, which contains
 Assumptions:
 
 - Raw signals can be sensitive even when they are sparse, simulated-like, or non-medical.
-- Downstream model services, compute services, and agents are untrusted unless proven otherwise.
+- Downstream model services, compute services, and agents are untrusted unless covered by explicit trust agreements and review.
 - Model output is advisory. It is not authority to act.
 - Prompt-injected text in logs, files, web pages, profiles, or returned model messages is hostile content, not an instruction.
 
@@ -562,6 +562,6 @@ Recommended next steps:
 1. Add JSON Schema files for `rawSignal`, `normalizedEvent`, `modelEvent`, `recommendation`, `commandDecision`, `auditRecord`, and `sanitizedReplay`.
 2. Add a file intake adapter that reads local simulated event JSON without allowing path or payload export.
 3. Add a policy fixture directory with strict, sparse-preview, dense-encrypted, and human-review profiles.
-4. Connect the model-facing event to the existing sparse linear score contract by replacing placeholder ciphertext references with the reviewed OpenFHE or equivalent adapter.
+4. Connect the model-facing event to the existing sparse linear score contract by replacing research-alpha encrypted references with the reviewed OpenFHE or equivalent adapter.
 5. Add replay tests that prove sanitized streams can reproduce gateway decisions without raw payloads.
 6. Add policy-review gates before any real data source, device integration, medical-adjacent workflow, workplace setting, or external action connector.

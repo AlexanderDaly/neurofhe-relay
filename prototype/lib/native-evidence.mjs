@@ -90,6 +90,7 @@ export function buildNativeEvidenceManifest(options = {}) {
   });
   const counts = countLaneStatuses(lanes);
   const measurementCoverage = countMeasurementCoverage(lanes);
+  const measurementGaps = buildMeasurementGapIndex(lanes);
 
   return {
     schema: "neurofhe.nativeEvidence.manifest.v1",
@@ -105,6 +106,7 @@ export function buildNativeEvidenceManifest(options = {}) {
       missingArtifactCount: counts["missing-artifact"] ?? 0,
       otherEvidenceCount: counts["other-evidence"] ?? 0,
       measurementCoverage,
+      measurementGaps,
     },
     lanes,
     releaseUse: {
@@ -356,6 +358,58 @@ function countMeasurementCoverage(lanes) {
   }
 
   return counts;
+}
+
+function buildMeasurementGapIndex(lanes) {
+  const gapLanes = lanes
+    .map((lane) => {
+      const missingMeasurements = [];
+      const partialMeasurements = [];
+      const measurementReasons = {};
+
+      for (const measurementName of ["ciphertextBytes", "rssOrPeakMemory"]) {
+        const measurement = lane.measurements[measurementName];
+        if (measurement.status === "reported") continue;
+        if (measurement.status === "missing") {
+          missingMeasurements.push(measurementName);
+          measurementReasons[measurementName] = measurement.reason;
+        } else {
+          partialMeasurements.push(measurementName);
+          measurementReasons[measurementName] =
+            measurement.measurement ?? "measurement metadata is present but incomplete";
+        }
+      }
+
+      if (missingMeasurements.length === 0 && partialMeasurements.length === 0) {
+        return null;
+      }
+
+      return {
+        laneId: lane.id,
+        latestArtifactId: lane.latestArtifactId,
+        evidenceStatus: lane.evidence.status,
+        missingMeasurements,
+        partialMeasurements,
+        measurementReasons,
+        exactCommands: lane.reproducibility.commands,
+        smallestNextStep: lane.smallestNextStep,
+        productionClaim: false,
+      };
+    })
+    .filter(Boolean);
+
+  return {
+    schema: "neurofhe.nativeEvidence.measurementGapIndex.v1",
+    gapCount: gapLanes.reduce(
+      (count, lane) =>
+        count + lane.missingMeasurements.length + lane.partialMeasurements.length,
+      0,
+    ),
+    lanes: gapLanes,
+    caveat:
+      "These entries identify missing or partial measurement classes only; they do not create substitute benchmark, memory, or ciphertext-size evidence.",
+    productionClaim: false,
+  };
 }
 
 function incrementMeasurementCount(counts, prefix, status) {

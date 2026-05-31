@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { readdirSync, readFileSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -29,8 +30,15 @@ import {
   scanRepositoryHygiene,
 } from "../lib/repo-hygiene.mjs";
 import {
+  scanMarkdownLinks,
+} from "../lib/docs-links.mjs";
+import {
   buildReleaseEvidenceIndex,
 } from "../lib/release-evidence.mjs";
+import {
+  buildReconstructionRiskArtifact,
+  evaluateRepresentationReconstructionRisk,
+} from "../lib/reconstruction-risk.mjs";
 import {
   runEncryptedLinearClassifier,
   runPlaintextLinearClassifier,
@@ -69,6 +77,7 @@ import {
 import {
   buildTfheRsDemoContract,
   buildTfheRsRealLibraryAdapter,
+  buildTfheRsRealDataUnavailableReport,
   tfheRsIntegrationPlan,
   validateTfheRsContract,
 } from "../lib/tfhe-rs-adapter.mjs";
@@ -261,6 +270,8 @@ test("prototype benchmark emits privacy boundary, crypto inventory, and dense ba
   const benchmark = runPrototypeBenchmark({ seed: 91 });
 
   assert.equal(benchmark.schema, "neurofhe.benchmark.v1");
+  assert.equal(benchmark.demo, "Relay-2 Research Demo");
+  assert.equal(JSON.stringify(benchmark).includes("Diagnostic Demo"), false);
   assert.equal(benchmark.dataset, "synthetic-events-v0");
   assert.equal(benchmark.model, "tiny-linear-spike-count-v0");
   assert.equal(benchmark.scheme, "toy-paillier-additive-research-only");
@@ -394,6 +405,41 @@ test("spatial clustering outputs evaluate SNN and encrypted model readiness", ()
   assert.ok(evaluation.caveats.includes("not clinical or biological validation"));
 });
 
+test("reconstruction-risk probes keep residual leakage explicit without privacy proof claims", () => {
+  const report = evaluateRepresentationReconstructionRisk({
+    generatedAt: "2026-05-27T16:00:00.000Z",
+  });
+  const artifact = buildReconstructionRiskArtifact(report, {
+    generatedAt: "2026-05-27T16:00:00.000Z",
+    artifactId: "reconstruction-risk-probes-2026-05-27",
+  });
+
+  assert.equal(report.schema, "neurofhe.reconstructionRiskProbes.v1");
+  assert.equal(report.productionClaim, false);
+  assert.equal(report.privacyProofClaim, false);
+  assert.equal(report.attackProbes.length, 3);
+  assert.deepEqual(
+    report.attackProbes.map((probe) => probe.id),
+    [
+      "raw-payload-replay",
+      "active-value-recovery",
+      "public-position-linkage",
+    ],
+  );
+  assert.equal(report.summary.rawPayloadReplay.status, "blocked");
+  assert.equal(report.summary.activeValueRecovery.status, "blocked");
+  assert.equal(report.summary.publicPositionLinkage.status, "residual-risk");
+  assert.ok(
+    report.summary.publicPositionLinkage.leakageSignals.includes(
+      "public active neuron positions",
+    ),
+  );
+  assert.equal(artifact.schema, "neurofhe.reconstructionRiskArtifact.v1");
+  assert.equal(artifact.subjectSchema, report.schema);
+  assert.equal(artifact.productionClaim, false);
+  assert.equal(artifact.subject.privacyProofClaim, false);
+});
+
 test("gateway demo exports a minimal model event without raw signal leakage", () => {
   const demo = runGatewayDemo({
     observedAt: "2026-05-21T12:34:56.000Z",
@@ -414,6 +460,11 @@ test("gateway demo exports a minimal model event without raw signal leakage", ()
   assert.equal(modelEvent.plaintext.sparseMetrics.densityBucket, "0.25-0.5");
   assert.equal(modelEvent.plaintext.activePositions.length, 18);
   assert.equal(modelEvent.encrypted.activeSpikeValues.length, 18);
+  assert.equal(
+    modelEvent.encrypted.currentScaffold,
+    "research-alpha encrypted references only; no production cryptography claim",
+  );
+  assert.equal(Object.hasOwn(modelEvent.encrypted, "currentPrototype"), false);
   assert.equal(demo.auditLog.every((record) => record.containsRawPayload === false), true);
   assert.equal(demo.sanitizedReplayStream.containsRawPayload, false);
   assert.equal(serialized.includes("SIM-DEVICE-LOCAL-ONLY"), false);
@@ -886,7 +937,2324 @@ test("repository hygiene artifact CLI honors deterministic artifact options", as
   assert.equal(artifact.privacyBoundary.secrets, "redacted from artifacts");
 });
 
+test("markdown link scan catches missing local documentation targets", async () => {
+  const root = await mkdtemp(join(tmpdir(), "neurofhe-doc-links-fixture-"));
+  await mkdir(join(root, "docs"), { recursive: true });
+  await writeFile(join(root, "README.md"), [
+    "# Fixture",
+    "",
+    "[ok](docs/ok.md#heading)",
+    "[missing](docs/missing.md)",
+    "[external](https://example.com)",
+    "[anchor](#fixture)",
+    "",
+  ].join("\n"), "utf8");
+  await writeFile(join(root, "docs", "ok.md"), "# Heading\n", "utf8");
+
+  const result = scanMarkdownLinks({ root });
+
+  assert.equal(result.result, "fail");
+  assert.equal(result.scannedFileCount, 2);
+  assert.deepEqual(result.findings, [
+    {
+      category: "broken-markdown-link",
+      path: "README.md",
+      line: 4,
+      target: "docs/missing.md",
+      resolvedPath: "docs/missing.md",
+      message: "local Markdown link target does not exist",
+    },
+  ]);
+});
+
+test("markdown link check CLI exits nonzero for broken local docs links", async () => {
+  const root = await mkdtemp(join(tmpdir(), "neurofhe-doc-links-cli-"));
+  await writeFile(join(root, "README.md"), "[missing](docs/missing.md)\n", "utf8");
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      "prototype/scripts/check-docs.mjs",
+      "--root",
+      root,
+    ],
+    { cwd: process.cwd(), encoding: "utf8" },
+  );
+
+  assert.equal(result.status, 1);
+  assert.match(result.stdout, /README\.md:1:broken-markdown-link:docs\/missing\.md/);
+  assert.equal(result.stderr, "");
+});
+
+test("command reference documents every package script", () => {
+  const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+  const commandReference = readFileSync("docs/command-reference.md", "utf8");
+  const requiredRoutes = [
+    "## Command Routes",
+    "| Job | Start With | Details |",
+    "Validate a local change",
+    "Try the demos",
+    "Refresh release evidence",
+    "Investigate native evidence",
+    "Handle real-data or dataset work",
+    "npm run ci",
+    "npm run release:evidence",
+    "npm run native:doctor",
+    "research-alpha package evidence",
+  ];
+  const missingScripts = Object.keys(packageJson.scripts).filter((scriptName) => {
+    const expected = scriptName === "test"
+      ? /\bnpm test\b/
+      : new RegExp(`\\bnpm run ${escapeRegExp(scriptName)}\\b`);
+    return !expected.test(commandReference);
+  });
+  const missingRoutes = requiredRoutes.filter((entry) =>
+    !commandReference.includes(entry),
+  );
+
+  assert.deepEqual(missingScripts, []);
+  assert.deepEqual(missingRoutes, []);
+  assert.equal(commandReference.includes("research-prototype evidence"), false);
+});
+
+test("documentation index lists every docs page", () => {
+  const docsIndex = readFileSync("docs/README.md", "utf8");
+  const docsPages = readdirSync("docs")
+    .filter((entry) => entry.endsWith(".md") && entry !== "README.md")
+    .sort();
+  const missingPages = docsPages.filter((page) =>
+    !new RegExp(`\\b${escapeRegExp(page)}\\b`).test(docsIndex),
+  );
+
+  assert.deepEqual(missingPages, []);
+});
+
+test("documentation index stays concise and reader-facing", () => {
+  const docsIndex = readFileSync("docs/README.md", "utf8");
+  const requiredEntries = [
+    "## Start Here",
+    "| Need | Start With | Then Use |",
+    "New reviewer",
+    "Contributor",
+    "Evidence reviewer",
+    "Release or maintainer review",
+    "## Repository Baseline",
+    "Before treating a release-validation PR as merge-ready",
+    "confirm the live head",
+    "repository ruleset/admin policy state",
+    "gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "LICENSE",
+    "PUBLIC_DOMAIN_NOTICE.md",
+    "PACKAGE_MANIFEST.md",
+    ".github/",
+    ".node-version",
+    "## Validation Coverage",
+    "npm run validate",
+    "docs/testing-strategy.md",
+    "docs/command-reference.md",
+    "benchmark-artifacts/README.md",
+    "top-level numbered briefs remain the public briefing sequence",
+    "scaffold code map for prototype/ entrypoints",
+    "prototype/ scaffold code",
+    "production cryptography",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !docsIndex.includes(entry),
+  );
+  const validationLitanyMatches = docsIndex.match(/It also checks/g) ?? [];
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(validationLitanyMatches.length, 0);
+  assert.equal(docsIndex.includes("public presentation sequence"), false);
+  assert.equal(docsIndex.includes("prototype code, committed"), false);
+  assert.equal(docsIndex.includes("code navigation map for prototype entrypoints"), false);
+  assert.equal(docsIndex.includes("code navigation map for prototype/ entrypoints"), false);
+});
+
+test("briefing sequence guide lists every numbered root brief", () => {
+  const briefingGuide = readFileSync("docs/briefing-sequence.md", "utf8");
+  const onePager = readFileSync("01-one-pager.md", "utf8");
+  const pitchDeck = readFileSync("02-pitch-deck.md", "utf8");
+  const technicalArchitecture = readFileSync("03-technical-architecture.md", "utf8");
+  const demoRoadmap = readFileSync("04-demo-roadmap.md", "utf8");
+  const riskRegister = readFileSync("05-risk-register.md", "utf8");
+  const evidenceSources = readFileSync("06-evidence-and-sources.md", "utf8");
+  const postQuantumTrack = readFileSync(
+    "07-post-quantum-cryptography-track.md",
+    "utf8",
+  );
+  const encryptedThoughtsWhitepaper = readFileSync(
+    "08-encrypted-thoughts-whitepaper.md",
+    "utf8",
+  );
+  const relayGatewayPattern = readFileSync("09-relay-gateway-pattern.md", "utf8");
+  const discreetSpikeSortingProof = readFileSync(
+    "12-discreet-spike-sorting-proof.md",
+    "utf8",
+  );
+  const numberedBriefs = readdirSync(".")
+    .filter((entry) => /^[0-9]{2}-.+\.md$/.test(entry))
+    .sort();
+  const requiredRouteEntries = [
+    "## Briefing Routes",
+    "| Reader Need | Start With | Confirm In |",
+    "Fast external overview",
+    "Architecture or boundary review",
+    "Evidence or claim diligence",
+    "Native performance planning",
+    "Patent or weak-claim gap planning",
+  ];
+  const missingBriefs = numberedBriefs.filter((brief) =>
+    !new RegExp(`\\b${escapeRegExp(brief)}\\b`).test(briefingGuide),
+  );
+  const missingRoutes = requiredRouteEntries.filter((entry) =>
+    !briefingGuide.includes(entry),
+  );
+  const stalePackageFraming = briefingGuide.includes("presentation package");
+
+  assert.deepEqual(missingBriefs, []);
+  assert.deepEqual(missingRoutes, []);
+  assert.equal(stalePackageFraming, false);
+  assert.equal(
+    onePager.includes("The current CLI research-alpha scaffold is deliberately small"),
+    true,
+  );
+  assert.equal(onePager.includes("Produce a credible research-alpha evidence package:"), true);
+  assert.equal(
+    onePager.includes("Sparse encrypted-score contract with native HE adapter lanes."),
+    true,
+  );
+  assert.equal(
+    onePager.includes("Reviewer-facing briefing deck and local CLI demo evidence."),
+    true,
+  );
+  assert.equal(
+    onePager.includes("Permission to pursue a focused 90-day research-alpha evidence package"),
+    true,
+  );
+  assert.equal(onePager.includes("browser/CLI demo"), false);
+  assert.equal(onePager.includes("CKKS/BFV/TFHE library prototype"), false);
+  assert.equal(onePager.includes("proves whether sparse spiking inference"), false);
+  assert.equal(onePager.includes("Produce a credible demo and technical memo:"), false);
+  assert.equal(onePager.includes("HE inference prototype."), false);
+  assert.equal(onePager.includes("Investor/research deck"), false);
+  assert.equal(onePager.includes("focused 90-day prototype and evidence package"), false);
+  assert.equal(
+    pitchDeck.includes("The current demo path is deliberately small"),
+    true,
+  );
+  assert.equal(
+    pitchDeck.includes("90 days to a credible research-alpha evidence package:"),
+    true,
+  );
+  assert.equal(
+    pitchDeck.includes(
+      "Ask: approve focused evidence work and use the first benchmark package to decide the next research, grant, or encrypted-compute integration path.",
+    ),
+    true,
+  );
+  assert.equal(pitchDeck.includes("once local benchmarks prove the workload shape"), false);
+  assert.equal(pitchDeck.includes("Encrypted inference prototype"), false);
+  assert.equal(pitchDeck.includes("90 days to a credible prototype:"), false);
+  assert.equal(pitchDeck.includes("approve focused prototype work"), false);
+  assert.equal(pitchDeck.includes("serious research startup"), false);
+  assert.equal(
+    technicalArchitecture.includes("current research-alpha sparse-score contract"),
+    true,
+  );
+  assert.equal(
+    technicalArchitecture.includes("The current research-alpha package should claim only"),
+    true,
+  );
+  assert.equal(
+    technicalArchitecture.includes("Non-goals for the current research-alpha contract:"),
+    true,
+  );
+  assert.equal(
+    technicalArchitecture.includes("Octra should enter after local feasibility is measured and bounded."),
+    true,
+  );
+  assert.equal(
+    technicalArchitecture.includes("research-alpha BFV/BGV/CKKS adapter evidence"),
+    true,
+  );
+  assert.equal(technicalArchitecture.includes("The current prototype uses"), false);
+  assert.equal(technicalArchitecture.includes("Prototype is research-grade"), false);
+  assert.equal(technicalArchitecture.includes("Non-goals for the first prototype"), false);
+  assert.equal(technicalArchitecture.includes("local feasibility is proven"), false);
+  assert.equal(technicalArchitecture.includes("bfv-or-ckks-prototype"), false);
+  assert.equal(demoRoadmap.includes("Goal: validate that the concept is coherent enough to demo."), true);
+  assert.equal(demoRoadmap.includes("Current research-alpha foothold:"), true);
+  assert.equal(demoRoadmap.includes("Goal: validate that the project can turn rights-clean real data"), true);
+  assert.equal(demoRoadmap.includes("## Phase 5 - Research-Alpha Review Package"), true);
+  assert.equal(
+    demoRoadmap.includes("Goal: turn the evidence package into a reviewer-ready research-alpha path."),
+    true,
+  );
+  assert.equal(demoRoadmap.includes("Potential reviewer or collaborator list."), true);
+  assert.equal(demoRoadmap.includes("Reviewer-facing briefing deck."), true);
+  assert.equal(demoRoadmap.includes("Goal: prove the concept"), false);
+  assert.equal(demoRoadmap.includes("Current prototype foothold:"), false);
+  assert.equal(demoRoadmap.includes("Goal: prove that the project can turn rights-clean real data"), false);
+  assert.equal(demoRoadmap.includes("8-12 slide pitch deck."), false);
+  assert.equal(demoRoadmap.includes("Goal: turn demo into a fundable or partner-ready project."), false);
+  assert.equal(demoRoadmap.includes("Partner list."), false);
+  assert.equal(briefingGuide.includes("Presentation flow and evidence story"), true);
+  assert.equal(briefingGuide.includes("Presentation flow and fundable story"), false);
+  assert.equal(
+    riskRegister.includes(
+      "Add Octra only after a compact operation family is measured and bounded.",
+    ),
+    true,
+  );
+  assert.equal(riskRegister.includes("Use research-alpha evidence language."), true);
+  assert.equal(
+    riskRegister.includes("Keep synthetic and research-alpha caveats visible."),
+    true,
+  );
+  assert.equal(riskRegister.includes("operation family is proven"), false);
+  assert.equal(riskRegister.includes("Use research-grade language."), false);
+  assert.equal(riskRegister.includes("research-grade caveats"), false);
+  assert.equal(
+    evidenceSources.includes("current non-medical, research-alpha boundary"),
+    true,
+  );
+  assert.equal(evidenceSources.includes("research-grade boundary"), false);
+  assert.equal(
+    postQuantumTrack.includes(
+      "Replace the toy additive demo with one research-alpha encrypted-compute lane:",
+    ),
+    true,
+  );
+  assert.equal(
+    postQuantumTrack.includes("why the research-alpha package is not production cryptography"),
+    true,
+  );
+  assert.equal(
+    postQuantumTrack.includes("explicit crypto inventory for every research-alpha lane."),
+    true,
+  );
+  assert.equal(
+    postQuantumTrack.includes(
+      "This is a research-alpha package with a post-quantum design target.",
+    ),
+    true,
+  );
+  assert.equal(postQuantumTrack.includes("one real encrypted-compute prototype"), false);
+  assert.equal(postQuantumTrack.includes("why the prototype is not production cryptography"), false);
+  assert.equal(postQuantumTrack.includes("explicit crypto inventory for every prototype"), false);
+  assert.equal(postQuantumTrack.includes("This is a research prototype"), false);
+  assert.equal(
+    encryptedThoughtsWhitepaper.includes("The current research-alpha package is deliberately small"),
+    true,
+  );
+  assert.equal(
+    encryptedThoughtsWhitepaper.includes("Keep non-medical and research-alpha caveats visible."),
+    true,
+  );
+  assert.equal(encryptedThoughtsWhitepaper.includes("The current prototype is"), false);
+  assert.equal(encryptedThoughtsWhitepaper.includes("research-grade caveats"), false);
+  assert.equal(
+    relayGatewayPattern.includes(
+      '"currentScaffold": "research-alpha encrypted references only; no production cryptography claim"',
+    ),
+    true,
+  );
+  assert.equal(
+    relayGatewayPattern.includes(
+      "Consider Octra/HFHE only after local operation families are measured and benchmarked.",
+    ),
+    true,
+  );
+  assert.equal(
+    relayGatewayPattern.includes(
+      "Connect the model-facing event to the existing sparse linear score contract by replacing research-alpha encrypted references with the reviewed OpenFHE or equivalent adapter.",
+    ),
+    true,
+  );
+  assert.equal(relayGatewayPattern.includes('"currentPrototype"'), false);
+  assert.equal(relayGatewayPattern.includes("placeholder references"), false);
+  assert.equal(relayGatewayPattern.includes("operation families are proven"), false);
+  assert.equal(relayGatewayPattern.includes("placeholder ciphertext references"), false);
+  assert.equal(
+    discreetSpikeSortingProof.includes(
+      "The evidence bundle can remain research-alpha.",
+    ),
+    true,
+  );
+  assert.equal(discreetSpikeSortingProof.includes("remain research-grade"), false);
+});
+
+test("prototype map lists every library module", () => {
+  const prototypeMap = readFileSync("docs/prototype-map.md", "utf8");
+  assert.equal(prototypeMap.includes("# Scaffold Code Map"), true);
+  assert.equal(prototypeMap.includes("research-alpha scaffold code"), true);
+  assert.equal(prototypeMap.includes("# Prototype Map"), false);
+  assert.equal(prototypeMap.includes("runnable prototype code"), false);
+  assert.equal(prototypeMap.includes("detailed prototype tutorial"), false);
+
+  const libraryModules = readdirSync("prototype/lib")
+    .filter((entry) => entry.endsWith(".mjs"))
+    .sort();
+  const missingModules = libraryModules.filter((moduleName) =>
+    !new RegExp(`\\bprototype/lib/${escapeRegExp(moduleName)}\\b`).test(prototypeMap),
+  );
+
+  assert.deepEqual(missingModules, []);
+});
+
+test("prototype map lists every top-level prototype entrypoint and note", () => {
+  const prototypeMap = readFileSync("docs/prototype-map.md", "utf8");
+  const topLevelFiles = readdirSync("prototype")
+    .filter((entry) => /\.(mjs|md)$/.test(entry))
+    .map((entry) => `prototype/${entry}`)
+    .sort();
+  const missingFiles = topLevelFiles.filter((filePath) =>
+    !prototypeMap.includes(filePath),
+  );
+
+  assert.deepEqual(missingFiles, []);
+});
+
+test("prototype map lists every native lane source file", () => {
+  const prototypeMap = readFileSync("docs/prototype-map.md", "utf8");
+  const nativeFiles = listTrackedFiles("prototype")
+    .filter((entry) =>
+      entry === "prototype/openfhe_contract_loader.hpp"
+      || entry.startsWith("prototype/openfhe/")
+      || entry.startsWith("prototype/openfhe-ckks/")
+      || entry.startsWith("prototype/tfhe-rs/"),
+    )
+    .sort();
+  const missingFiles = nativeFiles.filter((filePath) =>
+    !prototypeMap.includes(filePath),
+  );
+
+  assert.deepEqual(missingFiles, []);
+});
+
+test("linear algebra handoff routes sparse contract review", () => {
+  const handoff = readFileSync("prototype/LINEAR_ALGEBRA_NEXT.md", "utf8");
+  const requiredEntries = [
+    "## Handoff Routes",
+    "| Review Need | Start With | Confirm Against |",
+    "Current sparse linear score contract",
+    "Operation-count or metadata tradeoff",
+    "Native BFVrns adapter follow-up",
+    "Privacy-mode or padding follow-up",
+    "Future implementation boundary",
+    "scores = W x + bias",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "docs/evidence-guide.md",
+    "docs/release-gate-matrix.md",
+    "The research-alpha scaffold currently computes the same score through an active-event list",
+    "Bias is public",
+    "for the current research-alpha contract.",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !handoff.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(handoff.includes("The prototype currently computes"), false);
+  assert.equal(handoff.includes("for the first prototype"), false);
+});
+
+test("patent package map lists every patent markdown and mermaid source", () => {
+  const patentMap = readFileSync("docs/patent-package-map.md", "utf8");
+  const policyWhitepaper = readFileSync(
+    "patent/briefing/ENER_policy_whitepaper.md",
+    "utf8",
+  );
+  const patentSources = listFilesRecursive("patent")
+    .filter((entry) => /\.(md|mmd)$/.test(entry))
+    .sort();
+  const requiredRouteEntries = [
+    "## Patent Review Routes",
+    "| Review Need | Start With | Confirm Before Use |",
+    "Provisional drafting review",
+    "Counsel or IP-risk review",
+    "Public, investor, or policy briefing",
+    "Evidence-gap prioritization",
+    "Diagram or figure reuse",
+  ];
+  const missingSources = patentSources.filter((sourcePath) =>
+    !new RegExp(`\\b${escapeRegExp(sourcePath)}\\b`).test(patentMap),
+  );
+  const missingRoutes = requiredRouteEntries.filter((entry) =>
+    !patentMap.includes(entry),
+  );
+
+  assert.deepEqual(missingSources, []);
+  assert.deepEqual(missingRoutes, []);
+  assert.equal(policyWhitepaper.includes("research-alpha package"), true);
+  assert.equal(policyWhitepaper.includes("current research prototype"), false);
+
+  const publicationFormatting = readFileSync(
+    "patent/briefing/ENER_publication_formatting.md",
+    "utf8",
+  );
+  assert.equal(
+    publicationFormatting.includes("source-category references for later bibliography expansion"),
+    true,
+  );
+  assert.equal(
+    publicationFormatting.includes("source-category references as placeholders"),
+    false,
+  );
+});
+
+test("package manifest lists every tracked top-level package entry", () => {
+  const packageManifest = readFileSync("PACKAGE_MANIFEST.md", "utf8");
+  const trackedTopLevelEntries = listTrackedTopLevelEntries();
+  const missingEntries = trackedTopLevelEntries.filter((entry) =>
+    !packageManifest.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+
+  const requiredRouting = [
+    "inventory, not a command reference",
+    "## Inventory Review Routes",
+    "| Review Need | Start With | Then Use |",
+    "First-read orientation",
+    "Current validation and release posture",
+    "Evidence artifacts and caveats",
+    "Contribution and maintenance routing",
+    "Patent or briefing review",
+    "weekly grouped dependency update routing",
+    "docs/command-reference.md",
+    "VALIDATION.md",
+    "RELEASE.md",
+    "docs/evidence-dashboard.md",
+    "docs/release-gate-matrix.md",
+    "benchmark-artifacts/README.md",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "research-alpha security scope",
+    "11-slide evidence narrative",
+    "research-alpha evidence roadmap",
+    "prototype/ scaffold code, evidence artifacts",
+    "scaffold code map for prototype/ entrypoints",
+    "dependency-free educational sparse encrypted spike-count scaffold",
+    "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+    "openfhe-ckks-eeg-eye-state-2026-05-21",
+    "tfhe-rs-alpha-lane-framing-2026-05-29",
+    "native measurement gaps",
+    "not production cryptography",
+  ];
+  const missingRouting = requiredRouting.filter((entry) =>
+    !packageManifest.includes(entry),
+  );
+  const forbiddenCommandWall = [
+    "first presentation-ready version",
+    "Run the desk demo:",
+    "Run the benchmark:",
+    "Run the TFHE-rs comparison lane:",
+    "Generate OpenFHE-ready EEG input contracts",
+    "once OpenFHE is installed",
+    "research-prototype security policy",
+    "11-slide presentation narrative",
+    "staged prototype and pilot plan",
+    "dependency-free educational sparse encrypted spike-count prototype",
+    "The included JavaScript prototype demonstrates",
+    "prototype code, evidence artifacts",
+    "code navigation map for prototype surfaces",
+    "code navigation map for prototype/ scaffold surfaces",
+  ].filter((entry) => packageManifest.includes(entry));
+
+  assert.deepEqual(missingRouting, []);
+  assert.deepEqual(forbiddenCommandWall, []);
+});
+
+test("package metadata preserves public repository posture", () => {
+  const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+  const keywords = new Set(packageJson.keywords);
+
+  assert.equal(packageJson.private, true);
+  assert.equal(packageJson.license, "CC0-1.0");
+  assert.equal(packageJson.type, "module");
+  assert.equal(packageJson.engines.node, ">=20");
+  assert.match(packageJson.description, /CC0 research-alpha repository/);
+  assert.match(packageJson.description, /privacy-preserving event intelligence/);
+  assert.equal(
+    packageJson.repository.url,
+    "git+https://github.com/AlexanderDaly/neurofhe-relay.git",
+  );
+  assert.equal(
+    packageJson.bugs.url,
+    "https://github.com/AlexanderDaly/neurofhe-relay/issues",
+  );
+  assert.equal(
+    packageJson.homepage,
+    "https://github.com/AlexanderDaly/neurofhe-relay#readme",
+  );
+
+  for (const keyword of [
+    "cc0",
+    "research-alpha",
+    "bio-digital-event-intelligence",
+    "event-intelligence",
+    "homomorphic-encryption",
+    "neuromorphic",
+  ]) {
+    assert.equal(keywords.has(keyword), true);
+  }
+});
+
+test("project brief preserves agent-readable repository posture", () => {
+  const projectBrief = JSON.parse(readFileSync("project-brief.json", "utf8"));
+
+  assert.equal(projectBrief.repositoryPosture.packageClass, "CC0 research-alpha repository");
+  assert.equal(projectBrief.repositoryPosture.releaseTarget, "v0.1.0-research-alpha");
+  assert.equal(projectBrief.repositoryPosture.releaseGateSatisfied, false);
+  assert.equal(projectBrief.repositoryPosture.productionClaim, false);
+  assert.equal(projectBrief.repositoryPosture.boundaryDomain, "bio-digital-event-intelligence");
+  assert.equal(
+    projectBrief.repositoryPosture.hostedCiBoundary,
+    "Hosted portable CI and check-rollup status are separate from repository ruleset/admin merge policy.",
+  );
+  assert.equal(
+    projectBrief.repositoryPosture.releaseApprovalRule,
+    "Do not merge, tag, or strengthen release-facing claims without the documented release gate, maintainer approval, and explicit user approval.",
+  );
+  assert.equal(
+    projectBrief.currentScaffold.caveat,
+    "The current package is educational and not production cryptography.",
+  );
+  assert.equal(
+    projectBrief.whitepapers[0].boundary,
+    "Non-medical, research-alpha privacy-architecture argument for BCI-adjacent event intelligence. Do not imply arbitrary thought reading, diagnosis, treatment, or production cryptographic assurance.",
+  );
+  assert.equal(projectBrief.currentScaffold.caveat.includes("current prototype"), false);
+  assert.equal(Object.hasOwn(projectBrief, "currentPrototype"), false);
+  assert.equal(projectBrief.whitepapers[0].boundary.includes("research-grade"), false);
+  assert.equal(projectBrief.ninetyDayMilestones.includes("research-alpha briefing deck"), true);
+  assert.equal(projectBrief.ninetyDayMilestones.includes("pilot-ready deck"), false);
+});
+
+test("presentation outputs map lists every tracked generated output file", () => {
+  const outputsMap = readFileSync("docs/presentation-outputs.md", "utf8");
+  const outputFiles = listTrackedFiles("outputs")
+    .filter((entry) => !entry.endsWith("/"))
+    .sort();
+  const requiredRouteEntries = [
+    "## Presentation Output Routes",
+    "| Review Need | Start With | Confirm Against |",
+    "Packaged slide review",
+    "Claim or caveat check",
+    "Evidence or release readiness",
+    "Refresh or replace an export",
+    "legacy generated slide export",
+    "NeuroFHE Relay",
+    "evidence narrative",
+  ];
+  const missingOutputs = outputFiles.filter((outputPath) =>
+    !outputsMap.includes(outputPath),
+  );
+  const missingRoutes = requiredRouteEntries.filter((entry) =>
+    !outputsMap.includes(entry),
+  );
+
+  assert.deepEqual(missingOutputs, []);
+  assert.deepEqual(missingRoutes, []);
+  assert.equal(outputsMap.includes("VC\n    pitch deck"), false);
+});
+
+test("benchmark artifacts README lists every tracked artifact directory", () => {
+  const artifactsReadme = readFileSync("benchmark-artifacts/README.md", "utf8");
+  const artifactDirectories = listTrackedDirectories("benchmark-artifacts")
+    .filter((entry) => entry !== "benchmark-artifacts")
+    .sort();
+  const missingDirectories = artifactDirectories.filter((dirPath) =>
+    !artifactsReadme.includes(`${dirPath}/`),
+  );
+  const requiredPosture = [
+    "## Artifact Review Routes",
+    "research-alpha package",
+    "| Review Need | Start With | Do Not Claim |",
+    "Release posture",
+    "Native measurement coverage",
+    "Real-data plaintext baselines",
+    "Metadata and reconstruction caveats",
+    "Hosted CI or repository hygiene",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "real N-MNIST plaintext baseline",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "TFHE-rs real-data input blocker",
+    "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+    "release-evidence index artifacts",
+    "dashboard artifacts only",
+    "May 29 `609b48c`",
+    "PR head\n`609b48c`",
+    "committed hosted-CI snapshots are evidence\nrecords",
+    "gh pr view 23",
+  ];
+  const missingPosture = requiredPosture.filter((entry) =>
+    !artifactsReadme.includes(entry),
+  );
+  const stalePosture = [
+    "runnable prototype",
+    "real N-MNIST dataset blocker",
+    "N-MNIST-compatible fixture, real public UCI EEG Eye State baseline, and real public dataset blocker reports",
+    "May 29 `0feaa65`",
+    "PR head\n`0feaa65`",
+  ].filter((entry) => artifactsReadme.includes(entry));
+
+  assert.deepEqual(missingDirectories, []);
+  assert.deepEqual(missingPosture, []);
+  assert.deepEqual(stalePosture, []);
+});
+
+test("contributor workflow map lists every tracked GitHub workflow surface", () => {
+  const workflowMap = readFileSync("docs/contributor-workflow.md", "utf8");
+  const githubFiles = listTrackedFiles(".github").sort();
+  const requiredRoutes = [
+    "## Contribution Routes",
+    "| Need | Use | Keep Visible |",
+    "Report a reproducible failure",
+    "Report an evidence gap",
+    "Request repository cleanup",
+    "Open or update a pull request",
+    "PR Readiness Snapshot",
+    "local validation",
+    "hosted `Portable validation`",
+    "merge state",
+    "release-gate posture",
+    "remaining blocker, caveat, or next action",
+    "Report sensitive security or raw-data exposure",
+  ];
+  const missingFiles = githubFiles.filter((filePath) =>
+    !workflowMap.includes(filePath),
+  );
+  const missingRoutes = requiredRoutes.filter((entry) =>
+    !workflowMap.includes(entry),
+  );
+
+  assert.deepEqual(missingFiles, []);
+  assert.deepEqual(missingRoutes, []);
+});
+
+test("CODEOWNERS maps repository review ownership", () => {
+  const codeowners = readFileSync(".github/CODEOWNERS", "utf8");
+  const requiredEntries = [
+    "* @AlexanderDaly",
+    "/.github/ @AlexanderDaly",
+    "/docs/ @AlexanderDaly",
+    "/prototype/ @AlexanderDaly",
+    "/benchmark-artifacts/ @AlexanderDaly",
+    "/patent/ @AlexanderDaly",
+    "productionClaim: false",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !codeowners.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("maintainers file defines release authority and evidence boundaries", () => {
+  const maintainers = readFileSync("MAINTAINERS.md", "utf8");
+  const requiredEntries = [
+    "## Maintainer Routes",
+    "| Decision Or Review Need | Start With | Boundary |",
+    "Ordinary code or documentation review",
+    "Evidence artifact or benchmark review",
+    "Hosted CI or repository-policy blocker review",
+    "Release merge or tag decision",
+    "Sensitive security, raw-data, or conduct concern",
+    "@AlexanderDaly",
+    ".github/CODEOWNERS",
+    "docs/maintainer-checklist.md",
+    "docs/operations-runbook.md",
+    "RELEASE.md",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "repository ruleset/admin policy",
+    "explicit user approval",
+    "no release tag",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !maintainers.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("maintainer checklist routes review through current policy surfaces", () => {
+  const checklist = readFileSync("docs/maintainer-checklist.md", "utf8");
+  const requiredEntries = [
+    "## Review Modes",
+    "| Review Mode | Start With | Do Not Proceed Until |",
+    "Ordinary PR review",
+    "Evidence artifact update",
+    "Release review",
+    "Sensitive or raw-data-adjacent report",
+    "## Pre-Merge Routes",
+    "| Check | Confirm In | Do Not Merge If |",
+    "Local validation",
+    "Hosted validation",
+    "Raw-data and secret boundary",
+    "Claim boundary",
+    "Repository policy state",
+    "## PR Readiness Snapshot",
+    "local validation command and result",
+    "hosted `Portable validation` result and run link",
+    "merge state, including repository ruleset/admin policy",
+    "remaining blocker, caveat, or next action",
+    "docs/evidence-dashboard.md",
+    "docs/faq.md",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "CONTRIBUTING.md",
+    "docs/contributor-workflow.md",
+    ".github/pull_request_template.md",
+    ".github/ISSUE_TEMPLATE/",
+    "benchmark-artifacts/repo-hygiene/latest.json",
+    "git diff --check",
+    "repository ruleset/admin policy",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "synthetic scaffold",
+    "exact command",
+    "smallest next",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !checklist.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(checklist.includes("synthetic prototype"), false);
+});
+
+test("Dependabot config covers package and workflow maintenance", () => {
+  const dependabot = readFileSync(".github/dependabot.yml", "utf8");
+  const requiredEntries = [
+    "version: 2",
+    "package-ecosystem: \"github-actions\"",
+    "package-ecosystem: \"npm\"",
+    "directory: \"/\"",
+    "interval: \"weekly\"",
+    "open-pull-requests-limit: 5",
+    "github-actions-maintenance",
+    "npm-maintenance",
+    "patterns:",
+    "labels:",
+    "\"enhancement\"",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !dependabot.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("pull request template preserves validation and release caveats", () => {
+  const pullRequestTemplate = readFileSync(".github/pull_request_template.md", "utf8");
+  const requiredEntries = [
+    "## Change Notes",
+    "| Change Type | Note In This PR |",
+    "Docs or repository navigation",
+    "Scaffold, benchmark, or gateway behavior",
+    "Native FHE lane",
+    "Real-data or dataset-adjacent artifact",
+    "Release-readiness or repository-policy posture",
+    "npm run ci",
+    "git diff --check",
+    "Relevant artifact command",
+    "privacyBoundary",
+    "cryptoInventory",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "repository ruleset/admin policy",
+    "exact command, error, and smallest next step",
+    "## PR Readiness Snapshot",
+    "Local validation:",
+    "Hosted `Portable validation`:",
+    "Merge state:",
+    "Release-gate posture:",
+    "Remaining blocker, caveat, or next action:",
+    "raw datasets",
+    "secrets",
+    "docs/data-handling.md",
+    "docs/release-gate-matrix.md",
+    "docs/evidence-dashboard.md",
+    "Blockers And Caveats",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !pullRequestTemplate.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(pullRequestTemplate.includes("Prototype, benchmark, or gateway behavior"), false);
+});
+
+test("issue templates preserve evidence boundaries and release routing", () => {
+  const bugReport = readFileSync(".github/ISSUE_TEMPLATE/bug-report.yml", "utf8");
+  const validationGap = readFileSync(".github/ISSUE_TEMPLATE/validation-gap.yml", "utf8");
+  const cleanupRequest = readFileSync(".github/ISSUE_TEMPLATE/repository-cleanup.yml", "utf8");
+  const issueConfig = readFileSync(".github/ISSUE_TEMPLATE/config.yml", "utf8");
+  const combined = [bugReport, validationGap, cleanupRequest, issueConfig].join("\n");
+  const requiredEntries = [
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "repository ruleset/admin policy",
+    "docs/troubleshooting.md",
+    "docs/data-handling.md",
+    "docs/evidence-dashboard.md",
+    "docs/release-gate-matrix.md",
+    "SUPPORT.md",
+    "SECURITY.md",
+    "raw datasets",
+    "secrets",
+    "private payloads",
+    "exact command",
+    "smallest next step",
+    "Affected file or workflow",
+    "Name the file, documentation route, GitHub surface, or workflow",
+    "unexpected scaffold behavior",
+    "portable scaffold runtime",
+    "prototype/ scaffold documentation",
+    "blank_issues_enabled: false",
+    "labels:\n  - bug",
+    "labels:\n  - enhancement",
+    "labels:\n  - documentation",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !combined.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(combined.includes("unexpected prototype behavior"), false);
+  assert.equal(combined.includes("prototype runtime"), false);
+  assert.equal(combined.includes("blank_issues_enabled: true"), false);
+});
+
+test("policy boundary map lists every policy and claim-boundary root file", () => {
+  const policyMap = readFileSync("docs/policy-boundary.md", "utf8");
+  const policyFiles = [
+    "## Boundary Routes",
+    "| Boundary Change | Start With | Must Preserve |",
+    "License or public-domain framing",
+    "Public claim or README framing",
+    "Contribution, support, or conduct routing",
+    "Security, raw-data, or private-payload reporting",
+    "Release, validation, or hosted-CI posture",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "DEVELOPMENT.md",
+    "LICENSE",
+    "MAINTAINERS.md",
+    "PUBLIC_DOMAIN_NOTICE.md",
+    "README.md",
+    "RELEASE.md",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "VALIDATION.md",
+  ];
+  const missingFiles = policyFiles.filter((filePath) =>
+    !policyMap.includes(filePath),
+  );
+
+  assert.deepEqual(missingFiles, []);
+});
+
+test("code of conduct sets public collaboration boundaries without upgrading claims", () => {
+  const conduct = readFileSync("CODE_OF_CONDUCT.md", "utf8");
+  const requiredEntries = [
+    "## Conduct Report Routes",
+    "| Situation | Start With | Keep Out Of Public Threads |",
+    "General collaboration or tone concern",
+    "Sensitive conduct or safety concern",
+    "Security, raw-data, or private-payload concern",
+    "Evidence, release, or claim-boundary concern",
+    "CC0",
+    "research-alpha",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "CONTRIBUTING.md",
+    "raw datasets",
+    "private payloads",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "not production cryptography",
+    "not medical",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !conduct.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("support policy routes issues without weakening evidence boundaries", () => {
+  const supportPolicy = readFileSync("SUPPORT.md", "utf8");
+  const requiredEntries = [
+    "## Support Routes",
+    "Use this table before opening a public thread",
+    "| Situation | Public Route | Private Or Special Route |",
+    "Reproducible command, CI, script, or artifact failure",
+    "Sensitive security issue, suspected secret exposure, or private data leak",
+    "Release readiness, hosted-check, or repository ruleset blocker",
+    "Documentation, packaging, navigation, or repository cleanup",
+    "GitHub issue forms",
+    "Blank issues are disabled",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "docs/contributor-workflow.md",
+    "docs/operations-runbook.md",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "raw datasets",
+    "private payloads",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !supportPolicy.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(supportPolicy.includes("## Where To Route Reports"), false);
+});
+
+test("security policy preserves research-alpha reporting boundaries", () => {
+  const securityPolicy = readFileSync("SECURITY.md", "utf8");
+  const requiredEntries = [
+    "CC0 research-alpha package",
+    "## Security Report Routes",
+    "| Report Type | Route | Keep Out Of Public Threads |",
+    "Raw data, secret, or private payload exposure",
+    "Claim-boundary or cryptography-posture issue",
+    "Unsafe CLI or malformed input behavior",
+    "Release posture or evidence-gate concern",
+    "GitHub private vulnerability reporting",
+    "raw signal",
+    "raw dataset",
+    "secrets",
+    "private payload",
+    "privacyBoundary",
+    "cryptoInventory",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "repository hygiene scan",
+    "not a security audit",
+    "All current cryptographic lanes are research-alpha and caveated:",
+    "exact command",
+    "smallest next step",
+    "public scaffold",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !securityPolicy.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(securityPolicy.includes("research prototype"), false);
+  assert.equal(securityPolicy.includes("research-grade"), false);
+  assert.equal(securityPolicy.includes("public prototype"), false);
+});
+
+test("contributing guide routes evidence and release-boundary work", () => {
+  const contributing = readFileSync("CONTRIBUTING.md", "utf8");
+  const requiredEntries = [
+    "CC0 research-alpha repository",
+    "privacy-preserving event intelligence",
+    "## Contribution Routes",
+    "| Change Type | Start With | Keep Visible |",
+    "Docs, packaging, or navigation cleanup",
+    "Scaffold or artifact behavior",
+    "Native FHE lane work",
+    "Real-data baseline or dataset-adjacent work",
+    "Release-readiness or hosted-check work",
+    "docs/developer-quickstart.md",
+    "docs/command-reference.md",
+    "docs/data-handling.md",
+    "docs/evidence-dashboard.md",
+    "docs/release-gate-matrix.md",
+    "docs/troubleshooting.md",
+    "releaseGateSatisfied: false",
+    "repository ruleset/admin policy",
+    "privacyBoundary",
+    "cryptoInventory",
+    "productionClaim: false",
+    "exact command",
+    "smallest next step",
+    "explicit user approval",
+    "do not merge, tag, or strengthen release-facing claims",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !contributing.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(contributing.includes("Prototype or artifact behavior"), false);
+  assert.equal(contributing.includes("prototype behavior"), false);
+});
+
+test("status roadmap lists every release-readiness evidence surface", () => {
+  const statusRoadmap = readFileSync("docs/status-roadmap.md", "utf8");
+  const releaseReadinessSurfaces = [
+    "## Roadmap Review Routes",
+    "| Review Need | Start With | Confirm Against |",
+    "Merge-readiness review",
+    "Release-gate review",
+    "Evidence-gap triage",
+    "Next implementation slice",
+    "Claim or boundary check",
+    "| Question | Current Answer | Authoritative Source |",
+    "Is hosted portable CI green?",
+    "Yes on PR #23",
+    "Is the release gate satisfied?",
+    "No; `releaseGateSatisfied: false`",
+    "What blocks merge?",
+    "Repository ruleset/admin policy",
+    "committed hosted-CI evidence",
+    "snapshot, repository hygiene",
+    "Live PR head",
+    "gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "RELEASE.md",
+    "VALIDATION.md",
+    "benchmark-artifacts/ci-blockers/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "benchmark-artifacts/release-evidence/latest.json",
+    "benchmark-artifacts/repo-hygiene/latest.json",
+    "patent/briefing/ENER_weak_claims_evidence_gaps.md",
+    "docs/release-gate-matrix.md",
+    "docs/evidence-dashboard.md",
+    "docs/claim-evidence-ledger.md",
+    "docs/architecture-decisions.md",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "prototype/ scaffold code",
+  ];
+  const missingSurfaces = releaseReadinessSurfaces.filter((filePath) =>
+    !statusRoadmap.includes(filePath),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+  assert.equal(statusRoadmap.includes("prototype code, native"), false);
+});
+
+test("glossary defines recurring repository terms", () => {
+  const glossary = readFileSync("docs/glossary.md", "utf8");
+  const requiredRoutes = [
+    "## Glossary Routes",
+    "| Reader Need | Start With | Then Confirm |",
+    "Claim-boundary wording",
+    "Release-readiness language",
+    "Native FHE or measurement wording",
+    "Privacy and metadata wording",
+    "Blocker or unavailable-evidence wording",
+  ];
+  const requiredTerms = [
+    "bio-digital event intelligence",
+    "privacyBoundary",
+    "cryptoInventory",
+    "productionClaim: false",
+    "release gate",
+    "release-evidence index",
+    "native lane",
+    "blocker artifact",
+    "plaintext baseline",
+    "metadata-leakage proxy",
+    "reconstruction-risk probe",
+  ];
+  const missingTerms = requiredTerms.filter((term) =>
+    !glossary.includes(term),
+  );
+  const missingRoutes = requiredRoutes.filter((entry) =>
+    !glossary.includes(entry),
+  );
+
+  assert.deepEqual(missingRoutes, []);
+  assert.deepEqual(missingTerms, []);
+});
+
+test("testing strategy maps every portable validation surface", () => {
+  const testingStrategy = readFileSync("docs/testing-strategy.md", "utf8");
+  const validationSurfaces = [
+    "## Validation Routes",
+    "| Concern | Run Or Inspect | Does Not Prove |",
+    "Local portable gate",
+    "Hosted PR check-rollup",
+    "Documentation navigation drift",
+    "Source hygiene and raw-data mistakes",
+    "Native or release evidence readiness",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "prototype/test/prototype.test.mjs",
+    "prototype/scripts/check-docs.mjs",
+    "prototype/scripts/placeholder-scan.mjs",
+    "VALIDATION.md",
+  ];
+  const missingSurfaces = validationSurfaces.filter((filePath) =>
+    !testingStrategy.includes(filePath),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+});
+
+test("validation history distinguishes historical CI blockers from current PR state", () => {
+  const validation = readFileSync("VALIDATION.md", "utf8");
+  const requiredEntries = [
+    "Historical PR #7 Runner-Startup Blocker",
+    "historical PR #7",
+    "PR #23",
+    "609b48c",
+    "github-actions-green-pr23-609b48c-2026-05-29",
+    "release-evidence-ci-head-609b48c-2026-05-29",
+    "hostedPortableCiSatisfied: true",
+    "repository ruleset/admin policy, not a CI or check-rollup failure",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !validation.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(validation.includes("PR #7 is the current draft PR"), false);
+});
+
+test("validation history points TFHE readers to the current native artifact", () => {
+  const validation = readFileSync("VALIDATION.md", "utf8");
+  const requiredEntries = [
+    "### TFHE-rs Native Run And Artifact",
+    "tfhe-rs-alpha-lane-framing-2026-05-29",
+    "benchmark-artifacts/comparisons/tfhe-rs/runs/tfhe-rs-alpha-lane-framing-2026-05-29.json",
+    '"rssBytes": 259096576',
+    '"latencyMs": 5900.8',
+    "research-alpha TFHE-rs native lane only",
+    "The runnable dependency-free research-alpha scaffold uses educational additive HE only.",
+    "use it only as a research-alpha comparison record.",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !validation.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(validation.includes("prototype is still research-grade"), false);
+  assert.equal(validation.includes("research-grade comparison record"), false);
+});
+
+test("troubleshooting guide routes common repo blockers without weakening caveats", () => {
+  const troubleshooting = readFileSync("docs/troubleshooting.md", "utf8");
+  const requiredEntries = [
+    "## Troubleshooting Routes",
+    "| Symptom | Check First | Record Or Route |",
+    "## Blocker Record Fields",
+    "| Field | Capture | Why It Matters |",
+    "Command attempted",
+    "Observed error or check conclusion",
+    "Smallest next step",
+    "Evidence boundary",
+    "Affected artifact or PR",
+    "Local portable gate fails",
+    "Hosted CI is green but PR is blocked",
+    "Native OpenFHE or TFHE-rs command fails",
+    "Dataset path is missing or malformed",
+    "Release evidence looks green but gate is false",
+    "PATH=\"/opt/homebrew/bin:$PATH\" npm run ci",
+    "Node.js 22",
+    "gh pr checks",
+    "gh pr view <number> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "reviewed head SHA",
+    "repository ruleset/admin policy",
+    "OpenFHEConfig.cmake not found",
+    "Train/",
+    "Test/",
+    "raw datasets must remain outside git",
+    "exact command, error, and smallest next step",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !troubleshooting.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(
+    troubleshooting.includes("gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup"),
+    false,
+  );
+});
+
+test("dependency matrix lists portable and native setup surfaces", () => {
+  const dependencyMatrix = readFileSync("docs/dependency-matrix.md", "utf8");
+  const requiredSurfaces = [
+    "## Dependency Routes",
+    "| Need | Start With | Do Not Treat As |",
+    "Portable local validation",
+    "Hosted CI check-rollup",
+    "Native OpenFHE or TFHE-rs reproduction",
+    "Public dataset or real-data baseline refresh",
+    "Release dependency review",
+    ".node-version",
+    ".nvmrc",
+    "package.json",
+    ".github/dependabot.yml",
+    ".github/workflows/ci.yml",
+    "prototype/openfhe/",
+    "prototype/openfhe-ckks/",
+    "prototype/tfhe-rs/",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "scaffold contracts",
+  ];
+  const missingSurfaces = requiredSurfaces.filter((filePath) =>
+    !dependencyMatrix.includes(filePath),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+  assert.equal(dependencyMatrix.includes("prototype contracts"), false);
+});
+
+test("data handling guide lists dataset and artifact boundary surfaces", () => {
+  const dataGuide = readFileSync("docs/data-handling.md", "utf8");
+  const requiredSurfaces = [
+    "## Data Routes",
+    "| Data-Adjacent Need | Start With | Keep Out Of Git |",
+    "Raw dataset, signal, partner, or private payload",
+    "Derived plaintext baseline artifact",
+    "Native input contract or comparison artifact",
+    "Unavailable dataset, dependency, hosted CI, or release-machine input",
+    "Repository hygiene evidence",
+    ".gitattributes",
+    ".gitignore",
+    "prototype/scripts/placeholder-scan.mjs",
+    "benchmark-artifacts/repo-hygiene/latest.json",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json",
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/",
+    "privacyBoundary",
+    "productionClaim: false",
+  ];
+  const missingSurfaces = requiredSurfaces.filter((filePath) =>
+    !dataGuide.includes(filePath),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+});
+
+test("repository tooling preserves normalization and ignore boundaries", () => {
+  const gitattributes = readFileSync(".gitattributes", "utf8");
+  const gitignore = readFileSync(".gitignore", "utf8");
+  const editorconfig = readFileSync(".editorconfig", "utf8");
+  const requiredEntries = [
+    "* text=auto eol=lf",
+    "*.md text eol=lf",
+    "*.mjs text eol=lf",
+    "*.json text eol=lf",
+    "*.yml text eol=lf",
+    "*.pdf binary",
+    "*.docx binary",
+    ".env",
+    ".env.*",
+    "*.log",
+    "coverage/",
+    ".nyc_output/",
+    "node_modules/",
+    "Downloads/",
+    "N-MNIST/",
+    "prototype/tfhe-rs/target/",
+    "end_of_line = lf",
+    "insert_final_newline = true",
+  ];
+  const combined = [gitattributes, gitignore, editorconfig].join("\n");
+  const missingEntries = requiredEntries.filter((entry) =>
+    !combined.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("claim evidence ledger maps every weak-claim area to evidence and caveats", () => {
+  const weakClaims = readFileSync(
+    "patent/briefing/ENER_weak_claims_evidence_gaps.md",
+    "utf8",
+  );
+  const claimLedger = readFileSync("docs/claim-evidence-ledger.md", "utf8");
+  const weakClaimAreas = weakClaims
+    .split("\n")
+    .filter((line) => line.startsWith("| ") && !line.includes("---"))
+    .map((line) => line.split("|")[1].trim())
+    .filter((area) => area !== "Area");
+  const requiredSurfaces = [
+    ...weakClaimAreas,
+    "benchmark-artifacts/release-evidence/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+    "benchmark-artifacts/reconstruction-risk/latest.json",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyProofClaim: false",
+  ];
+  const missingSurfaces = requiredSurfaces.filter((item) =>
+    !claimLedger.includes(item),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+});
+
+test("ENER weak-claims note reflects current native FHE evidence posture", () => {
+  const weakClaims = readFileSync(
+    "patent/briefing/ENER_weak_claims_evidence_gaps.md",
+    "utf8",
+  );
+  const requiredEntries = [
+    "benchmark-artifacts/native-evidence/latest.json",
+    "research-alpha repository snapshot",
+    "research-alpha package validation",
+    "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+    "openfhe-ckks-eeg-eye-state-2026-05-21",
+    "tfhe-rs-alpha-lane-framing-2026-05-29",
+    "dependencyDetection.available: true",
+    "real-native-run",
+    "native measurement coverage",
+    "measurement gap index",
+    "ciphertext byte measurements",
+    "RSS or peak-memory measurements",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !weakClaims.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(weakClaims.includes("Current local blocker"), false);
+  assert.equal(weakClaims.includes("OpenFHEConfig.cmake not found"), false);
+  assert.equal(weakClaims.includes("TFHE-rs remains the currently runnable real-library lane"), false);
+  assert.equal(weakClaims.includes("once OpenFHE is installed"), false);
+  assert.equal(weakClaims.includes("beyond a\nresearch prototype"), false);
+  assert.equal(weakClaims.includes("research-grade prototype"), false);
+});
+
+test("evidence guide routes evidence review without upgrading claims", () => {
+  const evidenceGuide = readFileSync("docs/evidence-guide.md", "utf8");
+  const requiredEntries = [
+    "## Review Routes",
+    "| Need | Start With | Then Use |",
+    "Artifact mechanics",
+    "Claim discipline",
+    "Release posture",
+    "Repository decisions",
+    "benchmark-artifacts/README.md",
+    "docs/data-handling.md",
+    "docs/claim-evidence-ledger.md",
+    "docs/release-gate-matrix.md",
+    "docs/evidence-dashboard.md",
+    "docs/operations-runbook.md",
+    "support scoped research-alpha scaffold statements",
+    "production cryptography",
+    "identity-protection",
+    "stable-performance claims",
+    "| Synthetic scaffold |",
+    "current research-alpha sparse-event contract",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !evidenceGuide.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(evidenceGuide.includes("current prototype contract"), false);
+  assert.equal(evidenceGuide.includes("support scoped prototype statements"), false);
+  assert.equal(evidenceGuide.includes("| Synthetic prototype |"), false);
+});
+
+test("evidence dashboard summarizes release gate status without upgrading claims", () => {
+  const dashboard = readFileSync("docs/evidence-dashboard.md", "utf8");
+  const requiredEntries = [
+    "benchmark-artifacts/release-evidence/latest.json",
+    "release-evidence-ci-head-609b48c-2026-05-29",
+    "## Committed Gate Snapshot",
+    "latest committed release-evidence snapshot",
+    "not a substitute for",
+    "live PR status",
+    "gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "subject.releaseGateSatisfied: false",
+    "subject.gateChecks",
+    "subject.productionClaim: false",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "hostedPortableCi",
+    "repositoryHygiene",
+    "nativeMeasurementCoverage",
+    "metadataLeakage",
+    "reconstructionRisk",
+    "realNmnistBaseline",
+    "tfheRealDataPath",
+    "repository ruleset/admin policy",
+    "not benchmark evidence by itself",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !dashboard.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("FAQ answers common reader questions without upgrading claims", () => {
+  const faq = readFileSync("docs/faq.md", "utf8");
+  const requiredEntries = [
+    "## Question Routes",
+    "| Reader Question | Start With | Then Use |",
+    "Production cryptography or deployment readiness",
+    "Medical, diagnostic, or clinical status",
+    "Evidence strength and real-data artifacts",
+    "Raw data, private payloads, or dataset storage",
+    "Green CI but blocked merge state",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "CC0",
+    "not production cryptography",
+    "not medical",
+    "raw datasets",
+    "toy additive",
+    "real N-MNIST",
+    "repository ruleset/admin policy",
+    "RELEASE.md",
+    "docs/evidence-dashboard.md",
+    "docs/troubleshooting.md",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !faq.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("repository guide maps current reader, maintainer, and GitHub surfaces", () => {
+  const guide = readFileSync("docs/repository-guide.md", "utf8");
+  const requiredEntries = [
+    "## Navigation By Task",
+    "| Task | Start With | Then Use |",
+    "Understand the project",
+    "Run or debug validation",
+    "Check current status or next work",
+    "Review evidence claims",
+    "Prepare release review",
+    "Contribute safely",
+    "docs/status-roadmap.md",
+    "VALIDATION.md",
+    "Detailed File Map",
+    "docs/faq.md",
+    "docs/evidence-dashboard.md",
+    "docs/troubleshooting.md",
+    "CODE_OF_CONDUCT.md",
+    "MAINTAINERS.md",
+    ".github/CODEOWNERS",
+    ".github/dependabot.yml",
+    "grouped dependency-update routing",
+    ".github/ISSUE_TEMPLATE/",
+    ".github/pull_request_template.md",
+    ".github/workflows/ci.yml",
+    "## Change Discipline",
+    "npm run ci",
+    "git diff --check",
+    "structured blocker report",
+    "do not merge, tag, or strengthen release-facing claims",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "repository ruleset/admin policy",
+    "evidence narrative, architecture, and research-alpha roadmap",
+    "scaffold code map for prototype/ entrypoints",
+    "portable scaffold code",
+    "## Scaffold Code",
+    "Important scaffold surfaces",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !guide.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(guide.includes("pitch narrative, architecture, and prototype path"), false);
+  assert.equal(guide.includes("portable prototype code"), false);
+  assert.equal(guide.includes("code navigation map for prototype entrypoints"), false);
+  assert.equal(guide.includes("code navigation map for prototype/ entrypoints"), false);
+  assert.equal(guide.includes("Important prototype surfaces"), false);
+  assert.equal(guide.includes("## Prototype Code"), false);
+  assert.equal(guide.includes("Important prototype/ surfaces"), false);
+});
+
+test("release gate matrix lists every minimum evidence command", () => {
+  const releasePlan = readFileSync("RELEASE.md", "utf8");
+  const releaseMatrix = readFileSync("docs/release-gate-matrix.md", "utf8");
+  const releaseCommands = releasePlan
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("npm run "));
+  const requiredSurfaces = [
+    ...releaseCommands,
+    "benchmark-artifacts/release-evidence/latest.json",
+    "benchmark-artifacts/repo-hygiene/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json",
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/",
+    "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+    "benchmark-artifacts/reconstruction-risk/latest.json",
+    "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "repository ruleset/admin policy",
+  ];
+  const missingSurfaces = requiredSurfaces.filter((item) =>
+    !releaseMatrix.includes(item),
+  );
+
+  assert.deepEqual(missingSurfaces, []);
+});
+
+test("release plan states no-tag gate and approval boundaries", () => {
+  const releasePlan = readFileSync("RELEASE.md", "utf8");
+  const requiredEntries = [
+    "v0.1.0-research-alpha",
+    "diligence-ready public snapshot",
+    "CC0\nresearch-alpha repository",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "repository ruleset/admin policy",
+    "explicit user approval",
+    "docs/release-gate-matrix.md",
+    "docs/evidence-dashboard.md",
+    "benchmark-artifacts/release-evidence/latest.json",
+    "not release approval",
+    "not production cryptography",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !releasePlan.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(releasePlan.includes("research prototype:"), false);
+  assert.equal(releasePlan.includes("Yes:"), false);
+});
+
+test("changelog records unreleased cleanup stack and release caveats", () => {
+  const changelog = readFileSync("CHANGELOG.md", "utf8");
+  const requiredEntries = [
+    "## Unreleased",
+    "v0.1.0-research-alpha",
+    "PR #23",
+    "Portable validation",
+    "repository ruleset/admin policy",
+    "releaseGateSatisfied: false",
+    "explicit user approval",
+    "do not merge, tag, or strengthen release-facing claims",
+    "productionClaim: false",
+    "docs/release-gate-matrix.md",
+    "docs/claim-evidence-ledger.md",
+    "docs/data-handling.md",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !changelog.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("reviewer quickstart maps due diligence entrypoints and caveats", () => {
+  const reviewerGuide = readFileSync("docs/reviewer-quickstart.md", "utf8");
+  const requiredEntries = [
+    "## Review Routes",
+    "| Review Need | Start With | Then Confirm |",
+    "First-pass repository orientation",
+    "Evidence and release posture",
+    "Local validation or reproducibility",
+    "Sensitive security, raw-data, or private-payload concern",
+    "Green CI but blocked merge",
+    "README.md",
+    "CHANGELOG.md",
+    "VALIDATION.md",
+    "RELEASE.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "docs/status-roadmap.md",
+    "docs/faq.md",
+    "docs/release-gate-matrix.md",
+    "docs/claim-evidence-ledger.md",
+    "docs/maintainer-checklist.md",
+    "docs/operations-runbook.md",
+    ".github/pull_request_template.md",
+    ".github/ISSUE_TEMPLATE/",
+    "benchmark-artifacts/release-evidence/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "npm run validate",
+    "privacyBoundary",
+    "cryptoInventory",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "exact command",
+    "smallest next step",
+    "repository ruleset/admin policy",
+    "Confirm the live head, check rollup, and merge",
+    "policy before treating the PR as ready",
+    "gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !reviewerGuide.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("architecture decision log records repository boundary decisions", () => {
+  const decisionLog = readFileSync("docs/architecture-decisions.md", "utf8");
+  const requiredEntries = [
+    "## Decision Routes",
+    "| Decision Area | Start With | Do Not Change Without |",
+    "License and public-domain posture",
+    "Claim, release, or production boundary",
+    "Privacy, crypto inventory, or artifact metadata",
+    "Research-alpha scaffold versus native FHE lane",
+    "Raw-data and repository hygiene boundary",
+    "Hosted CI versus repository-policy boundary",
+    "CC0",
+    "research-alpha",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "bio-digital event intelligence",
+    "toy additive scaffold code",
+    "native OpenFHE",
+    "TFHE-rs",
+    "raw data outside git",
+    "repository ruleset/admin policy",
+    "releaseGateSatisfied: false",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !decisionLog.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(decisionLog.includes("Toy prototype versus native FHE lane"), false);
+  assert.equal(decisionLog.includes("Keep raw data stays outside git"), false);
+});
+
+test("operations runbook maps maintainer commands and blocker policy", () => {
+  const runbook = readFileSync("docs/operations-runbook.md", "utf8");
+  const requiredEntries = [
+    "## Situation Routes",
+    "| Situation | First Action | Record Or Escalate In |",
+    "PR checks need review",
+    "Hosted CI is green but merge is blocked",
+    "Evidence artifacts need refresh",
+    "Command, dependency, dataset, or hosted check cannot run",
+    "npm run validate",
+    "git diff --check",
+    "gh pr view <number> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "Portable validation",
+    "reviewed head SHA",
+    "benchmark-artifacts/ci-blockers/latest.json",
+    "npm run native:doctor -- --artifact",
+    "npm run release:evidence -- --artifact",
+    "npm run scan:hygiene -- --artifact",
+    "exact command, error, and smallest next step",
+    "repository ruleset/admin policy",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "RELEASE.md",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !runbook.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("root README keeps first-read navigation role based", () => {
+  const readme = readFileSync("README.md", "utf8");
+  const requiredEntries = [
+    "CC0 research-alpha repository",
+    "privacy-preserving event intelligence",
+    "## First Paths",
+    "## Current Status",
+    "| Status Item | Current Posture | Confirm In |",
+    "New reviewer",
+    "Contributor",
+    "Maintainer",
+    "Evidence reviewer",
+    "Research-alpha release target",
+    "v0.1.0-research-alpha",
+    "Portable validation",
+    "Green on PR #23",
+    "139 passing tests",
+    "Merge state",
+    "repository ruleset/admin policy",
+    "Release gate",
+    "releaseGateSatisfied: false",
+    "Claim boundary",
+    "docs/reviewer-quickstart.md",
+    "docs/developer-quickstart.md",
+    "docs/operations-runbook.md",
+    "docs/evidence-guide.md",
+    "docs/status-roadmap.md",
+    "VALIDATION.md",
+    "benchmark-artifacts/release-evidence/latest.json",
+    "privacyBoundary",
+    "cryptoInventory",
+    "productionClaim: false",
+    "runnable research-alpha scaffold",
+    "## Scaffold Boundary",
+    "The JavaScript scaffold is a portable contract harness",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !readme.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(readme.includes("New readers should begin with"), false);
+  assert.equal(readme.includes("Presentation package"), false);
+  assert.equal(readme.includes("## Prototype Boundary"), false);
+  assert.equal(readme.includes("The JavaScript prototype is a portable contract harness"), false);
+  assert.equal(readme.includes("The runnable prototype demonstrates"), false);
+  assert.equal(readme.includes("The current prototype is about"), false);
+});
+
+test("browser briefing deck keeps research-alpha evidence framing", () => {
+  const browserBriefing = readFileSync("index.html", "utf8");
+  const requiredEntries = [
+    "NeuroFHE Relay Briefing Deck",
+    "first test and bound compact encrypted event inference locally",
+    "The current research-alpha scaffold classifies a synthetic 8 by 8 event window",
+    "It is deliberately small, research-alpha, and honest about what the compute side can still see.",
+    "Make one evidence package strong enough to decide the project.",
+    "review package",
+    "Do not claim quantum-proof production security before real libraries and review.",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !browserBriefing.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(browserBriefing.includes("first prove compact encrypted event inference locally"), false);
+  assert.equal(browserBriefing.includes("The current prototype classifies"), false);
+  assert.equal(browserBriefing.includes("It is research-grade"), false);
+  assert.equal(browserBriefing.includes("Make one proof strong enough to decide the project."), false);
+  assert.equal(browserBriefing.includes("pilot package"), false);
+});
+
+test("root README keeps repository layout concise", () => {
+  const readme = readFileSync("README.md", "utf8");
+  const requiredEntries = [
+    "## Repository Layout",
+    "PACKAGE_MANIFEST.md",
+    "docs/",
+    "prototype/",
+    "Portable scaffold code, test suite, artifact publishers, and native lane adapters.",
+    "benchmark-artifacts/",
+    "patent/",
+    ".github/",
+    "Root policy files",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !readme.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(readme.includes("## Package Contents"), false);
+  assert.equal(readme.includes("Portable demo code, test suite"), false);
+});
+
+test("root README keeps command surface concise", () => {
+  const readme = readFileSync("README.md", "utf8");
+  const requiredEntries = [
+    "## Quick Commands",
+    "npm run ci",
+    "git diff --check",
+    "npm run demo",
+    "npm run gateway:demo",
+    "npm run benchmark:artifact",
+    "npm run release:evidence -- --artifact",
+    "docs/command-reference.md",
+    "RELEASE.md",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !readme.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(readme.includes("## Desk Demo"), false);
+  assert.equal(readme.includes("Run the real OpenFHE BFVrns C++ demo"), false);
+});
+
+test("prototype README stays a concise entrypoint instead of a command wall", () => {
+  const prototypeReadme = readFileSync("prototype/README.md", "utf8");
+  const requiredEntries = [
+    "# NeuroFHE Relay Scaffold",
+    "## Scaffold Routes",
+    "| Goal | Start With | Confirm Or Continue In |",
+    "Validate portable contract",
+    "Run the toy scorer or gateway",
+    "Publish derived artifacts",
+    "Work on native lanes",
+    "Work on real-data baselines",
+    "Review release evidence",
+    "## First Commands",
+    "## Evidence Boundaries",
+    "../docs/prototype-map.md",
+    "../docs/command-reference.md",
+    "../docs/troubleshooting.md",
+    "../benchmark-artifacts/README.md",
+    "npm run demo",
+    "npm run gateway:demo",
+    "npm run benchmark:artifact",
+    "npm run validate",
+    "npm run native:doctor",
+    "npm run release:evidence -- --artifact",
+    "../docs/data-handling.md",
+    "../docs/release-gate-matrix.md",
+    "toy additive",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "native OpenFHE",
+    "TFHE-rs",
+    "raw datasets",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !prototypeReadme.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(prototypeReadme.includes("# NeuroFHE Relay Prototype"), false);
+  assert.equal(prototypeReadme.includes("## Prototype Routes"), false);
+  assert.equal(prototypeReadme.includes("prototype artifact as release evidence"), false);
+  assert.equal(prototypeReadme.includes("Current modules:"), false);
+  assert.equal(prototypeReadme.includes("Print the real OpenFHE BFVrns integration plan"), false);
+});
+
+test("plaintext baseline note routes real-data evidence and caveats", () => {
+  const baselineNote = readFileSync("prototype/PLAINTEXT_BASELINE.md", "utf8");
+  const requiredEntries = [
+    "docs/command-reference.md",
+    "docs/data-handling.md",
+    "docs/evidence-dashboard.md",
+    "docs/release-gate-matrix.md",
+    "benchmark-artifacts/README.md",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "raw public datasets stay outside git",
+    "not encrypted-compute evidence",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !baselineNote.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(baselineNote.includes("first real-event-data lane"), false);
+});
+
+test("TFHE-rs integration note routes native evidence and blockers", () => {
+  const tfheNote = readFileSync("prototype/TFHE_RS_INTEGRATION.md", "utf8");
+  const requiredEntries = [
+    "docs/command-reference.md",
+    "docs/dependency-matrix.md",
+    "docs/evidence-dashboard.md",
+    "docs/release-gate-matrix.md",
+    "benchmark-artifacts/README.md",
+    "benchmark-artifacts/comparisons/tfhe-rs/latest.json",
+    "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "TFHE-rs real-data path remains blocked",
+    "single local synthetic run",
+    "not stable performance",
+    "native measurement gaps",
+    "research-alpha native comparison lane",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !tfheNote.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(tfheNote.includes("OpenFHE not installed on this machine"), false);
+  assert.equal(tfheNote.includes("requires local OpenFHE run"), false);
+  assert.equal(tfheNote.includes("Current Synthetic Result"), false);
+  assert.equal(tfheNote.includes("research and educational prototype"), false);
+});
+
+test("development guide preserves setup, evidence, and release boundaries", () => {
+  const development = readFileSync("DEVELOPMENT.md", "utf8");
+  const requiredEntries = [
+    "CC0 research-alpha repository",
+    "privacy-preserving event intelligence",
+    "## Development Routes",
+    "| Need | Start With | Keep In View |",
+    "First local validation",
+    "Docs or navigation change",
+    "Native FHE lane work",
+    "Real-data or artifact work",
+    "Release-readiness review",
+    "docs/developer-quickstart.md",
+    "docs/command-reference.md",
+    "docs/troubleshooting.md",
+    "docs/release-gate-matrix.md",
+    "docs/evidence-dashboard.md",
+    "benchmark-artifacts/release-evidence/latest.json",
+    "benchmark-artifacts/native-evidence/latest.json",
+    "benchmark-artifacts/repo-hygiene/latest.json",
+    "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    "real public N-MNIST plaintext baseline",
+    "repository ruleset/admin policy",
+    "releaseGateSatisfied: false",
+    "productionClaim: false",
+    "privacyBoundary",
+    "cryptoInventory",
+    "raw datasets",
+    "OpenFHE",
+    "TFHE-rs",
+    "exact command, error, and smallest next step",
+    "structured blocker report",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !development.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+});
+
+test("developer quickstart routes common change types to focused validation", () => {
+  const quickstart = readFileSync("docs/developer-quickstart.md", "utf8");
+  const requiredEntries = [
+    "## First Contribution Loop",
+    "Pick the matching row in `Change Routes` before editing.",
+    "Run the focused command for the touched surface while you work.",
+    "record the exact command, error, and smallest next",
+    "## Change Routes",
+    "| Goal | Start With | Confirm Before PR |",
+    "Small docs cleanup",
+    "Scaffold or gateway behavior",
+    "Artifact or real-data update",
+    "Native dependency work",
+    "Release-readiness or PR-policy review",
+    "## Validation By Change Type",
+    "| Change Type | Run First | Then Run |",
+    "Docs-only navigation or wording",
+    "npm run check:docs",
+    "Scaffold library or artifact behavior",
+    "npm test -- --test-name-pattern",
+    "GitHub Actions or repository policy",
+    "gh pr checks",
+    "gh pr view <number> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "reviewed head SHA",
+    "Benchmark, dataset, native lane, or release evidence",
+    "temporary directory",
+    "docs/data-handling.md",
+    "docs/release-gate-matrix.md",
+    "docs/operations-runbook.md",
+    "productionClaim: false",
+    "releaseGateSatisfied: false",
+    "npm run ci",
+    "git diff --check",
+  ];
+  const missingEntries = requiredEntries.filter((entry) =>
+    !quickstart.includes(entry),
+  );
+
+  assert.deepEqual(missingEntries, []);
+  assert.equal(quickstart.includes("Prototype or gateway behavior"), false);
+  assert.equal(quickstart.includes("Prototype library or artifact behavior"), false);
+  assert.equal(
+    quickstart.includes("gh pr view <number> --json mergeable,mergeStateStatus,statusCheckRollup"),
+    false,
+  );
+});
+
+test("GitHub Actions CI workflow runs automatically for pushes and pull requests", () => {
+  const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
+
+  assert.match(workflow, /^\s*workflow_dispatch:\s*$/m);
+  assert.match(workflow, /^\s*push:\s*$/m);
+  assert.match(workflow, /^\s*pull_request:\s*$/m);
+});
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function listFilesRecursive(dir) {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const path = `${dir}/${entry.name}`;
+    if (entry.isDirectory()) return listFilesRecursive(path);
+    if (!entry.isFile()) return [];
+    return [path];
+  });
+}
+
+function listTrackedTopLevelEntries() {
+  const trackedFiles = listTrackedFiles();
+  const topLevel = new Map();
+  for (const filePath of trackedFiles) {
+    const [entry, ...rest] = filePath.split("/");
+    topLevel.set(entry, rest.length > 0 ? `${entry}/` : entry);
+  }
+
+  return [...topLevel.values()].sort();
+}
+
+function listTrackedFiles(prefix) {
+  const result = spawnSync("git", ["ls-files"], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr);
+
+  return result.stdout
+    .trim()
+    .split("\n")
+    .filter(Boolean)
+    .filter((filePath) => !prefix || filePath === prefix || filePath.startsWith(`${prefix}/`));
+}
+
+function listTrackedDirectories(prefix) {
+  const directories = new Set();
+  for (const filePath of listTrackedFiles(prefix)) {
+    const parts = filePath.split("/");
+    for (let index = 1; index < parts.length; index += 1) {
+      directories.add(parts.slice(0, index).join("/"));
+    }
+  }
+
+  return [...directories].sort();
+}
+
+test("GitHub Actions CI workflow uses Node 24-ready action majors", () => {
+  const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
+
+  assert.match(workflow, /uses:\s*actions\/checkout@v6\b/);
+  assert.match(workflow, /uses:\s*actions\/setup-node@v6\b/);
+  assert.match(workflow, /uses:\s*actions\/upload-artifact@v7\b/);
+});
+
 test("release evidence index summarizes blocker, hygiene, native, and privacy evidence without satisfying the gate", () => {
+  const artifacts = new Map([
+    [
+      "benchmark-artifacts/ci-blockers/latest.json",
+      {
+        schema: "neurofhe.ciBlocker.v1",
+        artifactId: "ci-blocker-test",
+        observedRepositoryState: {
+          openPullRequests: [
+            {
+              number: 17,
+              title: "Define discreet spike sorting proof gate",
+              mergeStateStatus: "BLOCKED",
+            },
+            {
+              number: 22,
+              title: "Add real N-MNIST release evidence",
+              mergeStateStatus: "CLEAN",
+            },
+          ],
+        },
+        workflowState: {
+          currentTrigger: "workflow_dispatch",
+          automaticPullRequestTriggersEnabled: false,
+        },
+        blocker: {
+          isCodeFailure: false,
+        },
+        reason: "workflow remains manual-only",
+        releaseGateSatisfied: false,
+        smallestNextStep: "Run or manually dispatch portable CI on the release-validation PR.",
+        productionClaim: false,
+      },
+    ],
+    [
+      "benchmark-artifacts/repo-hygiene/latest.json",
+      {
+        schema: "neurofhe.repositoryHygieneScan.v1",
+        artifactId: "repo-hygiene-test",
+        result: "pass",
+        findingsCount: 0,
+        productionClaim: false,
+      },
+    ],
+    [
+      "benchmark-artifacts/native-evidence/latest.json",
+      {
+        schema: "neurofhe.nativeEvidenceArtifact.v1",
+        artifactId: "native-evidence-test",
+        subjectSchema: "neurofhe.nativeEvidence.manifest.v1",
+        productionClaim: false,
+        subject: {
+          summary: {
+            laneCount: 3,
+            realNativeRunCount: 3,
+            measurementCoverage: {
+              ciphertextBytesReportedCount: 1,
+              ciphertextBytesPartialCount: 1,
+              ciphertextBytesMissingCount: 1,
+              rssOrPeakMemoryReportedCount: 0,
+              rssOrPeakMemoryPartialCount: 1,
+              rssOrPeakMemoryMissingCount: 2,
+            },
+            measurementGaps: {
+              schema: "neurofhe.nativeEvidence.measurementGapIndex.v1",
+              gapCount: 5,
+              lanes: [
+                {
+                  laneId: "openfhe-bfvrns",
+                  missingMeasurements: ["ciphertextBytes", "rssOrPeakMemory"],
+                  partialMeasurements: [],
+                },
+              ],
+            },
+          },
+          releaseUse: {
+            releaseGateSatisfied: false,
+            reason: "Native evidence is indexed but not sufficient by itself.",
+          },
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+      {
+        schema: "neurofhe.privacyModeAblationArtifact.v1",
+        artifactId: "privacy-test",
+        subjectSchema: "neurofhe.metadataPaddingAblation.v1",
+        productionClaim: false,
+        subject: {
+          metadataLeakageSummary: {
+            metric: "documented-observable-category-count",
+            highestExposureMode: "public-active-neuron-positions-encrypted-features",
+            lowestExposureMode: "dense-encrypted-windows",
+          },
+          caveats: [
+            "Taxonomy count only; not mutual information, anonymity, side-channel, or reconstruction-resistance proof.",
+          ],
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/reconstruction-risk/latest.json",
+      {
+        schema: "neurofhe.reconstructionRiskArtifact.v1",
+        artifactId: "reconstruction-risk-test",
+        subjectSchema: "neurofhe.reconstructionRiskProbes.v1",
+        productionClaim: false,
+        subject: {
+          privacyProofClaim: false,
+          summary: {
+            rawPayloadReplay: { status: "blocked" },
+            activeValueRecovery: { status: "blocked" },
+            publicPositionLinkage: {
+              status: "residual-risk",
+              leakageSignals: ["public active neuron positions"],
+            },
+          },
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json",
+      {
+        schema: "neurofhe.plaintextBaselineArtifact.v1",
+        artifactId: "nmnist-local-blocker-test",
+        subjectSchema: "neurofhe.plaintextBaseline.unavailable.v1",
+        evidenceClass: "real-public-dataset-blocker-report",
+        productionClaim: false,
+        subject: {
+          schema: "neurofhe.plaintextBaseline.unavailable.v1",
+          datasetKind: "public-nmnist-local-copy",
+          isRealDataset: true,
+          blocker: {
+            reason: "N-MNIST Train directory is missing.",
+            datasetRoot: "/tmp/N-MNIST",
+          },
+          attemptedCommand:
+            "npm run baseline:plaintext -- --dataset /tmp/N-MNIST --limit-per-class 10 --grid-size 8 --time-bins 4 --window-us 105000",
+          smallestNextStep:
+            "Download and extract the public N-MNIST Train and Test directories outside git, then rerun the attempted command with --artifact.",
+          productionClaim: false,
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+      {
+        schema: "neurofhe.comparisonArtifact.v1",
+        artifactId: "tfhe-realdata-blocker-test",
+        subjectSchema: "neurofhe.tfheRs.realDataUnavailable.v1",
+        productionClaim: false,
+        subject: {
+          schema: "neurofhe.tfheRs.realDataUnavailable.v1",
+          inputContract: {
+            datasetKind: "public-uci-eeg-eye-state-arff",
+            scoreDomain: "approximate-real",
+          },
+          blocker: {
+            category: "unsupported-real-data-input-contract",
+            reason: "TFHE-rs real-data adapter is not implemented.",
+          },
+          smallestNextStep:
+            "Add an integer/Boolean TFHE-rs adapter for EEG-derived sparse contracts.",
+          productionClaim: false,
+        },
+      },
+    ],
+  ]);
+
+  const index = buildReleaseEvidenceIndex({
+    generatedAt: "2026-05-26T21:00:00.000Z",
+    artifactReader: (path) => artifacts.get(path),
+  });
+
+  assert.equal(index.schema, "neurofhe.releaseEvidenceIndex.v1");
+  assert.equal(index.releaseTarget, "v0.1.0-research-alpha");
+  assert.equal(index.releaseGateSatisfied, false);
+  assert.equal(index.productionClaim, false);
+  assert.equal(index.gateChecks.hostedPortableCi.status, "blocked");
+  assert.equal(index.gateChecks.hostedPortableCi.openPullRequestCount, 2);
+  assert.equal(index.gateChecks.hostedPortableCi.workflowTrigger, "workflow_dispatch");
+  assert.equal(index.gateChecks.hostedPortableCi.isCodeFailure, false);
+  assert.equal(index.gateChecks.repositoryHygiene.status, "pass");
+  assert.equal(index.gateChecks.nativeMeasurementCoverage.status, "incomplete");
+  assert.equal(index.gateChecks.nativeMeasurementCoverage.measurementGapCount, 5);
+  assert.equal(index.gateChecks.metadataLeakage.status, "caveated");
+  assert.equal(index.gateChecks.reconstructionRisk.status, "caveated");
+  assert.equal(index.gateChecks.realNmnistBaseline.status, "blocked");
+  assert.equal(index.gateChecks.realNmnistBaseline.artifactId, "nmnist-local-blocker-test");
+  assert.match(index.gateChecks.realNmnistBaseline.smallestNextStep, /Download and extract/);
+  assert.equal(index.gateChecks.tfheRealDataPath.status, "blocked");
+  assert.equal(index.gateChecks.tfheRealDataPath.artifactId, "tfhe-realdata-blocker-test");
+  assert.deepEqual(
+    index.sourceArtifacts.map((artifact) => artifact.path),
+    [
+      "benchmark-artifacts/ci-blockers/latest.json",
+      "benchmark-artifacts/repo-hygiene/latest.json",
+      "benchmark-artifacts/native-evidence/latest.json",
+      "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+      "benchmark-artifacts/reconstruction-risk/latest.json",
+      "benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json",
+      "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+    ],
+  );
+  assert.equal(index.sourceArtifacts.every((artifact) => artifact.productionClaim === false), true);
+  assert.match(index.nextReleaseStep, /manually dispatch/);
+});
+
+test("release evidence index prefers real N-MNIST baseline over stale blocker", () => {
   const artifacts = new Map([
     [
       "benchmark-artifacts/ci-blockers/latest.json",
@@ -924,14 +3292,10 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
               ciphertextBytesReportedCount: 1,
               ciphertextBytesPartialCount: 1,
               ciphertextBytesMissingCount: 1,
-              rssOrPeakMemoryReportedCount: 0,
+              rssOrPeakMemoryReportedCount: 1,
               rssOrPeakMemoryPartialCount: 1,
-              rssOrPeakMemoryMissingCount: 2,
+              rssOrPeakMemoryMissingCount: 1,
             },
-          },
-          releaseUse: {
-            releaseGateSatisfied: false,
-            reason: "Native evidence is indexed but not sufficient by itself.",
           },
         },
       },
@@ -949,38 +3313,167 @@ test("release evidence index summarizes blocker, hygiene, native, and privacy ev
             highestExposureMode: "public-active-neuron-positions-encrypted-features",
             lowestExposureMode: "dense-encrypted-windows",
           },
-          caveats: [
-            "Taxonomy count only; not mutual information, anonymity, side-channel, or reconstruction-resistance proof.",
-          ],
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/reconstruction-risk/latest.json",
+      {
+        schema: "neurofhe.reconstructionRiskArtifact.v1",
+        artifactId: "reconstruction-risk-test",
+        subjectSchema: "neurofhe.reconstructionRiskProbes.v1",
+        productionClaim: false,
+        subject: {
+          privacyProofClaim: false,
+          summary: {
+            rawPayloadReplay: { status: "blocked" },
+            activeValueRecovery: { status: "blocked" },
+            publicPositionLinkage: { status: "residual-risk" },
+          },
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+      {
+        schema: "neurofhe.plaintextBaselineArtifact.v1",
+        artifactId: "nmnist-real-test",
+        subjectSchema: "neurofhe.plaintextBaseline.v1",
+        evidenceClass: "real-public-dataset-plaintext-baseline",
+        productionClaim: false,
+        subject: {
+          schema: "neurofhe.plaintextBaseline.v1",
+          metrics: {
+            accuracy: 0.66,
+            total: 100,
+          },
+          source: {
+            datasetKind: "public-nmnist-local-copy",
+            isRealDataset: true,
+            limitPerClass: 10,
+          },
+          productionClaim: false,
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json",
+      {
+        schema: "neurofhe.plaintextBaselineArtifact.v1",
+        artifactId: "nmnist-local-blocker-test",
+        subjectSchema: "neurofhe.plaintextBaseline.unavailable.v1",
+        productionClaim: false,
+        subject: {
+          schema: "neurofhe.plaintextBaseline.unavailable.v1",
+          datasetKind: "public-nmnist-local-copy",
+          blocker: { reason: "stale blocker" },
+          productionClaim: false,
+        },
+      },
+    ],
+    [
+      "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
+      {
+        schema: "neurofhe.comparisonArtifact.v1",
+        artifactId: "tfhe-realdata-blocker-test",
+        subjectSchema: "neurofhe.tfheRs.realDataUnavailable.v1",
+        productionClaim: false,
+        subject: {
+          schema: "neurofhe.tfheRs.realDataUnavailable.v1",
+          blocker: { reason: "TFHE-rs real-data adapter is not implemented." },
+          productionClaim: false,
         },
       },
     ],
   ]);
 
   const index = buildReleaseEvidenceIndex({
-    generatedAt: "2026-05-26T21:00:00.000Z",
+    generatedAt: "2026-05-28T18:20:00.000Z",
     artifactReader: (path) => artifacts.get(path),
   });
 
-  assert.equal(index.schema, "neurofhe.releaseEvidenceIndex.v1");
-  assert.equal(index.releaseTarget, "v0.1.0-research-alpha");
-  assert.equal(index.releaseGateSatisfied, false);
-  assert.equal(index.productionClaim, false);
-  assert.equal(index.gateChecks.hostedPortableCi.status, "blocked");
-  assert.equal(index.gateChecks.repositoryHygiene.status, "pass");
-  assert.equal(index.gateChecks.nativeMeasurementCoverage.status, "incomplete");
-  assert.equal(index.gateChecks.metadataLeakage.status, "caveated");
-  assert.deepEqual(
-    index.sourceArtifacts.map((artifact) => artifact.path),
+  assert.equal(index.gateChecks.realNmnistBaseline.status, "pass");
+  assert.equal(index.gateChecks.realNmnistBaseline.artifactId, "nmnist-real-test");
+  assert.equal(index.gateChecks.realNmnistBaseline.accuracy, 0.66);
+  assert.equal(index.gateChecks.realNmnistBaseline.sampleCount, 100);
+  assert.equal(
+    index.sourceArtifacts.some(
+      (artifact) =>
+        artifact.path ===
+        "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
+    ),
+    true,
+  );
+});
+
+test("release evidence index carries green hosted CI details when check rollup is fixed", () => {
+  const artifacts = new Map([
     [
       "benchmark-artifacts/ci-blockers/latest.json",
-      "benchmark-artifacts/repo-hygiene/latest.json",
-      "benchmark-artifacts/native-evidence/latest.json",
-      "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+      {
+        schema: "neurofhe.hostedCiEvidence.v1",
+        artifactId: "ci-green-test",
+        hostedPortableCiSatisfied: true,
+        releaseGateSatisfied: false,
+        observedRepositoryState: {
+          openPullRequests: [{ number: 23 }],
+        },
+        workflowState: {
+          currentTrigger: "push,pull_request,workflow_dispatch",
+        },
+        blocker: {
+          isCodeFailure: false,
+          currentObservation: "PR #23 has successful hosted CI check runs.",
+        },
+        smallestNextStep:
+          "Use the repository ruleset/admin merge path after review.",
+        productionClaim: false,
+      },
     ],
+  ]);
+
+  const index = buildReleaseEvidenceIndex({
+    generatedAt: "2026-05-29T04:33:30.000Z",
+    artifactReader: (path) => artifacts.get(path),
+  });
+
+  assert.equal(index.releaseGateSatisfied, false);
+  assert.equal(index.gateChecks.hostedPortableCi.status, "pass");
+  assert.equal(
+    index.gateChecks.hostedPortableCi.reason,
+    "PR #23 has successful hosted CI check runs.",
   );
-  assert.equal(index.sourceArtifacts.every((artifact) => artifact.productionClaim === false), true);
-  assert.match(index.nextReleaseStep, /release-validation PR/i);
+  assert.equal(index.gateChecks.hostedPortableCi.openPullRequestCount, 1);
+  assert.equal(
+    index.gateChecks.hostedPortableCi.workflowTrigger,
+    "push,pull_request,workflow_dispatch",
+  );
+  assert.equal(index.gateChecks.hostedPortableCi.isCodeFailure, false);
+  assert.equal(
+    index.gateChecks.hostedPortableCi.smallestNextStep,
+    "Use the repository ruleset/admin merge path after review.",
+  );
+});
+
+test("hosted CI evidence keeps the release gate false when check rollup is green", () => {
+  const artifact = JSON.parse(
+    readFileSync("benchmark-artifacts/ci-blockers/latest.json", "utf8"),
+  );
+
+  assert.equal(artifact.schema, "neurofhe.hostedCiEvidence.v1");
+  assert.equal(artifact.hostedPortableCiSatisfied, true);
+  assert.equal(artifact.releaseGateSatisfied, false);
+  assert.equal(artifact.productionClaim, false);
+  assert.equal(artifact.artifactId, "github-actions-green-pr23-609b48c-2026-05-29");
+  assert.equal(
+    artifact.observedRepositoryState.releaseValidationPullRequest.headSha,
+    "609b48ca59e06b6f832458dd46eed8d0a2816706",
+  );
+  assert.equal(artifact.hostedRuns[0].runId, 26651835164);
+  assert.equal(artifact.hostedRuns[1].runId, 26651832890);
+  assert.match(artifact.localParityValidation.resultSummary, /139 passing tests/);
+  assert.equal(artifact.blocker?.category, "resolved-check-rollup");
+  assert.match(artifact.smallestNextStep, /repository ruleset\/admin merge path/);
 });
 
 test("privacy mode benchmark compares speed against sparsity metadata protection", () => {
@@ -1431,6 +3924,31 @@ test("TFHE-rs integration plan reports cargo commands and native source paths", 
   ]);
 });
 
+test("TFHE-rs real-data blocker records the unsupported input path without replacing synthetic run evidence", () => {
+  const inputPath =
+    "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json";
+  const blocker = buildTfheRsRealDataUnavailableReport({
+    inputPath,
+    inputContract: {
+      schema: "neurofhe.openfhe.inputContract.v1",
+      datasetKind: "public-uci-eeg-eye-state-arff",
+      scoreDomain: "approximate-real",
+      activeEventCount: 32,
+      productionClaim: false,
+    },
+  });
+
+  assert.equal(blocker.schema, "neurofhe.tfheRs.realDataUnavailable.v1");
+  assert.equal(blocker.blocker.category, "unsupported-real-data-input-contract");
+  assert.equal(blocker.inputContract.path, inputPath);
+  assert.equal(blocker.inputContract.datasetKind, "public-uci-eeg-eye-state-arff");
+  assert.equal(blocker.inputContract.scoreDomain, "approximate-real");
+  assert.ok(blocker.attemptedCommand.includes("benchmark:tfhe -- --run --input"));
+  assert.match(blocker.error, /does not yet accept EEG-derived OpenFHE input contracts/);
+  assert.match(blocker.smallestNextStep, /integer\/Boolean TFHE-rs adapter/);
+  assert.equal(blocker.productionClaim, false);
+});
+
 test("comparison artifacts can persist adapter plans for later library runs", async () => {
   const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-comparison-"));
   const published = await publishComparisonArtifact({
@@ -1591,6 +4109,25 @@ test("native evidence manifest classifies real runs and dependency blockers", ()
     rssOrPeakMemoryPartialCount: 1,
     rssOrPeakMemoryMissingCount: 2,
   });
+  assert.equal(manifest.summary.measurementGaps.schema, "neurofhe.nativeEvidence.measurementGapIndex.v1");
+  assert.equal(manifest.summary.measurementGaps.gapCount, 5);
+  assert.deepEqual(
+    manifest.summary.measurementGaps.lanes.map((lane) => [
+      lane.laneId,
+      lane.missingMeasurements,
+      lane.partialMeasurements,
+    ]),
+    [
+      ["openfhe-bfvrns", ["ciphertextBytes", "rssOrPeakMemory"], []],
+      ["openfhe-ckks", [], ["ciphertextBytes", "rssOrPeakMemory"]],
+      ["tfhe-rs", ["rssOrPeakMemory"], []],
+    ],
+  );
+  assert.ok(
+    manifest.summary.measurementGaps.lanes[0].exactCommands.some((command) =>
+      command.includes("benchmark:openfhe"),
+    ),
+  );
   assert.equal(manifest.releaseUse.releaseGateSatisfied, false);
   assert.match(manifest.releaseUse.reason, /not sufficient/i);
   assert.deepEqual(
@@ -1786,6 +4323,8 @@ test("native TFHE-rs source uses real TFHE-rs integer and Boolean APIs", async (
   assert.match(source, /\.gt\(&encrypted_scores\.normal\)/);
   assert.match(source, /FheBool/);
   assert.match(source, /productionClaim/);
+  assert.match(source, /research-alpha TFHE-rs native lane only/);
+  assert.equal(source.includes("TFHE-rs research prototype path only"), false);
 });
 
 test("research assumptions are falsifiable and preserve clean-room guardrails", async () => {
@@ -1796,8 +4335,9 @@ test("research assumptions are falsifiable and preserve clean-room guardrails", 
   const assumptions = JSON.parse(text);
 
   assert.equal(assumptions.schema, "neurofhe.researchAssumptions.v1");
-  assert.ok(assumptions.naming.publicName);
+  assert.equal(assumptions.naming.publicName, "Relay-2 Research Demo");
   assert.ok(!/r2-?d2/i.test(assumptions.naming.publicName));
+  assert.equal(JSON.stringify(assumptions).includes("Diagnostic Demo"), false);
   assert.ok(assumptions.ipGuardrails.cleanRoomOnly);
   assert.ok(assumptions.ipGuardrails.noProprietaryReverseEngineering);
   assert.ok(assumptions.hypotheses.length >= 5);

@@ -1,9 +1,11 @@
 name: CI
 
-# Temporarily manual-only while the repository's GitHub Actions account/billing
-# blocker is resolved. Re-enable push/pull_request triggers after hosted CI can
-# start runners again.
 on:
+  push:
+    branches:
+      - main
+      - "codex/**"
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -19,10 +21,10 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "22"
 
@@ -52,7 +54,7 @@ jobs:
         run: git diff --check
 
       - name: Upload smoke artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: neurofhe-smoke-artifacts
           path: ${{ env.SMOKE_ARTIFACT_DIR }}

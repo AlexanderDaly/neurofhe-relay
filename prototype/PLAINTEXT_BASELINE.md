@@ -1,6 +1,28 @@
 # Plaintext Event-Data Baseline
 
-This is the first real-event-data lane before encrypted computation.
+This note explains the plaintext real-data and fixture baseline lane before
+encrypted computation. It is a supporting note, not the canonical command
+reference or release gate.
+
+## Review Routes
+
+- [docs/command-reference.md](../docs/command-reference.md) owns the maintained
+  command groups.
+- [docs/data-handling.md](../docs/data-handling.md) owns raw-data and
+  derived-artifact boundaries.
+- [docs/evidence-dashboard.md](../docs/evidence-dashboard.md) summarizes the
+  current release-evidence posture.
+- [docs/release-gate-matrix.md](../docs/release-gate-matrix.md) maps release
+  commands to artifacts and caveats.
+- [benchmark-artifacts/README.md](../benchmark-artifacts/README.md) owns the
+  committed artifact directory map.
+
+The current release posture remains `releaseGateSatisfied: false`. Plaintext
+baseline artifacts must preserve `productionClaim: false` when that metadata is
+present, and they do not replace `privacyBoundary` or `cryptoInventory`
+evidence from encrypted-compute artifacts. In short: raw public datasets stay outside git;
+commit only derived metrics, provenance, fixtures, or structured blocker
+reports.
 
 ## Dataset
 
@@ -199,6 +221,9 @@ Current committed examples:
   deterministic format-fixture smoke test.
 - `benchmark-artifacts/plaintext-baselines/nmnist-local-blocker/latest.json`:
   missing-local-dataset blocker for the real public N-MNIST path.
+- `benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json`:
+  sampled real public N-MNIST plaintext baseline derived from a local dataset
+  copy kept outside git.
 - `benchmark-artifacts/plaintext-baselines/eeg-eye-state/latest.json`:
   real public UCI EEG Eye State plaintext baseline. The committed run uses a
   chronological 70/30 split over 14,980 rows, 8x8 sparse latent event windows,

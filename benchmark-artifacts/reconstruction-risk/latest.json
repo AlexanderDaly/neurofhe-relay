@@ -1,0 +1,83 @@
+{
+  "schema": "neurofhe.reconstructionRiskArtifact.v1",
+  "artifactId": "reconstruction-risk-probes-2026-05-27",
+  "generatedAt": "2026-05-27T16:00:00.000Z",
+  "subjectSchema": "neurofhe.reconstructionRiskProbes.v1",
+  "subject": {
+    "schema": "neurofhe.reconstructionRiskProbes.v1",
+    "generatedAt": "2026-05-27T16:00:00.000Z",
+    "measurementBasis": "deterministic gateway policy probes over synthetic sorted-event input with raw sentinel payloads",
+    "boundaryDomain": "bio-digital-event-intelligence",
+    "representation": "spatial-sorted-events",
+    "attackProbes": [
+      {
+        "id": "raw-payload-replay",
+        "target": "raw sample payload and local calibration identifiers",
+        "status": "blocked",
+        "blockedBy": [
+          "gateway payload withholding",
+          "source identifier hashing",
+          "raw payload hash withheld from model-facing event"
+        ],
+        "leakedSentinels": []
+      },
+      {
+        "id": "active-value-recovery",
+        "target": "active sorted-event values in plaintext model-facing fields",
+        "status": "blocked",
+        "plaintextValueCount": 0,
+        "encryptedReferenceCount": 18,
+        "blockedBy": [
+          "active values exported as encrypted references only"
+        ]
+      },
+      {
+        "id": "public-position-linkage",
+        "target": "spatial and timing metadata visible through public active positions",
+        "status": "residual-risk",
+        "leakageSignals": [
+          "public active neuron positions",
+          "coarse timestep buckets",
+          "active event count",
+          "density bucket",
+          "encoder summary"
+        ],
+        "caveat": "This probe records residual metadata visibility; it is not a reconstruction attack success metric."
+      }
+    ],
+    "summary": {
+      "rawPayloadReplay": {
+        "status": "blocked",
+        "leakedSentinels": []
+      },
+      "activeValueRecovery": {
+        "status": "blocked",
+        "plaintextValueCount": 0
+      },
+      "publicPositionLinkage": {
+        "status": "residual-risk",
+        "leakageSignals": [
+          "public active neuron positions",
+          "coarse timestep buckets",
+          "active event count",
+          "density bucket",
+          "encoder summary"
+        ]
+      }
+    },
+    "acceptanceCriteria": [
+      "raw sentinels must not appear in the model-facing event",
+      "active values must not appear in plaintext active positions",
+      "residual public-position linkage must remain explicit until padded or dense modes are tested"
+    ],
+    "caveats": [
+      "Synthetic policy probe only; not a formal reconstruction-resistance proof.",
+      "Does not estimate mutual information, identity leakage, membership inference, or side-channel leakage.",
+      "Public active positions still expose spatial and timing metadata unless padding, batching, or dense windows are selected."
+    ],
+    "smallestNextStep": "Add a real attack harness that attempts raw-window or identity reconstruction across public-position, padded-sparse, and dense-window modes.",
+    "privacyProofClaim": false,
+    "productionClaim": false
+  },
+  "productionClaim": false
+}

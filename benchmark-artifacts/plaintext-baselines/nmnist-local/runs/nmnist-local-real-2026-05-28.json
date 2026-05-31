@@ -1,0 +1,280 @@
+{
+  "schema": "neurofhe.plaintextBaselineArtifact.v1",
+  "artifactId": "nmnist-local-real-2026-05-28",
+  "generatedAt": "2026-05-28T18:15:00.000Z",
+  "subjectSchema": "neurofhe.plaintextBaseline.v1",
+  "evidenceClass": "real-public-dataset-plaintext-baseline",
+  "subject": {
+    "schema": "neurofhe.plaintextBaseline.v1",
+    "dataset": "N-MNIST-compatible-event-records",
+    "classifier": "nearest-centroid-linear",
+    "featureShape": [
+      4,
+      8,
+      8,
+      2
+    ],
+    "matrixShape": [
+      10,
+      512
+    ],
+    "metrics": {
+      "accuracy": 0.66,
+      "correct": 66,
+      "total": 100,
+      "averageActiveEvents": 1420.68,
+      "averageNonZeroFeatures": 137.86,
+      "latencyMs": 19
+    },
+    "confusion": {
+      "0": {
+        "0": 6,
+        "1": 0,
+        "2": 3,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 1,
+        "7": 0,
+        "8": 0,
+        "9": 0
+      },
+      "1": {
+        "0": 0,
+        "1": 10,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0
+      },
+      "2": {
+        "0": 0,
+        "1": 1,
+        "2": 8,
+        "3": 0,
+        "4": 1,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0
+      },
+      "3": {
+        "0": 0,
+        "1": 1,
+        "2": 2,
+        "3": 6,
+        "4": 0,
+        "5": 1,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0
+      },
+      "4": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 9,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 1
+      },
+      "5": {
+        "0": 1,
+        "1": 0,
+        "2": 0,
+        "3": 4,
+        "4": 0,
+        "5": 2,
+        "6": 3,
+        "7": 0,
+        "8": 0,
+        "9": 0
+      },
+      "6": {
+        "0": 0,
+        "1": 1,
+        "2": 1,
+        "3": 0,
+        "4": 1,
+        "5": 1,
+        "6": 6,
+        "7": 0,
+        "8": 0,
+        "9": 0
+      },
+      "7": {
+        "0": 0,
+        "1": 0,
+        "2": 1,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 7,
+        "8": 1,
+        "9": 1
+      },
+      "8": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 2,
+        "4": 0,
+        "5": 0,
+        "6": 1,
+        "7": 0,
+        "8": 5,
+        "9": 2
+      },
+      "9": {
+        "0": 0,
+        "1": 1,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 1,
+        "8": 1,
+        "9": 7
+      }
+    },
+    "operationCounts": {
+      "plaintextDotProducts": 1000,
+      "scalarMultiplies": 512000,
+      "adds": 511000
+    },
+    "privacyBoundary": {
+      "localDeviceSees": [
+        "N-MNIST-compatible event records",
+        "plaintext features"
+      ],
+      "computeSees": [
+        "plaintext baseline only"
+      ],
+      "productionClaim": false
+    },
+    "compressionCurve": {
+      "schema": "neurofhe.plaintextCompressionCurve.v1",
+      "metric": "accuracy-versus-feature-compression",
+      "referenceFeatureShape": [
+        4,
+        8,
+        8,
+        2
+      ],
+      "referenceFeatureCount": 512,
+      "levels": [
+        {
+          "id": "grid-1-time-1",
+          "gridSize": 1,
+          "timeBins": 1,
+          "polarityBins": 2,
+          "featureShape": [
+            1,
+            1,
+            1,
+            2
+          ],
+          "featureCount": 2,
+          "compressionFactorVsReference": 256,
+          "accuracy": 0.2,
+          "correct": 20,
+          "total": 100,
+          "averageActiveEvents": 1420.68,
+          "averageNonZeroFeatures": 2,
+          "plaintextDotProducts": 1000
+        },
+        {
+          "id": "grid-2-time-2",
+          "gridSize": 2,
+          "timeBins": 2,
+          "polarityBins": 2,
+          "featureShape": [
+            2,
+            2,
+            2,
+            2
+          ],
+          "featureCount": 16,
+          "compressionFactorVsReference": 32,
+          "accuracy": 0.51,
+          "correct": 51,
+          "total": 100,
+          "averageActiveEvents": 1420.68,
+          "averageNonZeroFeatures": 15.83,
+          "plaintextDotProducts": 1000
+        },
+        {
+          "id": "grid-4-time-2",
+          "gridSize": 4,
+          "timeBins": 2,
+          "polarityBins": 2,
+          "featureShape": [
+            2,
+            4,
+            4,
+            2
+          ],
+          "featureCount": 64,
+          "compressionFactorVsReference": 8,
+          "accuracy": 0.61,
+          "correct": 61,
+          "total": 100,
+          "averageActiveEvents": 1420.68,
+          "averageNonZeroFeatures": 40.52,
+          "plaintextDotProducts": 1000
+        },
+        {
+          "id": "grid-8-time-4",
+          "gridSize": 8,
+          "timeBins": 4,
+          "polarityBins": 2,
+          "featureShape": [
+            4,
+            8,
+            8,
+            2
+          ],
+          "featureCount": 512,
+          "compressionFactorVsReference": 1,
+          "accuracy": 0.66,
+          "correct": 66,
+          "total": 100,
+          "averageActiveEvents": 1420.68,
+          "averageNonZeroFeatures": 137.86,
+          "plaintextDotProducts": 1000
+        }
+      ],
+      "caveat": "Compression levels change plaintext feature resolution before encryption. This curve is not an encrypted-compute benchmark.",
+      "productionClaim": false
+    },
+    "source": {
+      "schema": "neurofhe.datasetProvenance.v1",
+      "datasetId": "nmnist-local",
+      "datasetKind": "public-nmnist-local-copy",
+      "isRealDataset": true,
+      "datasetRoot": "/Users/alexanderdaly/Downloads/N-MNIST",
+      "trainSplit": "Train",
+      "testSplit": "Test",
+      "limitPerClass": 10,
+      "publicDatasetReference": {
+        "name": "N-MNIST",
+        "url": "https://www.garrickorchard.com/datasets/n-mnist",
+        "doi": "10.17632/468j46mzdv.1",
+        "license": "CC BY 4.0 / CC BY-SA 4.0 references must be reviewed for downstream redistribution"
+      },
+      "preprocessing": "40-bit event records parsed into time-major grid features; coordinates quantized from 34x34 source addresses to the configured grid size."
+    }
+  },
+  "productionClaim": false
+}

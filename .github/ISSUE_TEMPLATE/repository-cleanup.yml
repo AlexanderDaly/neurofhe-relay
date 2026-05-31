@@ -1,0 +1,67 @@
+name: Documentation or repository cleanup
+description: Propose a readability, navigation, documentation, or packaging cleanup.
+title: "[cleanup]: "
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for changes that make the repository easier to read, review, validate, or maintain. Check SUPPORT.md for routing and docs/troubleshooting.md for validation failures before filing. If cleanup touches datasets, artifacts, or local ignore rules, use docs/data-handling.md. Keep requests scoped and preserve the research-alpha evidence boundary, including `releaseGateSatisfied: false` unless the documented release gate is actually satisfied.
+  - type: dropdown
+    id: cleanup_area
+    attributes:
+      label: Cleanup area
+      options:
+        - README or start-here flow
+        - development or validation docs
+        - release evidence documentation
+        - benchmark artifact documentation
+        - prototype/ scaffold documentation
+        - patent or briefing organization
+        - GitHub templates or contributor workflow
+        - file layout or package manifest
+    validations:
+      required: true
+  - type: textarea
+    id: affected_surface
+    attributes:
+      label: Affected file or workflow
+      description: Name the file, documentation route, GitHub surface, or workflow that feels hard to use.
+    validations:
+      required: true
+  - type: textarea
+    id: current_friction
+    attributes:
+      label: Current friction
+      description: What is hard to find, understand, review, or maintain?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_cleanup
+    attributes:
+      label: Proposed cleanup
+      description: Describe the smallest change that would make the repository clearer.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Suggested validation
+      description: List the docs, commands, or artifacts that should be checked after the cleanup.
+      render: sh
+    validations:
+      required: false
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Boundary checks
+      options:
+        - label: This cleanup preserves CC0/public-domain framing.
+          required: true
+        - label: This cleanup does not invent benchmark numbers or cryptographic, security, medical, or deployment claims.
+          required: true
+        - label: This cleanup keeps raw datasets, raw signals, secrets, private payloads, and proprietary material out of git.
+          required: true
+        - label: "This cleanup preserves `privacyBoundary`, `cryptoInventory`, and `productionClaim: false` where artifact metadata is involved."
+          required: true

@@ -2,7 +2,7 @@
 
 ## Phase 0 - Desk Validation
 
-Goal: prove the concept is coherent enough to demo.
+Goal: validate that the concept is coherent enough to demo.
 
 Deliverables:
 
@@ -43,7 +43,7 @@ Tasks:
 - Emit machine-readable model and event-window metadata.
 - Record plaintext accuracy and latency.
 
-Current prototype foothold:
+Current research-alpha foothold:
 
 - Synthetic 8 by 8 event window.
 - Public active event positions with encrypted active spike counts.
@@ -60,6 +60,31 @@ Current prototype foothold:
 Decision gate:
 
 - If the real-data plaintext baseline is not compact, stable, and rights-clean, do not encrypt it yet.
+
+## Phase 1.5 - Discreet Real-Data Sorting Proof
+
+Goal: validate that the project can turn rights-clean real data into derived sparse
+events without committing raw payloads or pretending metadata leakage has been
+solved.
+
+Tasks:
+
+- Publish a deterministic proof artifact for real-data-derived sorting.
+- Label the source honestly: true neural spikes, EEG-derived features,
+  event-camera neuromorphic data, or another proxy.
+- Keep raw data outside git and verify that with the repository hygiene scan.
+- Measure and caveat visible metadata such as active-event count, timing bucket,
+  channel policy, and window shape.
+- Add at least one reconstruction or linkage probe before using stronger
+  privacy language.
+- Feed the derived event representation into a native encrypted lane or publish
+  a structured blocker.
+
+Decision gate:
+
+- Do not unshelf Quiet Allocations or imply a shareable protected refuge until
+  this proof has artifacts, attack probes, native handoff evidence, and explicit
+  remaining caveats. See `12-discreet-spike-sorting-proof.md`.
 
 ## Phase 2 - HE Prototype
 
@@ -133,19 +158,19 @@ Decision gate:
 - If Octra tooling cannot support the needed operations yet, position it as future decentralized encrypted-compute integration.
 - If it can, add a small Octra-connected demo step.
 
-## Phase 5 - Pilot Package
+## Phase 5 - Research-Alpha Review Package
 
-Goal: turn demo into a fundable or partner-ready project.
+Goal: turn the evidence package into a reviewer-ready research-alpha path.
 
 Deliverables:
 
 - One-page brief.
 - Technical memo.
-- Benchmark CSV/JSON.
+- Caveated benchmark JSON/CSV.
 - Live local demo.
-- 8-12 slide pitch deck.
+- Reviewer-facing briefing deck.
 - Risk register.
-- Partner list.
+- Potential reviewer or collaborator list.
 
 ## Candidate Pilot Domains
 

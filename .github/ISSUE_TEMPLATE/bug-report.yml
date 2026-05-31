@@ -1,0 +1,68 @@
+name: Reproducible bug or validation failure
+description: Report a failing command, broken workflow, or unexpected scaffold behavior with enough evidence to reproduce it.
+title: "[bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for reproducible failures in code, tests, workflows, scripts, or committed derived artifacts. Check docs/troubleshooting.md first so the report includes the exact command, error, and smallest next step. Do not attach secrets, raw neural/EEG rows, private datasets, proprietary weights, private payloads, or screenshots with sensitive payloads. Use SECURITY.md for sensitive reports and SUPPORT.md for routing questions. If hosted checks are green but merge is blocked, distinguish repository ruleset/admin policy from CI/check-rollup or code failures.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - portable validation or CI
+        - portable scaffold runtime
+        - benchmark or artifact generation
+        - native OpenFHE lane
+        - native TFHE-rs lane
+        - plaintext baseline
+        - release evidence index
+        - release gate or repository ruleset/admin policy
+        - repository hygiene scan
+        - documentation
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Exact command or workflow
+      description: Paste the command, GitHub Actions job, or script entrypoint that failed.
+      render: sh
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed result
+      description: Include the exact error, failing assertion, artifact path, or check conclusion.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What should have happened, without upgrading research-alpha claims?
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include OS, Node version, Rust/Cargo version, OpenFHE availability, and relevant dependency details when applicable.
+    validations:
+      required: false
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Boundary checks
+      options:
+        - label: This report does not include secrets, raw datasets, raw signals, private payloads, or proprietary material.
+          required: true
+        - label: This report does not claim production cryptography, clinical validity, medical utility, deployment readiness, or stable performance.
+          required: true
+        - label: "This report preserves `releaseGateSatisfied: false` unless the documented release gate is actually satisfied."
+          required: true

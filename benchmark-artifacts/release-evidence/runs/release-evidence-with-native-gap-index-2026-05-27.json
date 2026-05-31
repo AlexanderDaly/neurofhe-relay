@@ -1,0 +1,180 @@
+{
+  "schema": "neurofhe.releaseEvidenceArtifact.v1",
+  "artifactId": "release-evidence-with-native-gap-index-2026-05-27",
+  "generatedAt": "2026-05-27T20:26:00.000Z",
+  "subjectSchema": "neurofhe.releaseEvidenceIndex.v1",
+  "subject": {
+    "schema": "neurofhe.releaseEvidenceIndex.v1",
+    "generatedAt": "2026-05-27T20:26:00.000Z",
+    "releaseTarget": "v0.1.0-research-alpha",
+    "purpose": "Provide a compact index of the current release-gate evidence without upgrading caveated research artifacts into release approval.",
+    "releaseGateSatisfied": false,
+    "gateChecks": {
+      "hostedPortableCi": {
+        "status": "blocked",
+        "reason": "All previously open completion-loop PRs are merged and gh pr list --state open is empty. The CI workflow is active but manual-only, so there is no current automatic release-PR check to satisfy the release checklist.",
+        "artifactId": "github-actions-post-merge-no-open-prs-2026-05-26",
+        "smallestNextStep": "Open a release-validation PR after re-enabling automatic pull_request triggers or manually dispatching CI on that PR, then require a green portable hosted run before tagging v0.1.0-research-alpha."
+      },
+      "repositoryHygiene": {
+        "status": "pass",
+        "reason": "Repository hygiene scan reports pass.",
+        "artifactId": "repo-hygiene-2026-05-25",
+        "findingsCount": 0
+      },
+      "nativeMeasurementCoverage": {
+        "status": "incomplete",
+        "reason": "Native evidence remains incomplete for ciphertext-byte and/or RSS/peak-memory measurements.",
+        "artifactId": "native-evidence-measurement-gap-index-2026-05-27",
+        "laneCount": 3,
+        "realNativeRunCount": 3,
+        "measurementCoverage": {
+          "ciphertextBytesReportedCount": 1,
+          "ciphertextBytesPartialCount": 1,
+          "ciphertextBytesMissingCount": 1,
+          "rssOrPeakMemoryReportedCount": 0,
+          "rssOrPeakMemoryPartialCount": 1,
+          "rssOrPeakMemoryMissingCount": 2
+        },
+        "measurementGapCount": 5,
+        "measurementGaps": {
+          "schema": "neurofhe.nativeEvidence.measurementGapIndex.v1",
+          "gapCount": 5,
+          "lanes": [
+            {
+              "laneId": "openfhe-bfvrns",
+              "latestArtifactId": "openfhe-bfvrns-eeg-eye-state-2026-05-21",
+              "evidenceStatus": "real-native-run",
+              "missingMeasurements": [
+                "ciphertextBytes",
+                "rssOrPeakMemory"
+              ],
+              "partialMeasurements": [],
+              "measurementReasons": {
+                "ciphertextBytes": "ciphertext byte measurement not reported",
+                "rssOrPeakMemory": "RSS or peak memory measurement not reported"
+              },
+              "exactCommands": [
+                "npm run contract:eeg-openfhe -- --generated-at <ISO_TIMESTAMP>",
+                "npm run benchmark:openfhe -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+              ],
+              "smallestNextStep": "Repeat BFVrns on multiple EEG-derived windows and add serialized ciphertext byte or RSS measurements.",
+              "productionClaim": false
+            },
+            {
+              "laneId": "openfhe-ckks",
+              "latestArtifactId": "openfhe-ckks-eeg-eye-state-2026-05-21",
+              "evidenceStatus": "real-native-run",
+              "missingMeasurements": [],
+              "partialMeasurements": [
+                "ciphertextBytes",
+                "rssOrPeakMemory"
+              ],
+              "measurementReasons": {
+                "ciphertextBytes": "portable demo reports ciphertext count; enable OpenFHE serialization for exact byte sizes",
+                "rssOrPeakMemory": "portable demo reports ciphertext count; enable OpenFHE serialization for exact byte sizes"
+              },
+              "exactCommands": [
+                "npm run contract:eeg-openfhe -- --generated-at <ISO_TIMESTAMP>",
+                "npm run benchmark:openfhe-ckks -- --run --input benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-ckks-contract.json --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+              ],
+              "smallestNextStep": "Repeat CKKS on multiple EEG-derived windows and compare score drift across the sweep.",
+              "productionClaim": false
+            },
+            {
+              "laneId": "tfhe-rs",
+              "latestArtifactId": "tfhe-validation-2026-05-21",
+              "evidenceStatus": "real-native-run",
+              "missingMeasurements": [
+                "rssOrPeakMemory"
+              ],
+              "partialMeasurements": [],
+              "measurementReasons": {
+                "rssOrPeakMemory": "RSS or peak memory measurement not reported"
+              },
+              "exactCommands": [
+                "cargo test --manifest-path prototype/tfhe-rs/Cargo.toml",
+                "npm run benchmark:tfhe -- --run --artifact --artifact-id <ARTIFACT_ID> --generated-at <ISO_TIMESTAMP>"
+              ],
+              "smallestNextStep": "Add a real-data-derived TFHE-rs input path or publish a blocker if the integer threshold contract needs a new adapter.",
+              "productionClaim": false
+            }
+          ],
+          "caveat": "These entries identify missing or partial measurement classes only; they do not create substitute benchmark, memory, or ciphertext-size evidence.",
+          "productionClaim": false
+        }
+      },
+      "metadataLeakage": {
+        "status": "caveated",
+        "reason": "Metadata leakage metric is a documented observable-category proxy, not a formal privacy proof.",
+        "artifactId": "padding-ablation-metadata-leakage-2026-05-26",
+        "metric": "documented-observable-category-count",
+        "highestExposureMode": "public-active-neuron-positions-encrypted-features",
+        "lowestExposureMode": "dense-encrypted-windows"
+      },
+      "reconstructionRisk": {
+        "status": "caveated",
+        "reason": "Synthetic probes block raw payload replay and active-value recovery while preserving public-position residual risk.",
+        "artifactId": "reconstruction-risk-probes-2026-05-27",
+        "privacyProofClaim": false,
+        "rawPayloadReplay": "blocked",
+        "activeValueRecovery": "blocked",
+        "publicPositionLinkage": "residual-risk"
+      },
+      "productionClaim": {
+        "status": "pass",
+        "reason": "Indexed artifacts keep productionClaim false."
+      }
+    },
+    "sourceArtifacts": [
+      {
+        "path": "benchmark-artifacts/ci-blockers/latest.json",
+        "present": true,
+        "schema": "neurofhe.ciBlocker.v1",
+        "artifactId": "github-actions-post-merge-no-open-prs-2026-05-26",
+        "subjectSchema": null,
+        "productionClaim": false
+      },
+      {
+        "path": "benchmark-artifacts/repo-hygiene/latest.json",
+        "present": true,
+        "schema": "neurofhe.repositoryHygieneScan.v1",
+        "artifactId": "repo-hygiene-2026-05-25",
+        "subjectSchema": null,
+        "productionClaim": false
+      },
+      {
+        "path": "benchmark-artifacts/native-evidence/latest.json",
+        "present": true,
+        "schema": "neurofhe.nativeEvidenceArtifact.v1",
+        "artifactId": "native-evidence-measurement-gap-index-2026-05-27",
+        "subjectSchema": "neurofhe.nativeEvidence.manifest.v1",
+        "productionClaim": false
+      },
+      {
+        "path": "benchmark-artifacts/privacy-modes/padding-ablation/latest.json",
+        "present": true,
+        "schema": "neurofhe.privacyModeAblationArtifact.v1",
+        "artifactId": "padding-ablation-metadata-leakage-2026-05-26",
+        "subjectSchema": "neurofhe.metadataPaddingAblation.v1",
+        "productionClaim": false
+      },
+      {
+        "path": "benchmark-artifacts/reconstruction-risk/latest.json",
+        "present": true,
+        "schema": "neurofhe.reconstructionRiskArtifact.v1",
+        "artifactId": "reconstruction-risk-probes-2026-05-27",
+        "subjectSchema": "neurofhe.reconstructionRiskProbes.v1",
+        "productionClaim": false
+      }
+    ],
+    "nextReleaseStep": "Open a release-validation PR and obtain green portable hosted CI before tagging.",
+    "caveats": [
+      "This index is a dashboard artifact, not benchmark evidence by itself.",
+      "It does not create cryptographic, clinical, medical, side-channel, anonymity, or stable performance claims.",
+      "Release tagging still requires the RELEASE.md gate and explicit user approval."
+    ],
+    "productionClaim": false
+  },
+  "productionClaim": false
+}

@@ -11,7 +11,24 @@ path. The concrete approach is hybrid:
 This is the most practical first TFHE-rs shape for NeuroFHE Relay because it
 keeps the same sorted-event task as OpenFHE while demonstrating the comparison
 and threshold-gate family where TFHE-style schemes are a natural fit. It is a
-research and educational prototype only. It is not production cryptography.
+research-alpha native comparison lane only. It is not production cryptography.
+
+## Review Routes
+
+- Commands and rerun paths: [`../docs/command-reference.md`](../docs/command-reference.md).
+- Native setup posture: [`../docs/dependency-matrix.md`](../docs/dependency-matrix.md).
+- Human-readable evidence status:
+  [`../docs/evidence-dashboard.md`](../docs/evidence-dashboard.md).
+- Release gate checklist:
+  [`../docs/release-gate-matrix.md`](../docs/release-gate-matrix.md).
+- Artifact directory index:
+  [`../benchmark-artifacts/README.md`](../benchmark-artifacts/README.md).
+
+Current release posture: `releaseGateSatisfied: false`. This lane must keep
+`productionClaim: false`, `privacyBoundary`, and `cryptoInventory` visible in
+review materials. It is native-library research evidence only; it is not a
+privacy proof, production cryptography, clinical validation, medical evidence,
+or stable deployment-performance claim.
 
 ## Files
 
@@ -78,19 +95,27 @@ Equivalent native command:
 cargo run --release --manifest-path prototype/tfhe-rs/Cargo.toml --bin neurofhe-tfhe-demo
 ```
 
-## Current Synthetic Result
+## Current Evidence Pointers
 
-Local run on 2026-05-21 for the 8x8 sorted-event window:
+- [`../benchmark-artifacts/comparisons/tfhe-rs/latest.json`](../benchmark-artifacts/comparisons/tfhe-rs/latest.json)
+  is the current TFHE-rs native artifact. It records a single local synthetic
+  run of the integer-threshold contract, including `safe_serialized_size`
+  ciphertext sizing and one end-of-run RSS sample. Treat it as host-specific
+  research evidence, not stable performance.
+- [`../benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`](../benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json)
+  records the current real-data input blocker. TFHE-rs real-data path remains
+  blocked until an integer/Boolean adapter or a validated transformer accepts
+  the EEG-derived sparse contract.
+- [`../benchmark-artifacts/native-evidence/latest.json`](../benchmark-artifacts/native-evidence/latest.json)
+  indexes the current native OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs lanes.
+  The OpenFHE lanes now have real native artifacts on the indexed host; their
+  remaining issues are native measurement gaps, not missing dependency
+  detection.
 
-| Lane | Task | Scores | Class | Ops | Ciphertext bytes | Latency |
-| --- | --- | --- | --- | --- | --- | --- |
-| OpenFHE BFVrns | sparse integer linear score | `{ normal: 9, anomaly: 51 }` expected | `anomaly` expected | 20 encryptions, 36 scalar/plaintext multiplies, 36 adds, 2 decryptions | requires local OpenFHE run | OpenFHE not installed on this machine |
-| TFHE-rs 1.6.1 | sparse integer score plus encrypted threshold bit | `{ normal: 9, anomaly: 51 }` | `anomaly` | 20 encryptions, 36 clear scalar multiplies, 36 adds, 1 encrypted comparison, 3 decryptions | 2,658,613 total via `safe_serialized_size` | 7,233.972 ms |
-
-The TFHE-rs result is a single local run, not a stable performance claim.
-Repeated timings depend on CPU, build mode, TFHE-rs parameters, and system
-load. The accuracy value is synthetic contract agreement on one event window,
-not dataset accuracy.
+The TFHE-rs native artifact is a single local synthetic run, not a stable
+performance claim. Repeated timings depend on CPU, build mode, TFHE-rs
+parameters, and system load. The agreement value is synthetic contract
+agreement on one event window, not dataset accuracy.
 
 ## Privacy Boundary
 
@@ -190,6 +215,8 @@ Prefer TFHE-rs when the workload becomes Boolean or threshold-heavy:
   next-step work.
 - Uses a tiny public model and client-side decryption.
 - Does not implement encrypted argmax across arbitrary classes.
+- TFHE-rs real-data path remains blocked until an integer/Boolean adapter or a
+  validated transformer accepts the EEG-derived sparse contract.
 - Does not benchmark N-MNIST under TFHE-rs yet.
 - Does not claim production security, side-channel resistance, clinical
   validity, medical utility, or post-quantum deployment readiness.
@@ -199,9 +226,13 @@ Prefer TFHE-rs when the workload becomes Boolean or threshold-heavy:
 1. Add padded sparse slots to hide exact active-event count.
 2. Add a small encrypted decision-tree classifier over binary sorted-event
    predicates.
-3. Compare TFHE-rs native run artifacts against OpenFHE native artifacts on the
-   same host once OpenFHE is installed.
+3. Close the current native measurement gaps for OpenFHE BFVrns and CKKS by
+   adding serialized ciphertext-byte and RSS or peak-memory measurements where
+   they remain missing or partial.
 4. Add an N-MNIST-derived synthetic subset benchmark with plaintext, OpenFHE,
    and TFHE-rs lanes.
-5. Explore a hybrid pipeline: BFV/BGV for batched linear scores, then TFHE-rs
+5. Add the integer/Boolean TFHE-rs real-data adapter, or publish a narrower
+   validated transformer from EEG-derived contracts into the TFHE-rs score
+   domain.
+6. Explore a hybrid pipeline: BFV/BGV for batched linear scores, then TFHE-rs
    for encrypted threshold or policy gates.
