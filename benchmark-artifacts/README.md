@@ -161,7 +161,7 @@ remaining `mergeStateStatus: BLOCKED` on PR #23 is attributed to the active
 default-branch ruleset/admin merge policy, not CI/check-rollup.
 
 Before merge or release review, still confirm the live PR head and status
-check rollup with `gh pr view 23`; committed hosted-CI snapshots are evidence
+check rollup with `gh pr view <release-validation-PR>`; committed hosted-CI snapshots are evidence
 records, not a substitute for live repository-policy review.
 
 Repository hygiene artifacts are written under

@@ -15,7 +15,7 @@ certification.
 | Evidence and release posture | `docs/evidence-guide.md`, `docs/evidence-dashboard.md`, and `docs/release-gate-matrix.md` | Confirm `docs/claim-evidence-ledger.md`, `benchmark-artifacts/release-evidence/latest.json`, and `benchmark-artifacts/native-evidence/latest.json` before treating an evidence gap as closed. |
 | Local validation or reproducibility | `npm run validate` and `git diff --check` | Record any failed command with the exact command, error, and smallest next step in the relevant blocker artifact or validation note. |
 | Sensitive security, raw-data, or private-payload concern | `SECURITY.md` | Keep raw data and private payloads out of public GitHub issues and route public support through `SUPPORT.md` or `.github/ISSUE_TEMPLATE/`. |
-| Green CI but blocked merge | PR #23 hosted `Portable validation` and `docs/operations-runbook.md` | Keep hosted check-rollup, GitHub Actions billing/account, and repository ruleset/admin policy blockers separate from local code or test failures. |
+| Green CI but blocked merge | The release-validation PR's hosted `Portable validation` and `docs/operations-runbook.md` | Keep hosted check-rollup, GitHub Actions billing/account, and repository ruleset/admin policy blockers separate from local code or test failures. |
 
 ## First 15 Minutes
 
@@ -88,12 +88,12 @@ ruleset/admin policy blockers separate from local code or test failures.
 
 ## PR And Release Posture
 
-PR #23 has green hosted `Portable validation`, but merge remains controlled by
+Hosted `Portable validation` can be green while merge stays controlled by
 repository ruleset/admin policy. Confirm the live head, check rollup, and merge
 policy before treating the PR as ready:
 
 ```sh
-gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
+gh pr view <release-validation-PR> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
 ```
 
 Do not tag a release or merge a release PR until the `RELEASE.md` gates are

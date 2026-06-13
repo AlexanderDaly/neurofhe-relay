@@ -65,11 +65,12 @@ cannot run.
 
 ## Why can a PR be green but still blocked?
 
-PR #23 has green hosted `Portable validation` checks, but it can still show a
-blocked merge state when the default-branch repository ruleset/admin policy
-requires a maintainer action. That is different from a CI/check-rollup failure.
-The release dashboard keeps `releaseGateSatisfied: false` until the documented
-gate is satisfied and a maintainer-approved merge and release path is complete.
+A release-validation PR can have green hosted `Portable validation` checks but
+still show a blocked merge state when the default-branch
+repository ruleset/admin policy requires a maintainer action. That is different
+from a CI/check-rollup failure. The release dashboard keeps
+`releaseGateSatisfied: false` until the documented gate is satisfied and a
+maintainer-approved merge and release path is complete.
 
 ## Can I use this project freely?
 

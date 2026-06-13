@@ -19,7 +19,7 @@ check rollup, and repository ruleset/admin policy state instead of relying only
 on a committed dashboard snapshot:
 
 ```sh
-gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
+gh pr view <release-validation-PR> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
 ```
 
 ## Repository Baseline

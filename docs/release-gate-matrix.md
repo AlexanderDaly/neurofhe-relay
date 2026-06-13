@@ -11,7 +11,7 @@ stable-performance claims.
 
 ## Current Gate Posture
 
-- PR #23 hosted `Portable validation` is green, but merge remains controlled by
+- Hosted `Portable validation` can be green while merge stays controlled by
   repository ruleset/admin policy.
 - `benchmark-artifacts/release-evidence/latest.json` remains a dashboard only;
   `releaseGateSatisfied: false`.
