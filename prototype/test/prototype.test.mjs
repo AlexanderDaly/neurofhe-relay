@@ -36,6 +36,9 @@ import {
   buildReleaseEvidenceIndex,
 } from "../lib/release-evidence.mjs";
 import {
+  renderEvidenceDashboard,
+} from "../lib/evidence-dashboard.mjs";
+import {
   buildReconstructionRiskArtifact,
   evaluateRepresentationReconstructionRisk,
 } from "../lib/reconstruction-risk.mjs";
@@ -2372,36 +2375,25 @@ test("evidence guide routes evidence review without upgrading claims", () => {
   assert.equal(evidenceGuide.includes("| Synthetic prototype |"), false);
 });
 
-test("evidence dashboard summarizes release gate status without upgrading claims", () => {
+test("evidence dashboard is generated from the release-evidence artifact", () => {
+  const artifact = JSON.parse(
+    readFileSync("benchmark-artifacts/release-evidence/latest.json", "utf8"),
+  );
   const dashboard = readFileSync("docs/evidence-dashboard.md", "utf8");
-  const requiredEntries = [
-    "benchmark-artifacts/release-evidence/latest.json",
-    "release-evidence-ci-head-609b48c-2026-05-29",
-    "## Committed Gate Snapshot",
-    "latest committed release-evidence snapshot",
-    "not a substitute for",
-    "live PR status",
-    "gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
-    "subject.releaseGateSatisfied: false",
-    "subject.gateChecks",
-    "subject.productionClaim: false",
-    "releaseGateSatisfied: false",
-    "productionClaim: false",
-    "hostedPortableCi",
-    "repositoryHygiene",
-    "nativeMeasurementCoverage",
-    "metadataLeakage",
-    "reconstructionRisk",
-    "realNmnistBaseline",
-    "tfheRealDataPath",
-    "repository ruleset/admin policy",
-    "not benchmark evidence by itself",
-  ];
-  const missingEntries = requiredEntries.filter((entry) =>
-    !dashboard.includes(entry),
+
+  // The dashboard must be a byte-for-byte render of the committed artifact so it
+  // never has to be hand-synchronized. Regenerate with `npm run docs:evidence`.
+  assert.equal(
+    dashboard,
+    renderEvidenceDashboard(artifact),
+    "docs/evidence-dashboard.md is stale; run `npm run docs:evidence` to regenerate it.",
   );
 
-  assert.deepEqual(missingEntries, []);
+  // Invariants that hold regardless of the source artifact: the dashboard never
+  // upgrades research-alpha caveats into release approval.
+  assert.equal(dashboard.includes("not benchmark evidence by itself"), true);
+  assert.equal(dashboard.includes("subject.releaseGateSatisfied: false"), true);
+  assert.equal(dashboard.includes("productionClaim: false"), true);
 });
 
 test("FAQ answers common reader questions without upgrading claims", () => {

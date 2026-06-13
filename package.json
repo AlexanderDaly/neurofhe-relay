@@ -45,10 +45,12 @@
     "native:doctor": "node prototype/native-evidence.mjs",
     "reconstruction:risk": "node prototype/reconstruction-risk.mjs",
     "release:evidence": "node prototype/release-evidence.mjs",
+    "docs:evidence": "node prototype/scripts/render-evidence-dashboard.mjs",
     "check:docs": "node prototype/scripts/check-docs.mjs",
+    "check:evidence-dashboard": "node prototype/scripts/render-evidence-dashboard.mjs --check",
     "scan:hygiene": "node prototype/scripts/placeholder-scan.mjs",
     "test": "node --test prototype/test/*.test.mjs",
     "ci": "npm run validate",
-    "validate": "npm test && node -e \"JSON.parse(require('fs').readFileSync('project-brief.json','utf8')); JSON.parse(require('fs').readFileSync('prototype/research-assumptions.json','utf8')); console.log('json ok')\" && npm run check:docs && node prototype/scripts/placeholder-scan.mjs"
+    "validate": "npm test && node -e \"JSON.parse(require('fs').readFileSync('project-brief.json','utf8')); JSON.parse(require('fs').readFileSync('prototype/research-assumptions.json','utf8')); console.log('json ok')\" && npm run check:docs && npm run check:evidence-dashboard && node prototype/scripts/placeholder-scan.mjs"
   }
 }

@@ -35,13 +35,15 @@ repository hygiene scan.
 ```sh
 npm test
 npm run check:docs
+npm run check:evidence-dashboard
 npm run scan:hygiene
 git diff --check
 ```
 
 Use these for narrower checks while editing. `check:docs` verifies local
-Markdown links. `scan:hygiene` checks placeholder text, token-shaped secrets,
-and committed raw-data paths.
+Markdown links. `check:evidence-dashboard` fails if `docs/evidence-dashboard.md`
+has drifted from the committed release-evidence artifact. `scan:hygiene` checks
+placeholder text, token-shaped secrets, and committed raw-data paths.
 
 ## Demos
 
@@ -105,12 +107,18 @@ coverage gaps without rerunning native benchmarks.
 
 ```sh
 npm run release:evidence
+npm run docs:evidence
 ```
 
-This builds a caveated release-evidence index from committed blocker, hygiene,
-native-evidence, privacy-mode, reconstruction-risk, and baseline artifacts. It
-is a dashboard artifact only; it does not approve a release, satisfy the release
-gate by itself, or create new benchmark evidence.
+`release:evidence` builds a caveated release-evidence index from committed
+blocker, hygiene, native-evidence, privacy-mode, reconstruction-risk, and
+baseline artifacts. It is a dashboard artifact only; it does not approve a
+release, satisfy the release gate by itself, or create new benchmark evidence.
+
+`docs:evidence` regenerates `docs/evidence-dashboard.md` from
+`benchmark-artifacts/release-evidence/latest.json` so the human-readable
+dashboard never has to be hand-synchronized. Run it after refreshing the
+release-evidence artifact; `npm run validate` fails if the two have drifted.
 
 Before tagging anything, use `RELEASE.md` and confirm the current hosted CI,
 local validation, evidence artifacts, and caveats are all current.
