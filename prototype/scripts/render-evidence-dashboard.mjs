@@ -47,12 +47,20 @@ function parseArgs(args) {
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i];
     if (arg === "--check") parsed.check = true;
-    else if (arg === "--artifact") parsed.artifactPath = args[++i];
-    else if (arg === "--out") parsed.dashboardPath = args[++i];
+    else if (arg === "--artifact") parsed.artifactPath = requireValue(args, ++i, arg);
+    else if (arg === "--out") parsed.dashboardPath = requireValue(args, ++i, arg);
     else {
       throw new Error(`Unknown option: ${arg}`);
     }
   }
 
   return parsed;
+}
+
+function requireValue(args, index, flag) {
+  const value = args[index];
+  if (value === undefined || value.startsWith("--")) {
+    throw new Error(`Missing value for ${flag}`);
+  }
+  return value;
 }
