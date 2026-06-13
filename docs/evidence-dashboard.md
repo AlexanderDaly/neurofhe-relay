@@ -9,6 +9,9 @@ It is not benchmark evidence by itself, not release approval, and not a
 production cryptography, medical, clinical, deployment, side-channel,
 anonymity, stable-performance, or privacy-proof claim.
 
+> Generated file. Do not edit by hand. Run `npm run docs:evidence` to regenerate
+> it from `benchmark-artifacts/release-evidence/latest.json`.
+
 ## Committed Gate Snapshot
 
 Source artifact:
@@ -30,21 +33,21 @@ live PR status. Before merge or release review, confirm the current PR head,
 hosted check rollup, and merge policy with:
 
 ```sh
-gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
+gh pr view <release-validation-PR> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
 ```
 
 ## Gate Checks
 
 | Check | Current Status | Review Note |
 | --- | --- | --- |
-| `hostedPortableCi` | pass | PR #23 has green hosted `Portable validation`; the remaining PR block is repository ruleset/admin policy, not a code or check-rollup failure. |
-| `repositoryHygiene` | pass | `benchmark-artifacts/repo-hygiene/latest.json` reports a passing redacted source-hygiene scan. |
-| `nativeMeasurementCoverage` | incomplete | OpenFHE BFVrns and CKKS still need fuller ciphertext-byte and RSS or peak-memory measurements before memory or stable-performance claims are defensible. |
-| `metadataLeakage` | caveated | The current metric is a documented observable-category proxy, not formal leakage, anonymity, mutual-information, side-channel, or reconstruction-resistance evidence. |
-| `reconstructionRisk` | caveated | Synthetic probes block raw-payload replay and active-value recovery while public-position linkage remains a residual risk. |
-| `realNmnistBaseline` | pass | The sampled public N-MNIST plaintext baseline is present, but it is preprocessing/model evidence, not encrypted-compute or deployment evidence. |
-| `tfheRealDataPath` | blocked | The TFHE-rs native target does not yet accept the EEG-derived sparse input contract; an integer/Boolean adapter or validated transformer remains the smallest next step. |
-| `productionClaim` | pass | Indexed artifacts keep `productionClaim: false`. |
+| `hostedPortableCi` | pass | Automatic push and pull_request triggers remain restored on PR #23 at head 609b48c, with successful hosted Portable validation check runs in the status check rollup and current Node 24-ready action majors. |
+| `repositoryHygiene` | pass | Repository hygiene scan reports pass. |
+| `nativeMeasurementCoverage` | incomplete | Native evidence remains incomplete for ciphertext-byte and/or RSS/peak-memory measurements. |
+| `metadataLeakage` | caveated | Metadata leakage metric is a documented observable-category proxy, not a formal privacy proof. |
+| `reconstructionRisk` | caveated | Synthetic probes block raw payload replay and active-value recovery while preserving public-position residual risk. |
+| `realNmnistBaseline` | pass | Real public N-MNIST plaintext baseline artifact is present. |
+| `tfheRealDataPath` | blocked | The committed EEG-derived OpenFHE input contract uses approximate or quantized linear-score fields, while the TFHE-rs native target currently accepts only its built-in non-negative integer threshold contract. |
+| `productionClaim` | pass | Indexed artifacts keep productionClaim false. |
 
 ## Release Decision
 

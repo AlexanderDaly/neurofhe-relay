@@ -46,6 +46,7 @@ evidence.
 | [`prototype/lib/demo.mjs`](../prototype/lib/demo.mjs) | Desk-demo assembly |
 | [`prototype/lib/docs-links.mjs`](../prototype/lib/docs-links.mjs) | Local Markdown link scanning |
 | [`prototype/lib/eeg-eye-state.mjs`](../prototype/lib/eeg-eye-state.mjs) | UCI EEG Eye State parsing, baseline, and input-contract support |
+| [`prototype/lib/evidence-dashboard.mjs`](../prototype/lib/evidence-dashboard.mjs) | Renders `docs/evidence-dashboard.md` from the committed release-evidence artifact |
 | [`prototype/lib/events.mjs`](../prototype/lib/events.mjs) | Event-window construction, validation, flattening, and sparse metrics |
 | [`prototype/lib/gateway.mjs`](../prototype/lib/gateway.mjs) | Local relay gateway policy, normalization, model-facing export, and recommendation validation |
 | [`prototype/lib/linear-algebra.mjs`](../prototype/lib/linear-algebra.mjs) | Linear model metadata, validation, dense scoring, and sparse scoring |
