@@ -79,8 +79,10 @@ import {
 } from "../lib/openfhe-ckks-adapter.mjs";
 import {
   buildTfheRsDemoContract,
+  buildTfheRsRealDataContract,
   buildTfheRsRealLibraryAdapter,
   buildTfheRsRealDataUnavailableReport,
+  validateTfheRsRealDataContract,
   tfheRsIntegrationPlan,
   validateTfheRsContract,
 } from "../lib/tfhe-rs-adapter.mjs";
@@ -1591,7 +1593,7 @@ test("benchmark artifacts README lists every tracked artifact directory", () => 
     "productionClaim: false",
     "real N-MNIST plaintext baseline",
     "benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json",
-    "TFHE-rs real-data input blocker",
+    "TFHE-rs real-data signed-integer run",
     "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json",
     "release-evidence index artifacts",
     "dashboard artifacts only",
@@ -2870,7 +2872,7 @@ test("TFHE-rs integration note routes native evidence and blockers", () => {
     "productionClaim: false",
     "privacyBoundary",
     "cryptoInventory",
-    "TFHE-rs real-data path remains blocked",
+    "EEG-derived real-data signed-integer run",
     "single local synthetic run",
     "not stable performance",
     "native measurement gaps",
@@ -3936,9 +3938,100 @@ test("TFHE-rs real-data blocker records the unsupported input path without repla
   assert.equal(blocker.inputContract.datasetKind, "public-uci-eeg-eye-state-arff");
   assert.equal(blocker.inputContract.scoreDomain, "approximate-real");
   assert.ok(blocker.attemptedCommand.includes("benchmark:tfhe -- --run --input"));
-  assert.match(blocker.error, /does not yet accept EEG-derived OpenFHE input contracts/);
-  assert.match(blocker.smallestNextStep, /integer\/Boolean TFHE-rs adapter/);
+  assert.match(blocker.error, /could not be transformed into a valid TFHE-rs signed-integer contract/);
+  assert.match(blocker.smallestNextStep, /signed-fixed-point-integer quantized view/);
   assert.equal(blocker.productionClaim, false);
+});
+
+test("TFHE-rs real-data transform preserves the EEG quantized contract decision", () => {
+  const source = JSON.parse(
+    readFileSync(
+      "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json",
+      "utf8",
+    ),
+  );
+  const contract = buildTfheRsRealDataContract({ inputContract: source });
+
+  assert.equal(contract.schema, "neurofhe.tfheRs.realDataContract.v1");
+  assert.equal(contract.scoreDomain, "signed-fixed-point-integers");
+  assert.deepEqual(contract.classes, source.classes);
+  assert.deepEqual(validateTfheRsRealDataContract(contract), []);
+
+  // The transformed integer contract must reproduce the committed quantized
+  // scores, classification, and threshold decision exactly.
+  assert.deepEqual(contract.expectedPlaintextScores, source.quantized.expectedPlaintextScores);
+  assert.equal(contract.expectedClassification, source.quantized.expectedClassification);
+  const [baseline, positive] = contract.classes;
+  assert.equal(contract.booleanDecision.gate, `${positive}_score_gt_${baseline}_score`);
+  assert.equal(
+    contract.booleanDecision.expectedPlaintext,
+    contract.expectedPlaintextScores[positive] > contract.expectedPlaintextScores[baseline],
+  );
+
+  // Every encrypted-domain value must be an integer (signed allowed).
+  for (const event of contract.activeEvents) {
+    assert.ok(Number.isInteger(event.value));
+  }
+  for (const label of contract.classes) {
+    assert.ok(contract.weights[label].every((value) => Number.isInteger(value)));
+    assert.ok(Number.isInteger(contract.bias[label]));
+  }
+});
+
+test("TFHE-rs real-data validator rejects non-integer and malformed contracts", () => {
+  const source = JSON.parse(
+    readFileSync(
+      "benchmark-artifacts/plaintext-baselines/eeg-eye-state/openfhe-input/eeg-eye-state-bfvrns-contract.json",
+      "utf8",
+    ),
+  );
+  const contract = buildTfheRsRealDataContract({ inputContract: source });
+
+  const fractional = structuredClone(contract);
+  fractional.weights[contract.classes[0]][0] = 0.5;
+  assert.ok(
+    validateTfheRsRealDataContract(fractional).some((error) => error.includes("must be an integer")),
+  );
+
+  const wrongDomain = structuredClone(contract);
+  wrongDomain.scoreDomain = "non-negative-integers";
+  assert.ok(
+    validateTfheRsRealDataContract(wrongDomain).some((error) =>
+      error.includes("scoreDomain must be signed-fixed-point-integers"),
+    ),
+  );
+});
+
+test("release evidence index marks the TFHE-rs real-data path passed when the native run matches", () => {
+  const index = buildReleaseEvidenceIndex({
+    generatedAt: "2026-06-14T00:00:00.000Z",
+    artifactReader: (path) =>
+      path === "benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json"
+        ? {
+            schema: "neurofhe.comparisonArtifact.v1",
+            artifactId: "tfhe-realdata-run-test",
+            subjectSchema: "neurofhe.tfheRs.realDataRunComparison.v1",
+            productionClaim: false,
+            subject: {
+              schema: "neurofhe.tfheRs.realDataRunComparison.v1",
+              transform: {
+                datasetKind: "public-uci-eeg-eye-state-arff",
+                scoreDomain: "signed-fixed-point-integers",
+              },
+              nativeResult: {
+                schema: "neurofhe.tfheRs.realDataResult.v1",
+                plaintextMatchesExpected: true,
+                booleanDecision: { matchesExpected: true },
+              },
+              productionClaim: false,
+            },
+          }
+        : undefined,
+  });
+
+  assert.equal(index.gateChecks.tfheRealDataPath.status, "pass");
+  assert.equal(index.gateChecks.tfheRealDataPath.artifactId, "tfhe-realdata-run-test");
+  assert.equal(index.gateChecks.tfheRealDataPath.scoreDomain, "signed-fixed-point-integers");
 });
 
 test("comparison artifacts can persist adapter plans for later library runs", async () => {
@@ -4309,11 +4402,14 @@ test("native TFHE-rs source uses real TFHE-rs integer and Boolean APIs", async (
   );
 
   assert.match(manifest, /tfhe = \{ version = "1\.6\.1"/);
-  assert.match(source, /use tfhe::\{generate_keys, set_server_key, ConfigBuilder, FheBool, FheUint16\}/);
+  assert.match(source, /use tfhe::\{generate_keys, set_server_key, ConfigBuilder, FheBool, FheInt32, FheUint16\}/);
   assert.match(source, /safe_serialized_size/);
   assert.match(source, /FheUint16::encrypt/);
   assert.match(source, /\.gt\(&encrypted_scores\.normal\)/);
   assert.match(source, /FheBool/);
+  // Signed real-data lane for EEG-derived quantized contracts.
+  assert.match(source, /pub fn run_tfhe_real_data_classifier_json/);
+  assert.match(source, /FheInt32::encrypt/);
   assert.match(source, /productionClaim/);
   assert.match(source, /research-alpha TFHE-rs native lane only/);
   assert.equal(source.includes("TFHE-rs research prototype path only"), false);

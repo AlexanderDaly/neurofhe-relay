@@ -147,6 +147,277 @@ export function validateTfheRsContract(contract) {
   return errors;
 }
 
+export function buildTfheRsRealDataContract(options = {}) {
+  const inputPath = options.inputPath ?? DEFAULT_REAL_DATA_INPUT;
+  const source = options.inputContract ?? readJsonIfExists(inputPath);
+  if (!source) {
+    throw new Error(`EEG OpenFHE input contract not found at ${inputPath}`);
+  }
+
+  const quantized = source.quantized;
+  if (!quantized || quantized.scoreDomain !== "signed-fixed-point-integers") {
+    throw new Error(
+      "EEG OpenFHE input contract has no signed-fixed-point-integer quantized view to transform into a TFHE-rs contract.",
+    );
+  }
+
+  const classes = Array.isArray(source.classes) ? [...source.classes] : [];
+  if (classes.length !== 2) {
+    throw new Error(`TFHE-rs real-data transform expects exactly two classes, found ${classes.length}`);
+  }
+
+  const featureCount =
+    source.featureCount ??
+    (Array.isArray(source.featureShape) ? source.featureShape[0] * source.featureShape[1] : undefined);
+  for (const label of classes) {
+    const row = quantized.weights?.[label];
+    if (!Array.isArray(row)) {
+      throw new Error(`quantized contract is missing weights for class ${label}`);
+    }
+    if (Number.isInteger(featureCount) && row.length !== featureCount) {
+      throw new Error(`quantized weights for ${label} length ${row.length} does not match feature count ${featureCount}`);
+    }
+  }
+
+  const activeEvents = (quantized.activeEvents ?? []).map((event) => ({
+    index: event.index,
+    timeBin: event.timeBin ?? 0,
+    neuronId: event.neuronId ?? 0,
+    value: event.value,
+  }));
+  const weights = Object.fromEntries(classes.map((label) => [label, [...quantized.weights[label]]]));
+  const bias = Object.fromEntries(classes.map((label) => [label, quantized.bias[label]]));
+
+  const expectedPlaintextScores = computeSignedScores(classes, activeEvents, weights, bias);
+  // The transform must preserve the committed quantized contract's decision; if
+  // it does not, the EEG contract changed and the blocker should be raised
+  // rather than silently emitting a divergent contract.
+  if (quantized.expectedPlaintextScores) {
+    for (const label of classes) {
+      if (expectedPlaintextScores[label] !== quantized.expectedPlaintextScores[label]) {
+        throw new Error(
+          `transformed score for ${label} (${expectedPlaintextScores[label]}) does not match quantized contract (${quantized.expectedPlaintextScores[label]})`,
+        );
+      }
+    }
+  }
+  const expectedClassification = classifyScores(expectedPlaintextScores);
+  if (quantized.expectedClassification && expectedClassification !== quantized.expectedClassification) {
+    throw new Error(
+      `transformed classification ${expectedClassification} does not match quantized contract ${quantized.expectedClassification}`,
+    );
+  }
+
+  const width = Array.isArray(source.featureShape) ? source.featureShape[1] : undefined;
+  const publicActiveNeuronPositions = activeEvents.map((event) => ({
+    index: event.index,
+    timeBin: event.timeBin,
+    neuronId: event.neuronId,
+    unitX: Number.isInteger(width) && width > 0 ? event.neuronId % width : null,
+    unitY: Number.isInteger(width) && width > 0 ? Math.floor(event.neuronId / width) : null,
+  }));
+
+  const [baselineClass, positiveClass] = classes;
+  const booleanDecision = {
+    schema: "neurofhe.tfheRs.booleanDecision.v1",
+    gate: `${positiveClass}_score_gt_${baselineClass}_score`,
+    baselineClass,
+    positiveClass,
+    encryptedResultType: "FheBool",
+    expectedPlaintext: expectedPlaintextScores[positiveClass] > expectedPlaintextScores[baselineClass],
+  };
+
+  const privacyMode = {
+    ...buildPublicActiveNeuronPrivacyMode(activeEvents.length, classes.length),
+    encryptedFields: ["activeFeatureValues", "classScoreCiphertexts", "thresholdDecisionBit"],
+    operationCounts: tfheOperationCounts(activeEvents.length, classes.length),
+    notes:
+      "TFHE-rs signed-integer target mode for EEG-derived sparse sorted-event scoring plus encrypted threshold decision; uses signed FheInt32 ciphertexts.",
+  };
+
+  return {
+    schema: "neurofhe.tfheRs.realDataContract.v1",
+    scheme: "tfhe-rs-integer-threshold",
+    scoreEquation: "scores = W x + bias",
+    scoreDomain: "signed-fixed-point-integers",
+    fixedPointScale: quantized.fixedPointScale ?? null,
+    boundaryDomain: "bio-digital-event-intelligence",
+    eventRepresentation: source.eventRepresentation ?? "spatial-sorted-events",
+    datasetKind: source.datasetKind ?? null,
+    sourceContractPath: inputPath,
+    sourceContractSchema: source.schema ?? null,
+    sourceContractDigest: {
+      algorithm: "sha256",
+      value: createHash("sha256").update(JSON.stringify(source)).digest("hex"),
+    },
+    classes,
+    featureShape: Array.isArray(source.featureShape) ? [...source.featureShape] : null,
+    featureCount,
+    matrixShape: Array.isArray(source.matrixShape)
+      ? [...source.matrixShape]
+      : [classes.length, featureCount],
+    spatialBins: Array.isArray(source.spatialBins) ? [...source.spatialBins] : null,
+    activeEventCount: activeEvents.length,
+    publicActiveNeuronPositions,
+    activeEvents,
+    weights,
+    bias,
+    expectedPlaintextScores,
+    expectedClassification,
+    booleanDecision,
+    privacyMode,
+    operationCounts: tfheOperationCounts(activeEvents.length, classes.length),
+    securityParameters: { ...buildTfheRsSecurityParameters(), encryptedTypes: ["FheInt32", "FheBool"] },
+    cryptoInventory: buildTfheRsCryptoInventory(),
+    privacyBoundary: buildTfheRsPrivacyBoundary(),
+    productionClaim: false,
+  };
+}
+
+export function validateTfheRsRealDataContract(contract) {
+  const errors = [];
+  if (!contract || typeof contract !== "object") {
+    return ["TFHE-rs real-data contract must be an object"];
+  }
+  if (contract.scheme !== "tfhe-rs-integer-threshold") {
+    errors.push("scheme must be tfhe-rs-integer-threshold");
+  }
+  if (contract.scoreEquation !== "scores = W x + bias") {
+    errors.push("scoreEquation must be scores = W x + bias");
+  }
+  if (contract.scoreDomain !== "signed-fixed-point-integers") {
+    errors.push("scoreDomain must be signed-fixed-point-integers");
+  }
+
+  const classes = Array.isArray(contract.classes) ? contract.classes : [];
+  if (classes.length !== 2) {
+    errors.push("classes must have exactly two entries");
+    return errors;
+  }
+
+  const featureCount = inferFeatureCount(contract);
+  if (!Number.isInteger(featureCount) || featureCount <= 0) {
+    errors.push("featureCount must be a positive integer");
+  }
+  if (
+    Array.isArray(contract.matrixShape) &&
+    Number.isInteger(featureCount) &&
+    (contract.matrixShape[0] !== classes.length || contract.matrixShape[1] !== featureCount)
+  ) {
+    errors.push(`matrixShape ${contract.matrixShape.join("x")} does not match classes/features`);
+  }
+
+  validateSignedActiveEvents(contract.activeEvents, featureCount, errors);
+  validatePublicActiveNeuronPositions(
+    contract.publicActiveNeuronPositions,
+    contract.activeEvents,
+    featureCount,
+    errors,
+  );
+  validateSignedWeights(contract.weights, classes, featureCount, errors);
+  validateSignedBias(contract.bias, classes, errors);
+  validateTfhePrivacyMode(contract.privacyMode, errors);
+  validateRealBooleanDecision(contract.booleanDecision, classes, errors);
+
+  if (!contract.expectedPlaintextScores || typeof contract.expectedPlaintextScores !== "object") {
+    errors.push("expectedPlaintextScores must be an object keyed by class");
+  } else {
+    for (const label of classes) {
+      if (!Number.isInteger(contract.expectedPlaintextScores[label])) {
+        errors.push(`expectedPlaintextScores.${label} must be an integer`);
+      }
+    }
+  }
+  if (!classes.includes(contract.expectedClassification)) {
+    errors.push("expectedClassification must be one of the contract classes");
+  }
+
+  return errors;
+}
+
+function computeSignedScores(classes, activeEvents, weights, bias) {
+  const scores = {};
+  for (const label of classes) {
+    scores[label] = activeEvents.reduce(
+      (sum, event) => sum + event.value * weights[label][event.index],
+      bias[label],
+    );
+  }
+  return scores;
+}
+
+function validateSignedActiveEvents(activeEventRows, featureCount, errors) {
+  if (!Array.isArray(activeEventRows)) {
+    errors.push("activeEvents must be an array");
+    return;
+  }
+  activeEventRows.forEach((event, rowIndex) => {
+    if (!event || typeof event !== "object") {
+      errors.push(`activeEvents[${rowIndex}] must be an object`);
+      return;
+    }
+    if (!Number.isInteger(event.index) || event.index < 0) {
+      errors.push(`activeEvents[${rowIndex}].index must be a non-negative integer`);
+    } else if (Number.isInteger(featureCount) && event.index >= featureCount) {
+      errors.push(`activeEvents[${rowIndex}].index ${event.index} is outside feature count ${featureCount}`);
+    }
+    if (!Number.isInteger(event.value)) {
+      errors.push(`activeEvents[${rowIndex}].value must be an integer`);
+    }
+  });
+}
+
+function validateSignedWeights(weights, classes, featureCount, errors) {
+  if (!weights || typeof weights !== "object") {
+    errors.push("weights must be an object keyed by class");
+    return;
+  }
+  for (const label of classes) {
+    const row = weights[label];
+    if (!Array.isArray(row)) {
+      errors.push(`weights.${label} must be an array`);
+      continue;
+    }
+    if (Number.isInteger(featureCount) && row.length !== featureCount) {
+      errors.push(`weights.${label} length ${row.length} does not match feature count ${featureCount}`);
+    }
+    row.forEach((value, columnIndex) => {
+      if (!Number.isInteger(value)) {
+        errors.push(`weights.${label}[${columnIndex}] must be an integer`);
+      }
+    });
+  }
+}
+
+function validateSignedBias(bias, classes, errors) {
+  if (!bias || typeof bias !== "object") {
+    errors.push("bias must be an object keyed by class");
+    return;
+  }
+  for (const label of classes) {
+    if (!Number.isInteger(bias[label])) {
+      errors.push(`bias.${label} must be an integer`);
+    }
+  }
+}
+
+function validateRealBooleanDecision(booleanDecision, classes, errors) {
+  if (!booleanDecision || typeof booleanDecision !== "object") {
+    errors.push("booleanDecision must be an object");
+    return;
+  }
+  const expectedGate = `${classes[1]}_score_gt_${classes[0]}_score`;
+  if (booleanDecision.gate !== expectedGate) {
+    errors.push(`booleanDecision.gate must be ${expectedGate}`);
+  }
+  if (booleanDecision.encryptedResultType !== "FheBool") {
+    errors.push("booleanDecision.encryptedResultType must be FheBool");
+  }
+  if (typeof booleanDecision.expectedPlaintext !== "boolean") {
+    errors.push("booleanDecision.expectedPlaintext must be a boolean");
+  }
+}
+
 export function detectTfheRs(options = {}) {
   const env = options.env ?? process.env;
   const cwd = options.cwd ?? process.cwd();
@@ -238,14 +509,17 @@ export function buildTfheRsRealDataUnavailableReport(options = {}) {
     inputContract: inputContractSummary,
     attemptedCommand,
     error:
-      "The TFHE-rs native demo does not yet accept EEG-derived OpenFHE input contracts; it currently runs the synthetic integer-threshold sparse contract only.",
+      "The EEG-derived OpenFHE input contract could not be transformed into a valid TFHE-rs signed-integer contract for the native lane.",
     blocker: {
       category: "unsupported-real-data-input-contract",
       reason:
-        "The committed EEG-derived OpenFHE input contract uses approximate or quantized linear-score fields, while the TFHE-rs native target currently accepts only its built-in non-negative integer threshold contract.",
+        options.transformError ??
+        "The committed EEG-derived OpenFHE input contract lacks a signed-fixed-point-integer quantized view the TFHE-rs signed-integer adapter can consume.",
+      transformError: options.transformError ?? null,
+      validationErrors: Array.isArray(options.validationErrors) ? options.validationErrors : [],
     },
     smallestNextStep:
-      "Add an integer/Boolean TFHE-rs adapter for EEG-derived sparse contracts, or publish a narrower transformer from the EEG OpenFHE contract into a validated TFHE-rs score-domain contract.",
+      "Regenerate the EEG OpenFHE input contract with a signed-fixed-point-integer quantized view, then rerun the TFHE-rs real-data adapter.",
     preservedEvidence:
       "This blocker is intended for benchmark-artifacts/comparisons/tfhe-rs-realdata/ so benchmark-artifacts/comparisons/tfhe-rs/latest.json can continue to hold the latest runnable synthetic TFHE-rs native evidence.",
     adapter: buildTfheRsRealLibraryAdapter(),

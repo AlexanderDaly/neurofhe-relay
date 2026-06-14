@@ -103,9 +103,10 @@ cargo run --release --manifest-path prototype/tfhe-rs/Cargo.toml --bin neurofhe-
   ciphertext sizing and one end-of-run RSS sample. Treat it as host-specific
   research evidence, not stable performance.
 - [`../benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`](../benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json)
-  records the current real-data input blocker. TFHE-rs real-data path remains
-  blocked until an integer/Boolean adapter or a validated transformer accepts
-  the EEG-derived sparse contract.
+  records the EEG-derived real-data signed-integer run: the adapter transforms
+  the OpenFHE quantized contract into a signed TFHE-rs contract, and the native
+  lane's encrypted class scores and threshold decision match the plaintext
+  baseline on a single window.
 - [`../benchmark-artifacts/native-evidence/latest.json`](../benchmark-artifacts/native-evidence/latest.json)
   indexes the current native OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs lanes.
   The OpenFHE lanes now have real native artifacts on the indexed host; their
@@ -215,8 +216,8 @@ Prefer TFHE-rs when the workload becomes Boolean or threshold-heavy:
   next-step work.
 - Uses a tiny public model and client-side decryption.
 - Does not implement encrypted argmax across arbitrary classes.
-- TFHE-rs real-data path remains blocked until an integer/Boolean adapter or a
-  validated transformer accepts the EEG-derived sparse contract.
+- TFHE-rs real-data run covers a single EEG-derived window; multi-window runs
+  plus ciphertext-size and memory sweeps remain next-step work.
 - Does not benchmark N-MNIST under TFHE-rs yet.
 - Does not claim production security, side-channel resistance, clinical
   validity, medical utility, or post-quantum deployment readiness.
@@ -231,8 +232,8 @@ Prefer TFHE-rs when the workload becomes Boolean or threshold-heavy:
    they remain missing or partial.
 4. Add an N-MNIST-derived synthetic subset benchmark with plaintext, OpenFHE,
    and TFHE-rs lanes.
-5. Add the integer/Boolean TFHE-rs real-data adapter, or publish a narrower
-   validated transformer from EEG-derived contracts into the TFHE-rs score
-   domain.
+5. Extend the EEG-derived TFHE-rs real-data signed-integer run across multiple
+   windows and add ciphertext-size and memory sweeps before performance or
+   accuracy claims.
 6. Explore a hybrid pipeline: BFV/BGV for batched linear scores, then TFHE-rs
    for encrypted threshold or policy gates.

@@ -18,8 +18,8 @@ Source artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
-artifactId: release-evidence-ci-head-609b48c-2026-05-29
-generatedAt: 2026-05-29T17:28:00.000Z
+artifactId: release-evidence-tfhe-realdata-2026-06-14
+generatedAt: 2026-06-14T00:00:00.000Z
 subject.releaseGateSatisfied: false
 subject.productionClaim: false
 productionClaim: false
@@ -46,7 +46,7 @@ gh pr view <release-validation-PR> --json headRefOid,mergeable,mergeStateStatus,
 | `metadataLeakage` | caveated | Metadata leakage metric is a documented observable-category proxy, not a formal privacy proof. |
 | `reconstructionRisk` | caveated | Synthetic probes block raw payload replay and active-value recovery while preserving public-position residual risk. |
 | `realNmnistBaseline` | pass | Real public N-MNIST plaintext baseline artifact is present. |
-| `tfheRealDataPath` | blocked | The committed EEG-derived OpenFHE input contract uses approximate or quantized linear-score fields, while the TFHE-rs native target currently accepts only its built-in non-negative integer threshold contract. |
+| `tfheRealDataPath` | pass | TFHE-rs native lane ran the EEG-derived signed-integer contract; encrypted class scores and the encrypted threshold decision matched the plaintext baseline on a single window. |
 | `productionClaim` | pass | Indexed artifacts keep productionClaim false. |
 
 ## Release Decision
