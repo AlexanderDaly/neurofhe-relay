@@ -42,8 +42,8 @@ to the artifact or boundary file that should confirm the claim.
 - Hosted `Portable validation` is green on the release-validation PR head.
 - The release evidence dashboard indexes a committed hosted-CI evidence
   snapshot, repository hygiene, native evidence, metadata-leakage,
-  reconstruction-risk, real N-MNIST baseline, TFHE-rs real-data blocker, and
-  `productionClaim: false` posture.
+  reconstruction-risk, real N-MNIST baseline, TFHE-rs real-data signed-integer
+  run, and `productionClaim: false` posture.
 - `docs/evidence-dashboard.md` gives reviewers the same dashboard posture in a
   short human-readable form before they inspect the JSON artifact.
 - Live PR head, hosted check rollup, and merge-policy status still need
@@ -61,8 +61,9 @@ to the artifact or boundary file that should confirm the claim.
   artifact, caveat, and blocker posture during that rerun.
 - `benchmark-artifacts/native-evidence/latest.json` still records incomplete
   ciphertext-byte and RSS or peak-memory measurement coverage for OpenFHE lanes.
-- TFHE-rs real-data execution is still blocked until an integer/Boolean adapter
-  or validated transformer exists for EEG-derived sparse contracts.
+- TFHE-rs real-data evidence is a single EEG-derived window; multi-window runs
+  plus ciphertext-size and memory sweeps remain before performance or accuracy
+  claims.
 - Metadata-leakage and reconstruction-risk artifacts remain caveated proxies
   and synthetic probes, not privacy proofs.
 - No release tag should be created until the documented gates are satisfied and
@@ -76,8 +77,8 @@ to the artifact or boundary file that should confirm the claim.
    refresh artifacts or blocker reports.
 3. Close native measurement gaps with multi-window BFVrns and CKKS sweeps,
    serialized ciphertext-byte reporting, and RSS or peak-memory measurements.
-4. Add a TFHE-rs real-data adapter or validated EEG-contract transformer before
-   claiming TFHE-rs real-data evidence.
+4. Extend the TFHE-rs EEG real-data run across multiple windows and add
+   ciphertext-size and memory sweeps before performance or accuracy claims.
 5. Continue evidence work from
    `patent/briefing/ENER_weak_claims_evidence_gaps.md`, especially
    reconstruction and identity-linkage tests, metadata leakage metrics, and

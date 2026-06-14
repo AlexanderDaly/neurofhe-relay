@@ -1,12 +1,17 @@
 // SPDX-License-Identifier: CC0-1.0
 
 import { spawnSync } from "node:child_process";
+import { writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 import { publishComparisonArtifact } from "./lib/artifacts.mjs";
 import {
   buildTfheRsRealLibraryAdapter,
+  buildTfheRsRealDataContract,
   buildTfheRsRealDataUnavailableReport,
   tfheRsIntegrationPlan,
+  validateTfheRsRealDataContract,
 } from "./lib/tfhe-rs-adapter.mjs";
 
 const rawArgs = process.argv.slice(2);
@@ -42,19 +47,97 @@ if (args.has("--help")) {
 }
 
 if (inputPath) {
-  const subject = buildTfheRsRealDataUnavailableReport({ inputPath });
-  if (shouldPublishArtifact) {
-    const published = await publishComparisonArtifact({
-      outputDir,
-      subject,
-      artifactId,
-      generatedAt,
+  let realDataContract = null;
+  let transformError = null;
+  try {
+    realDataContract = buildTfheRsRealDataContract({ inputPath });
+  } catch (error) {
+    transformError = error.message;
+  }
+  const validationErrors = realDataContract ? validateTfheRsRealDataContract(realDataContract) : [];
+
+  // Only fall back to the structured blocker when the EEG contract genuinely
+  // cannot be transformed into a valid TFHE-rs signed-integer contract.
+  if (!realDataContract || validationErrors.length > 0) {
+    const subject = buildTfheRsRealDataUnavailableReport({
+      inputPath,
+      transformError,
+      validationErrors,
     });
+    if (shouldPublishArtifact) {
+      const published = await publishComparisonArtifact({ outputDir, subject, artifactId, generatedAt });
+      console.log(JSON.stringify(published, null, 2));
+    } else {
+      console.log(JSON.stringify(subject, null, 2));
+    }
+    process.exit(2);
+  }
+
+  const contractValidation = { status: "valid", errors: [] };
+
+  if (!args.has("--run")) {
+    const subject = {
+      schema: "neurofhe.tfheRs.realDataContractPlan.v1",
+      sourceContractPath: inputPath,
+      contract: realDataContract,
+      contractValidation,
+      productionClaim: false,
+    };
+    if (shouldPublishArtifact) {
+      const published = await publishComparisonArtifact({ outputDir, subject, artifactId, generatedAt });
+      console.log(JSON.stringify(published, null, 2));
+    } else {
+      console.log(JSON.stringify(subject, null, 2));
+    }
+    process.exit(0);
+  }
+
+  const contractFile = join(tmpdir(), `neurofhe-tfhe-realdata-${Date.now()}.json`);
+  writeFileSync(contractFile, `${JSON.stringify(realDataContract, null, 2)}\n`, "utf8");
+  const nativeRun = run(
+    "cargo",
+    [
+      "run",
+      "--release",
+      "--manifest-path",
+      "prototype/tfhe-rs/Cargo.toml",
+      "--bin",
+      "neurofhe-tfhe-demo",
+      "--",
+      "--input",
+      contractFile,
+    ],
+    { capture: true },
+  );
+  const parsed = JSON.parse(nativeRun.stdout);
+  const subject = {
+    schema: "neurofhe.tfheRs.realDataRunComparison.v1",
+    sourceContractPath: inputPath,
+    transform: {
+      sourceContractDigest: realDataContract.sourceContractDigest,
+      datasetKind: realDataContract.datasetKind,
+      scoreDomain: realDataContract.scoreDomain,
+      fixedPointScale: realDataContract.fixedPointScale,
+      expectedPlaintextScores: realDataContract.expectedPlaintextScores,
+      expectedClassification: realDataContract.expectedClassification,
+    },
+    contract: realDataContract,
+    contractValidation,
+    nativeResult: parsed,
+    plaintextParity: {
+      matches: parsed.plaintextMatchesExpected === true,
+      booleanDecisionMatches: parsed.booleanDecision?.matchesExpected === true,
+    },
+    productionClaim: false,
+  };
+  if (shouldPublishArtifact) {
+    process.stdout.write(nativeRun.stdout);
+    const published = await publishComparisonArtifact({ outputDir, subject, artifactId, generatedAt });
     console.log(JSON.stringify(published, null, 2));
   } else {
     console.log(JSON.stringify(subject, null, 2));
   }
-  process.exit(2);
+  process.exit(0);
 }
 
 if (!args.has("--run")) {

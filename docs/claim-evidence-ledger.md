@@ -22,7 +22,7 @@ a security certification.
 - `benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json` - sampled
   real public N-MNIST plaintext baseline.
 - `benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json` - TFHE-rs
-  real-data input blocker.
+  EEG-derived real-data signed-integer run with single-window plaintext parity.
 
 Keep `productionClaim: false`, `privacyBoundary`, and `cryptoInventory` intact
 where artifact metadata carries those fields.

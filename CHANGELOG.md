@@ -11,6 +11,15 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Added
 
+- Added the TFHE-rs EEG-derived real-data adapter: a transformer
+  (`buildTfheRsRealDataContract`) that converts the OpenFHE signed-fixed-point
+  quantized contract into a validated signed TFHE-rs contract, a signed
+  `FheInt32` native lane (`run_tfhe_real_data_classifier_json`) that reads the
+  contract via `--input`, and a `neurofhe.tfheRs.realDataRunComparison.v1`
+  artifact at `benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`.
+  The native encrypted class scores and threshold decision match the plaintext
+  baseline on a single EEG-derived window; this is single-window research
+  evidence with `productionClaim: false`, not performance or accuracy evidence.
 - Restored the release-validation stack on PR #23 with automatic
   `Portable validation` checks for push and pull request events.
 - Added repository readability maps for docs, prototype sources, native lanes,

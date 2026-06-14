@@ -48,8 +48,8 @@ artifact into a broader claim than its schema and caveats support.
 | `benchmark-artifacts/comparisons/openfhe-ckks/runs/` | timestamped OpenFHE CKKS comparison records. |
 | `benchmark-artifacts/comparisons/tfhe-rs/` | TFHE-rs synthetic native comparison artifacts. |
 | `benchmark-artifacts/comparisons/tfhe-rs/runs/` | timestamped TFHE-rs synthetic comparison records. |
-| `benchmark-artifacts/comparisons/tfhe-rs-realdata/` | TFHE-rs real-data input blocker artifacts. |
-| `benchmark-artifacts/comparisons/tfhe-rs-realdata/runs/` | timestamped TFHE-rs real-data blocker records. |
+| `benchmark-artifacts/comparisons/tfhe-rs-realdata/` | TFHE-rs real-data signed-integer run comparison artifacts (EEG-derived). |
+| `benchmark-artifacts/comparisons/tfhe-rs-realdata/runs/` | timestamped TFHE-rs real-data run and historical blocker records. |
 | `benchmark-artifacts/native-evidence/` | native-lane manifest artifacts and measurement gap indexes. |
 | `benchmark-artifacts/native-evidence/runs/` | timestamped native evidence manifests. |
 | `benchmark-artifacts/plaintext-baselines/` | plaintext real-data, fixture, and blocker baselines. |
@@ -101,11 +101,13 @@ By default, OpenFHE comparison artifacts are written under
 `benchmark-artifacts/comparisons/openfhe/`. OpenFHE CKKS comparison artifacts
 are written under `benchmark-artifacts/comparisons/openfhe-ckks/`. TFHE-rs
 comparison artifacts are written under
-`benchmark-artifacts/comparisons/tfhe-rs/`. TFHE-rs real-data input blocker
+`benchmark-artifacts/comparisons/tfhe-rs/`. TFHE-rs real-data signed-integer run
 artifacts are written under
-`benchmark-artifacts/comparisons/tfhe-rs-realdata/`; they preserve the attempted
-EEG-derived input command, error, and smallest next step without overwriting the
-latest runnable synthetic TFHE-rs artifact. Use `--out <directory>` to place a
+`benchmark-artifacts/comparisons/tfhe-rs-realdata/`; they transform the
+EEG-derived OpenFHE quantized contract into a signed TFHE-rs contract and record
+the native encrypted run plus its plaintext parity, without overwriting the
+latest synthetic TFHE-rs artifact. If the EEG contract cannot be transformed, a
+structured blocker is recorded instead. Use `--out <directory>` to place a
 comparison run elsewhere.
 
 Native evidence manifest artifacts are written under
@@ -180,7 +182,7 @@ Release-evidence index artifacts are written under
 evidence, repository hygiene, native evidence, metadata-leakage, and
 reconstruction-risk artifacts, plus the real N-MNIST plaintext baseline at
 `benchmark-artifacts/plaintext-baselines/nmnist-local/latest.json` and the
-TFHE-rs real-data input blocker at
+TFHE-rs real-data signed-integer run at
 `benchmark-artifacts/comparisons/tfhe-rs-realdata/latest.json`, so the release
 gate can be reviewed from one JSON surface. They are dashboard artifacts only,
 must keep `releaseGateSatisfied: false` until the documented gate is actually
@@ -216,8 +218,10 @@ Current artifacts also include:
   caveat that it is not peak-memory or dataset-scale memory evidence
 - real N-MNIST local plaintext baseline evidence with derived sampled accuracy
   and compression-curve metrics, not raw event files
-- TFHE-rs real-data input blocker artifacts that keep the unsupported
-  EEG-derived input path explicit without replacing synthetic native evidence
+- TFHE-rs real-data signed-integer run artifacts that transform the EEG-derived
+  OpenFHE quantized contract into a signed TFHE-rs contract and record the native
+  encrypted run plus single-window plaintext parity, without replacing synthetic
+  native evidence
 - CI/account blocker artifacts that separate GitHub Actions availability from
   code or workflow-step failures
 - repository hygiene scan artifacts that separate source cleanliness evidence

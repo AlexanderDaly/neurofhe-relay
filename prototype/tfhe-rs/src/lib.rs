@@ -2,13 +2,15 @@
 
 use std::collections::BTreeMap;
 use std::error::Error;
+use std::fs;
 use std::process::{self, Command};
 use std::time::Instant;
 
+use serde::Deserialize;
 use serde_json::{json, Value};
 use tfhe::prelude::*;
 use tfhe::safe_serialization::safe_serialized_size;
-use tfhe::{generate_keys, set_server_key, ConfigBuilder, FheBool, FheUint16};
+use tfhe::{generate_keys, set_server_key, ConfigBuilder, FheBool, FheInt32, FheUint16};
 
 type DemoResult<T> = Result<T, Box<dyn Error + Send + Sync>>;
 
@@ -437,6 +439,348 @@ impl OperationCounts {
             "decryptions": self.decryptions,
         })
     }
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct RealDataActiveEvent {
+    index: usize,
+    #[serde(default)]
+    time_bin: usize,
+    #[serde(default)]
+    neuron_id: usize,
+    value: i64,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct RealDataContract {
+    #[serde(default)]
+    score_domain: Option<String>,
+    #[serde(default)]
+    fixed_point_scale: Option<i64>,
+    #[serde(default)]
+    dataset_kind: Option<String>,
+    classes: Vec<String>,
+    #[serde(default)]
+    feature_shape: Vec<usize>,
+    #[serde(default)]
+    spatial_bins: Option<Vec<usize>>,
+    active_events: Vec<RealDataActiveEvent>,
+    weights: BTreeMap<String, Vec<i64>>,
+    bias: BTreeMap<String, i64>,
+    #[serde(default)]
+    expected_classification: Option<String>,
+    #[serde(default)]
+    public_active_neuron_positions: Vec<Value>,
+    #[serde(default)]
+    source_contract_digest: Option<Value>,
+}
+
+// Runs the encrypted sparse linear scorer over an EEG-derived signed-integer
+// contract. Unlike the synthetic demo, values, weights, and bias are signed
+// fixed-point integers, so the lane uses signed FheInt32 ciphertexts. The
+// decision compares the second class score against the first (e.g. eye-open vs
+// eye-closed), mirroring the synthetic anomaly-vs-normal gate.
+pub fn run_tfhe_real_data_classifier_json(contract_path: &str) -> DemoResult<Value> {
+    let started = Instant::now();
+    let raw = fs::read_to_string(contract_path)?;
+    let contract: RealDataContract = serde_json::from_str(&raw)?;
+
+    if contract.classes.len() != 2 {
+        return Err(format!(
+            "real-data TFHE-rs contract must declare exactly two classes, found {}",
+            contract.classes.len()
+        )
+        .into());
+    }
+    let baseline_label = contract.classes[0].clone();
+    let positive_label = contract.classes[1].clone();
+    let baseline_weights = contract
+        .weights
+        .get(&baseline_label)
+        .ok_or_else(|| format!("missing weights for class {baseline_label}"))?;
+    let positive_weights = contract
+        .weights
+        .get(&positive_label)
+        .ok_or_else(|| format!("missing weights for class {positive_label}"))?;
+    let baseline_bias = *contract
+        .bias
+        .get(&baseline_label)
+        .ok_or_else(|| format!("missing bias for class {baseline_label}"))?;
+    let positive_bias = *contract
+        .bias
+        .get(&positive_label)
+        .ok_or_else(|| format!("missing bias for class {positive_label}"))?;
+
+    let expected_scores = real_plaintext_scores(
+        &contract.active_events,
+        baseline_weights,
+        positive_weights,
+        baseline_bias,
+        positive_bias,
+        &baseline_label,
+        &positive_label,
+    );
+    let expected_classification = argmax_label(&expected_scores, &baseline_label, &positive_label);
+    let expected_decision = expected_scores[&positive_label] > expected_scores[&baseline_label];
+
+    let config = ConfigBuilder::default().build();
+    let (client_key, server_key) = generate_keys(config);
+    set_server_key(server_key);
+
+    let mut operation_counts = OperationCounts::default();
+    let encrypted_events: Vec<FheInt32> = contract
+        .active_events
+        .iter()
+        .map(|event| {
+            operation_counts.encryptions += 1;
+            FheInt32::encrypt(value_as_i32(event.value), &client_key)
+        })
+        .collect();
+
+    let baseline_ct = evaluate_real_class_score(
+        &encrypted_events,
+        &contract.active_events,
+        baseline_weights,
+        baseline_bias,
+        &mut operation_counts,
+        &client_key,
+    );
+    let positive_ct = evaluate_real_class_score(
+        &encrypted_events,
+        &contract.active_events,
+        positive_weights,
+        positive_bias,
+        &mut operation_counts,
+        &client_key,
+    );
+
+    let encrypted_decision: FheBool = positive_ct.gt(&baseline_ct);
+    operation_counts.encrypted_comparisons += 1;
+
+    let baseline_score: i32 = baseline_ct.decrypt(&client_key);
+    operation_counts.decryptions += 1;
+    let positive_score: i32 = positive_ct.decrypt(&client_key);
+    operation_counts.decryptions += 1;
+    let decision_bit: bool = encrypted_decision.decrypt(&client_key);
+    operation_counts.decryptions += 1;
+
+    let decrypted_scores: BTreeMap<String, i64> = BTreeMap::from([
+        (baseline_label.clone(), i64::from(baseline_score)),
+        (positive_label.clone(), i64::from(positive_score)),
+    ]);
+    let classification = argmax_label(&decrypted_scores, &baseline_label, &positive_label);
+    let ciphertext_bytes = measure_real_ciphertext_bytes(
+        &encrypted_events,
+        &baseline_ct,
+        &positive_ct,
+        &encrypted_decision,
+    )?;
+    let memory_usage = measure_memory_usage_json();
+    let plaintext_matches = decrypted_scores == expected_scores
+        && classification == expected_classification
+        && decision_bit == expected_decision;
+    let gate = format!("{positive_label}_score_gt_{baseline_label}_score");
+
+    Ok(json!({
+        "schema": "neurofhe.tfheRs.realDataResult.v1",
+        "scheme": "tfhe-rs-integer-threshold",
+        "scoreDomain": "signed-fixed-point-integers",
+        "fixedPointScale": contract.fixed_point_scale,
+        "scoreEquation": "scores = W x + bias",
+        "boundaryDomain": "bio-digital-event-intelligence",
+        "eventRepresentation": "spatial-sorted-events",
+        "datasetKind": contract.dataset_kind,
+        "sourceContractDigest": contract.source_contract_digest,
+        "classes": contract.classes,
+        "baselineClass": baseline_label,
+        "positiveClass": positive_label,
+        "featureShape": contract.feature_shape,
+        "spatialBins": contract.spatial_bins,
+        "activeEventCount": contract.active_events.len(),
+        "activeNeuronPositions": contract.public_active_neuron_positions,
+        "privacyMode": {
+            "id": "public-active-neuron-positions-encrypted-features",
+            "publicFields": [
+                "activeNeuronPositions",
+                "featureShape",
+                "publicModelWeights",
+                "publicBias"
+            ],
+            "encryptedFields": [
+                "activeFeatureValues",
+                "classScoreCiphertexts",
+                "thresholdDecisionBit"
+            ],
+            "metadataLeakage": [
+                "active neuron identity and time-bin pattern",
+                "exact sorted active event count",
+                "coarse spatial activity"
+            ]
+        },
+        "scores": decrypted_scores,
+        "classification": classification,
+        "expectedScores": expected_scores,
+        "expectedClassification": expected_classification,
+        "contractExpectedClassification": contract.expected_classification,
+        "plaintextMatchesExpected": plaintext_matches,
+        "booleanDecision": {
+            "schema": "neurofhe.tfheRs.booleanDecisionResult.v1",
+            "gate": gate,
+            "encryptedResultType": "FheBool",
+            "decrypted": decision_bit,
+            "expectedPlaintext": expected_decision,
+            "matchesExpected": decision_bit == expected_decision
+        },
+        "operationCounts": operation_counts.to_json(),
+        "ciphertextBytes": ciphertext_bytes,
+        "accuracy": {
+            "schema": "neurofhe.accuracy.v1",
+            "metric": "single-window-plaintext-agreement",
+            "value": u8::from(plaintext_matches),
+            "sampleCount": 1,
+            "caveat": "Single EEG-derived event-window contract agreement, not dataset accuracy."
+        },
+        "securityParameters": {
+            "schema": "neurofhe.securityParameters.v1",
+            "scheme": "tfhe-rs-integer-threshold",
+            "library": "TFHE-rs",
+            "crate": "tfhe",
+            "crateVersion": "1.6.1",
+            "configuration": "ConfigBuilder::default() high-level API",
+            "encryptedTypes": ["FheInt32", "FheBool"],
+            "reproducibility": "EEG-derived contract values are deterministic; key generation uses runtime cryptographic randomness.",
+            "productionClaim": false
+        },
+        "cryptoInventory": {
+            "schema": "neurofhe.crypto.inventory.v1",
+            "encryptedComputation": ["tfhe-rs-1.6.1-integer-boolean-research-only"],
+            "tfheRs": {
+                "crate": "tfhe",
+                "version": "1.6.1",
+                "features": ["boolean", "integer"],
+                "defaultFeatures": false,
+                "role": "encrypted signed sparse integer scoring plus encrypted Boolean threshold/comparison gate"
+            },
+            "productionClaim": false
+        },
+        "privacyBoundary": {
+            "schema": "neurofhe.tfheRs.privacyBoundary.v1",
+            "gatewaySees": [
+                "EEG-derived sorted event window",
+                "active event values before encryption",
+                "active event positions"
+            ],
+            "computeSees": [
+                "approved active event positions",
+                "public model weights",
+                "public model bias",
+                "encrypted TFHE-rs active spike values",
+                "encrypted TFHE-rs class scores",
+                "encrypted TFHE-rs threshold decision bit"
+            ],
+            "clientSees": [
+                "decrypted class scores",
+                "decrypted threshold decision bit",
+                "final classification"
+            ],
+            "withheld": [
+                "raw EEG samples",
+                "raw electrode identifiers",
+                "raw sample timestamp order",
+                "device identifiers",
+                "local subject or session references",
+                "operator notes"
+            ],
+            "productionClaim": false
+        },
+        "latencyMs": elapsed_ms(started),
+        "memoryUsage": memory_usage,
+        "productionClaim": false,
+        "caveat": "research-alpha TFHE-rs native lane on an EEG-derived quantized contract; not production cryptography, not clinical validation, and not side-channel reviewed."
+    }))
+}
+
+fn evaluate_real_class_score(
+    encrypted_events: &[FheInt32],
+    events: &[RealDataActiveEvent],
+    weights: &[i64],
+    bias: i64,
+    operation_counts: &mut OperationCounts,
+    client_key: &tfhe::ClientKey,
+) -> FheInt32 {
+    operation_counts.encryptions += 1;
+    let mut acc = FheInt32::encrypt(value_as_i32(bias), client_key);
+
+    for (ciphertext, event) in encrypted_events.iter().zip(events.iter()) {
+        let weight = value_as_i32(weights[event.index]);
+        let weighted = ciphertext * weight;
+        operation_counts.scalar_multiplies += 1;
+        acc = &acc + &weighted;
+        operation_counts.adds += 1;
+    }
+
+    acc
+}
+
+fn real_plaintext_scores(
+    events: &[RealDataActiveEvent],
+    baseline_weights: &[i64],
+    positive_weights: &[i64],
+    baseline_bias: i64,
+    positive_bias: i64,
+    baseline_label: &str,
+    positive_label: &str,
+) -> BTreeMap<String, i64> {
+    let baseline = events
+        .iter()
+        .fold(baseline_bias, |sum, event| sum + event.value * baseline_weights[event.index]);
+    let positive = events
+        .iter()
+        .fold(positive_bias, |sum, event| sum + event.value * positive_weights[event.index]);
+    BTreeMap::from([
+        (baseline_label.to_string(), baseline),
+        (positive_label.to_string(), positive),
+    ])
+}
+
+fn argmax_label(scores: &BTreeMap<String, i64>, baseline_label: &str, positive_label: &str) -> String {
+    let baseline = scores.get(baseline_label).copied().unwrap_or(i64::MIN);
+    let positive = scores.get(positive_label).copied().unwrap_or(i64::MIN);
+    if positive > baseline {
+        positive_label.to_string()
+    } else {
+        baseline_label.to_string()
+    }
+}
+
+fn value_as_i32(value: i64) -> i32 {
+    value.clamp(i64::from(i32::MIN), i64::from(i32::MAX)) as i32
+}
+
+fn measure_real_ciphertext_bytes(
+    encrypted_events: &[FheInt32],
+    baseline_score: &FheInt32,
+    positive_score: &FheInt32,
+    encrypted_decision: &FheBool,
+) -> DemoResult<Value> {
+    let active_values = encrypted_events
+        .iter()
+        .map(safe_serialized_size)
+        .try_fold(0_u64, |sum, item| item.map(|size| sum + size))?;
+    let baseline_bytes = safe_serialized_size(baseline_score)?;
+    let positive_bytes = safe_serialized_size(positive_score)?;
+    let decision_bit = safe_serialized_size(encrypted_decision)?;
+    let class_scores = baseline_bytes + positive_bytes;
+
+    Ok(json!({
+        "activeValueCiphertexts": active_values,
+        "classScoreCiphertexts": class_scores,
+        "thresholdDecisionBit": decision_bit,
+        "total": active_values + class_scores + decision_bit,
+        "measurement": "TFHE-rs safe_serialized_size",
+    }))
 }
 
 #[cfg(test)]

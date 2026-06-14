@@ -370,6 +370,24 @@ function summarizeTfheRealDataPath(artifact) {
       smallestNextStep: subject.smallestNextStep ?? null,
     };
   }
+  if (subject.schema === "neurofhe.tfheRs.realDataRunComparison.v1") {
+    const native = subject.nativeResult;
+    const matches =
+      native?.plaintextMatchesExpected === true &&
+      native?.booleanDecision?.matchesExpected === true;
+    return {
+      status: matches ? "pass" : "caveated",
+      reason: matches
+        ? "TFHE-rs native lane ran the EEG-derived signed-integer contract; encrypted class scores and the encrypted threshold decision matched the plaintext baseline on a single window."
+        : "TFHE-rs native lane ran the EEG-derived contract, but at least one encrypted result did not match the plaintext baseline.",
+      artifactId: artifact.artifactId,
+      inputDatasetKind: subject.transform?.datasetKind ?? native?.datasetKind ?? null,
+      scoreDomain: subject.transform?.scoreDomain ?? native?.scoreDomain ?? null,
+      plaintextMatchesExpected: native?.plaintextMatchesExpected ?? null,
+      smallestNextStep:
+        "Repeat the TFHE-rs EEG run across multiple windows and add ciphertext-size and memory sweeps before any performance or accuracy claim.",
+    };
+  }
   return {
     status: "caveated",
     reason: "TFHE-rs real-data input artifact is present but not recognized as release-gate evidence.",
