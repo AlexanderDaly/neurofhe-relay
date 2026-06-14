@@ -32,7 +32,7 @@ architecture posture tied to the file family that must move with it.
 | Use bio-digital event intelligence language for public framing. | Accepted | The repo frames local signal handling, event features, and encrypted compute without literal mind-reading or medical-device claims. | Clinical or neurodiagnostic language remains out of scope without regulated-use evidence. |
 | Keep toy additive scaffold code separate from native OpenFHE and TFHE-rs lanes. | Accepted | The toy additive path is for schema and workflow education; native OpenFHE and TFHE-rs lanes are for real-library comparison where dependencies exist. | Toy arithmetic cannot substitute for native FHE benchmark evidence. |
 | Keep raw data outside git. | Accepted | Public datasets, raw EEG/neural/sensor data, partner material, and private payloads do not belong in the repository. | Only derived artifacts, provenance, and blocker reports should be committed. |
-| Keep repository ruleset/admin policy separate from code or CI failures. | Accepted | PR #23 is green in hosted `Portable validation`, while merge remains controlled by repository ruleset/admin policy. | No merge or release tag should happen without satisfying the documented gates and explicit user approval. |
+| Keep repository ruleset/admin policy separate from code or CI failures. | Accepted | Hosted `Portable validation` can be green while merge stays controlled by repository ruleset/admin policy. | No merge or release tag should happen without satisfying the documented gates and explicit user approval. |
 
 ## Review Rule
 

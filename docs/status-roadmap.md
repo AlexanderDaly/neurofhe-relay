@@ -29,7 +29,7 @@ to the artifact or boundary file that should confirm the claim.
 | --- | --- | --- |
 | What release is being prepared? | `v0.1.0-research-alpha` | `RELEASE.md` |
 | Is the local portable gate current? | Yes; the latest recorded run is in `VALIDATION.md`. | `VALIDATION.md`, `CHANGELOG.md` |
-| Is hosted portable CI green? | Yes on PR #23. | `benchmark-artifacts/ci-blockers/latest.json`, `docs/operations-runbook.md` |
+| Is hosted portable CI green? | Yes; recorded in the committed hosted-CI evidence snapshot. | `benchmark-artifacts/ci-blockers/latest.json`, `docs/operations-runbook.md` |
 | Is repository hygiene passing? | Yes in the latest redacted source scan. | `benchmark-artifacts/repo-hygiene/latest.json` |
 | Is the release gate satisfied? | No; `releaseGateSatisfied: false`. | `benchmark-artifacts/release-evidence/latest.json`, `docs/evidence-dashboard.md`, `docs/release-gate-matrix.md` |
 | What blocks merge? | Repository ruleset/admin policy. | `docs/operations-runbook.md`, `RELEASE.md` |
@@ -47,7 +47,7 @@ to the artifact or boundary file that should confirm the claim.
 - `docs/evidence-dashboard.md` gives reviewers the same dashboard posture in a
   short human-readable form before they inspect the JSON artifact.
 - Live PR head, hosted check rollup, and merge-policy status still need
-  `gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup`
+  `gh pr view "$RELEASE_VALIDATION_PR" --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup`
   before merge or release review.
 - The repository now has reader maps for docs, briefs, prototype/ scaffold code, native
   sources, patent materials, generated outputs, contributor workflow, policy

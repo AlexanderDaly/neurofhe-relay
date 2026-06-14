@@ -1045,7 +1045,7 @@ test("documentation index stays concise and reader-facing", () => {
     "Before treating a release-validation PR as merge-ready",
     "confirm the live head",
     "repository ruleset/admin policy state",
-    "gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "gh pr view \"$RELEASE_VALIDATION_PR\" --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
     "LICENSE",
     "PUBLIC_DOMAIN_NOTICE.md",
     "PACKAGE_MANIFEST.md",
@@ -1598,7 +1598,7 @@ test("benchmark artifacts README lists every tracked artifact directory", () => 
     "May 29 `609b48c`",
     "PR head\n`609b48c`",
     "committed hosted-CI snapshots are evidence\nrecords",
-    "gh pr view 23",
+    "gh pr view \"$RELEASE_VALIDATION_PR\"",
   ];
   const missingPosture = requiredPosture.filter((entry) =>
     !artifactsReadme.includes(entry),
@@ -2015,7 +2015,7 @@ test("status roadmap lists every release-readiness evidence surface", () => {
     "Claim or boundary check",
     "| Question | Current Answer | Authoritative Source |",
     "Is hosted portable CI green?",
-    "Yes on PR #23",
+    "Yes; recorded in the committed hosted-CI evidence snapshot",
     "Is the release gate satisfied?",
     "No; `releaseGateSatisfied: false`",
     "What blocks merge?",
@@ -2023,7 +2023,7 @@ test("status roadmap lists every release-readiness evidence surface", () => {
     "committed hosted-CI evidence",
     "snapshot, repository hygiene",
     "Live PR head",
-    "gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "gh pr view \"$RELEASE_VALIDATION_PR\" --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
     "RELEASE.md",
     "VALIDATION.md",
     "benchmark-artifacts/ci-blockers/latest.json",
@@ -2594,7 +2594,7 @@ test("reviewer quickstart maps due diligence entrypoints and caveats", () => {
     "repository ruleset/admin policy",
     "Confirm the live head, check rollup, and merge",
     "policy before treating the PR as ready",
-    "gh pr view 23 --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "gh pr view \"$RELEASE_VALIDATION_PR\" --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
   ];
   const missingEntries = requiredEntries.filter((entry) =>
     !reviewerGuide.includes(entry),
@@ -2682,7 +2682,7 @@ test("root README keeps first-read navigation role based", () => {
     "Research-alpha release target",
     "v0.1.0-research-alpha",
     "Portable validation",
-    "Green on PR #23",
+    "Green in hosted CI",
     "139 passing tests",
     "Merge state",
     "repository ruleset/admin policy",
