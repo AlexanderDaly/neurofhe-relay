@@ -65,7 +65,7 @@ export function renderEvidenceDashboard(artifact) {
   lines.push("");
   lines.push("```sh");
   lines.push(
-    "gh pr view <release-validation-PR> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
+    "gh pr view \"$RELEASE_VALIDATION_PR\" --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup",
   );
   lines.push("```");
   lines.push("");

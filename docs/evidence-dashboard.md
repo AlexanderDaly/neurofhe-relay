@@ -33,7 +33,7 @@ live PR status. Before merge or release review, confirm the current PR head,
 hosted check rollup, and merge policy with:
 
 ```sh
-gh pr view <release-validation-PR> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
+gh pr view "$RELEASE_VALIDATION_PR" --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
 ```
 
 ## Gate Checks
