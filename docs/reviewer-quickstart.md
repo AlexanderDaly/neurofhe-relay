@@ -93,7 +93,7 @@ repository ruleset/admin policy. Confirm the live head, check rollup, and merge
 policy before treating the PR as ready:
 
 ```sh
-gh pr view <release-validation-PR> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
+gh pr view "$RELEASE_VALIDATION_PR" --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
 ```
 
 Do not tag a release or merge a release PR until the `RELEASE.md` gates are

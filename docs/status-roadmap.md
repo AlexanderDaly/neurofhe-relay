@@ -47,7 +47,7 @@ to the artifact or boundary file that should confirm the claim.
 - `docs/evidence-dashboard.md` gives reviewers the same dashboard posture in a
   short human-readable form before they inspect the JSON artifact.
 - Live PR head, hosted check rollup, and merge-policy status still need
-  `gh pr view <release-validation-PR> --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup`
+  `gh pr view "$RELEASE_VALIDATION_PR" --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup`
   before merge or release review.
 - The repository now has reader maps for docs, briefs, prototype/ scaffold code, native
   sources, patent materials, generated outputs, contributor workflow, policy
