@@ -18,8 +18,8 @@ Source artifact:
 
 ```text
 benchmark-artifacts/release-evidence/latest.json
-artifactId: release-evidence-tfhe-realdata-2026-06-14
-generatedAt: 2026-06-14T00:00:00.000Z
+artifactId: release-evidence-native-measured-2026-06-15
+generatedAt: 2026-06-15T00:00:00.000Z
 subject.releaseGateSatisfied: false
 subject.productionClaim: false
 productionClaim: false
@@ -42,7 +42,7 @@ gh pr view "$RELEASE_VALIDATION_PR" --json headRefOid,mergeable,mergeStateStatus
 | --- | --- | --- |
 | `hostedPortableCi` | pass | Automatic push and pull_request triggers remain restored on PR #23 at head 609b48c, with successful hosted Portable validation check runs in the status check rollup and current Node 24-ready action majors. |
 | `repositoryHygiene` | pass | Repository hygiene scan reports pass. |
-| `nativeMeasurementCoverage` | incomplete | Native evidence remains incomplete for ciphertext-byte and/or RSS/peak-memory measurements. |
+| `nativeMeasurementCoverage` | pass | Native evidence reports complete ciphertext-byte and RSS/peak-memory coverage. |
 | `metadataLeakage` | caveated | Metadata leakage metric is a documented observable-category proxy, not a formal privacy proof. |
 | `reconstructionRisk` | caveated | Synthetic probes block raw payload replay and active-value recovery while preserving public-position residual risk. |
 | `realNmnistBaseline` | pass | Real public N-MNIST plaintext baseline artifact is present. |

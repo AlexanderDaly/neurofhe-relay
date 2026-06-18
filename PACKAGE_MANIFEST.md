@@ -149,11 +149,12 @@ native-lane posture. The indexed native evidence currently includes:
 - TFHE-rs: `tfhe-rs-alpha-lane-framing-2026-05-29`.
 
 Those artifacts show the integration lanes are real native-library research
-evidence on the indexed host, but native measurement gaps remain. BFVrns still
-needs serialized ciphertext-byte and RSS or peak-memory measurements. CKKS
-still has partial ciphertext and memory measurements. TFHE-rs remains a
-synthetic threshold/LUT-style comparison lane until its real-data input adapter
-or transformer exists. None of the native lanes is production cryptography.
+evidence on the indexed host. The single-window native measurement gaps are now
+closed on that host: OpenFHE BFVrns and CKKS report serialized ciphertext-byte
+sizes and end-of-run RSS, and TFHE-rs now runs the EEG-derived signed-integer
+contract in addition to the synthetic lane. Multi-window coverage and a
+release-machine rerun remain. None of the native lanes is production
+cryptography.
 
 ## Proprietary Track Note
 

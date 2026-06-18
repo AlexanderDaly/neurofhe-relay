@@ -33,7 +33,7 @@ to the artifact or boundary file that should confirm the claim.
 | Is repository hygiene passing? | Yes in the latest redacted source scan. | `benchmark-artifacts/repo-hygiene/latest.json` |
 | Is the release gate satisfied? | No; `releaseGateSatisfied: false`. | `benchmark-artifacts/release-evidence/latest.json`, `docs/evidence-dashboard.md`, `docs/release-gate-matrix.md` |
 | What blocks merge? | Repository ruleset/admin policy. | `docs/operations-runbook.md`, `RELEASE.md` |
-| What evidence still needs care? | Native measurement gaps, TFHE-rs real-data input, metadata/reconstruction caveats, and patent briefing gaps. | `benchmark-artifacts/native-evidence/latest.json`, `docs/claim-evidence-ledger.md`, `patent/briefing/ENER_weak_claims_evidence_gaps.md` |
+| What evidence still needs care? | Multi-window native sweeps, metadata/reconstruction caveats, and patent briefing gaps. | `benchmark-artifacts/native-evidence/latest.json`, `docs/claim-evidence-ledger.md`, `patent/briefing/ENER_weak_claims_evidence_gaps.md` |
 | What repository decisions frame cleanup? | Keep the CC0 research-alpha boundary, raw-data exclusions, toy/native split, and evidence-backed claims. | `docs/architecture-decisions.md` |
 
 ## What Is Ready To Review
@@ -59,8 +59,9 @@ to the artifact or boundary file that should confirm the claim.
 - `RELEASE.md` commands still need a final release-machine rerun before tagging.
 - `docs/release-gate-matrix.md` should be used to track each command's
   artifact, caveat, and blocker posture during that rerun.
-- `benchmark-artifacts/native-evidence/latest.json` still records incomplete
-  ciphertext-byte and RSS or peak-memory measurement coverage for OpenFHE lanes.
+- `benchmark-artifacts/native-evidence/latest.json` now records complete
+  single-window ciphertext-byte and RSS coverage for the OpenFHE and TFHE-rs
+  lanes on the indexed host; the release machine must still rerun them.
 - TFHE-rs real-data evidence is a single EEG-derived window; multi-window runs
   plus ciphertext-size and memory sweeps remain before performance or accuracy
   claims.
@@ -75,8 +76,9 @@ to the artifact or boundary file that should confirm the claim.
    ruleset/admin path when approved.
 2. Rerun the `RELEASE.md` minimum evidence commands on the release machine and
    refresh artifacts or blocker reports.
-3. Close native measurement gaps with multi-window BFVrns and CKKS sweeps,
-   serialized ciphertext-byte reporting, and RSS or peak-memory measurements.
+3. Extend native coverage to multiple windows for BFVrns, CKKS, and TFHE-rs;
+   single-window serialized ciphertext-byte and RSS measurements are now
+   reported on the indexed host.
 4. Extend the TFHE-rs EEG real-data run across multiple windows and add
    ciphertext-size and memory sweeps before performance or accuracy claims.
 5. Continue evidence work from
