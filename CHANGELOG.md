@@ -11,6 +11,14 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Added
 
+- Closed the single-window OpenFHE native measurement gap: the BFVrns and CKKS
+  C++ demos now serialize active-value and class-score ciphertexts
+  (`Serial::Serialize` BINARY) and report total ciphertext bytes plus end-of-run
+  RSS (`VmRSS`). Reran both lanes on the committed EEG contract, refreshed the
+  native-evidence manifest, release-evidence index, and dashboard, so
+  `nativeMeasurementCoverage` reports complete coverage (3/3 lanes) on the
+  indexed host. Host-specific single-window evidence with `productionClaim:
+  false`; the overall release gate stays `releaseGateSatisfied: false`.
 - Added the TFHE-rs EEG-derived real-data adapter: a transformer
   (`buildTfheRsRealDataContract`) that converts the OpenFHE signed-fixed-point
   quantized contract into a validated signed TFHE-rs contract, a signed

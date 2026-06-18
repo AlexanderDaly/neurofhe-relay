@@ -110,8 +110,8 @@ cargo run --release --manifest-path prototype/tfhe-rs/Cargo.toml --bin neurofhe-
 - [`../benchmark-artifacts/native-evidence/latest.json`](../benchmark-artifacts/native-evidence/latest.json)
   indexes the current native OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs lanes.
   The OpenFHE lanes now have real native artifacts on the indexed host; their
-  remaining issues are native measurement gaps, not missing dependency
-  detection.
+  single-window native measurement gaps for serialized ciphertext bytes and RSS
+  are now closed, leaving multi-window coverage as the remaining work.
 
 The TFHE-rs native artifact is a single local synthetic run, not a stable
 performance claim. Repeated timings depend on CPU, build mode, TFHE-rs
@@ -227,9 +227,9 @@ Prefer TFHE-rs when the workload becomes Boolean or threshold-heavy:
 1. Add padded sparse slots to hide exact active-event count.
 2. Add a small encrypted decision-tree classifier over binary sorted-event
    predicates.
-3. Close the current native measurement gaps for OpenFHE BFVrns and CKKS by
-   adding serialized ciphertext-byte and RSS or peak-memory measurements where
-   they remain missing or partial.
+3. Extend OpenFHE BFVrns and CKKS coverage beyond a single window; the
+   single-window serialized ciphertext-byte and RSS measurements are now
+   reported on the indexed host.
 4. Add an N-MNIST-derived synthetic subset benchmark with plaintext, OpenFHE,
    and TFHE-rs lanes.
 5. Extend the EEG-derived TFHE-rs real-data signed-integer run across multiple

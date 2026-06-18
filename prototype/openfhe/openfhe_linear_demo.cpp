@@ -3,9 +3,16 @@
 #include "openfhe.h"
 #include "../openfhe_contract_loader.hpp"
 
+#include "ciphertext-ser.h"
+#include "cryptocontext-ser.h"
+#include "scheme/bfvrns/bfvrns-ser.h"
+
 #include <cstdint>
+#include <fstream>
 #include <iostream>
 #include <map>
+#include <optional>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -264,6 +271,31 @@ void PrintActiveNeuronPositions(const std::vector<PublicActiveNeuronPosition>& p
     std::cout << "]";
 }
 
+std::size_t SerializedCiphertextBytes(const Ciphertext<DCRTPoly>& ciphertext) {
+    std::stringstream stream;
+    Serial::Serialize(ciphertext, stream, SerType::BINARY);
+    stream.seekg(0, std::ios::end);
+    const auto position = stream.tellg();
+    return position > 0 ? static_cast<std::size_t>(position) : 0;
+}
+
+std::optional<uint64_t> CurrentRssBytes() {
+    std::ifstream status("/proc/self/status");
+    if (!status.is_open()) {
+        return std::nullopt;
+    }
+    std::string line;
+    while (std::getline(status, line)) {
+        if (line.rfind("VmRSS:", 0) == 0) {
+            std::istringstream parser(line.substr(6));
+            uint64_t kib = 0;
+            parser >> kib;
+            return kib * 1024ULL;
+        }
+    }
+    return std::nullopt;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -333,6 +365,16 @@ int main(int argc, char** argv) {
     }
 
     const bool scoresMatch = decryptedScores == expectedScores;
+
+    std::size_t activeValueCiphertextBytes = 0;
+    for (const auto& ciphertext : encryptedEvents) {
+        activeValueCiphertextBytes += SerializedCiphertextBytes(ciphertext);
+    }
+    std::size_t classScoreCiphertextBytes = 0;
+    for (const auto& [label, ciphertext] : encryptedScores) {
+        classScoreCiphertextBytes += SerializedCiphertextBytes(ciphertext);
+    }
+    const auto rssBytes = CurrentRssBytes();
 
     std::cout << "{";
     std::cout << "\"schema\":\"neurofhe.openfhe.result.v1\",";
@@ -411,6 +453,21 @@ int main(int argc, char** argv) {
     std::cout << "\"scalarMultiplies\":" << scalarMultiplies << ",";
     std::cout << "\"adds\":" << adds << ",";
     std::cout << "\"decryptions\":" << decryptions;
+    std::cout << "},";
+    std::cout << "\"ciphertextBytes\":{";
+    std::cout << "\"activeValueCiphertexts\":" << activeValueCiphertextBytes << ",";
+    std::cout << "\"classScoreCiphertexts\":" << classScoreCiphertextBytes << ",";
+    std::cout << "\"total\":" << (activeValueCiphertextBytes + classScoreCiphertextBytes) << ",";
+    std::cout << "\"measurement\":\"OpenFHE Serial::Serialize BINARY byte size of active value and class score ciphertexts\"";
+    std::cout << "},";
+    std::cout << "\"memoryUsage\":{";
+    if (rssBytes.has_value()) {
+        std::cout << "\"rssBytes\":" << *rssBytes << ",";
+    } else {
+        std::cout << "\"rssBytes\":null,";
+    }
+    std::cout << "\"measurement\":\"VmRSS from /proc/self/status at end of run; KiB converted to bytes\",";
+    std::cout << "\"caveat\":\"single end-of-run RSS sample on the local host; not peak RSS, dataset-scale memory, side-channel evidence, or stable performance evidence\"";
     std::cout << "},";
     std::cout << "\"productionClaim\":false,";
     std::cout << "\"caveat\":\"Prototype BFVrns integer demo; parameters are for integration validation, not a production security claim.\"";

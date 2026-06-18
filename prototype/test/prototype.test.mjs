@@ -4284,6 +4284,10 @@ test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {
   assert.match(source, /EvalMult/);
   assert.match(source, /EvalAdd/);
   assert.match(source, /Decrypt/);
+  // Serialized ciphertext-byte and RSS measurements close the native gap.
+  assert.match(source, /Serial::Serialize/);
+  assert.match(source, /ciphertextBytes/);
+  assert.match(source, /VmRSS/);
 });
 
 test("OpenFHE contract loader resolves duplicate keys only in the current object", async () => {
@@ -4389,6 +4393,10 @@ test("native OpenFHE CKKS source uses real CKKS OpenFHE APIs", async () => {
   assert.match(source, /EvalBootstrapSetup/);
   assert.match(source, /openfhe-ckks/);
   assert.match(source, /approximate-real/);
+  // Serialized ciphertext-byte and RSS measurements close the native gap.
+  assert.match(source, /Serial::Serialize/);
+  assert.match(source, /ciphertextBytes/);
+  assert.match(source, /VmRSS/);
 });
 
 test("native TFHE-rs source uses real TFHE-rs integer and Boolean APIs", async () => {
