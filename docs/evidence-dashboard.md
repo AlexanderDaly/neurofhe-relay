@@ -36,6 +36,25 @@ hosted check rollup, and merge policy with:
 gh pr view "$RELEASE_VALIDATION_PR" --json headRefOid,mergeable,mergeStateStatus,statusCheckRollup
 ```
 
+## Plain English Summary
+
+For non-technical readers. Traffic-light read of the **committed** snapshot
+below; see Gate Checks and `docs/layperson-quickstart.md` for context.
+This summary is not release approval or a privacy proof.
+
+| Signal | Meaning |
+| --- | --- |
+| **Green** | Research scaffolding checks out on this snapshot (tests, hygiene, indexed artifacts present). |
+| **Yellow** | Useful local evidence exists but carries explicit caveats (privacy proxies, single-window native runs). |
+| **Red** | Not ready as a product release or formal proof (release gate, production crypto, clinical use). |
+
+**Current read:**
+
+- **Red → product release:** `releaseGateSatisfied: false` — no research-alpha tag implied by this dashboard.
+- **Green → research package integrity:** 6 gate check(s) passed on this snapshot.
+- **Yellow → evidence with caveats:** 2 check(s) passed with documented limitations (not privacy proofs).
+- **Red → production cryptography / medical software:** not claimed; `productionClaim: false` on indexed artifacts.
+
 ## Gate Checks
 
 | Check | Current Status | Review Note |

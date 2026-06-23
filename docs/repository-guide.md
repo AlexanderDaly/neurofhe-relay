@@ -15,7 +15,7 @@ the full package inventory.
 
 | Task | Start With | Then Use |
 | --- | --- | --- |
-| Understand the project | `README.md` | `docs/faq.md`, `docs/glossary.md`, `docs/briefing-sequence.md` |
+| Understand the project | `docs/layperson-quickstart.md` | `README.md`, `docs/faq.md`, `docs/briefing-sequence.md` |
 | Run or debug validation | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `VALIDATION.md` |
 | Check current status or next work | `docs/status-roadmap.md` | `RELEASE.md`, `VALIDATION.md`, `docs/evidence-dashboard.md` |
 | Review evidence claims | `docs/evidence-dashboard.md` | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, `benchmark-artifacts/README.md` |
@@ -29,6 +29,9 @@ the full package inventory.
 - `README.md` - project thesis, public framing, demos, and caveats.
 - `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `docs/README.md` - documentation index for reader and contributor paths.
+- `docs/layperson-quickstart.md` - plain-English overview for non-technical
+  readers.
+- `docs/what-the-demo-shows.md` - plain-English guide to demo JSON output.
 - `docs/faq.md` - short claim-safety answers for common reader questions.
 - `docs/briefing-sequence.md` - reading order for the root `01-` through `12-`
   public briefing files.

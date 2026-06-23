@@ -74,7 +74,7 @@ const env = {
 run("cmake", ["-S", "prototype/openfhe", "-B", "build/openfhe"], env);
 run("cmake", ["--build", "build/openfhe"], env);
 const nativeArgs = inputPath ? ["--input", inputPath] : [];
-const nativeResult = run("build/openfhe/openfhe_linear_demo", nativeArgs, env, {
+const nativeResult = run(executablePath("build/openfhe/openfhe_linear_demo"), nativeArgs, env, {
   capture: shouldPublishArtifact,
 });
 
@@ -114,6 +114,10 @@ function readOption(args, name) {
   const index = args.indexOf(name);
   if (index === -1) return undefined;
   return args[index + 1];
+}
+
+function executablePath(path) {
+  return process.platform === "win32" ? `${path}.exe` : path;
 }
 
 function readInputContractSummary(path, view) {

@@ -15,6 +15,7 @@ Use the table before reading the full sequence end to end.
 
 | Reader Need | Start With | Confirm In |
 | --- | --- | --- |
+| Non-technical first visit | `docs/layperson-quickstart.md` and `index.html` | `docs/faq.md` and `docs/status-roadmap.md` for current caveats. |
 | Fast external overview | `01-one-pager.md` and `02-pitch-deck.md` | `README.md`, `docs/faq.md`, and `docs/status-roadmap.md` for current caveats. |
 | Architecture or boundary review | `03-technical-architecture.md`, `09-relay-gateway-pattern.md`, and `11-architecture-visuals.md` | `docs/policy-boundary.md` and `docs/architecture-decisions.md` before changing public framing. |
 | Evidence or claim diligence | `05-risk-register.md` and `06-evidence-and-sources.md` | `docs/evidence-guide.md`, `docs/evidence-dashboard.md`, and `docs/claim-evidence-ledger.md` before making claims. |
@@ -40,7 +41,9 @@ Use the table before reading the full sequence end to end.
 
 ## How To Use This Sequence
 
-- Start with `01-one-pager.md` and `02-pitch-deck.md` for the public story.
+- Start with `docs/layperson-quickstart.md` and `index.html` for a non-technical
+  first visit.
+- Use `01-one-pager.md` and `02-pitch-deck.md` for the public story.
 - Use `03-technical-architecture.md`, `09-relay-gateway-pattern.md`, and
   `11-architecture-visuals.md` when explaining the system boundary.
 - Use `05-risk-register.md`, `06-evidence-and-sources.md`, and

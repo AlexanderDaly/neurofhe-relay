@@ -69,6 +69,7 @@ export function renderEvidenceDashboard(artifact) {
   );
   lines.push("```");
   lines.push("");
+  lines.push(...renderPlainEnglishSummary(subject, gateChecks));
   lines.push("## Gate Checks");
   lines.push("");
   lines.push("| Check | Current Status | Review Note |");
@@ -97,6 +98,40 @@ export function renderEvidenceDashboard(artifact) {
   lines.push("- `benchmark-artifacts/README.md` - artifact directories, commands, and caveats.");
 
   return `${lines.join("\n")}\n`;
+}
+
+function renderPlainEnglishSummary(subject, gateChecks) {
+  const releaseSatisfied = subject.releaseGateSatisfied === true;
+  const passCount = Object.values(gateChecks).filter((check) => check?.status === "pass").length;
+  const caveatedCount = Object.values(gateChecks).filter((check) => check?.status === "caveated").length;
+
+  const lines = [];
+  lines.push("## Plain English Summary");
+  lines.push("");
+  lines.push("For non-technical readers. Traffic-light read of the **committed** snapshot");
+  lines.push("below; see Gate Checks and `docs/layperson-quickstart.md` for context.");
+  lines.push("This summary is not release approval or a privacy proof.");
+  lines.push("");
+  lines.push("| Signal | Meaning |");
+  lines.push("| --- | --- |");
+  lines.push("| **Green** | Research scaffolding checks out on this snapshot (tests, hygiene, indexed artifacts present). |");
+  lines.push("| **Yellow** | Useful local evidence exists but carries explicit caveats (privacy proxies, single-window native runs). |");
+  lines.push("| **Red** | Not ready as a product release or formal proof (release gate, production crypto, clinical use). |");
+  lines.push("");
+  lines.push("**Current read:**");
+  lines.push("");
+  if (releaseSatisfied) {
+    lines.push("- **Red → product release:** release gate marked satisfied — confirm `RELEASE.md` before public copy.");
+  } else {
+    lines.push("- **Red → product release:** `releaseGateSatisfied: false` — no research-alpha tag implied by this dashboard.");
+  }
+  lines.push(`- **Green → research package integrity:** ${passCount} gate check(s) passed on this snapshot.`);
+  if (caveatedCount > 0) {
+    lines.push(`- **Yellow → evidence with caveats:** ${caveatedCount} check(s) passed with documented limitations (not privacy proofs).`);
+  }
+  lines.push("- **Red → production cryptography / medical software:** not claimed; `productionClaim: false` on indexed artifacts.");
+  lines.push("");
+  return lines;
 }
 
 function gateCheckNames(gateChecks) {

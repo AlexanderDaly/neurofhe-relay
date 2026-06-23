@@ -9,6 +9,7 @@ changing the evidence boundary.
 
 | Need | Start With | Then Use |
 | --- | --- | --- |
+| Curious reader (non-technical) | `docs/layperson-quickstart.md` | `docs/faq.md`, `index.html`, `docs/what-the-demo-shows.md` |
 | New reviewer | `docs/reviewer-quickstart.md` | `docs/faq.md`, `docs/glossary.md`, `docs/status-roadmap.md` |
 | Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md` |
 | Evidence reviewer | `docs/evidence-dashboard.md` | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, `benchmark-artifacts/README.md` |
@@ -47,6 +48,10 @@ public repository before opening the deeper inventories.
   for packaged review.
 - `repository-guide.md` - map of the root briefs, prototype/ scaffold code, committed
   evidence artifacts, patent materials, and release gate.
+- `layperson-quickstart.md` - plain-English project overview for non-technical
+  readers; no commands required.
+- `what-the-demo-shows.md` - plain-English walkthrough of `npm run demo` JSON
+  output.
 - `faq.md` - short answers to common claim, evidence, raw-data, CI, release,
   and CC0 questions.
 - `glossary.md` - definitions for recurring claim, artifact, release, gateway,

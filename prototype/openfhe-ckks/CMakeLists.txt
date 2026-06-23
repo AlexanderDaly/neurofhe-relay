@@ -4,6 +4,8 @@ project(neurofhe_openfhe_ckks_demo LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+option(BUILD_STATIC "Link OpenFHE static libraries when available" OFF)
+
 find_package(OpenFHE REQUIRED)
 
 message(STATUS "Found OpenFHE version: ${BASE_OPENFHE_VERSION}")
@@ -28,4 +30,17 @@ link_directories(${OpenFHE_LIBDIR})
 link_directories(${OPENMP_LIBRARIES})
 
 add_executable(openfhe_ckks_linear_demo openfhe_ckks_linear_demo.cpp)
-target_link_libraries(openfhe_ckks_linear_demo PRIVATE ${OpenFHE_SHARED_LIBRARIES})
+
+if(BUILD_STATIC AND OpenFHE_STATIC_LIBRARIES)
+  set(NEUROFHE_OPENFHE_LIBRARIES ${OpenFHE_STATIC_LIBRARIES})
+elseif(OpenFHE_SHARED_LIBRARIES)
+  set(NEUROFHE_OPENFHE_LIBRARIES ${OpenFHE_SHARED_LIBRARIES})
+elseif(OpenFHE_STATIC_LIBRARIES)
+  set(NEUROFHE_OPENFHE_LIBRARIES ${OpenFHE_STATIC_LIBRARIES})
+elseif(OpenFHE_LIBRARIES)
+  set(NEUROFHE_OPENFHE_LIBRARIES ${OpenFHE_LIBRARIES})
+else()
+  message(FATAL_ERROR "OpenFHE was found, but no link libraries were exported")
+endif()
+
+target_link_libraries(openfhe_ckks_linear_demo PRIVATE ${NEUROFHE_OPENFHE_LIBRARIES})
