@@ -3034,7 +3034,7 @@ function listTrackedDirectories(prefix) {
 test("GitHub Actions CI workflow uses Node 24-ready action majors", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
-  assert.match(workflow, /uses:\s*actions\/checkout@v6\b/);
+  assert.match(workflow, /uses:\s*actions\/checkout@v7\b/);
   assert.match(workflow, /uses:\s*actions\/setup-node@v6\b/);
   assert.match(workflow, /uses:\s*actions\/upload-artifact@v7\b/);
 });

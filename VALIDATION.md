@@ -1566,7 +1566,7 @@ Ruleset API: active default-branch ruleset iamthelaw includes an update rule
 
 The workflow now runs automatically on push and pull request events, PR #23
 has successful hosted `Portable validation` check runs, and the workflow uses
-Node 24-ready action majors (`actions/checkout@v6`, `actions/setup-node@v6`,
+Node 24-ready action majors (`actions/checkout@v7`, `actions/setup-node@v6`,
 and `actions/upload-artifact@v7`) to clear the prior Node 20 action-runtime
 annotation. PR #23 still reports `mergeStateStatus: BLOCKED` because the active
 default-branch ruleset `iamthelaw` applies an update rule to `main`; that is a
