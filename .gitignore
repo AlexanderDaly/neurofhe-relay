@@ -23,4 +23,4 @@ Downloads/
 N-MNIST/
 
 # Local MCP tool descriptors accidentally created in the repo root.
-mcps/
+/mcps/
