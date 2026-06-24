@@ -9,7 +9,7 @@ changing the evidence boundary.
 
 | Need | Start With | Then Use |
 | --- | --- | --- |
-| Curious reader (non-technical) | `docs/layperson-quickstart.md` | `docs/faq.md`, `index.html`, `docs/what-the-demo-shows.md` |
+| Curious reader (non-technical) | `layperson-quickstart.md` | `faq.md`, `../index.html`, `what-the-demo-shows.md` |
 | New reviewer | `docs/reviewer-quickstart.md` | `docs/faq.md`, `docs/glossary.md`, `docs/status-roadmap.md` |
 | Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md` |
 | Evidence reviewer | `docs/evidence-dashboard.md` | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, `benchmark-artifacts/README.md` |

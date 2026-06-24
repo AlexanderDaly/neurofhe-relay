@@ -52,7 +52,7 @@ This summary is not release approval or a privacy proof.
 
 - **Red → product release:** `releaseGateSatisfied: false` — no research-alpha tag implied by this dashboard.
 - **Green → research package integrity:** 6 gate check(s) passed on this snapshot.
-- **Yellow → evidence with caveats:** 2 check(s) passed with documented limitations (not privacy proofs).
+- **Yellow → evidence with caveats:** 2 caveated check(s) with documented limitations (not privacy proofs).
 - **Red → production cryptography / medical software:** not claimed; `productionClaim: false` on indexed artifacts.
 
 ## Gate Checks

@@ -104,6 +104,8 @@ function renderPlainEnglishSummary(subject, gateChecks) {
   const releaseSatisfied = subject.releaseGateSatisfied === true;
   const passCount = Object.values(gateChecks).filter((check) => check?.status === "pass").length;
   const caveatedCount = Object.values(gateChecks).filter((check) => check?.status === "caveated").length;
+  const blockedCount = Object.values(gateChecks).filter((check) => check?.status === "blocked").length;
+  const incompleteCount = Object.values(gateChecks).filter((check) => check?.status === "incomplete").length;
 
   const lines = [];
   lines.push("## Plain English Summary");
@@ -127,7 +129,10 @@ function renderPlainEnglishSummary(subject, gateChecks) {
   }
   lines.push(`- **Green → research package integrity:** ${passCount} gate check(s) passed on this snapshot.`);
   if (caveatedCount > 0) {
-    lines.push(`- **Yellow → evidence with caveats:** ${caveatedCount} check(s) passed with documented limitations (not privacy proofs).`);
+    lines.push(`- **Yellow → evidence with caveats:** ${caveatedCount} caveated check(s) with documented limitations (not privacy proofs).`);
+  }
+  if (blockedCount > 0 || incompleteCount > 0) {
+    lines.push(`- **Red → blockers:** ${blockedCount} blocked, ${incompleteCount} incomplete check(s) remain.`);
   }
   lines.push("- **Red → production cryptography / medical software:** not claimed; `productionClaim: false` on indexed artifacts.");
   lines.push("");
