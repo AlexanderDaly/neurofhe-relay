@@ -13,6 +13,8 @@ weakening the research-alpha evidence boundary.
 
 | Situation | Public Route | Private Or Special Route |
 | --- | --- | --- |
+| Trying to understand the project (non-technical) | Read `docs/layperson-quickstart.md`, `docs/faq.md`, and `index.html` | Do not open a GitHub issue for conceptual questions alone; use issues only for reproducible repo problems. |
+| Demo output confusion after `npm run demo` | `docs/what-the-demo-shows.md` | Use a bug report only if the command fails or output shape regressed. |
 | Reproducible command, CI, script, or artifact failure | GitHub bug report issue form | Use `docs/troubleshooting.md` first so the report includes exact command, error, and smallest next step. |
 | Validation or evidence gap | GitHub validation-gap issue form | Use `docs/evidence-dashboard.md` and `docs/release-gate-matrix.md` before calling it release-ready or release-blocking. |
 | Documentation, packaging, navigation, or repository cleanup | GitHub repository-cleanup issue form | Use `CONTRIBUTING.md` and `docs/contributor-workflow.md` before opening a cleanup PR. |

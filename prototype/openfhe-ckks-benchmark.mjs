@@ -114,7 +114,7 @@ const env = {
 run("cmake", ["-S", "prototype/openfhe-ckks", "-B", "build/openfhe-ckks"], env);
 run("cmake", ["--build", "build/openfhe-ckks"], env);
 const nativeArgs = inputPath ? ["--input", inputPath] : [];
-const nativeResult = run("build/openfhe-ckks/openfhe_ckks_linear_demo", nativeArgs, env, {
+const nativeResult = run(executablePath("build/openfhe-ckks/openfhe_ckks_linear_demo"), nativeArgs, env, {
   capture: true,
 });
 const parsed = JSON.parse(nativeResult.stdout);
@@ -157,6 +157,10 @@ function readOption(args, name) {
   const index = args.indexOf(name);
   if (index === -1) return undefined;
   return args[index + 1];
+}
+
+function executablePath(path) {
+  return process.platform === "win32" ? `${path}.exe` : path;
 }
 
 function readInputContractSummary(path, view) {

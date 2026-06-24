@@ -19,6 +19,10 @@ certification.
 
 ## First 15 Minutes
 
+For a non-technical first pass only, read `docs/layperson-quickstart.md` and
+`index.html` before this checklist. Return here when you need evidence posture
+and reproducibility detail.
+
 1. Read `README.md` for the thesis and public framing.
 2. Read `CHANGELOG.md` for the current unreleased stack and caveats.
 3. Read `docs/status-roadmap.md` for what is ready, what is blocked, and what

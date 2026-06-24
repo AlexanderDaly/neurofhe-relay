@@ -41,6 +41,25 @@ After review, leave a short status note with:
   documented gate is satisfied;
 - remaining blocker, caveat, or next action.
 
+## Layperson Surface Audit
+
+Run this lightweight pass when changing public framing, release posture, demo
+output, or front-door navigation. It keeps non-technical readers routed without
+weakening evidence discipline.
+
+- [ ] `README.md` still has **Choose Your Path** (Curious / Reviewing / Building).
+- [ ] `docs/layperson-quickstart.md` status sentences match `docs/status-roadmap.md`
+  (`releaseGateSatisfied: false`, research-alpha, not medical, not production crypto).
+- [ ] `docs/faq.md` still answers mind-reading, medical, and production questions
+  without drift.
+- [ ] `index.html` **New here?** slide status sentence matches current release posture.
+- [ ] New technical terms added to `docs/glossary.md` **Plain English Reference**
+  table with caveats.
+- [ ] `docs/what-the-demo-shows.md` still matches `npm run demo` output shape if
+  demo fields changed.
+- [ ] `docs/evidence-dashboard.md` Plain English Summary regenerates via
+  `npm run docs:evidence` after release-evidence artifact updates.
+
 ## Before Merging A PR
 
 - Confirm the worktree is clean except for the intended changes.
@@ -106,6 +125,8 @@ git diff --check
 - `docs/command-reference.md` - grouped command list.
 - `docs/evidence-guide.md` - claim-safe evidence map.
 - `docs/evidence-dashboard.md` - current release-evidence posture and caveats.
+- `docs/layperson-quickstart.md` - plain-English first visit for non-technical readers.
+- `docs/what-the-demo-shows.md` - plain-English demo JSON guide.
 - `docs/faq.md` - concise answers for common reader and reviewer questions.
 - `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `SECURITY.md` - sensitive-reporting scope and research-alpha security

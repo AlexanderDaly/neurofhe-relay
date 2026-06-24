@@ -18,6 +18,26 @@ briefing note and you need the controlling context.
 | Privacy and metadata wording | `privacyBoundary`, `metadata-leakage proxy`, `reconstruction-risk probe`, `padded sparse`, and `dense encrypted window` | `docs/evidence-guide.md` and `benchmark-artifacts/privacy-modes/padding-ablation/latest.json` before treating a proxy as proof. |
 | Blocker or unavailable-evidence wording | `blocker artifact`, `repository hygiene scan`, and `hosted Portable validation` | `docs/troubleshooting.md` and `docs/operations-runbook.md` before classifying a failure. |
 
+## Plain English Reference
+
+Use this table when explaining the project to a non-technical reader. Technical
+definitions follow in **Terms**. Every plain-English row keeps the same
+caveats as the repository: research-alpha, not production cryptography.
+
+| Technical term | Plain English | Caveat |
+| --- | --- | --- |
+| **bio-digital event intelligence** | Privacy-preserving handling of signals from body-adjacent or sensitive sensors | Not medical diagnosis or mind reading |
+| **local relay gateway** | A local "bouncer" that inspects raw signals and exports only approved summaries | Simulated scaffold here, not production deployment |
+| **event window** | A small snapshot of where activity happened on a grid over time | Synthetic in the toy demo |
+| **homomorphic encryption (FHE)** | Math on locked data without opening the box | Toy demo uses educational arithmetic; native lanes are local evidence only |
+| **sparse events** | Only a few locations are active instead of a full dense frame | Active positions may still leak metadata |
+| **padded sparse** | Extra cover slots hide how many events were active | Costs more compute than bare sparse |
+| **dense encrypted window** | Encrypt the whole grid | Hides more structure; more expensive |
+| **privacyBoundary** | A checklist of what stays local, encrypted, or visible | Not a formal privacy proof |
+| **productionClaim: false** | Label meaning "research evidence only" | Do not quote as product-ready |
+| **release gate** | Checklist before tagging a research-alpha release | Not satisfied today |
+| **wavelet / Haar features** | Compress a signal into a fixed-size fingerprint before encryption | Transform config and slot layout may still be public metadata; not encrypted wavelet lifting in v1 |
+
 ## Terms
 
 - **bio-digital event intelligence** - the project framing for

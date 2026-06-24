@@ -60,13 +60,27 @@ The cryptographic design target is:
 
 > Quantum-resistant by design, cryptographically agile by default.
 
+## Choose Your Path
+
+Use the door that matches how you arrived, then fall back to `docs/README.md`
+for the complete documentation index:
+
+| If you are… | Start with | Typical time |
+| --- | --- | --- |
+| **Curious** (non-technical) | [`docs/layperson-quickstart.md`](docs/layperson-quickstart.md) | 5–10 minutes |
+| **Reviewing** (diligence, grant, patent) | [`docs/reviewer-quickstart.md`](docs/reviewer-quickstart.md) | 15–60 minutes |
+| **Building** (code or artifacts) | [`docs/developer-quickstart.md`](docs/developer-quickstart.md) | As needed |
+
+Visual overview: open [`index.html`](index.html) in a browser. Demo output
+explained in plain English: [`docs/what-the-demo-shows.md`](docs/what-the-demo-shows.md).
+
 ## First Paths
 
-Use the path that matches your job, then fall back to `docs/README.md` for the
-complete documentation index:
+Use this table when you already know your maintainer or evidence role:
 
 | Role | Start With | Then Use |
 | --- | --- | --- |
+| Curious reader | `docs/layperson-quickstart.md` | `docs/faq.md`, `index.html`, `01-one-pager.md` |
 | New reviewer | `docs/reviewer-quickstart.md` | `docs/faq.md`, `docs/status-roadmap.md`, `CHANGELOG.md`, `VALIDATION.md` |
 | Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md` |
 | Maintainer | `MAINTAINERS.md` | `docs/maintainer-checklist.md`, `docs/operations-runbook.md`, `RELEASE.md` |

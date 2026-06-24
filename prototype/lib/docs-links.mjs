@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: CC0-1.0
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { dirname, join, normalize, relative, resolve } from "node:path";
+import { dirname, join, normalize, relative, resolve, sep } from "node:path";
 
 export const DEFAULT_DOC_LINK_IGNORED_DIRS = new Set([
   ".cache",
@@ -85,9 +85,16 @@ function resolveLocalTarget(root, sourcePath, target) {
     ? join(root, decodedTarget.slice(1))
     : join(dirname(sourcePath), decodedTarget);
   const absolutePath = normalize(resolve(basePath));
-  const rootWithSeparator = `${root}/`;
-  if (absolutePath !== root && !absolutePath.startsWith(rootWithSeparator)) return undefined;
+  if (!isPathInsideRoot(root, absolutePath)) return undefined;
   return { absolutePath };
+}
+
+function isPathInsideRoot(root, absolutePath) {
+  const normalizedRoot = normalize(resolve(root));
+  const normalizedPath = normalize(resolve(absolutePath));
+  if (normalizedPath === normalizedRoot) return true;
+  const prefix = normalizedRoot.endsWith(sep) ? normalizedRoot : `${normalizedRoot}${sep}`;
+  return normalizedPath.startsWith(prefix);
 }
 
 function normalizePath(path) {

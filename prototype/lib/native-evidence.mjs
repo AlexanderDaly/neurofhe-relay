@@ -270,19 +270,32 @@ function buildNativeHostFingerprint(options = {}) {
 }
 
 function runVersionCommand(command, commandArgs) {
-  const result = spawnSync(command, commandArgs, {
+  const invocation = commandInvocation(command, commandArgs);
+  const result = spawnSync(invocation.command, invocation.args, {
     cwd: process.cwd(),
     env: process.env,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   });
   return {
-    command: [command, ...commandArgs].join(" "),
+    command: invocation.display,
     available: result.status === 0,
     status: result.status,
     stdout: result.status === 0 ? firstLine(result.stdout) : "",
     stderr: result.status === 0 ? "" : firstLine(result.stderr),
   };
+}
+
+function commandInvocation(command, commandArgs) {
+  const display = [command, ...commandArgs].join(" ");
+  if (process.platform === "win32" && command === "npm") {
+    return {
+      command: process.env.ComSpec ?? "cmd.exe",
+      args: ["/d", "/s", "/c", display],
+      display,
+    };
+  }
+  return { command, args: commandArgs, display };
 }
 
 function firstAvailableCommand(runCommand, commands) {

@@ -21,3 +21,6 @@ prototype/tfhe-rs/target/
 # belongs under benchmark-artifacts/ with explicit provenance and caveats.
 Downloads/
 N-MNIST/
+
+# Local MCP tool descriptors accidentally created in the repo root.
+/mcps/
