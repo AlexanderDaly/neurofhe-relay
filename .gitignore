@@ -6,6 +6,9 @@
 .env.*
 !.env.example
 
+# Cursor MCP tool-descriptor cache (IDE-local; not project source).
+mcps/
+
 # Local logs and coverage output.
 *.log
 coverage/
