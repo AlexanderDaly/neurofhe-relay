@@ -52,6 +52,9 @@ snapshot is readable, caveated, and ready for diligence review.
   boundary map.
 - `docs/claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
   ledger.
+- `docs/riemannian-eeg-split-note.md` - chronological EEG Eye State encoder
+  comparison: longer windows, OAS covariance, log-Euclidean chart, same
+  centroid/CKKS scorer.
 - `docs/evidence-dashboard.md` - human-readable release-evidence dashboard
   status and caveats.
 - `docs/release-gate-matrix.md` - minimum release command, artifact, caveat,

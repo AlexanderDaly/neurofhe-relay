@@ -64,6 +64,9 @@ public repository before opening the deeper inventories.
   boundary map.
 - `claim-evidence-ledger.md` - weak-claim, evidence, caveat, and next-step
   ledger.
+- `riemannian-eeg-split-note.md` - chronological EEG Eye State encoder
+  experiment: longer windows, OAS covariance, log-Euclidean chart, same
+  centroid/CKKS scorer; geometry did not win on this split.
 - `evidence-dashboard.md` - human-readable release-evidence dashboard with
   current gate status and caveats.
 - `release-gate-matrix.md` - minimum release command, artifact, caveat, and

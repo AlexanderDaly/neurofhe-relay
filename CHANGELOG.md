@@ -11,6 +11,14 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Added
 
+- Recorded the first Riemannian/SPD encoder comparison on the committed
+  chronological UCI EEG Eye State split (`docs/riemannian-eeg-split-note.md`,
+  `prototype/eeg-spd-experiment.mjs`). Same nearest-centroid scorer as the
+  CKKS lane. A 1-second Euclidean channel mean raised balanced accuracy
+  0.608 → 0.682. Flattened OAS covariance raised raw accuracy 0.537 → 0.715
+  by collapsing toward the test majority (closed-eye recall 0.179).
+  Log-Euclidean tied the Euclidean flatten. Not medical evidence; not a
+  native FHE measurement; `productionClaim: false`.
 - Closed the single-window OpenFHE native measurement gap: the BFVrns and CKKS
   C++ demos now serialize active-value and class-score ciphertexts
   (`Serial::Serialize` BINARY) and report total ciphertext bytes plus end-of-run
