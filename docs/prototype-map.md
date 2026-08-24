@@ -21,6 +21,10 @@ evidence.
   - sparse metadata versus padding overhead artifact entrypoint.
 - [`prototype/plaintext-baseline.mjs`](../prototype/plaintext-baseline.mjs) -
   plaintext fixture and real-data baseline entrypoint.
+- [`prototype/eeg-spd-experiment.mjs`](../prototype/eeg-spd-experiment.mjs) -
+  chronological EEG Eye State SPD/covariance encoder experiment against the
+  existing nearest-centroid CKKS scorer; see
+  [`docs/riemannian-eeg-split-note.md`](riemannian-eeg-split-note.md).
 - [`prototype/openfhe-realdata-contract.mjs`](../prototype/openfhe-realdata-contract.mjs)
   - EEG-derived OpenFHE input-contract publisher.
 - [`prototype/openfhe-benchmark.mjs`](../prototype/openfhe-benchmark.mjs) -

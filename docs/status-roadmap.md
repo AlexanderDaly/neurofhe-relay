@@ -78,14 +78,18 @@ to the artifact or boundary file that should confirm the claim.
    refresh artifacts or blocker reports.
 3. Extend native coverage to multiple windows for BFVrns, CKKS, and TFHE-rs;
    single-window serialized ciphertext-byte and RSS measurements are now
-   reported on the indexed host.
-4. Extend the TFHE-rs EEG real-data run across multiple windows and add
+   complete on the indexed host.
+4. If EEG encoder work continues, run causal SPD recentering on the committed
+   chronological Eye State split before adding AIRM distance. See
+   `docs/riemannian-eeg-split-note.md`. The 1-second Euclidean channel mean
+   is the current classifier; flattened covariance is not.
+5. Extend the TFHE-rs EEG real-data run across multiple windows and add
    ciphertext-size and memory sweeps before performance or accuracy claims.
-5. Continue evidence work from
+6. Continue evidence work from
    `patent/briefing/ENER_weak_claims_evidence_gaps.md`, especially
    reconstruction and identity-linkage tests, metadata leakage metrics, and
    padded-sparse real-data overhead measurements.
-6. Keep `productionClaim: false`, `privacyBoundary`, `cryptoInventory`, CC0
+7. Keep `productionClaim: false`, `privacyBoundary`, `cryptoInventory`, CC0
    framing, and bio-digital event intelligence caveats intact as the repository
    becomes easier to read.
 
