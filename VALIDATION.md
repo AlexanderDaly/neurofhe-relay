@@ -1566,7 +1566,7 @@ Ruleset API: active default-branch ruleset iamthelaw includes an update rule
 
 The workflow now runs automatically on push and pull request events, PR #23
 has successful hosted `Portable validation` check runs, and the workflow uses
-Node 24-ready action majors (`actions/checkout@v7`, `actions/setup-node@v7`,
+Node 24-ready action majors (`actions/checkout@v7`, `actions/setup-node@v6`,
 and `actions/upload-artifact@v7`) to clear the prior Node 20 action-runtime
 annotation. PR #23 still reports `mergeStateStatus: BLOCKED` because the active
 default-branch ruleset `iamthelaw` applies an update rule to `main`; that is a
@@ -1626,6 +1626,17 @@ benchmark-artifacts/release-evidence/runs/release-evidence-tfhe-alpha-lane-frami
 This refresh updates native-lane wording and evidence indexes only. It does not
 close the TFHE-rs real-data blocker, OpenFHE measurement gaps, native
 multi-window sweep gap, or release gate.
+
+## PR #33 CI Maintenance — 2026-09-04
+
+PR #33 upgrades `actions/setup-node` from v6 to v7 while retaining Node.js 22
+for the portable test suite. The historical PR #23 snapshot above retains its
+original action versions.
+
+The OpenFHE contract-loader regression test probes `g++`, `c++`, and `clang++`
+for a usable C++17 toolchain. It reports the selected compiler, explicitly skips
+when none is available locally, and fails when none is available in GitHub
+Actions. This checks the contract loader, not a full native OpenFHE build.
 
 ## Scope Note
 

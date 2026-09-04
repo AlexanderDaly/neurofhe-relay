@@ -4309,11 +4309,15 @@ test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {
   assert.match(source, /VmRSS/);
 });
 
-test("OpenFHE contract loader resolves duplicate keys only in the current object", async () => {
+test("OpenFHE contract loader resolves duplicate keys only in the current object", async (t) => {
   const compiler = resolveCxxCompiler();
   if (!compiler) {
+    const reason = "No usable C++17 compiler found (tried g++, c++, clang++)";
+    assert.notEqual(process.env.GITHUB_ACTIONS, "true", reason);
+    t.skip(reason);
     return;
   }
+  t.diagnostic(`OpenFHE contract-loader compiler: ${compiler}`);
 
   const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-openfhe-loader-"));
   const contractPath = join(outputDir, "contract.json");
