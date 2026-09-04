@@ -2988,6 +2988,25 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function resolveCxxCompiler() {
+  const probeSource = "#include <cctype>\nint main() { return 0; }\n";
+  for (const compiler of ["g++", "c++", "clang++"]) {
+    const version = spawnSync(compiler, ["--version"], { encoding: "utf8" });
+    if (version.status !== 0) {
+      continue;
+    }
+    const probe = spawnSync(
+      compiler,
+      ["-std=c++17", "-xc++", "-", "-o", "/dev/null"],
+      { input: probeSource, encoding: "utf8" },
+    );
+    if (probe.status === 0) {
+      return compiler;
+    }
+  }
+  return null;
+}
+
 function listFilesRecursive(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const path = `${dir}/${entry.name}`;
@@ -3035,7 +3054,7 @@ test("GitHub Actions CI workflow uses Node 24-ready action majors", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 
   assert.match(workflow, /uses:\s*actions\/checkout@v7\b/);
-  assert.match(workflow, /uses:\s*actions\/setup-node@v6\b/);
+  assert.match(workflow, /uses:\s*actions\/setup-node@v7\b/);
   assert.match(workflow, /uses:\s*actions\/upload-artifact@v7\b/);
 });
 
@@ -4291,8 +4310,8 @@ test("native OpenFHE source uses real BFVrns OpenFHE APIs", async () => {
 });
 
 test("OpenFHE contract loader resolves duplicate keys only in the current object", async () => {
-  const compiler = spawnSync("c++", ["--version"], { encoding: "utf8" });
-  if (compiler.status !== 0) {
+  const compiler = resolveCxxCompiler();
+  if (!compiler) {
     return;
   }
 
@@ -4355,7 +4374,7 @@ test("OpenFHE contract loader resolves duplicate keys only in the current object
   );
 
   const build = spawnSync(
-    "c++",
+    compiler,
     ["-std=c++17", "-I", ".", sourcePath, "-o", binaryPath],
     { cwd: process.cwd(), encoding: "utf8" },
   );
