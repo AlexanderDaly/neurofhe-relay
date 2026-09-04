@@ -1627,6 +1627,17 @@ This refresh updates native-lane wording and evidence indexes only. It does not
 close the TFHE-rs real-data blocker, OpenFHE measurement gaps, native
 multi-window sweep gap, or release gate.
 
+## PR #33 CI Maintenance — 2026-09-04
+
+PR #33 upgrades `actions/setup-node` from v6 to v7 while retaining Node.js 22
+for the portable test suite. The historical PR #23 snapshot above retains its
+original action versions.
+
+The OpenFHE contract-loader regression test probes `g++`, `c++`, and `clang++`
+for a usable C++17 toolchain. It reports the selected compiler, explicitly skips
+when none is available locally, and fails when none is available in GitHub
+Actions. This checks the contract loader, not a full native OpenFHE build.
+
 ## Scope Note
 
 The runnable dependency-free research-alpha scaffold uses educational additive HE only. The repository now also includes digest-bound real-library adapter manifests plus real OpenFHE BFVrns, OpenFHE CKKS, and TFHE-rs native integration targets for the same sparse sorted-event score contract. The committed OpenFHE native artifacts were produced on a local machine with OpenFHE installed under the CMake search path; other reviewers need a local OpenFHE install to reproduce them. TFHE-rs runs through Cargo with the `tfhe` crate. Bio-digital language remains scoped to privacy-preserving event intelligence, not medical diagnosis or treatment.

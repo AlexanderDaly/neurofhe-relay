@@ -11,6 +11,11 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Added
 
+- Added `docs/application-use-case-competition.md`, consolidating maintainer
+  guidance from issue #31 for private-holdout model competitions,
+  SpiNNaker/BrainScaleS boundaries, encrypted-scoring threat models, and a
+  smallest useful experiment path (`productionClaim: false`).
+
 - Closed the single-window OpenFHE native measurement gap: the BFVrns and CKKS
   C++ demos now serialize active-value and class-score ciphertexts
   (`Serial::Serialize` BINARY) and report total ciphertext bytes plus end-of-run
@@ -375,6 +380,13 @@ Release target: `v0.1.0-research-alpha`.
 - Added linear-algebra handoff coverage so sparse-score contract,
   operation-count, native-adapter, privacy-mode, and implementation-boundary
   review routes stay visible.
+
+### Fixed
+
+- OpenFHE contract-loader compile test now selects the first C++17 toolchain
+  (`g++`, `c++`, or `clang++`) that can compile standard headers, fixing
+  failures when `c++` resolves to Clang without libc++.
+- Bumped `actions/setup-node` from v6 to v7 in hosted CI (dependabot PR #30).
 
 ### Changed
 

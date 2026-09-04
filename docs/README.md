@@ -10,6 +10,7 @@ changing the evidence boundary.
 | Need | Start With | Then Use |
 | --- | --- | --- |
 | Curious reader (non-technical) | `layperson-quickstart.md` | `faq.md`, `../index.html`, `what-the-demo-shows.md` |
+| Application planner (competition, private holdout) | `application-use-case-competition.md` | `faq.md`, `09-relay-gateway-pattern.md`, `dependency-matrix.md` |
 | New reviewer | `docs/reviewer-quickstart.md` | `docs/faq.md`, `docs/glossary.md`, `docs/status-roadmap.md` |
 | Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md` |
 | Evidence reviewer | `docs/evidence-dashboard.md` | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, `benchmark-artifacts/README.md` |
@@ -54,6 +55,9 @@ public repository before opening the deeper inventories.
   output.
 - `faq.md` - short answers to common claim, evidence, raw-data, CI, release,
   and CC0 questions.
+- `application-use-case-competition.md` - guidance for private-holdout model
+  competitions, SpiNNaker/BrainScaleS boundaries, and encrypted-scoring threat
+  models (`productionClaim: false`).
 - `glossary.md` - definitions for recurring claim, artifact, release, gateway,
   and native-lane terms.
 - `testing-strategy.md` - portable validation, hosted CI, docs-link, hygiene,

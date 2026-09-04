@@ -13,6 +13,7 @@ plus the next evidence surface.
 | Non-technical overview | "I just want to understand the idea." | `docs/layperson-quickstart.md`, `index.html`, and `01-one-pager.md`. |
 | Demo JSON output | "What does npm run demo print?" | `docs/what-the-demo-shows.md` and `docs/layperson-quickstart.md`. |
 | Production cryptography or deployment readiness | "Is NeuroFHE Relay production cryptography?" | `RELEASE.md`, `docs/evidence-dashboard.md`, and `benchmark-artifacts/README.md`. |
+| Private-holdout model competition or SpiNNaker/BrainScaleS integration | "Can I run an encrypted-scoring competition on a hidden test set?" | `docs/application-use-case-competition.md`, `docs/faq.md`, and `09-relay-gateway-pattern.md`. |
 | Medical, diagnostic, or clinical status | "Is this medical or diagnostic software?" | `README.md`, `docs/policy-boundary.md`, and `docs/architecture-decisions.md`. |
 | Evidence strength and real-data artifacts | "What evidence is real today?" | `docs/evidence-guide.md`, `docs/claim-evidence-ledger.md`, and `benchmark-artifacts/README.md`. |
 | Raw data, private payloads, or dataset storage | "Where do raw datasets and private payloads go?" | `docs/data-handling.md`, `SECURITY.md`, and `docs/troubleshooting.md`. |
