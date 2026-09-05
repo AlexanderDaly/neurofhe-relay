@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>System and trust allocation</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 1</text>
+<rect x="136.18" y="95" width="323.64" height="67" fill="none" stroke="black"/>
+<text x="298.0" y="124.58" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">100</text>
+<text x="298.0" y="142.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">EXISTING ACQUISITION</text>
+<path d="M298.0,162 L298.0,206" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,206 L295.39,199.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,206 L300.61,199.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="106.6" y="191" width="381.06" height="452" fill="none" stroke="black" stroke-dasharray="5 4"/>
+<text x="298.0" y="227.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">200  TRUSTED LOCAL RELAY</text>
+<rect x="136.18" y="252" width="323.64" height="67" fill="none" stroke="black"/>
+<text x="298.0" y="281.58" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">210</text>
+<text x="298.0" y="299.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">NORMALIZE AND ORDER</text>
+<rect x="136.18" y="356" width="323.64" height="67" fill="none" stroke="black"/>
+<text x="298.0" y="385.58" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">220</text>
+<text x="298.0" y="403.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">NEUROMORPHIC CIRCUIT</text>
+<rect x="136.18" y="461" width="323.64" height="67" fill="none" stroke="black"/>
+<text x="298.0" y="490.58" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">230</text>
+<text x="298.0" y="508.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">COMPRESSED FEATURE MEMORY</text>
+<rect x="136.18" y="565" width="323.64" height="67" fill="none" stroke="black"/>
+<text x="298.0" y="594.58" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">240</text>
+<text x="298.0" y="612.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">POLICY AND FHE ENCRYPTION</text>
+<path d="M298.0,319 L298.0,356" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,356 L295.39,349.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,356 L300.61,349.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,423 L298.0,461" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,461 L295.39,454.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,461 L300.61,454.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,528 L298.0,565" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,565 L295.39,558.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,565 L300.61,558.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,643 L298.0,684" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,684 L295.39,677.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,684 L300.61,677.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="136.18" y="684" width="323.64" height="67" fill="none" stroke="black"/>
+<text x="298.0" y="713.58" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">300</text>
+<text x="298.0" y="731.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">REMOTE ENCRYPTED INFERENCE</text>
+</svg>

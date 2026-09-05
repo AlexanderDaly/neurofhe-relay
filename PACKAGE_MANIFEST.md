@@ -105,7 +105,12 @@ snapshot is readable, caveated, and ready for diligence review.
 - `benchmark-artifacts/` - committed derived evidence, hosted-CI snapshots,
   blocker reports, and release-evidence indexes.
 - `outputs/` - generated presentation exports retained for packaged review.
+- `output/` - revision B patent/circuit PDFs, implementation specification,
+  complete editable archive, and archive checksum manifest.
 - `patent/` - ENER provisional drafting package, revised claim seeds, drawings, prior-art search plan, submission checklist, and policy/commercial briefing materials.
+- `patent/complete-design-2026-09-05/` - component schematics, matching patent
+  specification working copy, BOM, pin/net tables, SVG/KiCad sources, FPGA HDL
+  and reproducible simulation, synthesis, routing and visual-review evidence.
 - `project-brief.json` - agent-readable structured project summary.
 - `index.html` - self-contained browser briefing deck.
 - `prototype/` - dependency-free educational sparse encrypted spike-count scaffold, spatial spike sorter, local relay gateway scaffold, benchmark runner, plaintext baseline, synthetic reconstruction-risk probes, OpenFHE BFVrns lane, OpenFHE CKKS approximate-real lane, TFHE-rs integer/Boolean lane, tests, handoffs, and research assumptions.

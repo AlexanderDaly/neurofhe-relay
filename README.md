@@ -99,12 +99,19 @@ linked source before making release, merge, or public-claim decisions.
 | Status Item | Current Posture | Confirm In |
 | --- | --- | --- |
 | Research-alpha release target | `v0.1.0-research-alpha`; not tagged. | `RELEASE.md`, `docs/status-roadmap.md` |
-| Portable validation | Green in hosted CI and locally recorded with 139 passing tests. | `VALIDATION.md`, `docs/operations-runbook.md` |
+| Portable validation | Locally recorded with 143 passing tests; verify hosted checks on the current commit. | `VALIDATION.md`, `docs/operations-runbook.md` |
 | Merge state | Hosted CI/check-rollup is green; merges stay governed by repository ruleset/admin policy, distinct from a CI or code failure. | `docs/status-roadmap.md`, `docs/operations-runbook.md` |
 | Release gate | `releaseGateSatisfied: false`; dashboard evidence is not release approval. | `benchmark-artifacts/release-evidence/latest.json`, `docs/evidence-dashboard.md` |
 | Claim boundary | Preserve `productionClaim: false`, `privacyBoundary`, and `cryptoInventory`. | `docs/architecture-decisions.md`, `docs/evidence-guide.md` |
 
 ## Repository Layout
+
+The [complete FHE + neuromorphic reference design](patent/complete-design-2026-09-05/README.md)
+provides 16 patent figures, eight circuit sheets, a 55-component BOM, and the
+implemented FPGA encoder for an existing acquisition device and Raspberry Pi
+host. [Download the complete design package](output/ENER_Complete_Schematic_Design_B_2026-09-05.zip).
+FPGA simulation and routed timing pass at 16 MHz; physical board testing,
+native KiCad ERC, and headset-specific integration remain unperformed.
 
 `PACKAGE_MANIFEST.md` is the detailed file inventory. The top-level layout is:
 
@@ -114,6 +121,7 @@ linked source before making release, merge, or public-claim decisions.
 | `prototype/` | Portable scaffold code, test suite, artifact publishers, and native lane adapters. |
 | `benchmark-artifacts/` | Committed derived evidence, blocker reports, and release dashboards. |
 | `patent/` | ENER provisional drafting package, drawings, prior-art plan, and briefing material. |
+| `output/` | Complete reference-design PDF schematics, implementation specification, and editable handoff archive. |
 | `.github/` | Issue templates, PR template, dependency-update routing, and hosted portable CI workflow. |
 | Root policy files | `LICENSE`, `PUBLIC_DOMAIN_NOTICE.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `MAINTAINERS.md`, `RELEASE.md`, and `VALIDATION.md`. |
 

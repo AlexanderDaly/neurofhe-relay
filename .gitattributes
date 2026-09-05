@@ -20,3 +20,4 @@
 *.jpeg binary
 *.gif binary
 *.zip binary
+*.bin binary

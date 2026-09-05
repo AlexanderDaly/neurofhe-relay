@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Threshold and refractory circuit</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">4/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 4</text>
+<rect x="108.34" y="111" width="178.35" height="88" fill="none" stroke="black"/>
+<text x="197.515" y="142.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">401</text>
+<text x="197.515" y="160.04000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">SIGNED SAMPLE</text>
+<text x="197.515" y="177.96" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">REGISTER</text>
+<rect x="108.34" y="271" width="178.35" height="88" fill="none" stroke="black"/>
+<text x="197.515" y="302.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">402</text>
+<text x="197.515" y="320.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">ABSOLUTE</text>
+<text x="197.515" y="337.96000000000004" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">VALUE CIRCUIT</text>
+<rect x="108.34" y="433" width="178.35" height="88" fill="none" stroke="black"/>
+<text x="197.515" y="464.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">403</text>
+<text x="197.515" y="482.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">THRESHOLD</text>
+<text x="197.515" y="499.96000000000004" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">COMPARATOR</text>
+<path d="M197.95,199 L197.95,271" stroke="black" stroke-width="1" fill="none"/>
+<path d="M197.95,271 L195.34,264.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M197.95,271 L200.56,264.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M197.95,359 L197.95,433" stroke="black" stroke-width="1" fill="none"/>
+<path d="M197.95,433 L195.34,426.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M197.95,433 L200.56,426.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="330.19" y="111" width="165.3" height="88" fill="none" stroke="black"/>
+<text x="412.84000000000003" y="142.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">404</text>
+<text x="412.84000000000003" y="160.04000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">LAST-ACCEPTED</text>
+<text x="412.84000000000003" y="177.96" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">TIME MEMORY</text>
+<rect x="330.19" y="271" width="165.3" height="88" fill="none" stroke="black"/>
+<text x="412.84000000000003" y="302.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">405</text>
+<text x="412.84000000000003" y="320.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">TIME DIFFERENCE</text>
+<text x="412.84000000000003" y="337.96000000000004" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">COMPARATOR</text>
+<path d="M412.84000000000003,199 L412.84000000000003,271" stroke="black" stroke-width="1" fill="none"/>
+<path d="M412.84000000000003,271 L410.23,264.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M412.84000000000003,271 L415.45,264.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="176.2" y="599" width="243.6" height="84" fill="none" stroke="black"/>
+<text x="298.0" y="637.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">406</text>
+<text x="298.0" y="655.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">ACCEPT ENABLE</text>
+<path d="M197.95,521 L197.95,563" stroke="black" stroke-width="1" fill="none"/>
+<path d="M197.95,563 L257.98,563" stroke="black" stroke-width="1" fill="none"/>
+<path d="M257.98,563 L257.98,599" stroke="black" stroke-width="1" fill="none"/>
+<path d="M257.98,599 L255.37,592.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M257.98,599 L260.59000000000003,592.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M412.84000000000003,359 L412.84000000000003,562" stroke="black" stroke-width="1" fill="none"/>
+<path d="M412.84000000000003,562 L340.63,562" stroke="black" stroke-width="1" fill="none"/>
+<path d="M340.63,562 L340.63,599" stroke="black" stroke-width="1" fill="none"/>
+<path d="M340.63,599 L338.02,592.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M340.63,599 L343.24,592.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,683 L298.0,735" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,735 L295.39,728.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,735 L300.61,728.0" stroke="black" stroke-width="1" fill="none"/>
+<text x="298.0" y="756.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">TO COUNT OR SPIKING CIRCUIT</text>
+</svg>

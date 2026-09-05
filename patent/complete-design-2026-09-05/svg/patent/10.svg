@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Supply sequence and configuration reset</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">10/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 10</text>
+<rect x="108.34" y="97" width="378.45" height="78" fill="none" stroke="black"/>
+<text x="297.565" y="132.07999999999998" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1001</text>
+<text x="297.565" y="150.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">CORE SUPPLY</text>
+<rect x="108.34" y="227" width="378.45" height="78" fill="none" stroke="black"/>
+<text x="297.565" y="262.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1002</text>
+<text x="297.565" y="280.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">CORE SUPERVISOR / I/O ENABLE</text>
+<rect x="108.34" y="357" width="378.45" height="78" fill="none" stroke="black"/>
+<text x="297.565" y="392.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1003</text>
+<text x="297.565" y="410.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">I/O SUPPLY AND SUPERVISOR</text>
+<rect x="108.34" y="487" width="378.45" height="78" fill="none" stroke="black"/>
+<text x="297.565" y="522.0799999999999" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1004</text>
+<text x="297.565" y="539.9999999999999" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">CONFIGURATION SUPPLY</text>
+<rect x="108.34" y="617" width="378.45" height="78" fill="none" stroke="black"/>
+<text x="297.565" y="652.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1005</text>
+<text x="297.565" y="670.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">CONFIGURATION RESET SUPERVISOR</text>
+<path d="M298.0,175 L298.0,227" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,227 L295.39,220.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,227 L300.61,220.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,305 L298.0,357" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,357 L295.39,350.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,357 L300.61,350.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,435 L298.0,487" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,487 L295.39,480.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,487 L300.61,480.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,565 L298.0,617" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,617 L295.39,610.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,617 L300.61,610.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,695 L298.0,731" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,731 L295.39,724.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,731 L300.61,724.0" stroke="black" stroke-width="1" fill="none"/>
+<text x="298.0" y="759.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">RELEASE PROGRAMMABLE LOGIC RESET</text>
+</svg>

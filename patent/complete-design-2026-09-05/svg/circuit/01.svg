@@ -1,0 +1,246 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1190.5511811023623pt" height="841.8897637795277pt" viewBox="0 0 1190.5511811023623 841.8897637795277">
+<title>Host connector and complete assembly interconnect</title>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="40" y="45" width="1110.5511811023623" height="751.8897637795277" fill="none" stroke="black"/>
+<text x="55" y="68.0" text-anchor="start" font-family="Arial,sans-serif" font-size="14" font-weight="700">ENER  /  HOST CONNECTOR AND COMPLETE ASSEMBLY INTERCONNECT</text>
+<path d="M40,758.8897637795277 L1150.5511811023623,758.8897637795277" stroke="black" stroke-width="1" fill="none"/>
+<text x="55" y="776.8897637795277" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">FHE + NEUROMORPHIC RELAY  |  REFERENCE DESIGN B  |  2026-09-05</text>
+<text x="1135.5511811023623" y="776.8897637795277" text-anchor="end" font-family="Arial,sans-serif" font-size="10" font-weight="400">C01  /  8</text>
+<text x="55" y="792.8897637795277" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">Schematic design and simulated logic; PCB and assembled hardware not validated.</text>
+<rect x="240" y="112" width="180" height="502" fill="none" stroke="black"/>
+<text x="330.0" y="127.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700">J1</text>
+<text x="330.0" y="143.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">PI 40-PIN SOCKET</text>
+<path d="M240,162 L212,162" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="165.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">3V3</text>
+<text x="236" y="158.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">1</text>
+<path d="M209,159 L215,165" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,165 L215,159" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,185 L212,185" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="188.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO2</text>
+<text x="236" y="181.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">3</text>
+<path d="M209,182 L215,188" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,188 L215,182" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,208 L212,208" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="211.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO3</text>
+<text x="236" y="204.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">5</text>
+<path d="M209,205 L215,211" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,211 L215,205" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,231 L212,231" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="234.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO4</text>
+<text x="236" y="227.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">7</text>
+<path d="M209,228 L215,234" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,234 L215,228" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,254 L212,254" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="257.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="236" y="250.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">9</text>
+<text x="207" y="257.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M240,277 L212,277" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="280.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO17</text>
+<text x="236" y="273.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">11</text>
+<text x="207" y="280.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">CRESET_N</text>
+<path d="M240,300 L212,300" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="303.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO27</text>
+<text x="236" y="296.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">13</text>
+<text x="207" y="303.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">CDONE</text>
+<path d="M240,323 L212,323" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="326.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO22</text>
+<text x="236" y="319.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">15</text>
+<text x="207" y="326.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">READY</text>
+<path d="M240,346 L212,346" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="349.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">3V3</text>
+<text x="236" y="342.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">17</text>
+<path d="M209,343 L215,349" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,349 L215,343" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,369 L212,369" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="372.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO10</text>
+<text x="236" y="365.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">19</text>
+<text x="207" y="372.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">HOST_MOSI</text>
+<path d="M240,392 L212,392" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="395.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO9</text>
+<text x="236" y="388.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">21</text>
+<text x="207" y="395.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">HOST_MISO</text>
+<path d="M240,415 L212,415" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="418.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO11</text>
+<text x="236" y="411.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">23</text>
+<text x="207" y="418.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">HOST_SCK</text>
+<path d="M240,438 L212,438" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="441.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="236" y="434.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">25</text>
+<text x="207" y="441.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M240,461 L212,461" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="464.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">ID_SD</text>
+<text x="236" y="457.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">27</text>
+<path d="M209,458 L215,464" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,464 L215,458" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,484 L212,484" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="487.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO5</text>
+<text x="236" y="480.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">29</text>
+<path d="M209,481 L215,487" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,487 L215,481" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,507 L212,507" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="510.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO6</text>
+<text x="236" y="503.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">31</text>
+<path d="M209,504 L215,510" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,510 L215,504" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,530 L212,530" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="533.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO13</text>
+<text x="236" y="526.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">33</text>
+<path d="M209,527 L215,533" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,533 L215,527" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,553 L212,553" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="556.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO19</text>
+<text x="236" y="549.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">35</text>
+<path d="M209,550 L215,556" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,556 L215,550" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,576 L212,576" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="579.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO26</text>
+<text x="236" y="572.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">37</text>
+<path d="M209,573 L215,579" stroke="black" stroke-width="1" fill="none"/>
+<path d="M209,579 L215,573" stroke="black" stroke-width="1" fill="none"/>
+<path d="M240,599 L212,599" stroke="black" stroke-width="1" fill="none"/>
+<text x="247" y="602.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="236" y="595.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">39</text>
+<text x="207" y="602.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M420,162 L448,162" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="165.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">5V</text>
+<text x="424" y="158.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">2</text>
+<text x="453" y="165.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V_RAW</text>
+<path d="M420,185 L448,185" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="188.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">5V</text>
+<text x="424" y="181.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">4</text>
+<text x="453" y="188.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V_RAW</text>
+<path d="M420,208 L448,208" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="211.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="424" y="204.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">6</text>
+<text x="453" y="211.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M420,231 L448,231" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="234.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO14</text>
+<text x="424" y="227.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">8</text>
+<path d="M445,228 L451,234" stroke="black" stroke-width="1" fill="none"/>
+<path d="M445,234 L451,228" stroke="black" stroke-width="1" fill="none"/>
+<path d="M420,254 L448,254" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="257.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO15</text>
+<text x="424" y="250.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">10</text>
+<path d="M445,251 L451,257" stroke="black" stroke-width="1" fill="none"/>
+<path d="M445,257 L451,251" stroke="black" stroke-width="1" fill="none"/>
+<path d="M420,277 L448,277" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="280.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO18</text>
+<text x="424" y="273.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">12</text>
+<path d="M445,274 L451,280" stroke="black" stroke-width="1" fill="none"/>
+<path d="M445,280 L451,274" stroke="black" stroke-width="1" fill="none"/>
+<path d="M420,300 L448,300" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="303.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="424" y="296.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">14</text>
+<text x="453" y="303.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M420,323 L448,323" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="326.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO23</text>
+<text x="424" y="319.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">16</text>
+<text x="453" y="326.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">FRAME_READY</text>
+<path d="M420,346 L448,346" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="349.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO24</text>
+<text x="424" y="342.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">18</text>
+<text x="453" y="349.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">HOST_RESET</text>
+<path d="M420,369 L448,369" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="372.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="424" y="365.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">20</text>
+<text x="453" y="372.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M420,392 L448,392" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="395.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO25</text>
+<text x="424" y="388.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">22</text>
+<path d="M445,389 L451,395" stroke="black" stroke-width="1" fill="none"/>
+<path d="M445,395 L451,389" stroke="black" stroke-width="1" fill="none"/>
+<path d="M420,415 L448,415" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="418.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO8</text>
+<text x="424" y="411.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">24</text>
+<text x="453" y="418.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">HOST_CS_N</text>
+<path d="M420,438 L448,438" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="441.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO7</text>
+<text x="424" y="434.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">26</text>
+<path d="M445,435 L451,441" stroke="black" stroke-width="1" fill="none"/>
+<path d="M445,441 L451,435" stroke="black" stroke-width="1" fill="none"/>
+<path d="M420,461 L448,461" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="464.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">ID_SC</text>
+<text x="424" y="457.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">28</text>
+<path d="M445,458 L451,464" stroke="black" stroke-width="1" fill="none"/>
+<path d="M445,464 L451,458" stroke="black" stroke-width="1" fill="none"/>
+<path d="M420,484 L448,484" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="487.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="424" y="480.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">30</text>
+<text x="453" y="487.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M420,507 L448,507" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="510.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO12</text>
+<text x="424" y="503.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">32</text>
+<path d="M445,504 L451,510" stroke="black" stroke-width="1" fill="none"/>
+<path d="M445,510 L451,504" stroke="black" stroke-width="1" fill="none"/>
+<path d="M420,530 L448,530" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="533.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="424" y="526.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">34</text>
+<text x="453" y="533.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M420,553 L448,553" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="556.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO16</text>
+<text x="424" y="549.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">36</text>
+<path d="M445,550 L451,556" stroke="black" stroke-width="1" fill="none"/>
+<path d="M445,556 L451,550" stroke="black" stroke-width="1" fill="none"/>
+<path d="M420,576 L448,576" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="579.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO20</text>
+<text x="424" y="572.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">38</text>
+<path d="M445,573 L451,579" stroke="black" stroke-width="1" fill="none"/>
+<path d="M445,579 L451,573" stroke="black" stroke-width="1" fill="none"/>
+<path d="M420,599 L448,599" stroke="black" stroke-width="1" fill="none"/>
+<text x="413" y="602.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GPIO21</text>
+<text x="424" y="595.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">40</text>
+<path d="M445,596 L451,602" stroke="black" stroke-width="1" fill="none"/>
+<path d="M445,602 L451,596" stroke="black" stroke-width="1" fill="none"/>
+<rect x="730" y="125" width="345" height="64" fill="none" stroke="black"/>
+<text x="902.5" y="153.92000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">EXISTING ACQUISITION DEVICE</text>
+<text x="902.5" y="168.00000000000003" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">Original sensor front end and digitizer</text>
+<path d="M902,189 L902,233" stroke="black" stroke-width="1" fill="none"/>
+<path d="M902,233 L899.0,226.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M902,233 L905.0,226.0" stroke="black" stroke-width="1" fill="none"/>
+<text x="902" y="215.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="400">USB data cable / original wireless receiver</text>
+<rect x="730" y="233" width="345" height="92" fill="none" stroke="black"/>
+<text x="902.5" y="268.88" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">M1  RASPBERRY PI 4 MODEL B, 4 GB</text>
+<text x="902.5" y="282.96" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">USB host + 64-bit Linux + local RAM</text>
+<text x="902.5" y="297.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">Vendor CPU, DDR, clocks and PMIC included</text>
+<path d="M730,278 L617,278" stroke="black" stroke-width="1" fill="none"/>
+<path d="M617,278 L617,439" stroke="black" stroke-width="1" fill="none"/>
+<path d="M617,439 L614.0,432.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M617,439 L620.0,432.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="540" y="439" width="154" height="68" fill="none" stroke="black"/>
+<text x="617.0" y="469.92" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">J1</text>
+<text x="617.0" y="484.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">PIN MAP AT LEFT</text>
+<path d="M902,325 L902,385" stroke="black" stroke-width="1" fill="none"/>
+<path d="M902,385 L899.0,378.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M902,385 L905.0,378.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="730" y="385" width="345" height="62" fill="none" stroke="black"/>
+<text x="902.5" y="412.92" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">Wi-Fi / Ethernet</text>
+<text x="902.5" y="427.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">Authenticated ciphertext transport</text>
+<path d="M902,447 L902,495" stroke="black" stroke-width="1" fill="none"/>
+<path d="M902,495 L899.0,488.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M902,495 L905.0,488.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="730" y="495" width="345" height="80" fill="none" stroke="black"/>
+<text x="902.5" y="524.88" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">REMOTE EVALUATOR</text>
+<text x="902.5" y="538.96" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">OpenFHE BFVrns on 64-bit host</text>
+<text x="902.5" y="553.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">Public model; encrypted inputs and scores</text>
+<text x="355" y="648.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">F1</text>
+<text x="355" y="687.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">PTC 0.25 A</text>
+<path d="M319,664 L337,664" stroke="black" stroke-width="1" fill="none"/>
+<path d="M373,664 L391,664" stroke="black" stroke-width="1" fill="none"/>
+<rect x="337" y="657" width="36" height="14" fill="none" stroke="black"/>
+<text x="314" y="667.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V_RAW</text>
+<text x="396" y="667.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<text x="865" y="648.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C1</text>
+<text x="865" y="687.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">10 uF / 16 V</text>
+<path d="M829,664 L847,664" stroke="black" stroke-width="1" fill="none"/>
+<path d="M883,664 L901,664" stroke="black" stroke-width="1" fill="none"/>
+<path d="M862,655 L862,673" stroke="black" stroke-width="1" fill="none"/>
+<path d="M868,655 L868,673" stroke="black" stroke-width="1" fill="none"/>
+<path d="M847,664 L862,664" stroke="black" stroke-width="1" fill="none"/>
+<path d="M868,664 L883,664" stroke="black" stroke-width="1" fill="none"/>
+<text x="824" y="667.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<text x="906" y="667.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="60" y="703.0" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">J1 pin numbering is physical, viewed from the mating side; mark pin 1 on the PCB.</text>
+<text x="60" y="715.8" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">M1 is powered through its original USB-C input. Relay draws from J1 pins 2 and 4.</text>
+<text x="60" y="728.6" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">All J1 grounds connect to a continuous relay ground plane. No analog electrode wiring on this board.</text>
+<text x="60" y="741.4" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">3.3 V pins 1 and 17 and all unused GPIO pins are intentionally open. No HAT EEPROM is fitted.</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Metadata policy and encrypted representations</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">11/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 11</text>
+<rect x="127.47999999999999" y="99" width="339.3" height="72" fill="none" stroke="black"/>
+<text x="297.13" y="131.07999999999998" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">230</text>
+<text x="297.13" y="149.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">LOCAL COUNT VECTOR</text>
+<rect x="127.47999999999999" y="238" width="339.3" height="72" fill="none" stroke="black"/>
+<text x="297.13" y="270.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">241</text>
+<text x="297.13" y="288.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">APPROVED PRIVACY PROFILE</text>
+<path d="M298.0,171 L298.0,238" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,238 L295.39,231.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,238 L300.61,231.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="97.03" y="400" width="187.92" height="109" fill="none" stroke="black"/>
+<text x="190.99" y="441.62" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">242</text>
+<text x="190.99" y="459.54" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">FIXED-DOMAIN</text>
+<text x="190.99" y="477.46000000000004" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">ENCRYPTED VALUES</text>
+<rect x="316.27" y="400" width="187.05" height="109" fill="none" stroke="black"/>
+<text x="409.795" y="441.62" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">243</text>
+<text x="409.795" y="459.54" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">PERMITTED SUPPORT</text>
+<text x="409.795" y="477.46000000000004" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">ENCRYPTED VALUES</text>
+<path d="M244.93,310 L244.93,355" stroke="black" stroke-width="1" fill="none"/>
+<path d="M244.93,355 L190.99,355" stroke="black" stroke-width="1" fill="none"/>
+<path d="M190.99,355 L190.99,400" stroke="black" stroke-width="1" fill="none"/>
+<path d="M190.99,400 L188.38,393.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M190.99,400 L193.6,393.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M351.07,310 L351.07,355" stroke="black" stroke-width="1" fill="none"/>
+<path d="M351.07,355 L410.23,355" stroke="black" stroke-width="1" fill="none"/>
+<path d="M410.23,355 L410.23,400" stroke="black" stroke-width="1" fill="none"/>
+<path d="M410.23,400 L407.62,393.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M410.23,400 L412.84000000000003,393.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="106.6" y="615" width="381.06" height="78" fill="none" stroke="black"/>
+<text x="297.13" y="650.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">244</text>
+<text x="297.13" y="668.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">MODEL / CONTEXT / LAYOUT BINDING</text>
+<path d="M190.99,509 L190.99,558" stroke="black" stroke-width="1" fill="none"/>
+<path d="M190.99,558 L244.93,558" stroke="black" stroke-width="1" fill="none"/>
+<path d="M244.93,558 L244.93,615" stroke="black" stroke-width="1" fill="none"/>
+<path d="M244.93,615 L242.32,608.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M244.93,615 L247.54,608.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M410.23,509 L410.23,558" stroke="black" stroke-width="1" fill="none"/>
+<path d="M410.23,558 L350.2,558" stroke="black" stroke-width="1" fill="none"/>
+<path d="M350.2,558 L350.2,615" stroke="black" stroke-width="1" fill="none"/>
+<path d="M350.2,615 L347.59,608.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M350.2,615 L352.81,608.0" stroke="black" stroke-width="1" fill="none"/>
+</svg>

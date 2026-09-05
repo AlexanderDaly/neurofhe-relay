@@ -1,0 +1,295 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1190.5511811023623pt" height="841.8897637795277pt" viewBox="0 0 1190.5511811023623 841.8897637795277">
+<title>FPGA supply pins bypass network and unused pads</title>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="40" y="45" width="1110.5511811023623" height="751.8897637795277" fill="none" stroke="black"/>
+<text x="55" y="68.0" text-anchor="start" font-family="Arial,sans-serif" font-size="14" font-weight="700">ENER  /  FPGA SUPPLY PINS BYPASS NETWORK AND UNUSED PADS</text>
+<path d="M40,758.8897637795277 L1150.5511811023623,758.8897637795277" stroke="black" stroke-width="1" fill="none"/>
+<text x="55" y="776.8897637795277" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">FHE + NEUROMORPHIC RELAY  |  REFERENCE DESIGN B  |  2026-09-05</text>
+<text x="1135.5511811023623" y="776.8897637795277" text-anchor="end" font-family="Arial,sans-serif" font-size="10" font-weight="400">C04  /  8</text>
+<text x="55" y="792.8897637795277" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">Schematic design and simulated logic; PCB and assembled hardware not validated.</text>
+<rect x="238" y="135" width="170" height="134" fill="none" stroke="black"/>
+<text x="323.0" y="150.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700">U1B</text>
+<text x="323.0" y="166.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">iCE40UP5K-SG48</text>
+<path d="M238,185 L210,185" stroke="black" stroke-width="1" fill="none"/>
+<text x="245" y="188.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">VCC</text>
+<text x="234" y="181.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">5</text>
+<text x="205" y="188.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2</text>
+<path d="M238,208 L210,208" stroke="black" stroke-width="1" fill="none"/>
+<text x="245" y="211.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">VCC</text>
+<text x="234" y="204.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">30</text>
+<text x="205" y="211.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2</text>
+<path d="M238,231 L210,231" stroke="black" stroke-width="1" fill="none"/>
+<text x="245" y="234.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">VCCPLL</text>
+<text x="234" y="227.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">29</text>
+<text x="205" y="234.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2_PLL</text>
+<path d="M238,254 L210,254" stroke="black" stroke-width="1" fill="none"/>
+<text x="245" y="257.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">VPP_2V5</text>
+<text x="234" y="250.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">24</text>
+<text x="205" y="257.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+2V5</text>
+<path d="M408,185 L436,185" stroke="black" stroke-width="1" fill="none"/>
+<text x="401" y="188.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">VCCIO_2</text>
+<text x="412" y="181.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">1</text>
+<text x="441" y="188.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">+3V3</text>
+<path d="M408,208 L436,208" stroke="black" stroke-width="1" fill="none"/>
+<text x="401" y="211.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">SPI_VCCIO1</text>
+<text x="412" y="204.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">22</text>
+<text x="441" y="211.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">+3V3</text>
+<path d="M408,231 L436,231" stroke="black" stroke-width="1" fill="none"/>
+<text x="401" y="234.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">VCCIO_0</text>
+<text x="412" y="227.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">33</text>
+<text x="441" y="234.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">+3V3</text>
+<path d="M408,254 L436,254" stroke="black" stroke-width="1" fill="none"/>
+<text x="401" y="257.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND / PAD</text>
+<text x="412" y="250.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">49</text>
+<text x="441" y="257.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<rect x="812" y="112" width="188" height="342" fill="none" stroke="black"/>
+<text x="906.0" y="127.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700">U1C</text>
+<text x="906.0" y="143.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">iCE40UP5K-SG48</text>
+<path d="M812,162 L784,162" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="165.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_6A</text>
+<text x="808" y="158.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">2</text>
+<path d="M781,159 L787,165" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,165 L787,159" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,182 L784,182" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="185.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_9B</text>
+<text x="808" y="178.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">3</text>
+<path d="M781,179 L787,185" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,185 L787,179" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,202 L784,202" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="205.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_8A</text>
+<text x="808" y="198.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">4</text>
+<path d="M781,199 L787,205" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,205 L787,199" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,222 L784,222" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="225.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_13B</text>
+<text x="808" y="218.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">6</text>
+<path d="M781,219 L787,225" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,225 L787,219" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,242 L784,242" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="245.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_24A</text>
+<text x="808" y="238.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">13</text>
+<path d="M781,239 L787,245" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,245 L787,239" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,262 L784,262" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="265.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_31B</text>
+<text x="808" y="258.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">18</text>
+<path d="M781,259 L787,265" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,265 L787,259" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,282 L784,282" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="285.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_29B</text>
+<text x="808" y="278.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">19</text>
+<path d="M781,279 L787,285" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,285 L787,279" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,302 L784,302" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="305.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_25B_G3</text>
+<text x="808" y="298.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">20</text>
+<path d="M781,299 L787,305" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,305 L787,299" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,322 L784,322" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="325.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_23B</text>
+<text x="808" y="318.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">21</text>
+<path d="M781,319 L787,325" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,325 L787,319" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,342 L784,342" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="345.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_37A</text>
+<text x="808" y="338.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">23</text>
+<path d="M781,339 L787,345" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,345 L787,339" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,362 L784,362" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="365.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_36B</text>
+<text x="808" y="358.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">25</text>
+<path d="M781,359 L787,365" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,365 L787,359" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,382 L784,382" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="385.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_39A</text>
+<text x="808" y="378.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">26</text>
+<path d="M781,379 L787,385" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,385 L787,379" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,402 L784,402" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="405.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_38B</text>
+<text x="808" y="398.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">27</text>
+<path d="M781,399 L787,405" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,405 L787,399" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,422 L784,422" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="425.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_41A</text>
+<text x="808" y="418.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">28</text>
+<path d="M781,419 L787,425" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,425 L787,419" stroke="black" stroke-width="1" fill="none"/>
+<path d="M812,442 L784,442" stroke="black" stroke-width="1" fill="none"/>
+<text x="819" y="445.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_42B</text>
+<text x="808" y="438.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">31</text>
+<path d="M781,439 L787,445" stroke="black" stroke-width="1" fill="none"/>
+<path d="M781,445 L787,439" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,162 L1028,162" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="165.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_43A</text>
+<text x="1004" y="158.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">32</text>
+<path d="M1025,159 L1031,165" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,165 L1031,159" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,182 L1028,182" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="185.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_44B</text>
+<text x="1004" y="178.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">34</text>
+<path d="M1025,179 L1031,185" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,185 L1031,179" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,202 L1028,202" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="205.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_48B</text>
+<text x="1004" y="198.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">36</text>
+<path d="M1025,199 L1031,205" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,205 L1031,199" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,222 L1028,222" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="225.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_45A_G1</text>
+<text x="1004" y="218.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">37</text>
+<path d="M1025,219 L1031,225" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,225 L1031,219" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,242 L1028,242" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="245.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_50B</text>
+<text x="1004" y="238.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">38</text>
+<path d="M1025,239 L1031,245" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,245 L1031,239" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,262 L1028,262" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="265.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">RGB0</text>
+<text x="1004" y="258.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">39</text>
+<path d="M1025,259 L1031,265" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,265 L1031,259" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,282 L1028,282" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="285.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">RGB1</text>
+<text x="1004" y="278.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">40</text>
+<path d="M1025,279 L1031,285" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,285 L1031,279" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,302 L1028,302" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="305.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">RGB2</text>
+<text x="1004" y="298.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">41</text>
+<path d="M1025,299 L1031,305" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,305 L1031,299" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,322 L1028,322" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="325.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_51A</text>
+<text x="1004" y="318.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">42</text>
+<path d="M1025,319 L1031,325" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,325 L1031,319" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,342 L1028,342" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="345.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOT_49A</text>
+<text x="1004" y="338.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">43</text>
+<path d="M1025,339 L1031,345" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,345 L1031,339" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,362 L1028,362" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="365.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_3B_G6</text>
+<text x="1004" y="358.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">44</text>
+<path d="M1025,359 L1031,365" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,365 L1031,359" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,382 L1028,382" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="385.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_5B</text>
+<text x="1004" y="378.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">45</text>
+<path d="M1025,379 L1031,385" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,385 L1031,379" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,402 L1028,402" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="405.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_0A</text>
+<text x="1004" y="398.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">46</text>
+<path d="M1025,399 L1031,405" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,405 L1031,399" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,422 L1028,422" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="425.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_2A</text>
+<text x="1004" y="418.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">47</text>
+<path d="M1025,419 L1031,425" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,425 L1031,419" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1000,442 L1028,442" stroke="black" stroke-width="1" fill="none"/>
+<text x="993" y="445.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IOB_4A</text>
+<text x="1004" y="438.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">48</text>
+<path d="M1025,439 L1031,445" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1025,445 L1031,439" stroke="black" stroke-width="1" fill="none"/>
+<text x="161" y="483.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C14</text>
+<text x="161" y="522.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 nF</text>
+<path d="M125,499 L143,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M179,499 L197,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M158,490 L158,508" stroke="black" stroke-width="1" fill="none"/>
+<path d="M164,490 L164,508" stroke="black" stroke-width="1" fill="none"/>
+<path d="M143,499 L158,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M164,499 L179,499" stroke="black" stroke-width="1" fill="none"/>
+<text x="120" y="502.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2</text>
+<text x="202" y="502.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="439" y="483.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C15</text>
+<text x="439" y="522.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 nF</text>
+<path d="M403,499 L421,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M457,499 L475,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M436,490 L436,508" stroke="black" stroke-width="1" fill="none"/>
+<path d="M442,490 L442,508" stroke="black" stroke-width="1" fill="none"/>
+<path d="M421,499 L436,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M442,499 L457,499" stroke="black" stroke-width="1" fill="none"/>
+<text x="398" y="502.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2</text>
+<text x="480" y="502.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="717" y="483.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C16</text>
+<text x="717" y="522.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 nF</text>
+<path d="M681,499 L699,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M735,499 L753,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M714,490 L714,508" stroke="black" stroke-width="1" fill="none"/>
+<path d="M720,490 L720,508" stroke="black" stroke-width="1" fill="none"/>
+<path d="M699,499 L714,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M720,499 L735,499" stroke="black" stroke-width="1" fill="none"/>
+<text x="676" y="502.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+3V3</text>
+<text x="758" y="502.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="995" y="483.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C17</text>
+<text x="995" y="522.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 nF</text>
+<path d="M959,499 L977,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1013,499 L1031,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M992,490 L992,508" stroke="black" stroke-width="1" fill="none"/>
+<path d="M998,490 L998,508" stroke="black" stroke-width="1" fill="none"/>
+<path d="M977,499 L992,499" stroke="black" stroke-width="1" fill="none"/>
+<path d="M998,499 L1013,499" stroke="black" stroke-width="1" fill="none"/>
+<text x="954" y="502.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+3V3</text>
+<text x="1036" y="502.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="161" y="548.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C18</text>
+<text x="161" y="587.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 nF</text>
+<path d="M125,564 L143,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M179,564 L197,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M158,555 L158,573" stroke="black" stroke-width="1" fill="none"/>
+<path d="M164,555 L164,573" stroke="black" stroke-width="1" fill="none"/>
+<path d="M143,564 L158,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M164,564 L179,564" stroke="black" stroke-width="1" fill="none"/>
+<text x="120" y="567.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+3V3</text>
+<text x="202" y="567.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="439" y="548.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C19</text>
+<text x="439" y="587.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 nF</text>
+<path d="M403,564 L421,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M457,564 L475,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M436,555 L436,573" stroke="black" stroke-width="1" fill="none"/>
+<path d="M442,555 L442,573" stroke="black" stroke-width="1" fill="none"/>
+<path d="M421,564 L436,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M442,564 L457,564" stroke="black" stroke-width="1" fill="none"/>
+<text x="398" y="567.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+2V5</text>
+<text x="480" y="567.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="717" y="548.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C20</text>
+<text x="717" y="587.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">1 uF</text>
+<path d="M681,564 L699,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M735,564 L753,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M714,555 L714,573" stroke="black" stroke-width="1" fill="none"/>
+<path d="M720,555 L720,573" stroke="black" stroke-width="1" fill="none"/>
+<path d="M699,564 L714,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M720,564 L735,564" stroke="black" stroke-width="1" fill="none"/>
+<text x="676" y="567.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2_PLL</text>
+<text x="758" y="567.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="995" y="548.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C21</text>
+<text x="995" y="587.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 nF</text>
+<path d="M959,564 L977,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1013,564 L1031,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M992,555 L992,573" stroke="black" stroke-width="1" fill="none"/>
+<path d="M998,555 L998,573" stroke="black" stroke-width="1" fill="none"/>
+<path d="M977,564 L992,564" stroke="black" stroke-width="1" fill="none"/>
+<path d="M998,564 L1013,564" stroke="black" stroke-width="1" fill="none"/>
+<text x="954" y="567.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2_PLL</text>
+<text x="1036" y="567.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="290" y="629.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">R17</text>
+<text x="290" y="668.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 ohm</text>
+<path d="M254,645 L272,645" stroke="black" stroke-width="1" fill="none"/>
+<path d="M308,645 L326,645" stroke="black" stroke-width="1" fill="none"/>
+<path d="M272,645 L276,640" stroke="black" stroke-width="1" fill="none"/>
+<path d="M276,640 L282,650" stroke="black" stroke-width="1" fill="none"/>
+<path d="M282,650 L288,640" stroke="black" stroke-width="1" fill="none"/>
+<path d="M288,640 L294,650" stroke="black" stroke-width="1" fill="none"/>
+<path d="M294,650 L300,640" stroke="black" stroke-width="1" fill="none"/>
+<path d="M300,640 L304,645" stroke="black" stroke-width="1" fill="none"/>
+<path d="M304,645 L308,645" stroke="black" stroke-width="1" fill="none"/>
+<text x="249" y="648.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2</text>
+<text x="331" y="648.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2_PLL</text>
+<text x="60" y="684.0" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">C14/C15 at core pins 5/30; C16/C17/C18 at I/O pins 1/22/33; C19 at VPP pin 24.</text>
+<text x="60" y="696.8" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">R17 with C20/C21 filters VCCPLL; connect the rail even though the PLL is unused.</text>
+<text x="60" y="709.6" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">Pad 49 is the exposed ground paddle: connect to the ground plane with a thermal/via array.</text>
+<text x="60" y="722.4" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">Unused pads shown with an X have no copper connection. Confirm unused-I/O constraints in the final bitstream.</text>
+</svg>

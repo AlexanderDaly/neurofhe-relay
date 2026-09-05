@@ -1,0 +1,67 @@
+{
+  "source_commit": "c42d68225934a3bfa46a4bdd7573d035ad907b96",
+  "sources": {
+    "repo": {
+      "title": "ENER patent source, GitHub main",
+      "url": "https://github.com/AlexanderDaly/neurofhe-relay/tree/main/patent"
+    },
+    "pi": {
+      "title": "Raspberry Pi 4 Model B datasheet, release 1.1",
+      "url": "https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-datasheet.pdf"
+    },
+    "fpga": {
+      "title": "Lattice iCE40 UltraPlus datasheet, FPGA-DS-02008 rev. 2.4",
+      "url": "https://www.latticesemi.com/view_document?document_id=51968"
+    },
+    "board": {
+      "title": "Lattice UltraPlus breakout-board schematic, Appendix A, rev. 1.2",
+      "url": "https://media.latticesemi.com/-/media/LatticeSemi/Documents/UserManuals/EI/FPGA-UG-02001-1-2-iCE40-UltraPlus-Breakout-Board.ashx?document_id=51987"
+    },
+    "config": {
+      "title": "Lattice iCE40 programming and configuration, section 13",
+      "url": "https://www.latticesemi.com/view_document?document_id=46502"
+    },
+    "ldo": {
+      "title": "Texas Instruments TLV755P datasheet, rev. D",
+      "url": "https://www.ti.com/lit/ds/symlink/tlv755p.pdf"
+    },
+    "supervisor": {
+      "title": "Texas Instruments TPS3808 datasheet, rev. N",
+      "url": "https://www.ti.com/lit/ds/symlink/tps3808.pdf"
+    },
+    "buffer": {
+      "title": "Texas Instruments SN74LVC2G17 datasheet, rev. N",
+      "url": "https://www.ti.com/lit/ds/symlink/sn74lvc2g17.pdf"
+    },
+    "clock": {
+      "title": "SiTime SiT8008B datasheet, rev. 1.08",
+      "url": "https://www.sitime.com/datasheet/SiT8008"
+    },
+    "he": {
+      "title": "OpenFHE BFVrns parameter-generation source",
+      "url": "https://openfhe-development.readthedocs.io/en/latest/api/program_listing_file_pke_lib_scheme_bfvrns_bfvrns-parametergeneration.cpp.html"
+    },
+    "heguide": {
+      "title": "OpenFHE example parameter guidance",
+      "url": "https://github.com/openfheorg/openfhe-development/blob/main/src/pke/examples/README.md"
+    },
+    "drawings": {
+      "title": "USPTO MPEP 608.02, drawing requirements",
+      "url": "https://www.uspto.gov/web/offices/pac/mpep/s608.html"
+    },
+    "sim": {
+      "title": "Amaranth simulator documentation",
+      "url": "https://amaranth-lang.org/docs/amaranth/v0.5.0/simulator.html"
+    },
+    "pnr": {
+      "title": "Yosys and nextpnr framework paper",
+      "url": "https://arxiv.org/abs/1903.10407"
+    }
+  },
+  "new_design_date": "2026-09-05",
+  "original_spec_sha256": "036e3dc4f3a71fb17bfb5cefe831ab57ca3a9e6e99e959589f9c64b88cc5b1c5",
+  "new_sections": [
+    "E replaced with sixteen-figure descriptions",
+    "F.14 added"
+  ]
+}

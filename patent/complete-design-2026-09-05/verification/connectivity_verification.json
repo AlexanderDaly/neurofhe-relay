@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "physical_components": 55,
+  "physical_pins": 226,
+  "named_nets": 32,
+  "checks": [
+    "Every physical pin is drawn exactly once.",
+    "Every named net has at least two terminals.",
+    "All 49 FPGA pads and all 40 host connector pins assigned.",
+    "No physical secret-key connection to FPGA."
+  ],
+  "limits": "Connectivity audit, not KiCad ERC, SPICE, signal-integrity or physical assembly validation."
+}

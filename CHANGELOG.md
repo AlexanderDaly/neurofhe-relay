@@ -11,6 +11,17 @@ Release target: `v0.1.0-research-alpha`.
 
 ### Added
 
+- Added the ENER complete schematic reference design, revision B: 16 vector
+  patent figures, eight component/datapath sheets, a 26-page implementation
+  specification, editable SVG and KiCad sources, 55-component BOM and all 226
+  pin assignments. Includes synthesizable FPGA logic, generated Verilog,
+  routed configuration and evidence for 74 simulated frames / 14,262 samples
+  with passing 16 MHz timing. Physical hardware and headset-specific deployment
+  remain unvalidated. A separate specification working copy contains matching
+  drawing descriptions and the new circuit embodiment.
+- Added exact-path/header exceptions for the reviewed public BOM and pin-map
+  CSVs in the repository data guard; other CSVs remain blocked and the approved
+  tables still undergo text hygiene checks.
 - Closed the single-window OpenFHE native measurement gap: the BFVrns and CKKS
   C++ demos now serialize active-value and class-score ciphertexts
   (`Serial::Serialize` BINARY) and report total ciphertext bytes plus end-of-run

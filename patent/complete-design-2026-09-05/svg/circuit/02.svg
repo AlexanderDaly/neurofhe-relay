@@ -1,0 +1,286 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1190.5511811023623pt" height="841.8897637795277pt" viewBox="0 0 1190.5511811023623 841.8897637795277">
+<title>Sequenced power rails and reset supervision</title>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="40" y="45" width="1110.5511811023623" height="751.8897637795277" fill="none" stroke="black"/>
+<text x="55" y="68.0" text-anchor="start" font-family="Arial,sans-serif" font-size="14" font-weight="700">ENER  /  SEQUENCED POWER RAILS AND RESET SUPERVISION</text>
+<path d="M40,758.8897637795277 L1150.5511811023623,758.8897637795277" stroke="black" stroke-width="1" fill="none"/>
+<text x="55" y="776.8897637795277" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">FHE + NEUROMORPHIC RELAY  |  REFERENCE DESIGN B  |  2026-09-05</text>
+<text x="1135.5511811023623" y="776.8897637795277" text-anchor="end" font-family="Arial,sans-serif" font-size="10" font-weight="400">C02  /  8</text>
+<text x="55" y="792.8897637795277" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">Schematic design and simulated logic; PCB and assembled hardware not validated.</text>
+<rect x="235" y="120" width="126" height="111" fill="none" stroke="black"/>
+<text x="298.0" y="135.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700">U2</text>
+<text x="298.0" y="151.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">TLV75512P</text>
+<path d="M235,170 L207,170" stroke="black" stroke-width="1" fill="none"/>
+<text x="242" y="173.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IN</text>
+<text x="231" y="166.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">1</text>
+<text x="202" y="173.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<path d="M235,193 L207,193" stroke="black" stroke-width="1" fill="none"/>
+<text x="242" y="196.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">EN</text>
+<text x="231" y="189.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">3</text>
+<text x="202" y="196.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<path d="M235,216 L207,216" stroke="black" stroke-width="1" fill="none"/>
+<text x="242" y="219.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="231" y="212.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">2</text>
+<text x="202" y="219.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M361,170 L389,170" stroke="black" stroke-width="1" fill="none"/>
+<text x="354" y="173.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">OUT</text>
+<text x="365" y="166.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">5</text>
+<text x="394" y="173.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2</text>
+<path d="M361,193 L389,193" stroke="black" stroke-width="1" fill="none"/>
+<text x="354" y="196.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">NC</text>
+<text x="365" y="189.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">4</text>
+<path d="M386,190 L392,196" stroke="black" stroke-width="1" fill="none"/>
+<path d="M386,196 L392,190" stroke="black" stroke-width="1" fill="none"/>
+<rect x="780" y="120" width="136" height="111" fill="none" stroke="black"/>
+<text x="848.0" y="135.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700">U5</text>
+<text x="848.0" y="151.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">TPS3808G12</text>
+<path d="M780,170 L752,170" stroke="black" stroke-width="1" fill="none"/>
+<text x="787" y="173.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">VDD</text>
+<text x="776" y="166.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">6</text>
+<text x="747" y="173.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<path d="M780,193 L752,193" stroke="black" stroke-width="1" fill="none"/>
+<text x="787" y="196.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">SENSE</text>
+<text x="776" y="189.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">5</text>
+<text x="747" y="196.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2</text>
+<path d="M780,216 L752,216" stroke="black" stroke-width="1" fill="none"/>
+<text x="787" y="219.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">MR_N</text>
+<text x="776" y="212.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">3</text>
+<text x="747" y="219.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<path d="M916,170 L944,170" stroke="black" stroke-width="1" fill="none"/>
+<text x="909" y="173.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">RESET_N</text>
+<text x="920" y="166.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">1</text>
+<text x="949" y="173.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IO_ENABLE</text>
+<path d="M916,193 L944,193" stroke="black" stroke-width="1" fill="none"/>
+<text x="909" y="196.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">CT</text>
+<text x="920" y="189.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">4</text>
+<text x="949" y="196.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">CT_CORE</text>
+<path d="M916,216 L944,216" stroke="black" stroke-width="1" fill="none"/>
+<text x="909" y="219.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="920" y="212.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">2</text>
+<text x="949" y="219.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="153" y="244.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C2</text>
+<text x="153" y="283.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">1 uF / 10 V</text>
+<path d="M117,260 L135,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M171,260 L189,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M150,251 L150,269" stroke="black" stroke-width="1" fill="none"/>
+<path d="M156,251 L156,269" stroke="black" stroke-width="1" fill="none"/>
+<path d="M135,260 L150,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M156,260 L171,260" stroke="black" stroke-width="1" fill="none"/>
+<text x="112" y="263.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<text x="194" y="263.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="430" y="244.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C3</text>
+<text x="430" y="283.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">10 uF / 10 V</text>
+<path d="M394,260 L412,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M448,260 L466,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M427,251 L427,269" stroke="black" stroke-width="1" fill="none"/>
+<path d="M433,251 L433,269" stroke="black" stroke-width="1" fill="none"/>
+<path d="M412,260 L427,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M433,260 L448,260" stroke="black" stroke-width="1" fill="none"/>
+<text x="389" y="263.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+1V2</text>
+<text x="471" y="263.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="707" y="244.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C8</text>
+<text x="707" y="283.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 nF</text>
+<path d="M671,260 L689,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M725,260 L743,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M704,251 L704,269" stroke="black" stroke-width="1" fill="none"/>
+<path d="M710,251 L710,269" stroke="black" stroke-width="1" fill="none"/>
+<path d="M689,260 L704,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M710,260 L725,260" stroke="black" stroke-width="1" fill="none"/>
+<text x="666" y="263.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<text x="748" y="263.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="984" y="244.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C11</text>
+<text x="984" y="283.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">1 nF C0G</text>
+<path d="M948,260 L966,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1002,260 L1020,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M981,251 L981,269" stroke="black" stroke-width="1" fill="none"/>
+<path d="M987,251 L987,269" stroke="black" stroke-width="1" fill="none"/>
+<path d="M966,260 L981,260" stroke="black" stroke-width="1" fill="none"/>
+<path d="M987,260 L1002,260" stroke="black" stroke-width="1" fill="none"/>
+<text x="943" y="263.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">CT_CORE</text>
+<text x="1025" y="263.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<rect x="235" y="320" width="126" height="111" fill="none" stroke="black"/>
+<text x="298.0" y="335.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700">U3</text>
+<text x="298.0" y="351.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">TLV75533P</text>
+<path d="M235,370 L207,370" stroke="black" stroke-width="1" fill="none"/>
+<text x="242" y="373.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IN</text>
+<text x="231" y="366.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">1</text>
+<text x="202" y="373.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<path d="M235,393 L207,393" stroke="black" stroke-width="1" fill="none"/>
+<text x="242" y="396.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">EN</text>
+<text x="231" y="389.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">3</text>
+<text x="202" y="396.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">IO_ENABLE</text>
+<path d="M235,416 L207,416" stroke="black" stroke-width="1" fill="none"/>
+<text x="242" y="419.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="231" y="412.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">2</text>
+<text x="202" y="419.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M361,370 L389,370" stroke="black" stroke-width="1" fill="none"/>
+<text x="354" y="373.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">OUT</text>
+<text x="365" y="366.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">5</text>
+<text x="394" y="373.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">+3V3</text>
+<path d="M361,393 L389,393" stroke="black" stroke-width="1" fill="none"/>
+<text x="354" y="396.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">NC</text>
+<text x="365" y="389.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">4</text>
+<path d="M386,390 L392,396" stroke="black" stroke-width="1" fill="none"/>
+<path d="M386,396 L392,390" stroke="black" stroke-width="1" fill="none"/>
+<rect x="780" y="320" width="136" height="111" fill="none" stroke="black"/>
+<text x="848.0" y="335.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700">U6</text>
+<text x="848.0" y="351.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">TPS3808G33</text>
+<path d="M780,370 L752,370" stroke="black" stroke-width="1" fill="none"/>
+<text x="787" y="373.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">VDD</text>
+<text x="776" y="366.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">6</text>
+<text x="747" y="373.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<path d="M780,393 L752,393" stroke="black" stroke-width="1" fill="none"/>
+<text x="787" y="396.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">SENSE</text>
+<text x="776" y="389.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">5</text>
+<text x="747" y="396.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+3V3</text>
+<path d="M780,416 L752,416" stroke="black" stroke-width="1" fill="none"/>
+<text x="787" y="419.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">MR_N</text>
+<text x="776" y="412.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">3</text>
+<text x="747" y="419.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<path d="M916,370 L944,370" stroke="black" stroke-width="1" fill="none"/>
+<text x="909" y="373.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">RESET_N</text>
+<text x="920" y="366.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">1</text>
+<text x="949" y="373.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">VPP_ENABLE</text>
+<path d="M916,393 L944,393" stroke="black" stroke-width="1" fill="none"/>
+<text x="909" y="396.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">CT</text>
+<text x="920" y="389.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">4</text>
+<text x="949" y="396.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">CT_IO</text>
+<path d="M916,416 L944,416" stroke="black" stroke-width="1" fill="none"/>
+<text x="909" y="419.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="920" y="412.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">2</text>
+<text x="949" y="419.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="153" y="444.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C4</text>
+<text x="153" y="483.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">1 uF / 10 V</text>
+<path d="M117,460 L135,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M171,460 L189,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M150,451 L150,469" stroke="black" stroke-width="1" fill="none"/>
+<path d="M156,451 L156,469" stroke="black" stroke-width="1" fill="none"/>
+<path d="M135,460 L150,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M156,460 L171,460" stroke="black" stroke-width="1" fill="none"/>
+<text x="112" y="463.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<text x="194" y="463.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="430" y="444.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C5</text>
+<text x="430" y="483.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">10 uF / 10 V</text>
+<path d="M394,460 L412,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M448,460 L466,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M427,451 L427,469" stroke="black" stroke-width="1" fill="none"/>
+<path d="M433,451 L433,469" stroke="black" stroke-width="1" fill="none"/>
+<path d="M412,460 L427,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M433,460 L448,460" stroke="black" stroke-width="1" fill="none"/>
+<text x="389" y="463.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+3V3</text>
+<text x="471" y="463.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="707" y="444.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C9</text>
+<text x="707" y="483.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 nF</text>
+<path d="M671,460 L689,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M725,460 L743,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M704,451 L704,469" stroke="black" stroke-width="1" fill="none"/>
+<path d="M710,451 L710,469" stroke="black" stroke-width="1" fill="none"/>
+<path d="M689,460 L704,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M710,460 L725,460" stroke="black" stroke-width="1" fill="none"/>
+<text x="666" y="463.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<text x="748" y="463.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="984" y="444.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C12</text>
+<text x="984" y="483.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">1 nF C0G</text>
+<path d="M948,460 L966,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1002,460 L1020,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M981,451 L981,469" stroke="black" stroke-width="1" fill="none"/>
+<path d="M987,451 L987,469" stroke="black" stroke-width="1" fill="none"/>
+<path d="M966,460 L981,460" stroke="black" stroke-width="1" fill="none"/>
+<path d="M987,460 L1002,460" stroke="black" stroke-width="1" fill="none"/>
+<text x="943" y="463.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">CT_IO</text>
+<text x="1025" y="463.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<rect x="235" y="520" width="126" height="111" fill="none" stroke="black"/>
+<text x="298.0" y="535.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700">U4</text>
+<text x="298.0" y="551.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">TLV75525P</text>
+<path d="M235,570 L207,570" stroke="black" stroke-width="1" fill="none"/>
+<text x="242" y="573.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">IN</text>
+<text x="231" y="566.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">1</text>
+<text x="202" y="573.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<path d="M235,593 L207,593" stroke="black" stroke-width="1" fill="none"/>
+<text x="242" y="596.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">EN</text>
+<text x="231" y="589.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">3</text>
+<text x="202" y="596.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">VPP_ENABLE</text>
+<path d="M235,616 L207,616" stroke="black" stroke-width="1" fill="none"/>
+<text x="242" y="619.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="231" y="612.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">2</text>
+<text x="202" y="619.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<path d="M361,570 L389,570" stroke="black" stroke-width="1" fill="none"/>
+<text x="354" y="573.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">OUT</text>
+<text x="365" y="566.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">5</text>
+<text x="394" y="573.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">+2V5</text>
+<path d="M361,593 L389,593" stroke="black" stroke-width="1" fill="none"/>
+<text x="354" y="596.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">NC</text>
+<text x="365" y="589.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">4</text>
+<path d="M386,590 L392,596" stroke="black" stroke-width="1" fill="none"/>
+<path d="M386,596 L392,590" stroke="black" stroke-width="1" fill="none"/>
+<rect x="780" y="520" width="136" height="111" fill="none" stroke="black"/>
+<text x="848.0" y="535.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700">U7</text>
+<text x="848.0" y="551.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">TPS3808G25</text>
+<path d="M780,570 L752,570" stroke="black" stroke-width="1" fill="none"/>
+<text x="787" y="573.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">VDD</text>
+<text x="776" y="566.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">6</text>
+<text x="747" y="573.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<path d="M780,593 L752,593" stroke="black" stroke-width="1" fill="none"/>
+<text x="787" y="596.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">SENSE</text>
+<text x="776" y="589.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">5</text>
+<text x="747" y="596.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+2V5</text>
+<path d="M780,616 L752,616" stroke="black" stroke-width="1" fill="none"/>
+<text x="787" y="619.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">MR_N</text>
+<text x="776" y="612.0" text-anchor="end" font-family="Arial,sans-serif" font-size="8" font-weight="400">3</text>
+<text x="747" y="619.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<path d="M916,570 L944,570" stroke="black" stroke-width="1" fill="none"/>
+<text x="909" y="573.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">RESET_N</text>
+<text x="920" y="566.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">1</text>
+<text x="949" y="573.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">CRESET_N</text>
+<path d="M916,593 L944,593" stroke="black" stroke-width="1" fill="none"/>
+<text x="909" y="596.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">CT</text>
+<text x="920" y="589.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">4</text>
+<text x="949" y="596.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">CT_VPP</text>
+<path d="M916,616 L944,616" stroke="black" stroke-width="1" fill="none"/>
+<text x="909" y="619.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="920" y="612.0" text-anchor="start" font-family="Arial,sans-serif" font-size="8" font-weight="400">2</text>
+<text x="949" y="619.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="153" y="644.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C6</text>
+<text x="153" y="683.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">1 uF / 10 V</text>
+<path d="M117,660 L135,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M171,660 L189,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M150,651 L150,669" stroke="black" stroke-width="1" fill="none"/>
+<path d="M156,651 L156,669" stroke="black" stroke-width="1" fill="none"/>
+<path d="M135,660 L150,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M156,660 L171,660" stroke="black" stroke-width="1" fill="none"/>
+<text x="112" y="663.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<text x="194" y="663.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="430" y="644.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C7</text>
+<text x="430" y="683.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">10 uF / 10 V</text>
+<path d="M394,660 L412,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M448,660 L466,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M427,651 L427,669" stroke="black" stroke-width="1" fill="none"/>
+<path d="M433,651 L433,669" stroke="black" stroke-width="1" fill="none"/>
+<path d="M412,660 L427,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M433,660 L448,660" stroke="black" stroke-width="1" fill="none"/>
+<text x="389" y="663.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+2V5</text>
+<text x="471" y="663.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="707" y="644.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C10</text>
+<text x="707" y="683.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">100 nF</text>
+<path d="M671,660 L689,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M725,660 L743,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M704,651 L704,669" stroke="black" stroke-width="1" fill="none"/>
+<path d="M710,651 L710,669" stroke="black" stroke-width="1" fill="none"/>
+<path d="M689,660 L704,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M710,660 L725,660" stroke="black" stroke-width="1" fill="none"/>
+<text x="666" y="663.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">+5V</text>
+<text x="748" y="663.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="984" y="644.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700">C13</text>
+<text x="984" y="683.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="400">1 nF C0G</text>
+<path d="M948,660 L966,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M1002,660 L1020,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M981,651 L981,669" stroke="black" stroke-width="1" fill="none"/>
+<path d="M987,651 L987,669" stroke="black" stroke-width="1" fill="none"/>
+<path d="M966,660 L981,660" stroke="black" stroke-width="1" fill="none"/>
+<path d="M987,660 L1002,660" stroke="black" stroke-width="1" fill="none"/>
+<text x="943" y="663.0" text-anchor="end" font-family="Arial,sans-serif" font-size="9" font-weight="400">CT_VPP</text>
+<text x="1025" y="663.0" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">GND</text>
+<text x="60" y="715.0" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">U5 releases IO_ENABLE after the 1.2 V core rail exceeds its threshold; U6 then enables 2.5 V.</text>
+<text x="60" y="727.8" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">U7 holds CRESET_N low until 2.5 V is valid. CT = 1 nF gives about 6.2 ms nominal delay per supervisor.</text>
+<text x="60" y="740.6" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">Pull-ups R10/R11 are on C03; R7 on C03 also pulls up U7 open-drain output. All NC pins stay open.</text>
+</svg>

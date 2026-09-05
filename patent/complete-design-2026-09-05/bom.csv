@@ -1,0 +1,56 @@
+Reference,Value,MPN or order specification,Package,Notes
+J1,PI 40-PIN SOCKET,,"2x20, 2.54 mm, female, keyed orientation",Pins 1 and 17 are not connected to the custom 3.3 V rail.
+U1,iCE40UP5K-SG48,ICE40UP5K-SG48ITR50,"QFN-48, 7x7 mm, 0.5 mm pitch + exposed pad",Pad numbered 49 in this design. RGB current sinks unused. See official package land pattern before layout.
+U2,TLV75512P,TLV75512PDBVR,SOT-23-5 / DBV,
+U3,TLV75533P,TLV75533PDBVR,SOT-23-5 / DBV,
+U4,TLV75525P,TLV75525PDBVR,SOT-23-5 / DBV,
+U5,TPS3808G12,TPS3808G12DBVR,SOT-23-6 / DBV,
+U6,TPS3808G33,TPS3808G33DBVR,SOT-23-6 / DBV,
+U7,TPS3808G25,TPS3808G25DBVR,SOT-23-6 / DBV,
+Y1,SiT8008B / 16 MHz,SiT8008BI-12-33E-16.000000,"2520, four pads","3.3 V, 16 MHz, industrial, OE. Verify order-code package against SiTime drawing."
+U8,SN74LVC2G17,SN74LVC2G17DBVR,SOT-23-6 / DBV,Partial-power-down Ioff support; input-side bias resistors keep host inputs defined.
+U9,SN74LVC2G17,SN74LVC2G17DBVR,SOT-23-6 / DBV,Partial-power-down Ioff support; input-side bias resistors keep host inputs defined.
+F1,PTC 0.25 A,,1206,Hold 0.25 A at 25 C; working voltage >= 6 V; derate for enclosure temperature.
+R1,33 ohm,,0603,
+R2,33 ohm,,0603,
+R3,33 ohm,,0603,
+R4,33 ohm,,0603,
+R5,33 ohm,,0603,
+R6,1 kohm,,0603,
+R7,10 kohm,,0603,
+R8,10 kohm,,0603,
+R9,10 kohm,,0603,
+R10,10 kohm,,0603,
+R11,10 kohm,,0603,
+R12,100 kohm,,0603,
+R13,100 kohm,,0603,
+R14,100 kohm,,0603,
+R15,100 kohm,,0603,
+R16,100 kohm,,0603,
+R17,100 ohm,,0603,
+R18,100 kohm,,0603,
+SW1,RESET,,Momentary normally open,
+C1,10 uF / 16 V,,0805 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C2,1 uF / 10 V,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C3,10 uF / 10 V,,0805 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C4,1 uF / 10 V,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C5,10 uF / 10 V,,0805 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C6,1 uF / 10 V,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C7,10 uF / 10 V,,0805 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C8,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C9,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C10,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C11,1 nF C0G,,0603 C0G,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C12,1 nF C0G,,0603 C0G,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C13,1 nF C0G,,0603 C0G,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C14,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C15,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C16,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C17,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C18,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C19,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C20,1 uF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C21,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C22,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C23,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.
+C24,100 nF,,0603 X7R,>= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance.

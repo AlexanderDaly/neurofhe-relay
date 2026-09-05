@@ -1,0 +1,18 @@
+{
+  "core": {
+    "frames": 74,
+    "samples": 14262,
+    "count_comparisons": 4736,
+    "negative_cases": 5,
+    "max_command_cycles": 65,
+    "repository_fixture_match": true
+  },
+  "spi": {
+    "transactions": 18,
+    "corrupt_packets": 3,
+    "bit_rate_hz": 1000000
+  },
+  "status": "PASS",
+  "scope": "Simulation of the actual synthesizable Amaranth logic; no physical hardware test.",
+  "elapsed_seconds": 6.04
+}

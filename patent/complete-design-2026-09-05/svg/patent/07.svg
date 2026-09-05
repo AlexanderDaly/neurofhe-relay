@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Neuron arithmetic circuit</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">7/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 7</text>
+<rect x="101.38" y="118" width="180.96" height="85" fill="none" stroke="black"/>
+<text x="191.86" y="147.62" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">701</text>
+<text x="191.86" y="165.54000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">SYNAPTIC</text>
+<text x="191.86" y="183.46" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">WEIGHT ROM</text>
+<rect x="320.62" y="118" width="180.96" height="85" fill="none" stroke="black"/>
+<text x="411.1" y="147.62" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">702</text>
+<text x="411.1" y="165.54000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">NEURON</text>
+<text x="411.1" y="183.46" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">STATE REGISTER</text>
+<rect x="163.15" y="290" width="269.7" height="73" fill="none" stroke="black"/>
+<text x="298.0" y="322.58" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">703</text>
+<text x="298.0" y="340.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">INTEGRATION ADDER</text>
+<path d="M191.86,203 L191.86,247" stroke="black" stroke-width="1" fill="none"/>
+<path d="M191.86,247 L252.76,247" stroke="black" stroke-width="1" fill="none"/>
+<path d="M252.76,247 L252.76,290" stroke="black" stroke-width="1" fill="none"/>
+<path d="M252.76,290 L250.15,283.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M252.76,290 L255.37,283.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M411.1,203 L411.1,247" stroke="black" stroke-width="1" fill="none"/>
+<path d="M411.1,247 L344.11,247" stroke="black" stroke-width="1" fill="none"/>
+<path d="M344.11,247 L344.11,290" stroke="black" stroke-width="1" fill="none"/>
+<path d="M344.11,290 L341.5,283.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M344.11,290 L346.72,283.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="140.53" y="440" width="316.68" height="78" fill="none" stroke="black"/>
+<text x="298.87" y="475.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">704</text>
+<text x="298.87" y="493.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">THRESHOLD COMPARATOR</text>
+<path d="M298.0,363 L298.0,440" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,440 L295.39,433.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,440 L300.61,433.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="140.53" y="591" width="316.68" height="78" fill="none" stroke="black"/>
+<text x="298.87" y="626.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">705</text>
+<text x="298.87" y="644.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">SPIKE / RESET SELECTOR</text>
+<path d="M298.0,518 L298.0,591" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,591 L295.39,584.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,591 L300.61,584.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M457.21000000000004,630 L519.85,630" stroke="black" stroke-width="1" fill="none"/>
+<path d="M519.85,630 L519.85,161" stroke="black" stroke-width="1" fill="none"/>
+<path d="M519.85,161 L501.58000000000004,161" stroke="black" stroke-width="1" fill="none"/>
+<path d="M501.58000000000004,161 L507.66999999999996,158.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M501.58000000000004,161 L507.66999999999996,164.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,669 L298.0,722" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,722 L295.39,715.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,722 L300.61,715.0" stroke="black" stroke-width="1" fill="none"/>
+<text x="298.0" y="751.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">TO BOUNDED COUNT MEMORY 230</text>
+</svg>

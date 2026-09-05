@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Frame lifecycle and failure handling</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">14/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 14</text>
+<rect x="123.13" y="96" width="351.48" height="76" fill="none" stroke="black"/>
+<text x="298.87" y="130.07999999999998" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1401</text>
+<text x="298.87" y="148.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">BEGIN / CLEAR</text>
+<rect x="123.13" y="221" width="351.48" height="76" fill="none" stroke="black"/>
+<text x="298.87" y="255.07999999999998" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1402</text>
+<text x="298.87" y="273.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">ADMIT ORDERED SAMPLES</text>
+<rect x="123.13" y="346" width="351.48" height="76" fill="none" stroke="black"/>
+<text x="298.87" y="380.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1403</text>
+<text x="298.87" y="398.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">UPDATE LOCAL STATE</text>
+<rect x="123.13" y="471" width="351.48" height="76" fill="none" stroke="black"/>
+<text x="298.87" y="505.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1404</text>
+<text x="298.87" y="523.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">END / FREEZE VALID FRAME</text>
+<rect x="123.13" y="596" width="351.48" height="76" fill="none" stroke="black"/>
+<text x="298.87" y="630.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1405</text>
+<text x="298.87" y="648.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">READ / ENCRYPT / DISPATCH</text>
+<path d="M298.0,172 L298.0,221" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,221 L295.39,214.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,221 L300.61,214.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,297 L298.0,346" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,346 L295.39,339.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,346 L300.61,339.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,422 L298.0,471" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,471 L295.39,464.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,471 L300.61,464.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,547 L298.0,596" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,596 L295.39,589.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,596 L300.61,589.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="123.13" y="710" width="351.48" height="60" fill="none" stroke="black"/>
+<text x="298.87" y="736.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1406</text>
+<text x="298.87" y="754.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">FAULT LATCH / DISCARD</text>
+<path d="M474.61,259 L513.76,259" stroke="black" stroke-width="1" fill="none"/>
+<path d="M513.76,259 L513.76,740" stroke="black" stroke-width="1" fill="none"/>
+<path d="M513.76,740 L474.61,740" stroke="black" stroke-width="1" fill="none"/>
+<path d="M474.61,740 L480.7,737.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M474.61,740 L480.7,743.0" stroke="black" stroke-width="1" fill="none"/>
+</svg>

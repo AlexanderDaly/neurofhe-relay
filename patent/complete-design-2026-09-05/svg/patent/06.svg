@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Spiking-neuron connectivity</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">6/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 6</text>
+<text x="298.0" y="109.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">224  EIGHT-NEURON LOCAL ENCODER</text>
+<rect x="110.94999999999999" y="155" width="120.92999999999999" height="58" fill="none" stroke="black"/>
+<text x="171.41500000000002" y="189.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">INPUT 0</text>
+<rect x="364.12" y="155" width="120.92999999999999" height="58" fill="none" stroke="black"/>
+<text x="424.585" y="189.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">NEURON 0</text>
+<path d="M231.88,184 L364.12,184" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,184 L358.03,187.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,184 L358.03,181.0" stroke="black" stroke-width="1" fill="none"/>
+<text x="298.0" y="174.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">601</text>
+<path d="M252.76,184 L273.64,184" stroke="black" stroke-width="1" fill="none"/>
+<path d="M273.64,184 L343.24,312" stroke="black" stroke-width="1" fill="none"/>
+<path d="M343.24,312 L364.12,312" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,312 L358.03,315.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,312 L358.03,309.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="110.94999999999999" y="283" width="120.92999999999999" height="58" fill="none" stroke="black"/>
+<text x="171.41500000000002" y="317.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">INPUT 1</text>
+<rect x="364.12" y="283" width="120.92999999999999" height="58" fill="none" stroke="black"/>
+<text x="424.585" y="317.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">NEURON 1</text>
+<path d="M231.88,312 L364.12,312" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,312 L358.03,315.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,312 L358.03,309.0" stroke="black" stroke-width="1" fill="none"/>
+<text x="298.0" y="302.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">601</text>
+<path d="M252.76,312 L273.64,312" stroke="black" stroke-width="1" fill="none"/>
+<path d="M273.64,312 L343.24,440" stroke="black" stroke-width="1" fill="none"/>
+<path d="M343.24,440 L364.12,440" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,440 L358.03,443.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,440 L358.03,437.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="110.94999999999999" y="411" width="120.92999999999999" height="58" fill="none" stroke="black"/>
+<text x="171.41500000000002" y="445.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">INPUT 2</text>
+<rect x="364.12" y="411" width="120.92999999999999" height="58" fill="none" stroke="black"/>
+<text x="424.585" y="445.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">NEURON 2</text>
+<path d="M231.88,440 L364.12,440" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,440 L358.03,443.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,440 L358.03,437.0" stroke="black" stroke-width="1" fill="none"/>
+<text x="298.0" y="430.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">601</text>
+<path d="M252.76,440 L273.64,440" stroke="black" stroke-width="1" fill="none"/>
+<path d="M273.64,440 L343.24,568" stroke="black" stroke-width="1" fill="none"/>
+<path d="M343.24,568 L364.12,568" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,568 L358.03,571.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,568 L358.03,565.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="110.94999999999999" y="539" width="120.92999999999999" height="58" fill="none" stroke="black"/>
+<text x="171.41500000000002" y="573.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">INPUT 3</text>
+<rect x="364.12" y="539" width="120.92999999999999" height="58" fill="none" stroke="black"/>
+<text x="424.585" y="573.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">NEURON 3</text>
+<path d="M231.88,568 L364.12,568" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,568 L358.03,571.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M364.12,568 L358.03,565.0" stroke="black" stroke-width="1" fill="none"/>
+<text x="298.0" y="558.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">601</text>
+<text x="298.0" y="701.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">602  ADJACENT-NEURON SYNAPSE</text>
+<text x="298.0" y="733.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">SAME PATTERN FOR UNITS 4 THROUGH 7</text>
+<text x="298.0" y="759.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">UNIT 7 ADJACENCY RETURNS TO UNIT 0</text>
+</svg>

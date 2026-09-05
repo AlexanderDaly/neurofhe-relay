@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Optional encoder training and deployment gate</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">16/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 16</text>
+<rect x="117.03999999999999" y="98" width="361.05" height="76" fill="none" stroke="black"/>
+<text x="297.565" y="132.07999999999998" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1601</text>
+<text x="297.565" y="150.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">GOVERNED TRAINING DATA</text>
+<rect x="117.03999999999999" y="227" width="361.05" height="76" fill="none" stroke="black"/>
+<text x="297.565" y="261.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1602</text>
+<text x="297.565" y="279.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">CANDIDATE ENCODER</text>
+<path d="M298.0,174 L298.0,227" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,227 L295.39,220.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,227 L300.61,220.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="97.9" y="374" width="185.31" height="97" fill="none" stroke="black"/>
+<text x="190.555" y="409.62" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1603</text>
+<text x="190.555" y="427.54" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">TASK</text>
+<text x="190.555" y="445.46000000000004" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">UTILITY TEST</text>
+<rect x="313.66" y="374" width="185.31" height="97" fill="none" stroke="black"/>
+<text x="406.315" y="409.62" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1604</text>
+<text x="406.315" y="427.54" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">RECONSTRUCTION /</text>
+<text x="406.315" y="445.46000000000004" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">IDENTITY ATTACK</text>
+<path d="M241.45,303 L241.45,339" stroke="black" stroke-width="1" fill="none"/>
+<path d="M241.45,339 L190.99,339" stroke="black" stroke-width="1" fill="none"/>
+<path d="M190.99,339 L190.99,374" stroke="black" stroke-width="1" fill="none"/>
+<path d="M190.99,374 L188.38,367.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M190.99,374 L193.6,367.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M353.68,303 L353.68,339" stroke="black" stroke-width="1" fill="none"/>
+<path d="M353.68,339 L406.75,339" stroke="black" stroke-width="1" fill="none"/>
+<path d="M406.75,339 L406.75,374" stroke="black" stroke-width="1" fill="none"/>
+<path d="M406.75,374 L404.14,367.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M406.75,374 L409.36,367.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="117.03999999999999" y="552" width="361.05" height="76" fill="none" stroke="black"/>
+<text x="297.565" y="586.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1605</text>
+<text x="297.565" y="604.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">HELD-OUT ACCEPTANCE GATE</text>
+<path d="M190.99,471 L190.99,512" stroke="black" stroke-width="1" fill="none"/>
+<path d="M190.99,512 L239.71,512" stroke="black" stroke-width="1" fill="none"/>
+<path d="M239.71,512 L239.71,552" stroke="black" stroke-width="1" fill="none"/>
+<path d="M239.71,552 L237.1,545.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M239.71,552 L242.32,545.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M406.75,471 L406.75,512" stroke="black" stroke-width="1" fill="none"/>
+<path d="M406.75,512 L354.55,512" stroke="black" stroke-width="1" fill="none"/>
+<path d="M354.55,512 L354.55,552" stroke="black" stroke-width="1" fill="none"/>
+<path d="M354.55,552 L351.94,545.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M354.55,552 L357.15999999999997,545.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="100.50999999999999" y="694" width="394.11" height="76" fill="none" stroke="black"/>
+<text x="297.565" y="728.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1606</text>
+<text x="297.565" y="746.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">FROZEN ENCODER / MODEL PROFILE</text>
+<path d="M298.0,628 L298.0,694" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,694 L295.39,687.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,694 L300.61,687.0" stroke="black" stroke-width="1" fill="none"/>
+</svg>

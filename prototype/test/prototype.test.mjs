@@ -913,6 +913,27 @@ test("repository hygiene scan redacts secrets and blocks raw dataset files", asy
   assert.equal(artifact.rawDataPolicy.rule.includes("Keep raw public/private datasets outside git"), true);
 });
 
+test("public engineering CSVs require reviewed paths and headers and retain secret scanning", async () => {
+  const root = await mkdtemp(join(tmpdir(), "neurofhe-engineering-tables-"));
+  const design = "patent/complete-design-2026-09-05";
+  const bomHeader = "Reference,Value,MPN or order specification,Package,Notes";
+  const pinHeader = "Reference,Pin,Pin name,Net,Type,Circuit sheet";
+  await mkdir(join(root, design), { recursive: true });
+  await writeFile(join(root, design, "bom.csv"), `${bomHeader}\nR1,33 ohm,,0603,Public component\n`);
+  await writeFile(join(root, design, "pin_net_map.csv"), `${pinHeader}\r\nU1,35,CLK,CLK16,input,3\r\n`);
+  assert.equal(scanRepositoryHygiene({ root }).result, "pass");
+
+  await writeFile(join(root, design, "samples.csv"), `${bomHeader}\nR1,33 ohm,,0603,Unreviewed path\n`);
+  await writeFile(join(root, design, "pin_net_map.csv"), "channel,timestamp,value\n0,100,50\n");
+  await writeFile(join(root, design, "bom.csv"), `${bomHeader}\nR1,33 ohm,,0603,${"sk-" + "A".repeat(20)}\n`);
+  const findings = scanRepositoryHygiene({ root }).findings;
+  assert.deepEqual(findings.map(({ path, category }) => [path, category]).sort(), [
+    [`${design}/bom.csv`, "secret"],
+    [`${design}/pin_net_map.csv`, "raw-dataset-path"],
+    [`${design}/samples.csv`, "raw-dataset-path"],
+  ]);
+});
+
 test("repository hygiene artifact CLI honors deterministic artifact options", async () => {
   const outputDir = await mkdtemp(join(tmpdir(), "neurofhe-hygiene-cli-"));
   const result = spawnSync(
@@ -2684,8 +2705,8 @@ test("root README keeps first-read navigation role based", () => {
     "Research-alpha release target",
     "v0.1.0-research-alpha",
     "Portable validation",
-    "Green in hosted CI",
-    "139 passing tests",
+    "Locally recorded",
+    "verify hosted checks on the current commit",
     "Merge state",
     "repository ruleset/admin policy",
     "Release gate",
@@ -2710,6 +2731,10 @@ test("root README keeps first-read navigation role based", () => {
   );
 
   assert.deepEqual(missingEntries, []);
+  const validation = readFileSync("VALIDATION.md", "utf8");
+  const recordedCount = validation.match(/\btests (\d+)/);
+  assert.ok(recordedCount, "VALIDATION.md records the current portable test count");
+  assert.match(readme, new RegExp(`\\b${recordedCount[1]} passing tests\\b`));
   assert.equal(readme.includes("New readers should begin with"), false);
   assert.equal(readme.includes("Presentation package"), false);
   assert.equal(readme.includes("## Prototype Boundary"), false);

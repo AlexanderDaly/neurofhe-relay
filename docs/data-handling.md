@@ -36,6 +36,14 @@ payloads stay outside git. Local dataset folders such as `Downloads/` or
 future adapter needs proprietary data, trained weights, deployment glue, or
 partner material, keep it outside this public reference repository.
 
+The reviewed public engineering tables
+`patent/complete-design-2026-09-05/bom.csv` and
+`patent/complete-design-2026-09-05/pin_net_map.csv` are exact-path exceptions
+to the CSV path rule, conditional on their expected component/pin headers.
+They contain component specifications and electrical connections. They remain
+subject to the text hygiene scan; other CSV files and mismatched headers are
+blocked as raw-data paths.
+
 ## Allowed Derived Artifacts
 
 Committed artifacts should be derived evidence, structured blockers, or

@@ -19,6 +19,15 @@ node_modules/
 dist/
 build/
 prototype/tfhe-rs/target/
+__pycache__/
+*.pyc
+
+# Local rendering, downloaded datasheets and temporary engineering tools.
+/tmp/
+
+# Retain the reviewed synthesis and routing evidence for this design.
+!patent/complete-design-2026-09-05/verification/synthesis.log
+!patent/complete-design-2026-09-05/verification/place_route.log
 
 # Accidental local dataset/download scratch paths. Committed derived evidence
 # belongs under benchmark-artifacts/ with explicit provenance and caveats.

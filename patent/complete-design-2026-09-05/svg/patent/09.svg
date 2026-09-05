@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Serial transport circuit</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">9/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 9</text>
+<rect x="114.43" y="103" width="367.14" height="78" fill="none" stroke="black"/>
+<text x="298.0" y="138.07999999999998" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">901</text>
+<text x="298.0" y="156.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">INPUT SYNCHRONIZER REGISTERS</text>
+<rect x="114.43" y="241" width="367.14" height="78" fill="none" stroke="black"/>
+<text x="298.0" y="276.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">902</text>
+<text x="298.0" y="294.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">EDGE DETECTION AND SHIFT REGISTER</text>
+<rect x="114.43" y="379" width="367.14" height="78" fill="none" stroke="black"/>
+<text x="298.0" y="414.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">903</text>
+<text x="298.0" y="432.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">LENGTH AND CRC ADMISSION</text>
+<rect x="114.43" y="517" width="367.14" height="78" fill="none" stroke="black"/>
+<text x="298.0" y="552.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">904</text>
+<text x="298.0" y="570.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">COMMAND AND FRAME CONTROLLER</text>
+<rect x="114.43" y="655" width="367.14" height="78" fill="none" stroke="black"/>
+<text x="298.0" y="690.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">905</text>
+<text x="298.0" y="708.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">REPLY REGISTER AND CRC</text>
+<path d="M298.0,181 L298.0,241" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,241 L295.39,234.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,241 L300.61,234.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,319 L298.0,379" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,379 L295.39,372.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,379 L300.61,372.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,457 L298.0,517" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,517 L295.39,510.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,517 L300.61,510.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,595 L298.0,655" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,655 L295.39,648.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,655 L300.61,648.0" stroke="black" stroke-width="1" fill="none"/>
+</svg>

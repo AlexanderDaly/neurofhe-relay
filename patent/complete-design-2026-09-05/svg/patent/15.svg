@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Adaptive profile and model admission</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">15/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 15</text>
+<rect x="97.9" y="110" width="185.31" height="96" fill="none" stroke="black"/>
+<text x="190.555" y="145.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1501</text>
+<text x="190.555" y="163.04000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">TASK / PRIVACY</text>
+<text x="190.555" y="180.96" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">CONSTRAINTS</text>
+<rect x="313.66" y="110" width="185.31" height="96" fill="none" stroke="black"/>
+<text x="406.315" y="145.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1502</text>
+<text x="406.315" y="163.04000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">RESOURCE / QUALITY</text>
+<text x="406.315" y="180.96" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">MEASUREMENTS</text>
+<rect x="99.64000000000001" y="292" width="401.07" height="80" fill="none" stroke="black"/>
+<text x="300.175" y="328.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1503</text>
+<text x="300.175" y="346.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">APPROVED ENCODER / MODEL CATALOG</text>
+<path d="M190.99,206 L190.99,250" stroke="black" stroke-width="1" fill="none"/>
+<path d="M190.99,250 L243.19,250" stroke="black" stroke-width="1" fill="none"/>
+<path d="M243.19,250 L243.19,292" stroke="black" stroke-width="1" fill="none"/>
+<path d="M243.19,292 L240.57999999999998,285.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M243.19,292 L245.8,285.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M406.75,206 L406.75,250" stroke="black" stroke-width="1" fill="none"/>
+<path d="M406.75,250 L352.81,250" stroke="black" stroke-width="1" fill="none"/>
+<path d="M352.81,250 L352.81,292" stroke="black" stroke-width="1" fill="none"/>
+<path d="M352.81,292 L350.2,285.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M352.81,292 L355.42,285.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="99.64000000000001" y="462" width="401.07" height="80" fill="none" stroke="black"/>
+<text x="300.175" y="498.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1504</text>
+<text x="300.175" y="516.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">COMPATIBILITY AND BOUND CHECK</text>
+<path d="M299.74,372 L299.74,462" stroke="black" stroke-width="1" fill="none"/>
+<path d="M299.74,462 L297.13,455.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M299.74,462 L302.35,455.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="99.64000000000001" y="632" width="401.07" height="80" fill="none" stroke="black"/>
+<text x="300.175" y="668.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1505</text>
+<text x="300.175" y="686.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">ADMIT REMOTE / RUN LOCAL / DEFER</text>
+<path d="M299.74,542 L299.74,632" stroke="black" stroke-width="1" fill="none"/>
+<path d="M299.74,632 L297.13,625.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M299.74,632 L302.35,625.0" stroke="black" stroke-width="1" fill="none"/>
+</svg>

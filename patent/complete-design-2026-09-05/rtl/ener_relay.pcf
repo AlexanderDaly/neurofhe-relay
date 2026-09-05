@@ -1,0 +1,9 @@
+set_io clk 35
+set_io rst 11
+set_io sck 15
+set_io cs_n 16
+set_io mosi 17
+set_io miso 14
+set_io ready 9
+set_io frame_ready 10
+set_io soft_reset 12

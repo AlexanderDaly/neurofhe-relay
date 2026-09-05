@@ -17,6 +17,12 @@ export const DEFAULT_SECRET_PATTERNS = [
 ];
 export const DEFAULT_RAW_DATA_EXTENSIONS = /\.(aedat|arff|bdf|csv|edf|feather|fif|h5|hdf5|mat|nii|nii\.gz|npy|npz|parquet|tsv)$/i;
 export const DEFAULT_RAW_DATA_PATH_SEGMENTS = new Set(["N-MNIST", "Train", "Test"]);
+const PUBLIC_ENGINEERING_TABLE_HEADERS = new Map([
+  ["patent/complete-design-2026-09-05/bom.csv",
+    "Reference,Value,MPN or order specification,Package,Notes"],
+  ["patent/complete-design-2026-09-05/pin_net_map.csv",
+    "Reference,Pin,Pin name,Net,Type,Circuit sheet"],
+]);
 export const DEFAULT_IGNORED_DIRS = new Set([
   ".cache",
   ".git",
@@ -44,7 +50,12 @@ export function scanRepositoryHygiene(options = {}) {
   for (const path of files) {
     const displayPath = normalizePath(relative(root, path) || path);
     const pathSegments = displayPath.split(/[\\/]/);
-    if (rawDataExtensions.test(displayPath) || pathSegments.some((segment) => rawDataPathSegments.has(segment))) {
+    const expectedHeader = PUBLIC_ENGINEERING_TABLE_HEADERS.get(displayPath);
+    const engineeringText = expectedHeader ? readFileSync(path, "utf8") : undefined;
+    const approvedEngineeringTable = expectedHeader !== undefined
+      && engineeringText.split(/\r?\n/, 1)[0] === expectedHeader;
+    if ((rawDataExtensions.test(displayPath) && !approvedEngineeringTable)
+        || pathSegments.some((segment) => rawDataPathSegments.has(segment))) {
       findings.push({
         category: "raw-dataset-path",
         id: "committed-raw-dataset-path",
@@ -54,7 +65,7 @@ export function scanRepositoryHygiene(options = {}) {
       continue;
     }
 
-    const text = readFileSync(path, "utf8");
+    const text = engineeringText ?? readFileSync(path, "utf8");
     const lines = text.split(/\r?\n/);
     lines.forEach((line, index) => {
       if (placeholderTokens.some((token) => line.includes(token))) {

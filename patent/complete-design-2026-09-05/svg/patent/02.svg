@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Physical embodiment</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">2/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 2</text>
+<rect x="122.25999999999999" y="100" width="349.74" height="74" fill="none" stroke="black"/>
+<text x="297.13" y="133.07999999999998" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">110</text>
+<text x="297.13" y="151.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">DEVICE DIGITAL INTERFACE</text>
+<path d="M298.0,174 L298.0,236" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,236 L295.39,229.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,236 L300.61,229.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="122.25999999999999" y="236" width="349.74" height="104" fill="none" stroke="black"/>
+<text x="297.13" y="275.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">250</text>
+<text x="297.13" y="293.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">LOCAL HOST PROCESSOR</text>
+<text x="297.13" y="310.96000000000004" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">KEYS, FHE AND NETWORK</text>
+<rect x="122.25999999999999" y="398" width="349.74" height="74" fill="none" stroke="black"/>
+<text x="297.13" y="431.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">260</text>
+<text x="297.13" y="449.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">SERIAL COMMAND LINK</text>
+<rect x="122.25999999999999" y="532" width="349.74" height="104" fill="none" stroke="black"/>
+<text x="297.13" y="571.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">220</text>
+<text x="297.13" y="589.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">PROGRAMMABLE LOGIC</text>
+<text x="297.13" y="606.96" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">EVENT AND SPIKING CIRCUITS</text>
+<path d="M253.63,340 L253.63,398" stroke="black" stroke-width="1" fill="none"/>
+<path d="M253.63,398 L251.02,391.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M253.63,398 L256.24,391.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M341.5,398 L341.5,340" stroke="black" stroke-width="1" fill="none"/>
+<path d="M341.5,340 L344.11,347.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M341.5,340 L338.89,347.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M253.63,472 L253.63,532" stroke="black" stroke-width="1" fill="none"/>
+<path d="M253.63,532 L251.02,525.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M253.63,532 L256.24,525.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M341.5,532 L341.5,472" stroke="black" stroke-width="1" fill="none"/>
+<path d="M341.5,472 L344.11,479.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M341.5,472 L338.89,479.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="122.25999999999999" y="697" width="349.74" height="65" fill="none" stroke="black"/>
+<text x="297.13" y="725.58" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">270</text>
+<text x="297.13" y="743.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">SEQUENCED POWER AND CLOCK</text>
+<path d="M472.0,728 L502.45,728" stroke="black" stroke-width="1" fill="none"/>
+<path d="M502.45,728 L502.45,584" stroke="black" stroke-width="1" fill="none"/>
+<path d="M502.45,584 L472.0,584" stroke="black" stroke-width="1" fill="none"/>
+<path d="M472.0,584 L478.09000000000003,581.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M472.0,584 L478.09000000000003,587.0" stroke="black" stroke-width="1" fill="none"/>
+</svg>

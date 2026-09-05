@@ -26,6 +26,8 @@ the full package inventory.
 
 ## Detailed File Map
 
+- `output/` - complete reference-design PDF schematics, implementation
+  specification and editable handoff archive; see `docs/patent-package-map.md`.
 - `README.md` - project thesis, public framing, demos, and caveats.
 - `CHANGELOG.md` - unreleased review history and release-caveat summary.
 - `docs/README.md` - documentation index for reader and contributor paths.

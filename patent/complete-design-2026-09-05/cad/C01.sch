@@ -1,0 +1,152 @@
+EESchema Schematic File Version 4
+LIBS:ENER_Relay-cache
+EELAYER 29 0
+EELAYER END
+$Descr A3 16535 11693
+Sheet 2 5
+Title "ENER C01: Host connector and complete assembly interconnect"
+Date "2026-09-05"
+Rev "B"
+Comp "ENER"
+$EndDescr
+$Comp
+L ENER_J1 J1
+U 1 1 65075FA8
+P 4583 5042
+F 0 "J1" H 4583 1444 80 0000 C CNN
+F 1 "PI 40-PIN SOCKET" H 4583 1667 65 0000 C CNN
+	1 4583 5042
+	1 0 0 -1
+$EndComp
+NoConn ~ 2944 2250
+NoConn ~ 2944 2570
+NoConn ~ 2944 2889
+NoConn ~ 2944 3209
+Wire Wire Line
+	2944 3528 2794 3528
+Text GLabel 2794 3528 0 80 BiDi ~ 0
+GND
+Wire Wire Line
+	2944 3848 2794 3848
+Text GLabel 2794 3848 0 80 BiDi ~ 0
+CRESET_N
+Wire Wire Line
+	2944 4167 2794 4167
+Text GLabel 2794 4167 0 80 BiDi ~ 0
+CDONE
+Wire Wire Line
+	2944 4486 2794 4486
+Text GLabel 2794 4486 0 80 BiDi ~ 0
+READY
+NoConn ~ 2944 4806
+Wire Wire Line
+	2944 5125 2794 5125
+Text GLabel 2794 5125 0 80 BiDi ~ 0
+HOST_MOSI
+Wire Wire Line
+	2944 5445 2794 5445
+Text GLabel 2794 5445 0 80 BiDi ~ 0
+HOST_MISO
+Wire Wire Line
+	2944 5764 2794 5764
+Text GLabel 2794 5764 0 80 BiDi ~ 0
+HOST_SCK
+Wire Wire Line
+	2944 6084 2794 6084
+Text GLabel 2794 6084 0 80 BiDi ~ 0
+GND
+NoConn ~ 2944 6403
+NoConn ~ 2944 6723
+NoConn ~ 2944 7042
+NoConn ~ 2944 7361
+NoConn ~ 2944 7681
+NoConn ~ 2944 8000
+Wire Wire Line
+	2944 8320 2794 8320
+Text GLabel 2794 8320 0 80 BiDi ~ 0
+GND
+Wire Wire Line
+	6222 2250 6372 2250
+Text GLabel 6372 2250 2 80 BiDi ~ 0
++5V_RAW
+Wire Wire Line
+	6222 2570 6372 2570
+Text GLabel 6372 2570 2 80 BiDi ~ 0
++5V_RAW
+Wire Wire Line
+	6222 2889 6372 2889
+Text GLabel 6372 2889 2 80 BiDi ~ 0
+GND
+NoConn ~ 6222 3209
+NoConn ~ 6222 3528
+NoConn ~ 6222 3848
+Wire Wire Line
+	6222 4167 6372 4167
+Text GLabel 6372 4167 2 80 BiDi ~ 0
+GND
+Wire Wire Line
+	6222 4486 6372 4486
+Text GLabel 6372 4486 2 80 BiDi ~ 0
+FRAME_READY
+Wire Wire Line
+	6222 4806 6372 4806
+Text GLabel 6372 4806 2 80 BiDi ~ 0
+HOST_RESET
+Wire Wire Line
+	6222 5125 6372 5125
+Text GLabel 6372 5125 2 80 BiDi ~ 0
+GND
+NoConn ~ 6222 5445
+Wire Wire Line
+	6222 5764 6372 5764
+Text GLabel 6372 5764 2 80 BiDi ~ 0
+HOST_CS_N
+NoConn ~ 6222 6084
+NoConn ~ 6222 6403
+Wire Wire Line
+	6222 6723 6372 6723
+Text GLabel 6372 6723 2 80 BiDi ~ 0
+GND
+NoConn ~ 6222 7042
+Wire Wire Line
+	6222 7361 6372 7361
+Text GLabel 6372 7361 2 80 BiDi ~ 0
+GND
+NoConn ~ 6222 7681
+NoConn ~ 6222 8000
+NoConn ~ 6222 8320
+$Comp
+L ENER_F1 F1
+U 1 1 E26FB6FA
+P 4931 9222
+F 0 "F1" H 4931 9000 80 0000 C CNN
+F 1 "PTC 0.25 A" H 4931 9222 65 0000 C CNN
+	1 4931 9222
+	1 0 0 -1
+$EndComp
+Wire Wire Line
+	4431 9222 4281 9222
+Text GLabel 4281 9222 0 80 BiDi ~ 0
++5V_RAW
+Wire Wire Line
+	5431 9222 5581 9222
+Text GLabel 5581 9222 2 80 BiDi ~ 0
++5V
+$Comp
+L ENER_C1 C1
+U 1 1 22B5894E
+P 12014 9222
+F 0 "C1" H 12014 9000 80 0000 C CNN
+F 1 "10 uF / 16 V" H 12014 9222 65 0000 C CNN
+	1 12014 9222
+	1 0 0 -1
+$EndComp
+Wire Wire Line
+	11514 9222 11364 9222
+Text GLabel 11364 9222 0 80 BiDi ~ 0
++5V
+Wire Wire Line
+	12514 9222 12664 9222
+Text GLabel 12664 9222 2 80 BiDi ~ 0
+GND
+$EndSCHEMATC

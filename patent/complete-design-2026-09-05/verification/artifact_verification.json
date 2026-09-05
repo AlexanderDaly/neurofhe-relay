@@ -1,0 +1,100 @@
+{
+  "cad_export": {
+    "status": "PASS",
+    "pins": 226,
+    "intentional_nc": 54,
+    "nets": 32,
+    "scope": "Independent parser re-read of emitted legacy KiCad symbols, units, wires and global labels; not KiCad ERC."
+  },
+  "fpga_pin_match": {
+    "status": "PASS",
+    "pad_constraints": {
+      "clk": "35",
+      "rst": "11",
+      "sck": "15",
+      "cs_n": "16",
+      "mosi": "17",
+      "miso": "14",
+      "ready": "9",
+      "frame_ready": "10",
+      "soft_reset": "12"
+    },
+    "configuration_bytes": 104090
+  },
+  "pdfs": [
+    {
+      "file": "ENER_Complete_Patent_Schematics.pdf",
+      "pages": 16,
+      "bytes": 90615,
+      "sha256": "f2b388bf9e5b90dd413182d4e12602344f22ec1df68bb28b0a84475b4ee76983",
+      "page_starts": [
+        "1/16",
+        "2/16",
+        "3/16",
+        "4/16",
+        "5/16",
+        "6/16",
+        "7/16",
+        "8/16",
+        "9/16",
+        "10/16",
+        "11/16",
+        "12/16",
+        "13/16",
+        "14/16",
+        "15/16",
+        "16/16"
+      ]
+    },
+    {
+      "file": "ENER_Circuit_Schematics.pdf",
+      "pages": 8,
+      "bytes": 99578,
+      "sha256": "8daf19cf93868f2f56ebf47a5f796c3ee93bb6d797e11a85c43c5abb5f6fefb7",
+      "page_starts": [
+        "ENER / HOST CONNECTOR AND COMPLETE ASSEMBLY INTERCONNECT",
+        "ENER / SEQUENCED POWER RAILS AND RESET SUPERVISION",
+        "ENER / FPGA SERIAL LINK CONFIGURATION AND CLOCK",
+        "ENER / FPGA SUPPLY PINS BYPASS NETWORK AND UNUSED PADS",
+        "ENER / SPATIAL EVENT DETECTION AND COUNTER CIRCUIT",
+        "ENER / EIGHT-NEURON INTEGRATE-AND-FIRE DATAPATH",
+        "ENER / SERIAL TRANSPORT SHIFT REGISTERS AND CONTROL",
+        "ENER / FHE HOST MEMORY AND ENCRYPTED SCORE ARITHMETIC"
+      ]
+    },
+    {
+      "file": "ENER_Implementation_Design.pdf",
+      "pages": 26,
+      "bytes": 160046,
+      "sha256": "9a859af8b02e149899183e764131e2eafed707b0c37a26b0c6c2efc852aa6163",
+      "page_starts": [
+        "FHE + Neuromorphic",
+        "1. Architecture decisions",
+        "2. Acquisition and buffering contract",
+        "3. Host and FPGA pin assignments",
+        "4. Power tree and supervisor design",
+        "5. Clock, reset and configuration sequence",
+        "6. Runtime serial command format",
+        "7. Replies, fault flags and recovery",
+        "8. Spatial counter circuit",
+        "9. Concrete integrate-and-fire network",
+        "10. Local controller and memory schedule",
+        "11. Privacy representation and model binding",
+        "12. FHE context and evaluation circuit",
+        "13. Host and remote process interface",
+        "14. Key lifecycle and local decision",
+        "15. Throughput and capacity budget",
+        "16. PCB implementation and commissioning",
+        "17. Verification evidence",
+        "18. Patent drawing descriptions (1-8)",
+        "18. Patent drawing descriptions (9-16)",
+        "19. Disclosure coverage and implementation status",
+        "20. Bill of materials (1-19)",
+        "20. Bill of materials (20-38)",
+        "20. Bill of materials (39-55)",
+        "21. Reference-numeral register",
+        "22. Sources and file guide"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1190.5511811023623pt" height="841.8897637795277pt" viewBox="0 0 1190.5511811023623 841.8897637795277">
+<title>FHE host memory and encrypted score arithmetic</title>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="40" y="45" width="1110.5511811023623" height="751.8897637795277" fill="none" stroke="black"/>
+<text x="55" y="68.0" text-anchor="start" font-family="Arial,sans-serif" font-size="14" font-weight="700">ENER  /  FHE HOST MEMORY AND ENCRYPTED SCORE ARITHMETIC</text>
+<path d="M40,758.8897637795277 L1150.5511811023623,758.8897637795277" stroke="black" stroke-width="1" fill="none"/>
+<text x="55" y="776.8897637795277" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">FHE + NEUROMORPHIC RELAY  |  REFERENCE DESIGN B  |  2026-09-05</text>
+<text x="1135.5511811023623" y="776.8897637795277" text-anchor="end" font-family="Arial,sans-serif" font-size="10" font-weight="400">C08  /  8</text>
+<text x="55" y="792.8897637795277" text-anchor="start" font-family="Arial,sans-serif" font-size="9" font-weight="400">Schematic design and simulated logic; PCB and assembled hardware not validated.</text>
+<rect x="65" y="143" width="325" height="98" fill="none" stroke="black"/>
+<text x="227.5" y="174.84" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">TRUSTED HOST RAM</text>
+<text x="227.5" y="188.92000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">x[64] in {0,1,2,3}</text>
+<text x="227.5" y="203.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">model ID / frame ID / context ID</text>
+<text x="227.5" y="217.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">secret key remains local</text>
+<rect x="65" y="324" width="325" height="98" fill="none" stroke="black"/>
+<text x="227.5" y="355.84" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">BFVrns ENCRYPTION</text>
+<text x="227.5" y="369.91999999999996" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">t = 65537; batch size = 1</text>
+<text x="227.5" y="384.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">128-classic security setting</text>
+<text x="227.5" y="398.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">context selects and records N,Q</text>
+<path d="M225,241 L225,324" stroke="black" stroke-width="1" fill="none"/>
+<path d="M225,324 L222.0,317.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M225,324 L228.0,317.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="470" y="143" width="330" height="98" fill="none" stroke="black"/>
+<text x="635.0" y="174.84" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">UNTRUSTED EVALUATOR</text>
+<text x="635.0" y="188.92000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">Ciphertexts c_i = (c0_i,c1_i)</text>
+<text x="635.0" y="203.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">Public scalar weights w[k,i]</text>
+<text x="635.0" y="217.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">Encrypted accumulator Y_k</text>
+<path d="M390,366 L430,366" stroke="black" stroke-width="1" fill="none"/>
+<path d="M430,366 L430,188" stroke="black" stroke-width="1" fill="none"/>
+<path d="M430,188 L470,188" stroke="black" stroke-width="1" fill="none"/>
+<path d="M470,188 L463.0,191.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M470,188 L463.0,185.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="470" y="325" width="330" height="97" fill="none" stroke="black"/>
+<text x="635.0" y="363.38" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">CT x PT PRODUCT</text>
+<text x="635.0" y="377.46" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">(c0_i * p[k,i], c1_i * p[k,i])</text>
+<text x="635.0" y="391.54" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">ring arithmetic modulo each q_j</text>
+<path d="M635,241 L635,325" stroke="black" stroke-width="1" fill="none"/>
+<path d="M635,325 L632.0,318.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M635,325 L638.0,318.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="470" y="489" width="330" height="96" fill="none" stroke="black"/>
+<text x="635.0" y="526.88" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">COMPONENTWISE CT ADD</text>
+<text x="635.0" y="540.96" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">Y_k &lt;- Y_k + EvalMult(c_i,w[k,i])</text>
+<text x="635.0" y="555.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">initialize Y_k = Encrypt(pk,b_k)</text>
+<path d="M635,422 L635,489" stroke="black" stroke-width="1" fill="none"/>
+<path d="M635,489 L632.0,482.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M635,489 L638.0,482.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="860" y="325" width="268" height="97" fill="none" stroke="black"/>
+<text x="994.0" y="356.34" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">CIPHERTEXT / PUBLIC MODEL RAM</text>
+<text x="994.0" y="370.41999999999996" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">No secret-key access</text>
+<text x="994.0" y="384.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">C=2 reference outputs</text>
+<text x="994.0" y="398.58" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">No rotation or bootstrap required</text>
+<path d="M860,374 L800,374" stroke="black" stroke-width="1" fill="none"/>
+<path d="M800,374 L807.0,371.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M800,374 L807.0,377.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="850" y="489" width="280" height="96" fill="none" stroke="black"/>
+<text x="990.0" y="526.88" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">RETURN ENCRYPTED SCORES</text>
+<text x="990.0" y="540.96" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">result ID and context bindings</text>
+<text x="990.0" y="555.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">plaintext output count = C</text>
+<path d="M800,537 L850,537" stroke="black" stroke-width="1" fill="none"/>
+<path d="M850,537 L843.0,540.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M850,537 L843.0,534.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="65" y="489" width="325" height="96" fill="none" stroke="black"/>
+<text x="227.5" y="519.8399999999999" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">LOCAL DECRYPT / DECISION</text>
+<text x="227.5" y="533.92" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">center-lift integers; range check</text>
+<text x="227.5" y="547.9999999999999" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">argmax only after decrypt</text>
+<text x="227.5" y="562.0799999999999" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="400">accept fresh valid job IDs only</text>
+<path d="M850,560 L827,560" stroke="black" stroke-width="1" fill="none"/>
+<path d="M827,560 L827,638" stroke="black" stroke-width="1" fill="none"/>
+<path d="M827,638 L225,638" stroke="black" stroke-width="1" fill="none"/>
+<path d="M225,638 L225,585" stroke="black" stroke-width="1" fill="none"/>
+<path d="M225,585 L228.0,592.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M225,585 L222.0,592.0" stroke="black" stroke-width="1" fill="none"/>
+<text x="60" y="681.0" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">The CPU executes this software arithmetic; U1 performs local neuromorphic encoding before encryption.</text>
+<text x="60" y="693.8" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">Exact sparse support is exposed only under an approved support-visible profile. The default exports all 64 encrypted positions.</text>
+<text x="60" y="706.6" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">Model bound: max_k (abs(b_k) + 3*sum_i abs(w[k,i])) &lt;= 32768. No modular-wrap ambiguity within this signed range.</text>
+<text x="60" y="719.4" text-anchor="start" font-family="Arial,sans-serif" font-size="10" font-weight="400">The network protocol is a specified integration contract; the repository native demo executes client and evaluator in one process.</text>
+</svg>

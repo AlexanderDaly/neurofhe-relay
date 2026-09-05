@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Homomorphic linear score circuit</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">12/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 12</text>
+<rect x="93.55000000000001" y="118" width="194.01" height="91" fill="none" stroke="black"/>
+<text x="190.555" y="150.62" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1201</text>
+<text x="190.555" y="168.54000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">ENCRYPTED</text>
+<text x="190.555" y="186.46" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">FEATURE VALUE</text>
+<rect x="319.75" y="118" width="180.96" height="91" fill="none" stroke="black"/>
+<text x="410.23" y="150.62" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1202</text>
+<text x="410.23" y="168.54000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">PUBLIC</text>
+<text x="410.23" y="186.46" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">MODEL WEIGHT</text>
+<rect x="120.52000000000001" y="301" width="355.83" height="98" fill="none" stroke="black"/>
+<text x="298.435" y="337.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1203</text>
+<text x="298.435" y="355.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">CIPHERTEXT / PLAINTEXT</text>
+<text x="298.435" y="372.96000000000004" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">MULTIPLICATION</text>
+<path d="M190.99,209 L190.99,252" stroke="black" stroke-width="1" fill="none"/>
+<path d="M190.99,252 L248.41,252" stroke="black" stroke-width="1" fill="none"/>
+<path d="M248.41,252 L248.41,301" stroke="black" stroke-width="1" fill="none"/>
+<path d="M248.41,301 L245.8,294.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M248.41,301 L251.02,294.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M410.23,209 L410.23,252" stroke="black" stroke-width="1" fill="none"/>
+<path d="M410.23,252 L343.24,252" stroke="black" stroke-width="1" fill="none"/>
+<path d="M343.24,252 L343.24,301" stroke="black" stroke-width="1" fill="none"/>
+<path d="M343.24,301 L340.63,294.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M343.24,301 L345.85,294.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="103.12" y="490" width="388.89" height="86" fill="none" stroke="black"/>
+<text x="297.565" y="529.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1204</text>
+<text x="297.565" y="547.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">ENCRYPTED SCORE ACCUMULATOR</text>
+<path d="M298.0,399 L298.0,490" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,490 L295.39,483.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,490 L300.61,483.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="103.12" y="662" width="388.89" height="78" fill="none" stroke="black"/>
+<text x="297.565" y="697.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">1205</text>
+<text x="297.565" y="715.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">ENCRYPTED BIAS INITIALIZATION</text>
+<path d="M298.0,662 L298.0,576" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,576 L300.61,583.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,576 L295.39,583.0" stroke="black" stroke-width="1" fill="none"/>
+</svg>

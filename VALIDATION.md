@@ -1,6 +1,6 @@
 # Validation
 
-Current portable gate validated locally on 2026-05-29. Historical artifact
+Current portable gate validated locally on 2026-09-05. Historical artifact
 sections below retain the exact commands and outputs that produced specific
 committed evidence snapshots.
 
@@ -11,19 +11,33 @@ Commands below are written for the standalone package root.
 Command:
 
 ```sh
-npm run validate
+npm run ci
+git diff --cached --check
 ```
 
-Result summary from the 2026-05-29 cleanup branch:
+Result summary from the staged complete-schematic update on 2026-09-05:
 
 ```text
-tests 139
-pass 139
+tests 143
+pass 143
 fail 0
 json ok
-markdown link scan ok (75 files)
+markdown link scan ok (83 files)
+docs/evidence-dashboard.md is up to date.
 repository hygiene scan ok
 ```
+
+Validation ran against an isolated copy of the staged tree using Node 24.19.0
+and npm 10.9.2 on Windows. Placing the installed MSYS2 UCRT64 compiler directory
+first in the process PATH resolved a local DLL conflict and allowed the existing
+C++ contract-loader test to pass. The published workflow uses its configured
+Linux runner and Node version.
+
+The schematic artifact check also passes: 226 physical pins, 32 nets, matching
+FPGA pad constraints, and 16/8/26 pages in the patent, circuit, and implementation
+PDFs. `patent/complete-design-2026-09-05/verification/` retains the earlier logic
+simulation, synthesis, routing and visual-review evidence. The board has not
+been assembled, and no native KiCad ERC or headset deployment was performed.
 
 `npm run validate` currently runs the Node test suite, parses
 `project-brief.json` and `prototype/research-assumptions.json`, checks local

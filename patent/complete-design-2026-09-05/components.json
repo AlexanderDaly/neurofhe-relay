@@ -1,0 +1,1682 @@
+{
+  "J1": {
+    "ref": "J1",
+    "value": "PI 40-PIN SOCKET",
+    "pins": {
+      "1": {
+        "name": "3V3",
+        "net": null,
+        "type": "passive"
+      },
+      "2": {
+        "name": "5V",
+        "net": "+5V_RAW",
+        "type": "passive"
+      },
+      "3": {
+        "name": "GPIO2",
+        "net": null,
+        "type": "passive"
+      },
+      "4": {
+        "name": "5V",
+        "net": "+5V_RAW",
+        "type": "passive"
+      },
+      "5": {
+        "name": "GPIO3",
+        "net": null,
+        "type": "passive"
+      },
+      "6": {
+        "name": "GND",
+        "net": "GND",
+        "type": "passive"
+      },
+      "7": {
+        "name": "GPIO4",
+        "net": null,
+        "type": "passive"
+      },
+      "8": {
+        "name": "GPIO14",
+        "net": null,
+        "type": "passive"
+      },
+      "9": {
+        "name": "GND",
+        "net": "GND",
+        "type": "passive"
+      },
+      "10": {
+        "name": "GPIO15",
+        "net": null,
+        "type": "passive"
+      },
+      "11": {
+        "name": "GPIO17",
+        "net": "CRESET_N",
+        "type": "passive"
+      },
+      "12": {
+        "name": "GPIO18",
+        "net": null,
+        "type": "passive"
+      },
+      "13": {
+        "name": "GPIO27",
+        "net": "CDONE",
+        "type": "passive"
+      },
+      "14": {
+        "name": "GND",
+        "net": "GND",
+        "type": "passive"
+      },
+      "15": {
+        "name": "GPIO22",
+        "net": "READY",
+        "type": "passive"
+      },
+      "16": {
+        "name": "GPIO23",
+        "net": "FRAME_READY",
+        "type": "passive"
+      },
+      "17": {
+        "name": "3V3",
+        "net": null,
+        "type": "passive"
+      },
+      "18": {
+        "name": "GPIO24",
+        "net": "HOST_RESET",
+        "type": "passive"
+      },
+      "19": {
+        "name": "GPIO10",
+        "net": "HOST_MOSI",
+        "type": "passive"
+      },
+      "20": {
+        "name": "GND",
+        "net": "GND",
+        "type": "passive"
+      },
+      "21": {
+        "name": "GPIO9",
+        "net": "HOST_MISO",
+        "type": "passive"
+      },
+      "22": {
+        "name": "GPIO25",
+        "net": null,
+        "type": "passive"
+      },
+      "23": {
+        "name": "GPIO11",
+        "net": "HOST_SCK",
+        "type": "passive"
+      },
+      "24": {
+        "name": "GPIO8",
+        "net": "HOST_CS_N",
+        "type": "passive"
+      },
+      "25": {
+        "name": "GND",
+        "net": "GND",
+        "type": "passive"
+      },
+      "26": {
+        "name": "GPIO7",
+        "net": null,
+        "type": "passive"
+      },
+      "27": {
+        "name": "ID_SD",
+        "net": null,
+        "type": "passive"
+      },
+      "28": {
+        "name": "ID_SC",
+        "net": null,
+        "type": "passive"
+      },
+      "29": {
+        "name": "GPIO5",
+        "net": null,
+        "type": "passive"
+      },
+      "30": {
+        "name": "GND",
+        "net": "GND",
+        "type": "passive"
+      },
+      "31": {
+        "name": "GPIO6",
+        "net": null,
+        "type": "passive"
+      },
+      "32": {
+        "name": "GPIO12",
+        "net": null,
+        "type": "passive"
+      },
+      "33": {
+        "name": "GPIO13",
+        "net": null,
+        "type": "passive"
+      },
+      "34": {
+        "name": "GND",
+        "net": "GND",
+        "type": "passive"
+      },
+      "35": {
+        "name": "GPIO19",
+        "net": null,
+        "type": "passive"
+      },
+      "36": {
+        "name": "GPIO16",
+        "net": null,
+        "type": "passive"
+      },
+      "37": {
+        "name": "GPIO26",
+        "net": null,
+        "type": "passive"
+      },
+      "38": {
+        "name": "GPIO20",
+        "net": null,
+        "type": "passive"
+      },
+      "39": {
+        "name": "GND",
+        "net": "GND",
+        "type": "passive"
+      },
+      "40": {
+        "name": "GPIO21",
+        "net": null,
+        "type": "passive"
+      }
+    },
+    "package": "2x20, 2.54 mm, female, keyed orientation",
+    "mpn": "",
+    "kind": "CONN",
+    "notes": "Pins 1 and 17 are not connected to the custom 3.3 V rail."
+  },
+  "U1": {
+    "ref": "U1",
+    "value": "iCE40UP5K-SG48",
+    "pins": {
+      "1": {
+        "name": "VCCIO_2",
+        "net": "+3V3",
+        "type": "power_in"
+      },
+      "2": {
+        "name": "IOB_6A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "3": {
+        "name": "IOB_9B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "4": {
+        "name": "IOB_8A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "5": {
+        "name": "VCC",
+        "net": "+1V2",
+        "type": "power_in"
+      },
+      "6": {
+        "name": "IOB_13B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "7": {
+        "name": "CDONE",
+        "net": "CDONE",
+        "type": "output"
+      },
+      "8": {
+        "name": "CRESET_B",
+        "net": "CRESET_N",
+        "type": "input"
+      },
+      "9": {
+        "name": "IOB_16A",
+        "net": "READY",
+        "type": "output"
+      },
+      "10": {
+        "name": "IOB_18A",
+        "net": "FRAME_READY",
+        "type": "output"
+      },
+      "11": {
+        "name": "IOB_20A",
+        "net": "GND",
+        "type": "input"
+      },
+      "12": {
+        "name": "IOB_22A",
+        "net": "SOFT_RESET",
+        "type": "input"
+      },
+      "13": {
+        "name": "IOB_24A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "14": {
+        "name": "SPI_SO",
+        "net": "FPGA_MISO",
+        "type": "output"
+      },
+      "15": {
+        "name": "SPI_SCK",
+        "net": "FPGA_SCK",
+        "type": "input"
+      },
+      "16": {
+        "name": "SPI_SS",
+        "net": "FPGA_CS_N",
+        "type": "input"
+      },
+      "17": {
+        "name": "SPI_SI",
+        "net": "FPGA_MOSI",
+        "type": "input"
+      },
+      "18": {
+        "name": "IOB_31B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "19": {
+        "name": "IOB_29B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "20": {
+        "name": "IOB_25B_G3",
+        "net": null,
+        "type": "no_connect"
+      },
+      "21": {
+        "name": "IOB_23B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "22": {
+        "name": "SPI_VCCIO1",
+        "net": "+3V3",
+        "type": "power_in"
+      },
+      "23": {
+        "name": "IOT_37A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "24": {
+        "name": "VPP_2V5",
+        "net": "+2V5",
+        "type": "power_in"
+      },
+      "25": {
+        "name": "IOT_36B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "26": {
+        "name": "IOT_39A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "27": {
+        "name": "IOT_38B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "28": {
+        "name": "IOT_41A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "29": {
+        "name": "VCCPLL",
+        "net": "+1V2_PLL",
+        "type": "power_in"
+      },
+      "30": {
+        "name": "VCC",
+        "net": "+1V2",
+        "type": "power_in"
+      },
+      "31": {
+        "name": "IOT_42B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "32": {
+        "name": "IOT_43A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "33": {
+        "name": "VCCIO_0",
+        "net": "+3V3",
+        "type": "power_in"
+      },
+      "34": {
+        "name": "IOT_44B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "35": {
+        "name": "IOT_46B_G0",
+        "net": "CLK16",
+        "type": "input"
+      },
+      "36": {
+        "name": "IOT_48B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "37": {
+        "name": "IOT_45A_G1",
+        "net": null,
+        "type": "no_connect"
+      },
+      "38": {
+        "name": "IOT_50B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "39": {
+        "name": "RGB0",
+        "net": null,
+        "type": "no_connect"
+      },
+      "40": {
+        "name": "RGB1",
+        "net": null,
+        "type": "no_connect"
+      },
+      "41": {
+        "name": "RGB2",
+        "net": null,
+        "type": "no_connect"
+      },
+      "42": {
+        "name": "IOT_51A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "43": {
+        "name": "IOT_49A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "44": {
+        "name": "IOB_3B_G6",
+        "net": null,
+        "type": "no_connect"
+      },
+      "45": {
+        "name": "IOB_5B",
+        "net": null,
+        "type": "no_connect"
+      },
+      "46": {
+        "name": "IOB_0A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "47": {
+        "name": "IOB_2A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "48": {
+        "name": "IOB_4A",
+        "net": null,
+        "type": "no_connect"
+      },
+      "49": {
+        "name": "GND / PAD",
+        "net": "GND",
+        "type": "power_in"
+      }
+    },
+    "package": "QFN-48, 7x7 mm, 0.5 mm pitch + exposed pad",
+    "mpn": "ICE40UP5K-SG48ITR50",
+    "kind": "IC",
+    "notes": "Pad numbered 49 in this design. RGB current sinks unused. See official package land pattern before layout."
+  },
+  "U2": {
+    "ref": "U2",
+    "value": "TLV75512P",
+    "pins": {
+      "1": {
+        "name": "IN",
+        "net": "+5V",
+        "type": "power_in"
+      },
+      "2": {
+        "name": "GND",
+        "net": "GND",
+        "type": "power_in"
+      },
+      "3": {
+        "name": "EN",
+        "net": "+5V",
+        "type": "input"
+      },
+      "4": {
+        "name": "NC",
+        "net": null,
+        "type": "no_connect"
+      },
+      "5": {
+        "name": "OUT",
+        "net": "+1V2",
+        "type": "power_out"
+      }
+    },
+    "package": "SOT-23-5 / DBV",
+    "mpn": "TLV75512PDBVR",
+    "kind": "IC",
+    "notes": ""
+  },
+  "U3": {
+    "ref": "U3",
+    "value": "TLV75533P",
+    "pins": {
+      "1": {
+        "name": "IN",
+        "net": "+5V",
+        "type": "power_in"
+      },
+      "2": {
+        "name": "GND",
+        "net": "GND",
+        "type": "power_in"
+      },
+      "3": {
+        "name": "EN",
+        "net": "IO_ENABLE",
+        "type": "input"
+      },
+      "4": {
+        "name": "NC",
+        "net": null,
+        "type": "no_connect"
+      },
+      "5": {
+        "name": "OUT",
+        "net": "+3V3",
+        "type": "power_out"
+      }
+    },
+    "package": "SOT-23-5 / DBV",
+    "mpn": "TLV75533PDBVR",
+    "kind": "IC",
+    "notes": ""
+  },
+  "U4": {
+    "ref": "U4",
+    "value": "TLV75525P",
+    "pins": {
+      "1": {
+        "name": "IN",
+        "net": "+5V",
+        "type": "power_in"
+      },
+      "2": {
+        "name": "GND",
+        "net": "GND",
+        "type": "power_in"
+      },
+      "3": {
+        "name": "EN",
+        "net": "VPP_ENABLE",
+        "type": "input"
+      },
+      "4": {
+        "name": "NC",
+        "net": null,
+        "type": "no_connect"
+      },
+      "5": {
+        "name": "OUT",
+        "net": "+2V5",
+        "type": "power_out"
+      }
+    },
+    "package": "SOT-23-5 / DBV",
+    "mpn": "TLV75525PDBVR",
+    "kind": "IC",
+    "notes": ""
+  },
+  "U5": {
+    "ref": "U5",
+    "value": "TPS3808G12",
+    "pins": {
+      "1": {
+        "name": "RESET_N",
+        "net": "IO_ENABLE",
+        "type": "open_drain"
+      },
+      "2": {
+        "name": "GND",
+        "net": "GND",
+        "type": "power_in"
+      },
+      "3": {
+        "name": "MR_N",
+        "net": "+5V",
+        "type": "input"
+      },
+      "4": {
+        "name": "CT",
+        "net": "CT_CORE",
+        "type": "passive"
+      },
+      "5": {
+        "name": "SENSE",
+        "net": "+1V2",
+        "type": "input"
+      },
+      "6": {
+        "name": "VDD",
+        "net": "+5V",
+        "type": "power_in"
+      }
+    },
+    "package": "SOT-23-6 / DBV",
+    "mpn": "TPS3808G12DBVR",
+    "kind": "IC",
+    "notes": ""
+  },
+  "U6": {
+    "ref": "U6",
+    "value": "TPS3808G33",
+    "pins": {
+      "1": {
+        "name": "RESET_N",
+        "net": "VPP_ENABLE",
+        "type": "open_drain"
+      },
+      "2": {
+        "name": "GND",
+        "net": "GND",
+        "type": "power_in"
+      },
+      "3": {
+        "name": "MR_N",
+        "net": "+5V",
+        "type": "input"
+      },
+      "4": {
+        "name": "CT",
+        "net": "CT_IO",
+        "type": "passive"
+      },
+      "5": {
+        "name": "SENSE",
+        "net": "+3V3",
+        "type": "input"
+      },
+      "6": {
+        "name": "VDD",
+        "net": "+5V",
+        "type": "power_in"
+      }
+    },
+    "package": "SOT-23-6 / DBV",
+    "mpn": "TPS3808G33DBVR",
+    "kind": "IC",
+    "notes": ""
+  },
+  "U7": {
+    "ref": "U7",
+    "value": "TPS3808G25",
+    "pins": {
+      "1": {
+        "name": "RESET_N",
+        "net": "CRESET_N",
+        "type": "open_drain"
+      },
+      "2": {
+        "name": "GND",
+        "net": "GND",
+        "type": "power_in"
+      },
+      "3": {
+        "name": "MR_N",
+        "net": "+5V",
+        "type": "input"
+      },
+      "4": {
+        "name": "CT",
+        "net": "CT_VPP",
+        "type": "passive"
+      },
+      "5": {
+        "name": "SENSE",
+        "net": "+2V5",
+        "type": "input"
+      },
+      "6": {
+        "name": "VDD",
+        "net": "+5V",
+        "type": "power_in"
+      }
+    },
+    "package": "SOT-23-6 / DBV",
+    "mpn": "TPS3808G25DBVR",
+    "kind": "IC",
+    "notes": ""
+  },
+  "Y1": {
+    "ref": "Y1",
+    "value": "SiT8008B / 16 MHz",
+    "pins": {
+      "1": {
+        "name": "OE",
+        "net": "+3V3",
+        "type": "input"
+      },
+      "2": {
+        "name": "GND",
+        "net": "GND",
+        "type": "power_in"
+      },
+      "3": {
+        "name": "OUT",
+        "net": "OSC_OUT",
+        "type": "output"
+      },
+      "4": {
+        "name": "VDD",
+        "net": "+3V3",
+        "type": "power_in"
+      }
+    },
+    "package": "2520, four pads",
+    "mpn": "SiT8008BI-12-33E-16.000000",
+    "kind": "IC",
+    "notes": "3.3 V, 16 MHz, industrial, OE. Verify order-code package against SiTime drawing."
+  },
+  "U8": {
+    "ref": "U8",
+    "value": "SN74LVC2G17",
+    "pins": {
+      "1": {
+        "name": "1A",
+        "net": "HOST_SCK",
+        "type": "input"
+      },
+      "2": {
+        "name": "GND",
+        "net": "GND",
+        "type": "power_in"
+      },
+      "3": {
+        "name": "2A",
+        "net": "HOST_MOSI",
+        "type": "input"
+      },
+      "4": {
+        "name": "2Y",
+        "net": "BUF_MOSI",
+        "type": "output"
+      },
+      "5": {
+        "name": "VCC",
+        "net": "+3V3",
+        "type": "power_in"
+      },
+      "6": {
+        "name": "1Y",
+        "net": "BUF_SCK",
+        "type": "output"
+      }
+    },
+    "package": "SOT-23-6 / DBV",
+    "mpn": "SN74LVC2G17DBVR",
+    "kind": "IC",
+    "notes": "Partial-power-down Ioff support; input-side bias resistors keep host inputs defined."
+  },
+  "U9": {
+    "ref": "U9",
+    "value": "SN74LVC2G17",
+    "pins": {
+      "1": {
+        "name": "1A",
+        "net": "HOST_CS_N",
+        "type": "input"
+      },
+      "2": {
+        "name": "GND",
+        "net": "GND",
+        "type": "power_in"
+      },
+      "3": {
+        "name": "2A",
+        "net": "HOST_RESET",
+        "type": "input"
+      },
+      "4": {
+        "name": "2Y",
+        "net": "BUF_RESET",
+        "type": "output"
+      },
+      "5": {
+        "name": "VCC",
+        "net": "+3V3",
+        "type": "power_in"
+      },
+      "6": {
+        "name": "1Y",
+        "net": "BUF_CS_N",
+        "type": "output"
+      }
+    },
+    "package": "SOT-23-6 / DBV",
+    "mpn": "SN74LVC2G17DBVR",
+    "kind": "IC",
+    "notes": "Partial-power-down Ioff support; input-side bias resistors keep host inputs defined."
+  },
+  "F1": {
+    "ref": "F1",
+    "value": "PTC 0.25 A",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+5V_RAW",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "+5V",
+        "type": "passive"
+      }
+    },
+    "package": "1206",
+    "mpn": "",
+    "kind": "F",
+    "notes": "Hold 0.25 A at 25 C; working voltage >= 6 V; derate for enclosure temperature."
+  },
+  "R1": {
+    "ref": "R1",
+    "value": "33 ohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "BUF_SCK",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "FPGA_SCK",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R2": {
+    "ref": "R2",
+    "value": "33 ohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "BUF_MOSI",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "FPGA_MOSI",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R3": {
+    "ref": "R3",
+    "value": "33 ohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "FPGA_MISO",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "HOST_MISO",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R4": {
+    "ref": "R4",
+    "value": "33 ohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "BUF_CS_N",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "FPGA_CS_N",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R5": {
+    "ref": "R5",
+    "value": "33 ohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "OSC_OUT",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "CLK16",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R6": {
+    "ref": "R6",
+    "value": "1 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "BUF_RESET",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "SOFT_RESET",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R7": {
+    "ref": "R7",
+    "value": "10 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "CRESET_N",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R8": {
+    "ref": "R8",
+    "value": "10 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "CDONE",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R9": {
+    "ref": "R9",
+    "value": "10 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "FPGA_CS_N",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R10": {
+    "ref": "R10",
+    "value": "10 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+5V",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "IO_ENABLE",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R11": {
+    "ref": "R11",
+    "value": "10 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+5V",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "VPP_ENABLE",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R12": {
+    "ref": "R12",
+    "value": "100 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "HOST_SCK",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R13": {
+    "ref": "R13",
+    "value": "100 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "HOST_MOSI",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R14": {
+    "ref": "R14",
+    "value": "100 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "HOST_RESET",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R15": {
+    "ref": "R15",
+    "value": "100 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "READY",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R16": {
+    "ref": "R16",
+    "value": "100 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "FRAME_READY",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R17": {
+    "ref": "R17",
+    "value": "100 ohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+1V2",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "+1V2_PLL",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "R18": {
+    "ref": "R18",
+    "value": "100 kohm",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "HOST_CS_N",
+        "type": "passive"
+      }
+    },
+    "package": "0603",
+    "mpn": "",
+    "kind": "R",
+    "notes": ""
+  },
+  "SW1": {
+    "ref": "SW1",
+    "value": "RESET",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "CRESET_N",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "Momentary normally open",
+    "mpn": "",
+    "kind": "SW",
+    "notes": ""
+  },
+  "C1": {
+    "ref": "C1",
+    "value": "10 uF / 16 V",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+5V",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0805 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C2": {
+    "ref": "C2",
+    "value": "1 uF / 10 V",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+5V",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C3": {
+    "ref": "C3",
+    "value": "10 uF / 10 V",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+1V2",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0805 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C4": {
+    "ref": "C4",
+    "value": "1 uF / 10 V",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+5V",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C5": {
+    "ref": "C5",
+    "value": "10 uF / 10 V",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0805 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C6": {
+    "ref": "C6",
+    "value": "1 uF / 10 V",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+5V",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C7": {
+    "ref": "C7",
+    "value": "10 uF / 10 V",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+2V5",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0805 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C8": {
+    "ref": "C8",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+5V",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C9": {
+    "ref": "C9",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+5V",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C10": {
+    "ref": "C10",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+5V",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C11": {
+    "ref": "C11",
+    "value": "1 nF C0G",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "CT_CORE",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 C0G",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C12": {
+    "ref": "C12",
+    "value": "1 nF C0G",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "CT_IO",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 C0G",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C13": {
+    "ref": "C13",
+    "value": "1 nF C0G",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "CT_VPP",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 C0G",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C14": {
+    "ref": "C14",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+1V2",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C15": {
+    "ref": "C15",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+1V2",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C16": {
+    "ref": "C16",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C17": {
+    "ref": "C17",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C18": {
+    "ref": "C18",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C19": {
+    "ref": "C19",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+2V5",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C20": {
+    "ref": "C20",
+    "value": "1 uF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+1V2_PLL",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C21": {
+    "ref": "C21",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+1V2_PLL",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C22": {
+    "ref": "C22",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C23": {
+    "ref": "C23",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  },
+  "C24": {
+    "ref": "C24",
+    "value": "100 nF",
+    "pins": {
+      "1": {
+        "name": "1",
+        "net": "+3V3",
+        "type": "passive"
+      },
+      "2": {
+        "name": "2",
+        "net": "GND",
+        "type": "passive"
+      }
+    },
+    "package": "0603 X7R",
+    "mpn": "",
+    "kind": "C",
+    "notes": ">= 10 V unless explicitly 16 V. Regulator output effective capacitance >= 1 uF across bias and tolerance."
+  }
+}

@@ -22,6 +22,32 @@ Use this table before opening the full source list.
 | Evidence-gap prioritization | `patent/briefing/ENER_weak_claims_evidence_gaps.md` | Confirm current artifacts in `benchmark-artifacts/README.md` and `docs/evidence-dashboard.md` before marking a gap narrowed. |
 | Diagram or figure reuse | `patent/briefing/diagrams/`, `patent/figures/`, and `patent/ENER_figures/` | Keep duplicate Mermaid layouts synchronized until one figure source tree is intentionally retired. |
 
+## Complete Schematic Reference Design — Revision B
+
+The September 5, 2026 design uses an existing acquisition device, a Raspberry
+Pi host and a custom iCE40UP5K FPGA relay. Its coordinated sixteen-figure set
+has a separate specification working copy with matching descriptions. FPGA
+simulation and routed 16 MHz timing pass; board fabrication, native KiCad ERC
+and headset-specific integration have not been performed.
+
+| Deliverable | File |
+| --- | --- |
+| 16 black-and-white patent figures | [Patent schematics](../output/pdf/ENER_Complete_Patent_Schematics.pdf) |
+| Eight component and datapath sheets | [Circuit schematics](../output/pdf/ENER_Circuit_Schematics.pdf) |
+| 26-page implementation specification | [Implementation design](../output/pdf/ENER_Implementation_Design.pdf) |
+| Complete editable archive | [Design package](../output/ENER_Complete_Schematic_Design_B_2026-09-05.zip) |
+| Archive integrity | [Checksum manifest](../output/ENER_Complete_Schematic_Design_B_2026-09-05_manifest.json) |
+
+Editable sources and review records:
+
+- [patent/complete-design-2026-09-05/README.md](../patent/complete-design-2026-09-05/README.md) — entry point and rebuild commands.
+- [patent/complete-design-2026-09-05/ENER_specification_with_reference_design.md](../patent/complete-design-2026-09-05/ENER_specification_with_reference_design.md) — separate specification working copy, with revised section E and new F.14.
+- [patent/complete-design-2026-09-05/drawing_descriptions.md](../patent/complete-design-2026-09-05/drawing_descriptions.md) — matching figure descriptions and numeral occurrences.
+- [patent/complete-design-2026-09-05/ENER_Implementation_Design.md](../patent/complete-design-2026-09-05/ENER_Implementation_Design.md) — editable implementation specification.
+- [patent/complete-design-2026-09-05/cad/README.md](../patent/complete-design-2026-09-05/cad/README.md) — KiCad import instructions and verification boundary.
+- [patent/complete-design-2026-09-05/verification/visual_review.md](../patent/complete-design-2026-09-05/verification/visual_review.md) — rendered-page review record.
+- [BOM](../patent/complete-design-2026-09-05/bom.csv), [pin map](../patent/complete-design-2026-09-05/pin_net_map.csv), [hardware source](../patent/complete-design-2026-09-05/rtl/relay_hdl.py), and [verification results](../patent/complete-design-2026-09-05/verification/artifact_verification.json).
+
 ## Provisional Drafting Materials
 
 - [`patent/ENER_provisional_specification.md`](../patent/ENER_provisional_specification.md)

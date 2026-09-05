@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.2755905511812pt" height="841.8897637795277pt" viewBox="0 0 595.2755905511812 841.8897637795277">
+<title>Neuron decay and timing circuit</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="297.6848818897638" y="85.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">8/16</text>
+<text x="297.6848818897638" y="786.8897637795277" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700">FIG. 8</text>
+<rect x="121.39000000000001" y="111" width="351.48" height="80" fill="none" stroke="black"/>
+<text x="297.13" y="138.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">801</text>
+<text x="297.13" y="156.04000000000002" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">SAMPLE TIME</text>
+<text x="297.13" y="173.96" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">REGISTER</text>
+<rect x="121.39000000000001" y="261" width="351.48" height="80" fill="none" stroke="black"/>
+<text x="297.13" y="297.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">802</text>
+<text x="297.13" y="315.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">MILLISECOND TICK ADVANCE</text>
+<path d="M298.0,191 L298.0,261" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,261 L295.39,254.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M298.0,261 L300.61,254.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="121.39000000000001" y="410" width="351.48" height="104" fill="none" stroke="black"/>
+<text x="297.13" y="449.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">803</text>
+<text x="297.13" y="467.04" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">SHIFT AND SUBTRACT</text>
+<text x="297.13" y="484.96000000000004" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">V &lt;- V - (V &gt;&gt; 4)</text>
+<path d="M257.98,341 L257.98,410" stroke="black" stroke-width="1" fill="none"/>
+<path d="M257.98,410 L255.37,403.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M257.98,410 L260.59000000000003,403.0" stroke="black" stroke-width="1" fill="none"/>
+<rect x="121.39000000000001" y="582" width="351.48" height="80" fill="none" stroke="black"/>
+<text x="297.13" y="618.08" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">804</text>
+<text x="297.13" y="636.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">REFRACTORY DOWN-COUNTER</text>
+<path d="M472.87,300 L510.28,300" stroke="black" stroke-width="1" fill="none"/>
+<path d="M510.28,300 L510.28,622" stroke="black" stroke-width="1" fill="none"/>
+<path d="M510.28,622 L472.87,622" stroke="black" stroke-width="1" fill="none"/>
+<path d="M472.87,622 L478.96000000000004,619.0" stroke="black" stroke-width="1" fill="none"/>
+<path d="M472.87,622 L478.96000000000004,625.0" stroke="black" stroke-width="1" fill="none"/>
+<text x="298.0" y="725.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">TICKS PRECEDE EVENTS AT THE SAME TIME</text>
+<text x="298.0" y="754.0" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">BEGIN CLEARS FRAME-LOCAL STATE</text>
+</svg>
