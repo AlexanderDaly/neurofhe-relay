@@ -1,228 +1,186 @@
 # NeuroFHE Relay
 
-CC0 research-alpha repository for privacy-preserving event intelligence:
-neuromorphic sparse-event preprocessing, local relay policy, and caveated
-homomorphic-encryption evidence.
+A CC0 research-alpha repository for privacy-preserving event intelligence.
+NeuroFHE Relay explores how sparse event processing and homomorphic encryption
+can work together: process sensitive signals locally, encrypt selected features,
+and evaluate them without exposing their plaintext values to the compute service.
 
-```text
-                 NEUROFHE RELAY
+The repository includes a runnable JavaScript scaffold, native OpenFHE and TFHE-rs
+comparison lanes, reproducible evidence artifacts, and an FPGA relay reference design.
+**Research alpha:** the software and hardware require further integration and
+validation before deployment. `productionClaim: false` and
+`releaseGateSatisfied: false` remain the current evidence posture.
 
-  raw local signals
-  files | sensors | apps | logs | simulated streams
-          |
-          v
-  +--------------------------+
-  | spatial spike sorter     |
-  | FPGA / edge target       |
-  +------------+-------------+
-               |
-               v
-  +--------------------------+       raw payloads stay local
-  | local relay gateway      |<--------------------------------+
-  | normalize + policy       |                                 |
-  +------------+-------------+                                 |
-               |                                               |
-               v                                               |
-    approved minimal event representation                      |
-               |                                               |
-               v                                               |
-  +--------------------------+                                 |
-  | encrypted compute        |                                 |
-  | model / agent service    |                                 |
-  +------------+-------------+                                 |
-               |                                               |
-               v                                               |
-        recommendation only                                    |
-               |                                               |
-               v                                               |
-  +--------------------------+                                 |
-  | gateway validation       |---------------------------------+
-  | safe local action only   |
-  +--------------------------+
-```
-
-## Core Thesis
-
-Neuromorphic systems are attractive because they turn sensory streams into sparse events and spiking neural network activity. Homomorphic encryption is attractive because it allows useful computation without decrypting the underlying data. The project opportunity is to combine them at the workload boundary:
-
-1. Neuromorphic edge hardware or software produces compact spike/event features.
-2. Sensitive features are encrypted before leaving the local environment.
-3. FHE or Octra-style encrypted compute evaluates selected inference, policy, or verification steps.
-4. Only the final result, proof, or decision is decrypted by the authorized party.
-
-This avoids the weak claim that current neuromorphic chips should directly run full FHE bootstrapping. Instead, the project uses neuromorphic sparsity to make encrypted inference smaller and more practical.
-
-## Commons Principle
-
-If this becomes part of the interface layer between biology, machines, and shared computational realities, the basic architecture should be free to inspect, copy, improve, and teach. That is why the repository is released under CC0.
-
-The cryptographic design target is:
-
-> Quantum-resistant by design, cryptographically agile by default.
+[Documentation](docs/README.md) · [Evidence dashboard](docs/evidence-dashboard.md) ·
+[Hardware reference design](patent/complete-design-2026-09-05/README.md) ·
+[Roadmap](docs/status-roadmap.md)
 
 ## Choose Your Path
 
-Use the door that matches how you arrived, then fall back to `docs/README.md`
-for the complete documentation index:
-
-| If you are… | Start with | Typical time |
-| --- | --- | --- |
-| **Curious** (non-technical) | [`docs/layperson-quickstart.md`](docs/layperson-quickstart.md) | 5–10 minutes |
-| **Reviewing** (diligence, grant, patent) | [`docs/reviewer-quickstart.md`](docs/reviewer-quickstart.md) | 15–60 minutes |
-| **Building** (code or artifacts) | [`docs/developer-quickstart.md`](docs/developer-quickstart.md) | As needed |
-
-Visual overview: open [`index.html`](index.html) in a browser. Demo output
-explained in plain English: [`docs/what-the-demo-shows.md`](docs/what-the-demo-shows.md).
-
-## First Paths
-
-Use this table when you already know your maintainer or evidence role:
-
-| Role | Start With | Then Use |
-| --- | --- | --- |
-| Curious reader | `docs/layperson-quickstart.md` | `docs/faq.md`, `index.html`, `01-one-pager.md` |
-| New reviewer | `docs/reviewer-quickstart.md` | `docs/faq.md`, `docs/status-roadmap.md`, `CHANGELOG.md`, `VALIDATION.md` |
-| Contributor | `docs/developer-quickstart.md` | `docs/command-reference.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md` |
-| Maintainer | `MAINTAINERS.md` | `docs/maintainer-checklist.md`, `docs/operations-runbook.md`, `RELEASE.md` |
-| Evidence reviewer | `docs/evidence-guide.md` | `docs/evidence-dashboard.md`, `docs/claim-evidence-ledger.md`, `docs/release-gate-matrix.md` |
-
-The repository remains a research-alpha package. Keep `productionClaim: false`,
-`privacyBoundary`, `cryptoInventory`, CC0/public-domain framing, and the
-bio-digital event intelligence boundary intact unless stronger evidence is
-actually present and documented.
-
-## Current Status
-
-Use this table for the front-door status read, then confirm details in the
-linked source before making release, merge, or public-claim decisions.
-
-| Status Item | Current Posture | Confirm In |
-| --- | --- | --- |
-| Research-alpha release target | `v0.1.0-research-alpha`; not tagged. | `RELEASE.md`, `docs/status-roadmap.md` |
-| Portable validation | Locally recorded with 143 passing tests; verify hosted checks on the current commit. | `VALIDATION.md`, `docs/operations-runbook.md` |
-| Merge state | Hosted CI/check-rollup is green; merges stay governed by repository ruleset/admin policy, distinct from a CI or code failure. | `docs/status-roadmap.md`, `docs/operations-runbook.md` |
-| Release gate | `releaseGateSatisfied: false`; dashboard evidence is not release approval. | `benchmark-artifacts/release-evidence/latest.json`, `docs/evidence-dashboard.md` |
-| Claim boundary | Preserve `productionClaim: false`, `privacyBoundary`, and `cryptoInventory`. | `docs/architecture-decisions.md`, `docs/evidence-guide.md` |
-
-## Repository Layout
-
-The [complete FHE + neuromorphic reference design](patent/complete-design-2026-09-05/README.md)
-provides 16 patent figures, eight circuit sheets, a 55-component BOM, and the
-implemented FPGA encoder for an existing acquisition device and Raspberry Pi
-host. [Download the complete design package](output/ENER_Complete_Schematic_Design_B_2026-09-05.zip).
-FPGA simulation and routed timing pass at 16 MHz; physical board testing,
-native KiCad ERC, and headset-specific integration remain unperformed.
-
-`PACKAGE_MANIFEST.md` is the detailed file inventory. The top-level layout is:
-
-| Path | Purpose |
+| Your goal | Start here |
 | --- | --- |
-| `docs/` | Reader, contributor, maintainer, evidence, and release navigation. |
-| `prototype/` | Portable scaffold code, test suite, artifact publishers, and native lane adapters. |
-| `benchmark-artifacts/` | Committed derived evidence, blocker reports, and release dashboards. |
-| `patent/` | ENER provisional drafting package, drawings, prior-art plan, and briefing material. |
-| `output/` | Complete reference-design PDF schematics, implementation specification, and editable handoff archive. |
-| `.github/` | Issue templates, PR template, dependency-update routing, and hosted portable CI workflow. |
-| Root policy files | `LICENSE`, `PUBLIC_DOMAIN_NOTICE.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `MAINTAINERS.md`, `RELEASE.md`, and `VALIDATION.md`. |
+| **Curious** — understand the project without a technical background | [Plain-English quickstart](docs/layperson-quickstart.md) |
+| **Reviewing** — assess the architecture, evidence, or research scope | [Reviewer quickstart](docs/reviewer-quickstart.md) |
+| **Building** — run the scaffold or contribute | [Developer quickstart](docs/developer-quickstart.md) |
 
-Use `PACKAGE_MANIFEST.md` when you need the exhaustive packaged-review
-inventory; keep this README focused on orientation, claims, and commands.
-
-## Recommended Framing
-
-Use the phrase:
-
-> A privacy layer for event-driven AI: neuromorphic systems make data sparse, FHE keeps the sensitive computation private.
-
-For the biology and digital interface framing, use:
-
-> Bio-digital event intelligence: sensitive signals stay local, compact event features cross the boundary under explicit privacy and cryptographic controls.
-
-For the BCI privacy framing, use "encrypted thoughts" as an architecture phrase, not as a literal mind-reading claim:
-
-> Signals capable of supporting thought, intent, language, or cognitive-state inference should stay local by default, and selected event features should remain encrypted during external computation.
-
-For the gateway framing, use:
-
-> The local gateway is the only trusted boundary allowed to inspect raw signals. Models receive only validated, transformed, permissioned event representations.
-
-Avoid medical-device language until a real regulated use case, dataset, clinical validation path, and legal review exist. The current research-alpha package is about privacy-preserving event representation and encrypted scoring, not diagnosis or treatment.
-
-Avoid saying:
-
-> We run Octra directly on neuromorphic chips.
-
-That is not defensible today. The defensible near-term claim is a hybrid architecture: neuromorphic preprocessing plus FHE-protected inference/verification.
+For a visual introduction, open the [browser briefing](index.html) locally.
+The [demo walkthrough](docs/what-the-demo-shows.md) explains the output in plain English.
 
 ## Quick Commands
 
-Use `docs/command-reference.md` for the full command list and `RELEASE.md` for
-release-gate commands. The common root commands are:
+Use **Node.js 22** for parity with CI; Node.js 20 or newer is supported.
+The portable JavaScript harness has no npm dependencies.
 
-| Job | Command |
+```sh
+git clone https://github.com/AlexanderDaly/neurofhe-relay.git
+cd neurofhe-relay
+npm run demo
+npm run gateway:demo
+npm run ci
+```
+
+The first demo runs an educational sparse scorer using toy additive encryption.
+The gateway demo exercises event validation, export policy, and local recommendation
+handling. Neither requires native FHE libraries or a connected device.
+
+| Task | Command |
 | --- | --- |
-| Portable local gate | `npm run ci` and `git diff --check` |
-| Educational sparse encrypted scorer | `npm run demo` |
-| Local relay gateway scaffold | `npm run gateway:demo` |
-| Publish the synthetic benchmark artifact | `npm run benchmark:artifact` |
-| Refresh the caveated release dashboard | `npm run release:evidence -- --artifact` |
+| Run tests, metadata checks, documentation checks, and the hygiene scan | `npm run ci` |
+| Check whitespace before committing | `git diff --check` |
+| Publish a synthetic benchmark to a local output directory | `npm run benchmark:artifact -- --out tmp/benchmark-artifacts` |
+| Inspect native library availability and evidence | `npm run native:doctor` |
+| Generate a release-evidence dashboard artifact | `npm run release:evidence -- --artifact` |
 
-The release-evidence index is a dashboard artifact only. It does not satisfy the
-release gate or upgrade any caveated benchmark, privacy, native-library,
-real-data baseline, or security claim.
+See the [command reference](docs/command-reference.md) for artifact options and
+native workflows, and [troubleshooting](docs/troubleshooting.md) for setup failures.
+Generating a dashboard does not satisfy the [release gate](RELEASE.md).
 
-## Relay Gateway Pattern
+## Architecture
 
-The relay gateway is the local trust boundary for the project. It accepts raw or semi-structured local signals, routes raw neural-like intake through a spatial-aware spike sorter, normalizes the sorter output into structured events, applies privacy and safety policy, and exports only approved minimal event representations to downstream encrypted compute, model services, or agents.
+The design separates local signal processing from encrypted evaluation.
+Sparse representations reduce the input to selected scoring workloads; native
+homomorphic-encryption libraries provide the encrypted compute paths.
 
-The runnable scaffold demonstrates:
+```mermaid
+flowchart LR
+    subgraph Local[Local trust boundary]
+        A[Raw signals] --> B[Spatial spike sorter]
+        B --> C[Relay gateway: validate and apply policy]
+        C --> D[Encrypt selected features]
+        G[Decrypt result and validate recommendation] --> H[Permitted local action]
+    end
+    D --> E[External encrypted evaluation]
+    E --> G
+```
 
-- Sensitive raw intake treated as local-only by default.
-- A canonical `rawNeuralFrame -> spatialSpikeSorter -> eventWindow` encoder stage designed around FPGA- or edge-friendly integer operations.
-- Pre-sorted `sortedNeuralEvent` imports still pass through gateway validation, sanitization, and export policy before normalization.
-- Optional cortical region or layer context tags, such as A1 and layers I through VI, are validated locally and exported only as aggregate summaries or encrypted references.
-- Normalized event records with provenance, confidence, schema version, and validation status.
-- Model-facing events with explicit plaintext, encrypted, aggregated, and withheld fields.
-- Recommendation validation that accepts safe local reversible actions and rejects raw device commands.
-- Audit and sanitized replay records that do not expose raw signal payloads.
+The local gateway controls which representations may leave the device. Raw
+payloads stay local by design; approved exports can include encrypted features,
+aggregated metadata, or explicitly permitted plaintext fields. Encryption alone
+does not hide all metadata, so artifacts record the applicable `privacyBoundary`
+and `cryptoInventory`.
 
-The gateway is simulated and educational in this package. It is not a medical, surveillance, coercive-control, mind-reading, external-control, or production cryptography system.
+The runnable research-alpha scaffold demonstrates:
 
-## Evidence Snapshot
+- **Event encoding:** `rawNeuralFrame -> spatialSpikeSorter -> eventWindow`,
+  with integer operations suitable for an FPGA or edge implementation.
+- **Gateway policy:** validation of raw and pre-sorted inputs, provenance,
+  sanitization, and explicit plaintext, encrypted, aggregated, or withheld fields.
+- **Sparse scoring:** a fixed linear model, `scores = W x + bias`, with
+  comparable dense, unsorted-spike, and spatial-sorted representations.
+- **Recommendation handling:** validation of permitted local reversible actions,
+  rejection of raw device commands, and sanitized audit records.
 
-The runnable research-alpha scaffold demonstrates active-event sparse scoring
-with toy additive homomorphic encryption over a fixed linear model contract:
-`scores = W x + bias`. The benchmark family keeps dense/raw, unsorted-spike,
-and spatial-sorted representations comparable while preserving
-`privacyBoundary`, `cryptoInventory`, and `productionClaim: false`.
+See the [architecture decisions](docs/architecture-decisions.md) and
+[prototype map](docs/prototype-map.md) for implementation details.
 
-Committed evidence includes derived UCI EEG Eye State plaintext artifacts,
-sampled public N-MNIST plaintext artifacts, synthetic reconstruction-risk
-probes, metadata-padding ablations, native OpenFHE and TFHE-rs comparison
-artifacts or blockers, repository hygiene evidence, and the caveated
-release-evidence dashboard. Use `docs/evidence-guide.md`,
-`docs/evidence-dashboard.md`,
-`benchmark-artifacts/README.md`, and `docs/release-gate-matrix.md` before
-turning any artifact into a public or release-facing claim.
+## Current Status
+
+The project distinguishes portable demonstrations, native-library measurements,
+and hardware design verification. Each supports a different level of evidence.
+
+| Status Item | Current Posture | Confirm In |
+| --- | --- | --- |
+| Research-alpha release target | `v0.1.0-research-alpha`; release readiness remains gated. | [Release requirements](RELEASE.md), [roadmap](docs/status-roadmap.md) |
+| Portable validation | Locally recorded with 143 passing tests; verify hosted checks on the current commit. | [Validation record](VALIDATION.md) |
+| Merge state | Check the relevant PR; merges are governed by repository ruleset/admin policy as well as validation results. | [Operations runbook](docs/operations-runbook.md) |
+| Release gate | `releaseGateSatisfied: false`; the evidence dashboard is not release approval. | [Release evidence](benchmark-artifacts/release-evidence/latest.json), [gate matrix](docs/release-gate-matrix.md) |
+| Claim boundary | `productionClaim: false`; preserve the documented privacy and cryptographic boundaries. | [Evidence guide](docs/evidence-guide.md) |
+
+### Evidence available
+
+Committed artifacts cover derived UCI EEG Eye State plaintext baselines, sampled
+public N-MNIST plaintext baselines, synthetic reconstruction-risk probes,
+metadata-padding comparisons, and native OpenFHE and TFHE-rs runs or structured
+blocker reports. Native results are specific to their recorded inputs, parameters,
+and host environments.
+
+Use the [evidence dashboard](docs/evidence-dashboard.md) for a summary, the
+[artifact index](benchmark-artifacts/README.md) for source records, and the
+[claim-evidence ledger](docs/claim-evidence-ledger.md) to assess what each result
+supports. These artifacts do not establish production security, clinical validity,
+or general performance guarantees.
+
+### Hardware reference design
+
+The [ENER reference design](patent/complete-design-2026-09-05/README.md) connects
+an existing acquisition device to a Raspberry Pi host and an iCE40UP5K FPGA
+mezzanine. It includes 16 patent architecture figures, eight circuit sheets,
+a 55-component bill of materials, and the FPGA encoder implementation.
+
+Simulation and routed timing pass at the 16 MHz target. The board has not been
+assembled; native KiCad ERC, physical electrical testing, and headset-specific
+integration remain outstanding. The package contains no PCB layout or Gerbers.
+
+[Download the complete design package](output/ENER_Complete_Schematic_Design_B_2026-09-05.zip)
+
+## Repository Layout
+
+| Path | Purpose |
+| --- | --- |
+| [docs/](docs/README.md) | Architecture, quickstarts, research status, and operational guidance. |
+| [prototype/](prototype/README.md) | Portable scaffold code, test suite, artifact publishers, and native lane adapters. |
+| [benchmark-artifacts/](benchmark-artifacts/README.md) | Derived measurements, provenance, blocker reports, and evidence dashboards. |
+| [patent/](patent/) | ENER drafting materials, architecture drawings, and reference-design sources. |
+| [output/](output/) | Reference-design PDFs and the editable handoff archive. |
+| [.github/](.github/) | CI workflows, contribution templates, and dependency-update configuration. |
+| Root policy files | Contribution, security, maintenance, release, and CC0/public-domain guidance. |
+
+See the [package manifest](PACKAGE_MANIFEST.md) for the detailed inventory.
+
+## First Paths
+
+| Role | Primary reference | Supporting guidance |
+| --- | --- | --- |
+| New reviewer | [Reviewer quickstart](docs/reviewer-quickstart.md) | [FAQ](docs/faq.md), [changelog](CHANGELOG.md) |
+| Contributor | [Contributing](CONTRIBUTING.md) | [Developer quickstart](docs/developer-quickstart.md), [command reference](docs/command-reference.md) |
+| Maintainer | [Maintainer responsibilities](MAINTAINERS.md) | [Review checklist](docs/maintainer-checklist.md), [operations runbook](docs/operations-runbook.md) |
+| Evidence reviewer | [Evidence guide](docs/evidence-guide.md) | [Claim-evidence ledger](docs/claim-evidence-ledger.md), [release gates](docs/release-gate-matrix.md) |
 
 ## Scaffold Boundary
 
-The JavaScript scaffold is a portable contract harness, not the target runtime for low-level execution. Performance-critical paths should move to native HE libraries, systems code, or hardware-aware edge implementations, with Node kept for demos, artifact generation, schema checks, and orchestration. See `10-native-performance-track.md`.
+The JavaScript scaffold is a portable contract harness for demos, schema checks,
+artifact generation, and orchestration. Its toy arithmetic is educational and
+cannot substitute for native FHE measurements. Performance-sensitive execution
+belongs in native libraries, systems code, or hardware implementations; see the
+[native performance track](10-native-performance-track.md).
 
-This repository is CC0. If the project later needs proprietary implementation, keep partner-specific adapters, datasets, trained weights, deployment code, and non-public library integrations in a separate private repository with explicit dependency and license review. Do not import proprietary reverse-engineered code into this public reference package.
+Post-quantum transport, identity, and artifact integrity are design directions,
+not implemented security guarantees. Cryptographic agility requires explicit
+library choices, parameters, implementation review, and side-channel analysis.
 
-## Post-Quantum Direction
+## Contributing
 
-NeuroFHE Relay should pair FHE-style encrypted computation with NIST-standard post-quantum cryptography for transport, identity, and artifact integrity:
+Contributions to reproducibility, documentation, native adapters, and validation
+are welcome. Follow [CONTRIBUTING.md](CONTRIBUTING.md), run `npm run ci` and
+`git diff --check`, and describe the evidence and limitations of your change.
+Keep raw datasets and sensitive payloads outside git; commit derived artifacts
+with provenance or structured blocker reports.
 
-- ML-KEM / FIPS 203 for key establishment.
-- ML-DSA / FIPS 204 for primary digital signatures.
-- SLH-DSA / FIPS 205 as a conservative hash-based signature option.
-
-The project should not claim production quantum safety until real libraries, parameter sets, implementation review, and side-channel analysis exist. The near-term standard is to build a crypto inventory and keep every cryptographic role replaceable.
+Use [Support](SUPPORT.md) for questions and issue routing, and the
+[security policy](SECURITY.md) to report sensitive findings.
 
 ## License
 
-Released under **CC0 1.0 Universal**.
-
-The intent is absolute free use: copy, modify, publish, sell, sublicense, and build on this project for any purpose without asking permission and without attribution.
+Released under [CC0 1.0 Universal](LICENSE). The reference material is intended
+to be freely studied, copied, modified, and shared. See the
+[public-domain notice](PUBLIC_DOMAIN_NOTICE.md) for details.
